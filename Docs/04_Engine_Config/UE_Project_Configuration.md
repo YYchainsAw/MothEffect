@@ -1,14 +1,14 @@
-# motheffect：UE 工程配置
+# Moth Effect（飞蛾效应）：UE 工程配置
 
-版本 v0.5 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，本轮仅修改 Android File Server 的三项配置；未启动编辑器、编译、安装工具链或打包。
+本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，此前仅修改 Android File Server 的三项配置；本轮仅统一文档名称。未启动编辑器、编译、安装工具链或打包。
 
 ## 1. 已静态核对的工程
 
 静态核对结果：MothEffect.uproject 的 EngineAssociation 为 5.8，Runtime 模块为 MothEffect；现有 AMothEffectCharacter、AMothEffectPlayerController、AMothEffectGameMode 源码以及 ThirdPerson 蓝图/关卡文件均存在。Build.cs 已声明 EnhancedInput、AIModule、UMG 等依赖。模板还包含 Combat、Platforming、SideScrolling 变体和 StateTree 相关依赖，它们不自动成为本作玩法，G0 时核对标准 ThirdPerson 入口及蓝图父类，不重复添加已有模块，也不先批量删除示例文件。
 
-DefaultGame.ini 当前 ProjectName 为 Moth Effect，发布显示名由用户确定为 motheffect；后续制作标题、窗口名称与投稿资料时核对统一。此处仅记录显示名差异，尚未修改 DefaultGame.ini。
+DefaultGame.ini 当前 ProjectName 与 ProjectDisplayedTitle 均为 Moth Effect，与用户确认的英文名一致。中文显示名统一为飞蛾效应；后续制作标题、窗口名称与投稿资料时采用对应语言的名称。本轮仅更新文档，未修改 DefaultGame.ini。
 
 现有入口为 /Game/ThirdPerson/Lvl_ThirdPerson，默认游戏模式指向 BP_ThirdPersonGameMode。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)。
 

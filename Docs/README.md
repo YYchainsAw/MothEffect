@@ -1,10 +1,10 @@
-# motheffect：开发文档入口
+# Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录。各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
+本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应。当前文档版本为 v0.7；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
 
-工程：[MothEffect.uproject](../MothEffect.uproject) · 显示名：motheffect · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 [版本管理与公开建议](03_Code_Standard/Version_Control.md)。
+工程：[MothEffect.uproject](../MothEffect.uproject) · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 [版本管理与公开建议](03_Code_Standard/Version_Control.md)。
 
 ## 1. 目录与有效文件
 

@@ -1,6 +1,6 @@
-# motheffect：版本管理与 Git 排除规范
+# Moth Effect（飞蛾效应）：版本管理与 Git 排除规范
 
-版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件定义仓库、排除规则与恢复约定。项目根目录已初始化 Git，当前分支 main；origin 为 https://github.com/YYchainsAw/MothEffect.git。2026-10-03 只读访问远程成功，核查时为公开空仓库。已完成仓库级 Git LFS 初始化，并在根 .gitattributes 配置 .uasset/.umap。本次未暂存、提交、推送或打 tag；首次推送认证与写入权限尚未验证。
 

@@ -1,10 +1,10 @@
 {
-  "documentVersion": "0.5",
+  "documentVersion": "0.7",
   "updatedAt": "2026-10-03",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "名称与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "英文名 Moth Effect、中文名飞蛾效应与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
@@ -145,7 +145,8 @@
       "validated": false
     }
   ],
-  "gameDisplayName": "motheffect",
+  "gameDisplayName": "Moth Effect",
+  "gameChineseName": "飞蛾效应",
   "projectName": "MothEffect",
   "artStyle": "魔法朋克",
   "projectRoot": "../../..",

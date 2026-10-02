@@ -1,8 +1,8 @@
-# motheffect：技术设计
+# Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.5 · 2026-10-03 · 游戏名：motheffect
+版本 v0.7 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
 
-用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 motheffect、魔法朋克风格。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)，已有第三人称模板源码与资源。本次只读核对文件，未修改或运行游戏实现；自定义玩法、编译与打包结果尚未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
+用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)，已有第三人称模板源码与资源。本次只读核对文件，未修改或运行游戏实现；自定义玩法、编译与打包结果尚未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
 
 ## 1. 起步与职责
 

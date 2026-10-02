@@ -1,9 +1,9 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>motheffect 开发文档 v0.6</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.7</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>motheffect</strong><div class="meta">开发文档 v0.6<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>motheffect 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><h1 id="doc-readme-motheffect">motheffect：开发文档入口</h1>
-<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录。各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
-<p>工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 显示名：motheffect · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 <a href="#doc-version">版本管理与公开建议</a>。</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.7<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><h1 id="doc-readme-moth-effect">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应。当前文档版本为 v0.7；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
+<p>工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 <a href="#doc-version">版本管理与公开建议</a>。</p>
 <h2 id="doc-readme-section">1. 目录与有效文件</h2>
 <table>
 <thead>
@@ -114,11 +114,11 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <p>目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。</p>
 <p>交互、接口、内容、数值各保留唯一来源，具体分工见 <a href="#doc-workflow">文档维护与变更流程</a>。建议基线和待原型验证仍需实测；参数账本不是可直接导入 UE 的 DataTable。T02 保留工程已建立但运行打包待验收，T03 已配置版本管理但提交与恢复待验收；其余任务/测试状态未变。</p>
 <p>修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。</p>
-</section><section class="document" id="doc-overview"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><h1 id="doc-overview-motheffect">motheffect：项目概览与阅读指南</h1>
-<p>版本 v0.5　日期 2026-10-03　适用 单人 UE 5.8 C++ 与蓝图混合 GameJam</p>
-<p>这套文档把第三人称越肩射击、敌人掉落机关、投掷与空中激活转成可追踪的执行基线。正式显示名为 motheffect，美术风格为魔法朋克。用户已经创建第三人称模板工程；本次只读核对了工程声明、源码和资产目录，不编译、运行或修改游戏实现。自定义玩法、性能验证和平台提交仍待后续验收。</p>
+</section><section class="document" id="doc-overview"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><h1 id="doc-overview-moth-effect">Moth Effect（飞蛾效应）：项目概览与阅读指南</h1>
+<p>版本 v0.7　日期 2026-10-03　适用 单人 UE 5.8 C++ 与蓝图混合 GameJam</p>
+<p>这套文档把第三人称越肩射击、敌人掉落机关、投掷与空中激活转成可追踪的执行基线。正式英文名为 Moth Effect，中文名为飞蛾效应，美术风格为魔法朋克。用户已经创建第三人称模板工程；本次只读核对了工程声明、源码和资产目录，不编译、运行或修改游戏实现。自定义玩法、性能验证和平台提交仍待后续验收。</p>
 <h2 id="doc-overview-section">0 当前工程与文档位置</h2>
-<p>工程根目录为 <code>../..</code>（相对于本文件所在目录），工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，声明的引擎版本为 5.8，运行时模块为 MothEffect。正式显示名使用用户选择的小写 motheffect；工程名与模块名保留 MothEffect。</p>
+<p>工程根目录为 <code>../..</code>（相对于本文件所在目录），工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，声明的引擎版本为 5.8，运行时模块为 MothEffect。对外英文名统一为 Moth Effect，中文名统一为飞蛾效应；工程名与模块名保留 MothEffect。</p>
 <p>工程 Docs 目录保存当前工作文档，目录结构和有效文件清单见 <a href="#doc-readme">文档入口</a>。旧交付包保留为历史快照；后续维护以工程内文档为准。当前已有模板角色源码、ThirdPerson 蓝图与关卡；这些文件存在不等于本作越肩射击和机关系统已经完成。</p>
 <p>起步建议沿用第三人称模板，复用角色移动、基础动画、输入与相机，再开发本作射击和道具规则。空白工程适用于需要自定义控制框架或已有基础资源的情况；当前单人周期内，切换空白会增加重新搭建的工作。模板中的 Combat、Platforming、SideScrolling 示例不自动纳入本作范围。</p>
 <h2 id="doc-overview-section-1">1 文档入口与职责</h2>
@@ -144,10 +144,10 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <h2 id="doc-overview-section-6">6 活动依据与日期</h2>
 <p>本包日期、排期与截止使用香港时间 UTC+8。官方创作时间为 2026-10-01 12:00 至 2026-10-21 12:00，须在截止前上传并通过审核，官方建议 10 月 18 日前上传。本计划把 10 月 17 日作为首版提交目标。<a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849">官方主题公告</a></p>
 <p>赛事仅支持单机及无网络的本地多人。全程参与奖还要求至少五篇开发日志和至少五十个有效试玩人数，这两项不是全部参赛作品的强制门槛。详细材料与检查见 <a href="#doc-release">发布检查清单</a>。<a href="https://www.taptap.cn/moment/851888213915075734?group_id=792849">官方答疑</a></p>
-</section><section class="document" id="doc-game"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Game_Design.md">02_Design_Doc/GDD/Game_Design.md</a></div><h1 id="doc-game-motheffect">motheffect：游戏策划案</h1>
-<p>版本 v0.5　日期 2026-10-03　游戏名 motheffect　开发者 单人<br />
-平台建议 Windows PC　引擎 UE 5.8　开发方式 C++ 与蓝图混合</p>
-<p>本策划案把已确定的创意落实为可在本次 GameJam 中验证和交付的版本。游戏名 motheffect，风格魔法朋克，采用已建立的 MothEffect 第三人称模板工程作为建议实现起点。玩家以第三人称越肩视角射击敌人，把敌人原地掉落的机关拾取、投掷，再通过射击激活。交互规则以 <a href="#doc-rules">道具与交互规则</a> 为准，所有初始数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。本文件负责体验目标与内容边界，不重复技术接口和参数表。</p>
+</section><section class="document" id="doc-game"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Game_Design.md">02_Design_Doc/GDD/Game_Design.md</a></div><h1 id="doc-game-moth-effect">Moth Effect（飞蛾效应）：游戏策划案</h1>
+<p>版本 v0.7　日期 2026-10-03　游戏名 Moth Effect（飞蛾效应）　开发者 单人</p>
+<p>平台建议 Windows PC　引擎 UE 5.8　开发方式 C++ 与蓝图混合</p>
+<p>本策划案把已确定的创意落实为可在本次 GameJam 中验证和交付的版本。游戏名 Moth Effect（飞蛾效应），风格魔法朋克，采用已建立的 MothEffect 第三人称模板工程作为建议实现起点。玩家以第三人称越肩视角射击敌人，把敌人原地掉落的机关拾取、投掷，再通过射击激活。交互规则以 <a href="#doc-rules">道具与交互规则</a> 为准，所有初始数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。本文件负责体验目标与内容边界，不重复技术接口和参数表。</p>
 <h2 id="doc-game-section">1 已确认需求与建议基线</h2>
 <table>
 <thead>
@@ -191,7 +191,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <tr>
 <td>REQ07</td>
 <td>用户已确认</td>
-<td>游戏显示名 motheffect，美术风格魔法朋克</td>
+<td>游戏英文名 Moth Effect，中文名飞蛾效应，美术风格魔法朋克</td>
 </tr>
 <tr>
 <td>REQ08</td>
@@ -352,8 +352,8 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <p>这些是待验证目标。目前已核对模板工程文件存在，尚未验证本作自定义玩法、试玩或性能结果。开发任务、验收方法和证据格式分别见 <a href="#doc-plan">开发任务与排期</a> 与 <a href="#doc-test">测试计划与验收</a>。</p>
 <h2 id="doc-game-section-9">10 来源</h2>
 <p>用户确认来自本聊天的游戏创意、开发方式与资源情况。模板中的可控人物、基础移动动画和几何场景见 <a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic 第三人称模板</a>。赛事主题和截止见 <a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849">TapTap 官方主题公告</a>。其余内容为本项目的建议设计。</p>
-</section><section class="document" id="doc-rules"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Device_Interaction_Rules.md">02_Design_Doc/GDD/Device_Interaction_Rules.md</a></div><h1 id="doc-rules-motheffect">motheffect：道具与交互规则</h1>
-<p>版本 v0.3　日期 2026-10-02　性质 建议工作基线　状态 尚未实现</p>
+</section><section class="document" id="doc-rules"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Device_Interaction_Rules.md">02_Design_Doc/GDD/Device_Interaction_Rules.md</a></div><h1 id="doc-rules-moth-effect">Moth Effect（飞蛾效应）：道具与交互规则</h1>
+<p>版本 v0.7　日期 2026-10-03　性质 建议工作基线　状态 尚未实现</p>
 <p>本文件定义能直接转成代码和测试的行为契约。用户已经确认三种机关、拾取、投掷和空中射击；以下触发条件、状态和边界处理是建议基线。参数数值只在 <a href="#doc-parameters">玩法参数基线</a> 维护，自定义类与接口只在 <a href="#doc-technical">技术设计</a> 维护。规则改变必须更新 <a href="#doc-decisions">设计决策</a> 及关联验收项。</p>
 <h2 id="doc-rules-section">1 统一规则</h2>
 <table>
@@ -651,8 +651,8 @@ Dormant 过期 → Spent → Destroyed
 </tr>
 </tbody>
 </table>
-</section><section class="document" id="doc-level"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><h1 id="doc-level-motheffect">motheffect：关卡、界面与资源规格</h1>
-<p>游戏名：motheffect｜v0.3｜2026-10-02。魔法朋克风格已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏均为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。</p>
+</section><section class="document" id="doc-level"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><h1 id="doc-level-moth-effect">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
+<p>游戏名：Moth Effect（飞蛾效应）｜v0.7｜2026-10-03。魔法朋克风格已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏均为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。</p>
 <h2 id="doc-level-section">0. 魔法朋克表现方向</h2>
 <p>建议场景为灵光工坊：粗糙金属框架、铜色连接件、管线与发光符文并置，魔法能量具有可见传导方向。蛾翼轮廓用于徽记、机关外壳和界面图标，光点沿弹道传递，机关接续点亮，呼应名称与连锁主题。具体世界观、色板和道具称呼尚未冻结。</p>
 <table>
@@ -832,13 +832,13 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </table>
 <h2 id="doc-level-section-5">5. 十秒展示镜头提案</h2>
 <p>在 L01 先调成可重复的真实操作：0–2 秒拾取并抛出 D03；2–3 秒空中击中它，镜头看见定向火线；3–4 秒射击预置 D01，把其上方 D02 弹进火线；4–5 秒 D03 弹丸启动 D02，爆炸击败靶/敌人；5–10 秒保留全景与新掉落，显示因果链。连锁动作需发生在 D03 的有效发射窗口内。距离和射击时机必须先实测调整，不能用录像专用脚本自动触发机关来冒充系统连锁。若空气中的轨迹难以稳定命中，先演示地面连锁，再单独展示一次空中激活，不以宣传镜头倒逼复杂系统。</p>
-</section><section class="document" id="doc-parameters"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Gameplay_Parameters.json">02_Design_Doc/GDD/Gameplay_Parameters.json</a></div><h1>motheffect：玩法参数基线</h1><p>建议参数，尚未实测。编辑对应 JSON，本文为阅读快照。</p><pre>{
-  &quot;documentVersion&quot;: &quot;0.5&quot;,
+</section><section class="document" id="doc-parameters"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Gameplay_Parameters.json">02_Design_Doc/GDD/Gameplay_Parameters.json</a></div><h1>Moth Effect（飞蛾效应）：玩法参数基线</h1><p>建议参数，尚未实测。编辑对应 JSON，本文为阅读快照。</p><pre>{
+  &quot;documentVersion&quot;: &quot;0.7&quot;,
   &quot;updatedAt&quot;: &quot;2026-10-03&quot;,
   &quot;timezone&quot;: &quot;Asia/Hong_Kong&quot;,
   &quot;engineVersion&quot;: &quot;5.8&quot;,
   &quot;status&quot;: &quot;proposed_untested&quot;,
-  &quot;note&quot;: &quot;名称与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。&quot;,
+  &quot;note&quot;: &quot;英文名 Moth Effect、中文名飞蛾效应与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。&quot;,
   &quot;units&quot;: {
     &quot;distance&quot;: &quot;cm&quot;,
     &quot;velocity&quot;: &quot;cm/s&quot;,
@@ -979,7 +979,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
       &quot;validated&quot;: false
     }
   ],
-  &quot;gameDisplayName&quot;: &quot;motheffect&quot;,
+  &quot;gameDisplayName&quot;: &quot;Moth Effect&quot;,
+  &quot;gameChineseName&quot;: &quot;飞蛾效应&quot;,
   &quot;projectName&quot;: &quot;MothEffect&quot;,
   &quot;artStyle&quot;: &quot;魔法朋克&quot;,
   &quot;projectRoot&quot;: &quot;../../..&quot;,
@@ -987,9 +988,9 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
   &quot;implementationStatus&quot;: &quot;template_project_exists_gameplay_unverified&quot;,
   &quot;pathBase&quot;: &quot;this_json_file_directory&quot;
 }
-</pre></section><section class="document" id="doc-technical"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><h1 id="doc-technical-motheffect">motheffect：技术设计</h1>
-<p>版本 v0.5 · 2026-10-03 · 游戏名：motheffect</p>
-<p>用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 motheffect、魔法朋克风格。当前工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，已有第三人称模板源码与资源。本次只读核对文件，未修改或运行游戏实现；自定义玩法、编译与打包结果尚未验收。玩法以 <a href="#doc-rules">道具与交互规则</a> 为准，数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。</p>
+</pre></section><section class="document" id="doc-technical"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><h1 id="doc-technical-moth-effect">Moth Effect（飞蛾效应）：技术设计</h1>
+<p>版本 v0.7 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）</p>
+<p>用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格。当前工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，已有第三人称模板源码与资源。本次只读核对文件，未修改或运行游戏实现；自定义玩法、编译与打包结果尚未验收。玩法以 <a href="#doc-rules">道具与交互规则</a> 为准，数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。</p>
 <h2 id="doc-technical-section">1. 起步与职责</h2>
 <p>建议沿用现有 Windows C++ Third Person 工程，以模板角色、移动动画与输入作为起点。空白工程适用于需要从零定制角色框架或已有基础资源的情况；本作单人周期内，模板能省去重新搭建这些基础功能的工作。用基础几何体表现枪、机关和敌人，先验证空中触发，再补持枪/投掷表现；模板本身不代表本作越肩射击系统已经接入。<a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic：Third Person 模板</a></p>
 <p>已存在的模板源码、资产、模块依赖与配置核对记录见 <a href="#doc-engine">UE 工程配置</a>；类与蓝图映射沿用下表。</p>
@@ -1235,8 +1236,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <p>实现依次验收：空中投掷/方向锁定 → 连锁/幂等 → 角色与物理道具弹射 → 死亡掉落/容量 → 三波胜负/重开。每一步同时在 PIE 与独立包验证，具体案例见 <a href="#doc-test">测试计划与验收</a>。日志记录 HitId、状态前后、方向、登记数和构建版本；开发调试线/日志受 Development 开关控制，提交包关闭。</p>
 <p>新增源码与资产目录、命名和完整编译约定见 <a href="#doc-coding">代码与资产命名规范</a>。</p>
 <p>提交范围、Git LFS、缓存忽略与恢复约定见 <a href="#doc-version">版本管理规范</a>。规则或参数变化按 <a href="#doc-workflow">文档维护与变更流程</a> 同步文档及回归测试。</p>
-</section><section class="document" id="doc-decisions"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Decisions/Design_Decisions.md">02_Design_Doc/TDD/Decisions/Design_Decisions.md</a></div><h1 id="doc-decisions-motheffect">motheffect：设计决策与原型证据</h1>
-<p>版本 v0.5　建立日期 2026-10-02　更新日期 2026-10-03</p>
+</section><section class="document" id="doc-decisions"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Decisions/Design_Decisions.md">02_Design_Doc/TDD/Decisions/Design_Decisions.md</a></div><h1 id="doc-decisions-moth-effect">Moth Effect（飞蛾效应）：设计决策与原型证据</h1>
+<p>版本 v0.7　建立日期 2026-10-02　更新日期 2026-10-03</p>
 <p>此文件记录已经确定的输入，以及当前可执行的建议基线。它负责说明规则为何存在、何时改变和如何验证。状态为建议或待验证的条目，不代表用户已最终确认；开发可按基线开始可逆原型，依据结果更新。</p>
 <h2 id="doc-decisions-section">1 决策账本</h2>
 <table>
@@ -1365,7 +1366,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <tr>
 <td>DEC17</td>
 <td>用户已确认</td>
-<td>正式显示名 motheffect，工程与模块名 MothEffect</td>
+<td>正式英文名 Moth Effect，中文名飞蛾效应，工程与模块名 MothEffect</td>
 <td>对齐品牌显示与已有工程名称</td>
 <td>用户更改名称</td>
 </tr>
@@ -1487,8 +1488,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </tbody>
 </table>
 <p>修改规则时遵循 <a href="#doc-workflow">文档维护与变更流程</a>，历次变更记录见 <a href="#doc-changelog">变更日志</a>。</p>
-</section><section class="document" id="doc-coding"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Coding_Conventions.md">03_Code_Standard/Coding_Conventions.md</a></div><h1 id="doc-coding-motheffect">motheffect：代码与资产命名规范</h1>
-<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+</section><section class="document" id="doc-coding"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Coding_Conventions.md">03_Code_Standard/Coding_Conventions.md</a></div><h1 id="doc-coding-moth-effect">Moth Effect（飞蛾效应）：代码与资产命名规范</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p>本文件约定后续代码与资产的命名、目录和职责边界。当前只整理文档，未执行源码重命名或资源迁移。自定义类/接口签名以 <a href="#doc-technical">技术设计</a> 为准。</p>
 <h2 id="doc-coding-section">1. 命名与目录</h2>
 <p>新增资产统一放 <code>/Game/MothEffect/{Core,Player,Combat,Devices,Enemies,Levels,UI,Data,Audio,VFX,Tests}</code>，新增源码放在现有 Source/MothEffect 模块内。现有 ThirdPerson、Characters、Input、LevelPrototyping 与模板变体资产保持原路径；角色、控制器和游戏模式复用 <a href="#doc-technical">技术设计</a> 类映射表中的现有类及蓝图，不先做批量重命名。使用英文稳定名称：C++ 无 BP 前缀，新增蓝图 <code>BP_</code>，地图 <code>L_</code>，界面 <code>WBP_</code>，输入 <code>IA_/IMC_</code>，数据 <code>DA_</code>。必要的资源整理安排在 G1 后核对依赖再进行。</p>
@@ -1497,8 +1498,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <h2 id="doc-coding-section-1">3. 构建与调试</h2>
 <p>新建 UCLASS、改反射字段或继承关系后关闭编辑器做完整编译再打开，避免把 Live Coding 状态当作干净构建成功。</p>
 <p>日志记录 HitId、状态前后、方向、登记数和构建版本；开发调试线/日志受 Development 开关控制，提交包关闭。工具链与首包验收见 <a href="#doc-engine">UE 工程配置</a>，提交与恢复见 <a href="#doc-version">版本管理规范</a>。</p>
-</section><section class="document" id="doc-version"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Version_Control.md">03_Code_Standard/Version_Control.md</a></div><h1 id="doc-version-motheffect-git">motheffect：版本管理与 Git 排除规范</h1>
-<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+</section><section class="document" id="doc-version"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Version_Control.md">03_Code_Standard/Version_Control.md</a></div><h1 id="doc-version-moth-effect-git">Moth Effect（飞蛾效应）：版本管理与 Git 排除规范</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p>本文件定义仓库、排除规则与恢复约定。项目根目录已初始化 Git，当前分支 main；origin 为 <a href="https://github.com/YYchainsAw/MothEffect.git%E3%80%822026-10-03">https://github.com/YYchainsAw/MothEffect.git。2026-10-03</a> 只读访问远程成功，核查时为公开空仓库。已完成仓库级 Git LFS 初始化，并在根 .gitattributes 配置 .uasset/.umap。本次未暂存、提交、推送或打 tag；首次推送认证与写入权限尚未验证。</p>
 <h2 id="doc-version-section">1. 提交与忽略范围</h2>
 <p>Git 提交工程 <code>.uproject</code>、<code>Source/</code>、<code>Config/</code>、<code>Content/MothEffect/</code> 及本文档、<a href="#doc-parameters">玩法参数基线</a>、资源来源记录。Content 中其余目录与顶层文件全部忽略；这是用户指定的资源范围，仅影响版本管理，不删除本机资源。保留的 <code>.uasset/.umap</code> 用 Git LFS。忽略 <code>Binaries/Intermediate/Saved/DerivedDataCache/.vs</code>，不忽略整个 Plugins。每天可启动版本做一次提交，里程碑打 tag，改动规则时同步 <a href="#doc-rules">道具与交互规则</a>/<a href="#doc-decisions">设计决策</a>/<a href="#doc-parameters">玩法参数基线</a>。</p>
@@ -1597,12 +1598,12 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <h2 id="doc-version-section-3">6. 首次公开提交前的项目检查</h2>
 <p>本项目当前目标为 Windows 单机，已在 Config/DefaultEngine.ini 的 AndroidFileServer 配置中设置 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值），保留 Shipping、Shipping 外部启动和独立 AFS 编译开关为 False。清空 Token 同时关闭该服务器用途，避免空 Token 取消认证检查；本次未输出旧值。配置节之外的内容未修改，未启动编辑器、编译或打包。以后需要 Android 文件服务器时，另行配置新的私有 Token，不把实际凭证写入公开默认配置。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine">Epic：Android File Server</a></p>
 <p>公开资源前逐项记录来源及可再分发范围。UE EULA 对 Samples/Templates 中的 Examples 允许源格式分发，不能把此权限推广到所有引擎内容或商城资产。Fab 标准许可允许项目使用及向项目协作者共享资产，同时限制素材单独再分发；公开可提取的原始资源需要依据其实际许可判断。<a href="https://www.unrealengine.com/en-US/eula/unreal">Unreal Engine EULA</a>、<a href="https://www.fab.com/eula">Fab 标准许可</a></p>
-</section><section class="document" id="doc-engine"><div class="source">可编辑源文件：<a href="../04_Engine_Config/UE_Project_Configuration.md">04_Engine_Config/UE_Project_Configuration.md</a></div><h1 id="doc-engine-motheffectue">motheffect：UE 工程配置</h1>
-<p>版本 v0.5 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，本轮仅修改 Android File Server 的三项配置；未启动编辑器、编译、安装工具链或打包。</p>
+</section><section class="document" id="doc-engine"><div class="source">可编辑源文件：<a href="../04_Engine_Config/UE_Project_Configuration.md">04_Engine_Config/UE_Project_Configuration.md</a></div><h1 id="doc-engine-moth-effectue">Moth Effect（飞蛾效应）：UE 工程配置</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，此前仅修改 Android File Server 的三项配置；本轮仅统一文档名称。未启动编辑器、编译、安装工具链或打包。</p>
 <h2 id="doc-engine-section">1. 已静态核对的工程</h2>
 <p>静态核对结果：MothEffect.uproject 的 EngineAssociation 为 5.8，Runtime 模块为 MothEffect；现有 AMothEffectCharacter、AMothEffectPlayerController、AMothEffectGameMode 源码以及 ThirdPerson 蓝图/关卡文件均存在。Build.cs 已声明 EnhancedInput、AIModule、UMG 等依赖。模板还包含 Combat、Platforming、SideScrolling 变体和 StateTree 相关依赖，它们不自动成为本作玩法，G0 时核对标准 ThirdPerson 入口及蓝图父类，不重复添加已有模块，也不先批量删除示例文件。</p>
-<p>DefaultGame.ini 当前 ProjectName 为 Moth Effect，发布显示名由用户确定为 motheffect；后续制作标题、窗口名称与投稿资料时核对统一。此处仅记录显示名差异，尚未修改 DefaultGame.ini。</p>
+<p>DefaultGame.ini 当前 ProjectName 与 ProjectDisplayedTitle 均为 Moth Effect，与用户确认的英文名一致。中文显示名统一为飞蛾效应；后续制作标题、窗口名称与投稿资料时采用对应语言的名称。本轮仅更新文档，未修改 DefaultGame.ini。</p>
 <p>现有入口为 /Game/ThirdPerson/Lvl_ThirdPerson，默认游戏模式指向 BP_ThirdPersonGameMode。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 <a href="#doc-technical">技术设计</a>。</p>
 <p>工程清单启用了 ModelingToolsEditorMode（仅 Editor）、StateTree、GameplayStateTree。模块声明中还包含 Slate 与 StateTree 相关依赖。插件启用、模块依赖和本作已实现功能是三种不同状态，不因依赖存在而判定玩法已完成。</p>
 <h2 id="doc-engine-section-1">2. 工具链与首个独立包</h2>
@@ -1614,8 +1615,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <h2 id="doc-engine-android-file-server">4. 公开仓库的 Android File Server 配置</h2>
 <p>当前 Windows 单机目标不使用 Android 文件服务器。在 DefaultEngine.ini 的 AndroidFileServerRuntimeSettings 节中，已设 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值）；bIncludeInShipping、bAllowExternalStartInShipping、bCompileAFSProject 均保留 False。未修改 .uproject 或该配置节之外的引擎设置。</p>
 <p>空 Token 会关闭令牌认证检查，因此必须与禁用该服务器用途同时处理。以后需要 Android 开发时，另行配置私有 Token 与部署方式。当前仅完成静态配置核对，没有编译/打包结果。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine">Epic：Android File Server</a></p>
-</section><section class="document" id="doc-plan"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><h1 id="doc-plan-motheffect">motheffect：开发任务与排期</h1>
-<p>版本：v0.5｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
+</section><section class="document" id="doc-plan"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><h1 id="doc-plan-moth-effect">Moth Effect（飞蛾效应）：开发任务与排期</h1>
+<p>版本：v0.7｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
 <p>当前状态：前期文档已更新，用户已建立第三人称模板工程，工程声明与模板目录已静态核对。环境运行、核心玩法、包体、试玩和投稿均未验收。T02 的工程创建子项已完成，编译与独立打包待验证；T03 的 Git/origin/忽略/LFS 已配置，提交与恢复待验收；其余任务没有完成证据。日期是建议目标，不代表实际进度。</p>
 <h2 id="doc-plan-section">1. 如何使用这份计划</h2>
 <p>每天从最早未通过的门槛开始，只做依赖已完成的任务。任务先进入“进行中”，满足可观察完成标准并留下证据后才改为“完成”。一段录屏能证明几个规则时可以共用证据，不必重复制作材料。</p>
@@ -2063,14 +2064,15 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <h2 id="doc-plan-section-7">8. 每日结束时保存的最小记录</h2>
 <p>每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 <a href="#doc-workflow">文档维护与变更流程</a> 在 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a> 中记录原因、关联任务/测试，并让 <a href="#doc-rules">道具与交互规则</a>、<a href="#doc-technical">技术设计</a>、<a href="#doc-level">关卡、界面与资源规格</a>、<a href="#doc-parameters">玩法参数基线</a> 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。</p>
 <p>当前进度：G0–G4 均未验收；T02 的工程创建子项已完成，T03 已完成本地 Git/origin/忽略/LFS 配置但提交与恢复待验收，其余实施任务没有完成证据；日志均未撰写；尚无已验收构建、录屏、性能数据、试玩结果或审核状态。沿用第三人称模板是当前建议，不需要重新建空白工程。</p>
-</section><section class="document" id="doc-workflow"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Documentation_Workflow.md">05_Development_Guide/Documentation_Workflow.md</a></div><h1 id="doc-workflow-motheffect">motheffect：文档维护与变更流程</h1>
-<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+</section><section class="document" id="doc-workflow"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Documentation_Workflow.md">05_Development_Guide/Documentation_Workflow.md</a></div><h1 id="doc-workflow-moth-effect">Moth Effect（飞蛾效应）：文档维护与变更流程</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p>本文件规定文档归属、命名与变更顺序，用来避免多个文件维护不同版本的规则。目录入口见 <a href="#doc-readme">文档入口</a>；设计依据见 <a href="#doc-decisions">设计决策</a>，变更历史见 <a href="#doc-changelog">变更日志</a>。</p>
 <h2 id="doc-workflow-section">1. 唯一来源与状态</h2>
 <p>玩法目标和优先级以 <a href="#doc-game">游戏策划案</a> 为准；交互行为以 <a href="#doc-rules">道具与交互规则</a> 为准；类接口与碰撞以 <a href="#doc-technical">技术设计</a> 为准；场地、波次和资源需求以 <a href="#doc-level">关卡、界面与资源规格</a> 为准；数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。其他文件引用这些来源，避免复制第二份参数表或状态机。</p>
 <p>每份文档保留标题、版本、日期及实际状态。用户已确认、建议基线、待原型验证和已实测分别记录；未执行的任务/测试不能填写通过。REQ、R、D、T、G、TC、DEC、CHG、RISK 等现有 ID 保持稳定，重命名文件不重排 ID。</p>
 <h2 id="doc-workflow-section-1">2. 命名与归档</h2>
 <p>保留已有阶段目录编号；文件使用英文语义名称和下划线，扩展名小写，例如 Technical_Design.md。目录已经表示阶段，文件不再附加另一套顺序编号。README.md 为根目录入口，正文继续使用中文。</p>
+<p>对外英文名统一为 <strong>Moth Effect</strong>，中文名统一为 <strong>飞蛾效应</strong>。工程、模块、文件夹、类名以及路径中的 <code>MothEffect</code> 属于技术标识，继续沿用现有写法。</p>
 <p>GDD 放玩法设计和玩法参数；TDD 放实现设计；Decisions 放设计决策；Code_Standard 放源码/资产约定；Engine_Config 放 UE 配置；Development_Guide 放任务和变更流程；Test_Doc 放测试；Release 放打包投稿检查。Assets/UML 供后续实际产出的图示使用，当前保留空目录，不创建占位图。</p>
 <p>本轮保留综合决策账本，避免单人 Jam 为每个决策另建空模板；较大技术决策后续可按 ADR_序号_主题.md 独立记录，并从决策账本链接。</p>
 <h2 id="doc-workflow-section-2">3. 修改规则的工作流程</h2>
@@ -2082,9 +2084,9 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <h2 id="doc-workflow-section-3">4. 阅读快照与证据</h2>
 <p>先修改对应 Markdown/JSON 源文件，再同步版本和日期、修正文档相对链接，并重新生成 <a href="#doc-readme">浏览器阅读版</a>。阅读版只用于浏览，不能单独修改为与源文件冲突的另一套设计。</p>
 <p>任务、规则或测试变更时保留关联 ID；实际构建/缺陷证据按 <a href="#doc-test">测试计划与验收</a> 记录。发布状态按 <a href="#doc-release">发布检查清单</a> 记录，上传成功不能替代审核通过。</p>
-</section><section class="document" id="doc-changelog"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><h1 id="doc-changelog-motheffect">motheffect：变更日志</h1>
-<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理文档结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置；当前 v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录。未提交推送，玩法规则、参数数值和游戏源码均未修改。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
+</section><section class="document" id="doc-changelog"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><h1 id="doc-changelog-moth-effect">Moth Effect（飞蛾效应）：变更日志</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理文档结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录；当前 v0.7 统一英文名 Moth Effect 与中文名飞蛾效应。未提交推送，玩法规则、参数数值和游戏源码均未修改。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
 <h2 id="doc-changelog-section">1. 变更记录</h2>
 <table>
 <thead>
@@ -2114,7 +2116,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <tr>
 <td>CHG003</td>
 <td>2026-10-02</td>
-<td>更新 v0.2，正式名 motheffect、魔法朋克风格</td>
+<td>更新 v0.2，确认游戏名称与魔法朋克风格（现行名称：Moth Effect / 飞蛾效应）</td>
 <td>用户确定名称与风格</td>
 <td>更新标题、表现提案和元数据，战斗数值未改</td>
 </tr>
@@ -2153,13 +2155,20 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <td>用户指定提交范围</td>
 <td>本机资源未删除，LFS 继续用于保留资产；记录当前 ThirdPerson 等依赖不会随仓库分发的限制；未暂存/提交/推送</td>
 </tr>
+<tr>
+<td>CHG009</td>
+<td>2026-10-03</td>
+<td>统一全部文档游戏名：英文 Moth Effect，中文飞蛾效应</td>
+<td>用户纠正正式写法并补充中文名</td>
+<td>更新仓库 README、Markdown、JSON 名称元数据及 HTML 阅读版为 v0.7；工程/模块/路径/类名与玩法参数未改；未暂存/提交/推送</td>
+</tr>
 </tbody>
 </table>
 <h2 id="doc-changelog-section-1">2. 本轮归档说明</h2>
 <p>阅读指南归入项目概览；游戏策划、道具规则、关卡/界面/资源和参数归入 GDD；UE 实现设计归入 TDD，并拆出代码规范、版本管理和工程配置；测试与提交拆为测试计划、发布清单；决策与变更拆为设计决策、维护流程和本变更日志。根目录 README 提供有效文件索引，阅读版同步为新结构。</p>
 <p>早期 v0.1/v0.2 文件包是历史快照；当前有效基线以项目 Docs 为准。</p>
-</section><section class="document" id="doc-test"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><h1 id="doc-test-motheffect">motheffect：测试计划与验收</h1>
-<p>版本：v0.3｜制定日期：2026-10-02｜时间：香港时间（UTC+8）</p>
+</section><section class="document" id="doc-test"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><h1 id="doc-test-moth-effect">Moth Effect（飞蛾效应）：测试计划与验收</h1>
+<p>版本：v0.7｜制定日期：2026-10-02｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
 <p>当前状态：用户已建立 MothEffect 第三人称模板工程，本次仅静态核对文件。以下测试全部<strong>未执行</strong>；没有本作核心玩法验收、测试构建、性能实测、平台上传或审核通过证据。“预期结果”是计划验收标准，不能当作已通过结果。</p>
 <h2 id="doc-test-section">1. 验收依据与执行方式</h2>
 <p>规则唯一依据是 <a href="#doc-rules">道具与交互规则</a>，实现职责见 <a href="#doc-technical">技术设计</a>，AI、三波与场地见 <a href="#doc-level">关卡、界面与资源规格</a>，数值唯一依据是 <a href="#doc-parameters">玩法参数基线</a>。测试里的时长、距离、伤害、速度和数量均从该 JSON 当次基线读取，不在本文件再维护一份数值表。</p>
@@ -2516,8 +2525,8 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </ul>
 <p>开发完成后，把上述初始状态替换为真实结果与证据链接，并保留历史构建记录。本文档提供执行标准，不构成已实现或已完成测试的声明。</p>
 <p>平台官方要求、最终打包、上传与审核顺序已归入 <a href="#doc-release">发布检查清单</a>。TC29/TC30 仍在本文件维护测试标准，发布清单引用这些测试。</p>
-</section><section class="document" id="doc-release"><div class="source">可编辑源文件：<a href="../07_Release/Release_Checklist.md">07_Release/Release_Checklist.md</a></div><h1 id="doc-release-motheffect">motheffect：发布检查清单</h1>
-<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+</section><section class="document" id="doc-release"><div class="source">可编辑源文件：<a href="../07_Release/Release_Checklist.md">07_Release/Release_Checklist.md</a></div><h1 id="doc-release-moth-effect">Moth Effect（飞蛾效应）：发布检查清单</h1>
+<p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p>适用 Windows 单机投稿，香港时间 UTC+8。当前仅有模板工程和文档；候选包、平台认证、自测、投稿与审核均未核对或未执行。发布是否完成需要真实后台状态与包体验收证据。</p>
 <p>测试唯一来源为 <a href="#doc-test">测试计划与验收</a>。上传前完成核心规则与本地包验收，核对 S0/S1 阻断项、TC29 本地部分和 TC30；上传后完成 TC29 平台自测部分，再提交审核。任务与时间见 <a href="#doc-plan">开发任务与排期</a>。</p>
 <h2 id="doc-release-section">1. 投稿前需要核实的官方要求</h2>

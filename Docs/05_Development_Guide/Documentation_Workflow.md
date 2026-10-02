@@ -1,6 +1,6 @@
-# motheffect：文档维护与变更流程
+# Moth Effect（飞蛾效应）：文档维护与变更流程
 
-版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件规定文档归属、命名与变更顺序，用来避免多个文件维护不同版本的规则。目录入口见 [文档入口](../README.md)；设计依据见 [设计决策](../02_Design_Doc/TDD/Decisions/Design_Decisions.md)，变更历史见 [变更日志](Changelog.md)。
 
@@ -13,6 +13,8 @@
 ## 2. 命名与归档
 
 保留已有阶段目录编号；文件使用英文语义名称和下划线，扩展名小写，例如 Technical_Design.md。目录已经表示阶段，文件不再附加另一套顺序编号。README.md 为根目录入口，正文继续使用中文。
+
+对外英文名统一为 **Moth Effect**，中文名统一为 **飞蛾效应**。工程、模块、文件夹、类名以及路径中的 `MothEffect` 属于技术标识，继续沿用现有写法。
 
 GDD 放玩法设计和玩法参数；TDD 放实现设计；Decisions 放设计决策；Code_Standard 放源码/资产约定；Engine_Config 放 UE 配置；Development_Guide 放任务和变更流程；Test_Doc 放测试；Release 放打包投稿检查。Assets/UML 供后续实际产出的图示使用，当前保留空目录，不创建占位图。
 

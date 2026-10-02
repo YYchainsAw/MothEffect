@@ -1,0 +1,155 @@
+{
+  "documentVersion": "0.5",
+  "updatedAt": "2026-10-03",
+  "timezone": "Asia/Hong_Kong",
+  "engineVersion": "5.8",
+  "status": "proposed_untested",
+  "note": "名称与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "units": {
+    "distance": "cm",
+    "velocity": "cm/s",
+    "time": "s",
+    "direction": "world-space normalized vector",
+    "damage": "HP",
+    "angle": "degree"
+  },
+  "world": {
+    "prototypeWidthCm": 2000,
+    "prototypeLengthCm": 2000,
+    "arenaWidthCm": 6000,
+    "arenaLengthCm": 5000,
+    "groundUpNormalMin": 0.65,
+    "columnSurfaceRequiresTag": true,
+    "targetExperienceMinMinutes": 5,
+    "targetExperienceMaxMinutes": 10
+  },
+  "player": {
+    "maxHealth": 100,
+    "walkSpeedCmPerSec": 450,
+    "sprintSpeedCmPerSec": 650,
+    "jumpVelocityCmPerSec": 600,
+    "fallDamageEnabled": false
+  },
+  "camera": {
+    "springArmLengthCm": 220,
+    "socketOffsetRightCm": 60,
+    "socketOffsetUpCm": 55,
+    "hipFovDegrees": 85,
+    "aimFovDegrees": 75,
+    "aimBlendSeconds": 0.15
+  },
+  "weapon": {
+    "id": "W01",
+    "type": "hitscan_rifle",
+    "damage": 20,
+    "fireIntervalSeconds": 0.18,
+    "magazineSize": 24,
+    "reloadSeconds": 1.3,
+    "unlimitedReserveAmmo": true,
+    "rangeCm": 8000,
+    "shotConsumesAmmoOnBlockedMuzzle": true
+  },
+  "throw": {
+    "pickupRangeCm": 200,
+    "forwardVelocityCmPerSec": 1000,
+    "upwardVelocityCmPerSec": 450,
+    "spawnForwardOffsetCm": 90,
+    "spawnUpOffsetCm": 20,
+    "releaseToFireRequired": true,
+    "minGunRecoverySeconds": 0.12,
+    "physicsMassKg": 2,
+    "deviceTargetDiameterCm": 40,
+    "deviceShotColliderRadiusCm": 25
+  },
+  "projectile": {
+    "id": "P01",
+    "speedCmPerSec": 1400,
+    "gravityScale": 0,
+    "damage": 10,
+    "lifetimeSeconds": 3,
+    "consumeOnFirstBlockingHit": true,
+    "canActivateDormant": true,
+    "ignoreSourceActor": true
+  },
+  "enemy": {
+    "maxHealth": 60,
+    "shotIntervalSeconds": 1.2,
+    "telegraphSeconds": 0.5,
+    "baseAiArchetypes": 1,
+    "dropVariants": 3,
+    "fixedDropPerVariant": true,
+    "spawnMinDistanceToPlayerCm": 600,
+    "spawnWarningSeconds": 0.8,
+    "spawnRetrySeconds": 0.5
+  },
+  "launcher": {
+    "id": "D01",
+    "groundProbeDistanceCm": 1500,
+    "columnHeightCm": 350,
+    "columnRadiusCm": 70,
+    "riseSeconds": 0.2,
+    "holdSeconds": 1.5,
+    "retractSeconds": 0.3,
+    "characterUpVelocityCmPerSec": 1000,
+    "deviceUpVelocityCmPerSec": 1200,
+    "applyOncePerTarget": true
+  },
+  "bomb": {
+    "id": "D02",
+    "radiusCm": 400,
+    "damage": 60,
+    "damageFalloff": false,
+    "staticCoverBlocksDamageAndImpulse": true,
+    "characterHorizontalVelocityAddCmPerSec": 650,
+    "characterUpVelocityAddCmPerSec": 450,
+    "deviceRadialVelocityAddCmPerSec": 1100,
+    "activatesOtherDevices": false
+  },
+  "emitter": {
+    "id": "D03",
+    "durationSeconds": 3,
+    "firstShotDelaySeconds": 0.1,
+    "shotIntervalSeconds": 0.25,
+    "directionPolicy": "incoming_ballistic_world_direction",
+    "directionLockedAfterActivation": true,
+    "physicsContinuesWhileActive": true
+  },
+  "limits": {
+    "maxExternalVelocityCmPerSec": 1600,
+    "maxAliveEnemies": 8,
+    "maxDevicesTotal": 24,
+    "maxActiveEmitters": 6,
+    "maxActiveColumns": 6,
+    "maxLiveProjectiles": 64,
+    "dormantIdleLifetimeSeconds": 30,
+    "dormantExpiryWarningSeconds": 5
+  },
+  "flow": {
+    "baselineWaves": 3,
+    "prepareBetweenWavesSeconds": 5,
+    "batchSpawnDelaySeconds": 3,
+    "tutorialRequiredFirstRun": true,
+    "stopGameplayOnResult": true
+  },
+  "tuningLog": [
+    {
+      "date": "2026-10-02",
+      "change": "建立初始建议参数",
+      "evidence": "none",
+      "validated": false
+    },
+    {
+      "date": "2026-10-02",
+      "change": "v0.2仅更新名称、风格与既有工程信息，战斗参数未改",
+      "evidence": "user_confirmation_and_local_project_manifest",
+      "validated": false
+    }
+  ],
+  "gameDisplayName": "motheffect",
+  "projectName": "MothEffect",
+  "artStyle": "魔法朋克",
+  "projectRoot": "../../..",
+  "documentAuthority": "../..",
+  "implementationStatus": "template_project_exists_gameplay_unverified",
+  "pathBase": "this_json_file_directory"
+}

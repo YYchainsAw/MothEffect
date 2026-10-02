@@ -1,0 +1,69 @@
+# Unreal Engine: generated project files, builds, autosaves and caches.
+/Binaries/
+/Intermediate/
+/Saved/
+/DerivedDataCache/
+
+# Plugin caches are generated. Keep plugin binaries by default because
+# binary-only plugins may require them. Add exact rules for source plugins.
+/Plugins/**/Intermediate/
+/Plugins/**/Saved/
+/Plugins/**/DerivedDataCache/
+
+# Local IDE state and engine-generated solutions.
+/.vs/
+/.idea/
+/.vscode/
+/.fleet/
+/*.sln
+/*.slnx
+/*.vcxproj
+/*.vcxproj.filters
+/*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# Local package/output directories. Keep Build/ for icons and build settings.
+/Builds/
+/Packages/
+/Releases/
+/Dist/
+/Artifacts/
+
+# Private local notes and credentials. Docs/ otherwise remains versioned.
+/_Local/
+/Docs/Private/
+/Config/Local/
+*.local.ini
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# OS/editor temporary files.
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Only game-owned content is versioned. Keep this after general exceptions.
+# Other content stays on disk, including any top-level .env examples.
+/Content/*
+!/Content/MothEffect/
+
+# Intentionally retained: .vsconfig, MothEffect.uproject, Source/, Config/,
+# Content/MothEffect/, Docs/, Build/, SourceArt/, plugin source and required binaries.
+# Do not blanket-ignore .uasset/.umap/.png/.obj/.dll/.lib files.

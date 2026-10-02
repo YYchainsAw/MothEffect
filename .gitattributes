@@ -1,0 +1,17 @@
+# Normalize text in Git without rewriting working files during setup.
+* text=auto
+.gitignore text eol=lf
+.gitattributes text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.cs text eol=lf
+*.ini text eol=lf
+*.uproject text eol=lf
+*.uplugin text eol=lf
+
+# Unreal binary assets are tracked by Git LFS, not excluded by .gitignore.
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text

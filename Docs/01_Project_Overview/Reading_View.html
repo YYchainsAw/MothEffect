@@ -1,0 +1,2594 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>motheffect 开发文档 v0.6</title><style>
+:root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>motheffect</strong><div class="meta">开发文档 v0.6<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>motheffect 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><h1 id="doc-readme-motheffect">motheffect：开发文档入口</h1>
+<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录。各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
+<p>工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 显示名：motheffect · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 <a href="#doc-version">版本管理与公开建议</a>。</p>
+<h2 id="doc-readme-section">1. 目录与有效文件</h2>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>文件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01_Project_Overview/</td>
+<td><a href="#doc-overview">Project_Overview.md</a></td>
+<td>项目概览</td>
+</tr>
+<tr>
+<td>01_Project_Overview/</td>
+<td><a href="#doc-readme">Reading_View.html</a></td>
+<td>浏览器阅读版</td>
+</tr>
+<tr>
+<td>02_Design_Doc/GDD/</td>
+<td><a href="#doc-game">Game_Design.md</a></td>
+<td>游戏策划案</td>
+</tr>
+<tr>
+<td>02_Design_Doc/GDD/</td>
+<td><a href="#doc-rules">Device_Interaction_Rules.md</a></td>
+<td>道具与交互规则</td>
+</tr>
+<tr>
+<td>02_Design_Doc/GDD/</td>
+<td><a href="#doc-level">Level_UI_Asset_Specification.md</a></td>
+<td>关卡、界面与资源规格</td>
+</tr>
+<tr>
+<td>02_Design_Doc/GDD/</td>
+<td><a href="#doc-parameters">Gameplay_Parameters.json</a></td>
+<td>玩法参数基线</td>
+</tr>
+<tr>
+<td>02_Design_Doc/TDD/</td>
+<td><a href="#doc-technical">Technical_Design.md</a></td>
+<td>技术设计</td>
+</tr>
+<tr>
+<td>02_Design_Doc/TDD/Decisions/</td>
+<td><a href="#doc-decisions">Design_Decisions.md</a></td>
+<td>设计决策</td>
+</tr>
+<tr>
+<td>03_Code_Standard/</td>
+<td><a href="#doc-coding">Coding_Conventions.md</a></td>
+<td>代码与资产命名规范</td>
+</tr>
+<tr>
+<td>03_Code_Standard/</td>
+<td><a href="#doc-version">Version_Control.md</a></td>
+<td>版本管理规范</td>
+</tr>
+<tr>
+<td>04_Engine_Config/</td>
+<td><a href="#doc-engine">UE_Project_Configuration.md</a></td>
+<td>UE 工程配置</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-plan">Development_Plan.md</a></td>
+<td>开发任务与排期</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-workflow">Documentation_Workflow.md</a></td>
+<td>文档维护与变更流程</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-changelog">Changelog.md</a></td>
+<td>变更日志</td>
+</tr>
+<tr>
+<td>06_Test_Doc/</td>
+<td><a href="#doc-test">Test_Plan.md</a></td>
+<td>测试计划与验收</td>
+</tr>
+<tr>
+<td>07_Release/</td>
+<td><a href="#doc-release">Release_Checklist.md</a></td>
+<td>发布检查清单</td>
+</tr>
+<tr>
+<td>Assets/UML/</td>
+<td>当前为空</td>
+<td>后续实际产出的 UML 图及源文件</td>
+</tr>
+</tbody>
+</table>
+<p>GDD = 游戏设计文档，TDD = 技术设计文档。玩法数值归属 GDD，UE 配置归属 Engine_Config。决策依据与变更历史分开维护；测试与发布也各自独立。</p>
+<h2 id="doc-readme-section-1">2. 按开发流程阅读</h2>
+<ol>
+<li><strong>目标与范围</strong>：<a href="#doc-overview">项目概览</a> → <a href="#doc-game">游戏策划案</a>，明确本次要交付的体验和 P0/P1/P2。</li>
+<li><strong>行为与内容</strong>：<a href="#doc-rules">道具与交互规则</a> + <a href="#doc-parameters">玩法参数基线</a> + <a href="#doc-level">关卡、界面与资源规格</a>，明确状态、边界、波次与资源。</li>
+<li><strong>技术与环境</strong>：<a href="#doc-technical">技术设计</a> + <a href="#doc-coding">代码与资产命名规范</a> + <a href="#doc-version">版本管理规范</a> + <a href="#doc-engine">UE 工程配置</a>。</li>
+<li><strong>执行与验证</strong>：按 <a href="#doc-plan">开发任务与排期</a> 的 G0–G4 推进，用 <a href="#doc-test">测试计划与验收</a> 留下实际证据。</li>
+<li><strong>变更与发布</strong>：改动遵循 <a href="#doc-workflow">文档维护与变更流程</a>，更新 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a>，提交时执行 <a href="#doc-release">发布检查清单</a>。</li>
+</ol>
+<h2 id="doc-readme-section-2">3. 维护约定</h2>
+<p>目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。</p>
+<p>交互、接口、内容、数值各保留唯一来源，具体分工见 <a href="#doc-workflow">文档维护与变更流程</a>。建议基线和待原型验证仍需实测；参数账本不是可直接导入 UE 的 DataTable。T02 保留工程已建立但运行打包待验收，T03 已配置版本管理但提交与恢复待验收；其余任务/测试状态未变。</p>
+<p>修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。</p>
+</section><section class="document" id="doc-overview"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><h1 id="doc-overview-motheffect">motheffect：项目概览与阅读指南</h1>
+<p>版本 v0.5　日期 2026-10-03　适用 单人 UE 5.8 C++ 与蓝图混合 GameJam</p>
+<p>这套文档把第三人称越肩射击、敌人掉落机关、投掷与空中激活转成可追踪的执行基线。正式显示名为 motheffect，美术风格为魔法朋克。用户已经创建第三人称模板工程；本次只读核对了工程声明、源码和资产目录，不编译、运行或修改游戏实现。自定义玩法、性能验证和平台提交仍待后续验收。</p>
+<h2 id="doc-overview-section">0 当前工程与文档位置</h2>
+<p>工程根目录为 <code>../..</code>（相对于本文件所在目录），工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，声明的引擎版本为 5.8，运行时模块为 MothEffect。正式显示名使用用户选择的小写 motheffect；工程名与模块名保留 MothEffect。</p>
+<p>工程 Docs 目录保存当前工作文档，目录结构和有效文件清单见 <a href="#doc-readme">文档入口</a>。旧交付包保留为历史快照；后续维护以工程内文档为准。当前已有模板角色源码、ThirdPerson 蓝图与关卡；这些文件存在不等于本作越肩射击和机关系统已经完成。</p>
+<p>起步建议沿用第三人称模板，复用角色移动、基础动画、输入与相机，再开发本作射击和道具规则。空白工程适用于需要自定义控制框架或已有基础资源的情况；当前单人周期内，切换空白会增加重新搭建的工作。模板中的 Combat、Platforming、SideScrolling 示例不自动纳入本作范围。</p>
+<h2 id="doc-overview-section-1">1 文档入口与职责</h2>
+<p>完整目录和各文件职责见 <a href="#doc-readme">文档入口</a>。策划、规则、技术、资源、执行计划、测试与发布分别维护；代码规范、UE 配置与变更流程从原综合文件中拆出。</p>
+<p>单人短周期项目沿用这套轻量文档，不额外拆独立世界观案、商业分析或长篇故事案。资源需求、界面与声音见 <a href="#doc-level">关卡、界面与资源规格</a>；资源许可、版本恢复和发布要求分别见 <a href="#doc-level">关卡、界面与资源规格</a>、<a href="#doc-version">版本管理规范</a> 与 <a href="#doc-release">发布检查清单</a>。</p>
+<h2 id="doc-overview-section-2">2 建议阅读顺序</h2>
+<p>先读 <a href="#doc-game">游戏策划案</a> 确认体验和范围，再读 <a href="#doc-rules">道具与交互规则</a> 明确机关行为，然后结合 <a href="#doc-technical">技术设计</a> 实现与 <a href="#doc-plan">开发任务与排期</a> 的 G0/G1 开始工作。<a href="#doc-level">关卡、界面与资源规格</a> 在安排关卡和资源时使用，<a href="#doc-test">测试计划与验收</a> 在完成每个门槛和提交前使用。<a href="#doc-decisions">设计决策</a> 保留决策依据，<a href="#doc-parameters">玩法参数基线</a> 保留唯一数值基线。</p>
+<p>浏览器阅读版汇总上述内容，仅用于方便浏览；修改以对应 Markdown/JSON 文件为准。阅读版为快照，修改源文件后应重新生成。阅读版位于本目录的 Reading_View.html；源文件修改后重新生成，避免展示旧快照。</p>
+<h2 id="doc-overview-section-3">3 状态怎样理解</h2>
+<p>用户已确认：来自本聊天的明确要求，改变时需要与用户意图一致。</p>
+<p>建议基线：为让开发可执行而提供的方案，可以用于可逆原型；不是用户已经同意所有细节。</p>
+<p>待原型验证：手感、方向提示和数值等未知，需通过早期实际操作决定。</p>
+<p>延期 P2：本次不纳入工时。P1 只有在 P0 和门槛验收完成后才进入。</p>
+<p>全部参数的验证状态是未实测；T02 因模板工程已存在、T03 因 Git/origin/忽略/LFS 已配置而标为部分完成，其余开发任务仍未开始；测试全部未执行。文件齐全不代表游戏完成，当前尚无 Git 提交或推送。</p>
+<h2 id="doc-overview-section-4">4 减少返工的四个约束</h2>
+<p>交互行为以 <a href="#doc-rules">道具与交互规则</a> 为准，自定义接口以 <a href="#doc-technical">技术设计</a> 为准，内容数量以 <a href="#doc-level">关卡、界面与资源规格</a> 为准，数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。其他文档引用它们，不独立维护第二套规则。</p>
+<p>先验证空中投掷启动，再验证机关连锁，再制作完整流程，最后扩大视觉完成度。无法验证的手感不靠增加道具类型补救。</p>
+<p>G2 之后冻结道具类型和接口，持续调整数值。变化在 <a href="#doc-decisions">设计决策</a> 和 <a href="#doc-changelog">变更日志</a> 留痕，流程按 <a href="#doc-workflow">文档维护与变更流程</a> 执行，同时重跑关联测试。</p>
+<p>每天保留能启动的版本；在第一阶段打出 Windows 小包，提交前依据 <a href="#doc-test">测试计划与验收</a> 留下实际证据，并按 <a href="#doc-release">发布检查清单</a> 核对发布。</p>
+<h2 id="doc-overview-section-5">5 现在可以先做的工作</h2>
+<p>下一阶段按 <a href="#doc-plan">开发任务与排期</a> 核对现有 UE 5.8 模板工程、完成版本管理和首个独立打包，再制作灰盒验证房。然后实现一个发射装置及投掷、空中射击、方向提示，用重复操作验证 G1。相关验收按 <a href="#doc-test">测试计划与验收</a> 执行；当前仅确认工程及模板文件存在，没有运行或打包通过结果。</p>
+<p>每日可用工时、开发机和最低目标机器还需在开工时填写；<a href="#doc-plan">开发任务与排期</a> 已按每天四至六小时给出可调整预算，不作工期保证。</p>
+<h2 id="doc-overview-section-6">6 活动依据与日期</h2>
+<p>本包日期、排期与截止使用香港时间 UTC+8。官方创作时间为 2026-10-01 12:00 至 2026-10-21 12:00，须在截止前上传并通过审核，官方建议 10 月 18 日前上传。本计划把 10 月 17 日作为首版提交目标。<a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849">官方主题公告</a></p>
+<p>赛事仅支持单机及无网络的本地多人。全程参与奖还要求至少五篇开发日志和至少五十个有效试玩人数，这两项不是全部参赛作品的强制门槛。详细材料与检查见 <a href="#doc-release">发布检查清单</a>。<a href="https://www.taptap.cn/moment/851888213915075734?group_id=792849">官方答疑</a></p>
+</section><section class="document" id="doc-game"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Game_Design.md">02_Design_Doc/GDD/Game_Design.md</a></div><h1 id="doc-game-motheffect">motheffect：游戏策划案</h1>
+<p>版本 v0.5　日期 2026-10-03　游戏名 motheffect　开发者 单人<br />
+平台建议 Windows PC　引擎 UE 5.8　开发方式 C++ 与蓝图混合</p>
+<p>本策划案把已确定的创意落实为可在本次 GameJam 中验证和交付的版本。游戏名 motheffect，风格魔法朋克，采用已建立的 MothEffect 第三人称模板工程作为建议实现起点。玩家以第三人称越肩视角射击敌人，把敌人原地掉落的机关拾取、投掷，再通过射击激活。交互规则以 <a href="#doc-rules">道具与交互规则</a> 为准，所有初始数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。本文件负责体验目标与内容边界，不重复技术接口和参数表。</p>
+<h2 id="doc-game-section">1 已确认需求与建议基线</h2>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>来源状态</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REQ01</td>
+<td>用户已确认</td>
+<td>单人参加 2026 TapTap 聚光灯 21 天 GameJam，主题涌现</td>
+</tr>
+<tr>
+<td>REQ02</td>
+<td>用户已确认</td>
+<td>使用 UE 5.8，蓝图与 C++ 混合，没有现成角色动画和场景资源</td>
+</tr>
+<tr>
+<td>REQ03</td>
+<td>用户已确认</td>
+<td>第三人称越肩射击，在一张大型场地与敌人战斗</td>
+</tr>
+<tr>
+<td>REQ04</td>
+<td>用户已确认</td>
+<td>敌人死亡后在原地留下不同机关道具</td>
+</tr>
+<tr>
+<td>REQ05</td>
+<td>用户已确认</td>
+<td>射击启动弹射柱、爆炸、定向持续发射三类效果</td>
+</tr>
+<tr>
+<td>REQ06</td>
+<td>用户已确认</td>
+<td>玩家能拾取、定向投掷道具，并在空中射击启动</td>
+</tr>
+<tr>
+<td>REQ07</td>
+<td>用户已确认</td>
+<td>游戏显示名 motheffect，美术风格魔法朋克</td>
+</tr>
+<tr>
+<td>REQ08</td>
+<td>用户已确认并静态核对</td>
+<td>已创建第三人称模板工程 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，声明 UE 5.8 和运行时模块 MothEffect</td>
+</tr>
+<tr>
+<td>BASE01</td>
+<td>建议基线</td>
+<td>Windows PC 键鼠，单张主竞技场，三波完整战斗，一把主武器</td>
+</tr>
+<tr>
+<td>BASE02</td>
+<td>建议基线</td>
+<td>一套敌人射击 AI，以三种外观明确预告三种掉落</td>
+</tr>
+<tr>
+<td>BASE03</td>
+<td>建议基线</td>
+<td>发射器子弹能够激活其他道具；推力作用于敌我与可移动道具</td>
+</tr>
+<tr>
+<td>BASE04</td>
+<td>待原型验证</td>
+<td>空中击中难度、投掷轨迹、相机、机关方向提示、友军伤害强度</td>
+</tr>
+</tbody>
+</table>
+<p>正式游戏名与魔法朋克风格已经确定；具体故事、角色身份、色板和“灵光工坊”场景题材仍是建议。默认目标是一段约五至十分钟、可重玩的完整体验，实际时长通过试玩调整。</p>
+<h2 id="doc-game-a">1A 魔法朋克呈现建议</h2>
+<p>场地以金属结构、管线、符文和晶核驱动的机械工坊呈现。主武器表现为魔导步枪，敌人可采用魔导构装体，死亡后留下带封印的机关核心。D01 用符文活塞/地脉柱表达弹射，D02 用晶核封印破裂表达爆炸，D03 用咒印发射器表达定向火线；这是表现层映射，沿用同一套触发与伤害规则。</p>
+<p>蛾翼轮廓、灯光与逐级亮起的符文可呼应名称与连锁主题。它们只作为图标、材质和反馈提案，不增加蛾群 AI、飞行角色或召唤机制。具体资源规格见 <a href="#doc-level">关卡、界面与资源规格</a>。</p>
+<h2 id="doc-game-section-1">2 核心体验</h2>
+<p>一句话介绍：在会不断留下机关的战场中，击败敌人，搬运机关，用一枪启动自己布置的连锁攻击。</p>
+<p>玩家主要做四种判断：在哪里击败敌人，留下的机关能影响谁，投掷到什么位置，以及在什么时候开枪启动。直接射击提供基本生存能力；机关提供对位置、方向与时机的利用空间。</p>
+<p>主题表达来自同一套规则的组合。例如柱子可以抬起炸弹，发射器的弹丸可以击中这枚炸弹，爆炸又可以推开另一台正在发射的装置。结果应来自实际位置、运动与命中，而不是某个预写的组合技能。</p>
+<p>判定设计成立的观察项：玩家能够主动重复一条连锁；换一个位置会产生不同结果；玩家能解释成功或失败的原因。华丽特效本身不作为机制成立的证据。</p>
+<h2 id="doc-game-section-2">3 核心循环</h2>
+<p>击败敌人 → 观察其掉落 → 拾取或直接利用 → 投掷到攻击位置 → 射击启动 → 连锁改变战场 → 完成当前波次。</p>
+<p>场内原地掉落使击杀位置有意义。三类敌人变体采用固定掉落，帮助玩家提前规划。P0 不采用随机掉落；敌人的外观、死亡后的道具外形与图标保持对应。</p>
+<h2 id="doc-game-section-3">4 玩家与基础战斗</h2>
+<p>采用官方 Third Person 模板人物和基础移动动画作为起点，加入越肩相机、一把步枪、血量和跳跃。角色持枪姿态与投掷表现先用能看懂的简化动作完成，专门制作动画不作为第一轮原型的前置工作。</p>
+<table>
+<thead>
+<tr>
+<th>情境</th>
+<th>操作建议</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>普通状态</td>
+<td>WASD 和鼠标</td>
+<td>移动与视角</td>
+</tr>
+<tr>
+<td>普通状态</td>
+<td>右键</td>
+<td>越肩瞄准</td>
+</tr>
+<tr>
+<td>普通状态</td>
+<td>左键</td>
+<td>步枪射击，受弹药与间隔限制</td>
+</tr>
+<tr>
+<td>普通状态</td>
+<td>R</td>
+<td>换弹，备用弹药不设耗尽限制</td>
+</tr>
+<tr>
+<td>有可拾取道具</td>
+<td>E</td>
+<td>拾取准星附近、可见且在范围内的未激活道具</td>
+</tr>
+<tr>
+<td>持有道具</td>
+<td>E</td>
+<td>安全放下，有空间才执行</td>
+</tr>
+<tr>
+<td>持有道具</td>
+<td>左键</td>
+<td>投掷一次，之后释放左键，再次按下才恢复射击</td>
+</tr>
+<tr>
+<td>持有道具</td>
+<td>右键和鼠标</td>
+<td>调整投掷方向</td>
+</tr>
+<tr>
+<td>移动状态</td>
+<td>Space 和 Shift</td>
+<td>跳跃与跑步</td>
+</tr>
+<tr>
+<td>菜单状态</td>
+<td>Esc</td>
+<td>暂停，继续或重新开始</td>
+</tr>
+</tbody>
+</table>
+<p>持有道具时主枪不射击。投掷后恢复枪械，需避免同一次左键输入自动射中刚抛出的道具。被弹射期间仍能控制视角和射击；空中移动能力与落地反馈作为原型调参项。建议初版无坠落伤害，减少弹射玩法被惩罚的情况。</p>
+<h2 id="doc-game-section-4">5 三类机关</h2>
+<p>D01 弹射装置，在激活位置下方的可承托地面起柱，弹起柱子作用范围内的角色和可移动道具。</p>
+<p>D02 爆炸装置，在被击中的当前位置产生爆炸，造成范围伤害和推力。地面和空中共用同一规则。</p>
+<p>D03 发射装置，在命中位置启动，锁定启动弹丸的世界飞行方向，持续发射短时弹丸。装置保持重力与移动，形成移动火线。</p>
+<p>以上为建议规则的概括。携带状态、重复命中、墙壁阻挡、过期和数量上限必须按 <a href="#doc-rules">道具与交互规则</a> 实现。地面与空中的区别来自空间条件，不另开六套技能。</p>
+<h2 id="doc-game-section-5">6 敌人与关卡流程</h2>
+<p>P0 使用一套带明显攻击预警的射击 AI。三种颜色加形状标记的变体分别固定掉落 D01、D02、D03；它们在首版中可以共享移动、瞄准、射击与血量。差异化攻击留在 P1。</p>
+<p>完整流程：标题与操作说明 → 分步教学 → 三波战斗 → 胜利或失败 → 重开。每波开始前有短暂准备阶段，玩家可以查看和调整未激活机关。清完存活敌人后进入下一波；胜负转换时立即停止伤害、生成和机关工作，避免结算后继续死亡。</p>
+<p>大型场地采用一张连续竞技场，按三片交互区域组织。灰盒尺寸及敌人数量见 <a href="#doc-level">关卡、界面与资源规格</a>。验证房是制作工具，不替代正式大型场地的已确认意图。</p>
+<h2 id="doc-game-section-6">7 范围与优先级</h2>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>交付内容</th>
+<th>完成判据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 核心</td>
+<td>越肩射击、拾取投掷、空中激活、三种机关、机关之间的真实连锁</td>
+<td>G1 与 G2 门槛通过</td>
+</tr>
+<tr>
+<td>P0 完整体验</td>
+<td>一图、一枪、一套 AI 三外观、教学、三波、胜负、重开、设置与提示</td>
+<td>G3 门槛通过</td>
+</tr>
+<tr>
+<td>P0 提交</td>
+<td>可运行 Windows 包、崩溃与阻断缺陷清零、平台材料与审核</td>
+<td>G4 门槛通过</td>
+</tr>
+<tr>
+<td>P1 扩展</td>
+<td>冲撞 AI、五波扩展、投掷轨迹预览、更丰富特效、计分挑战</td>
+<td>剩余时间充足且 P0 验收后取一至两项</td>
+</tr>
+<tr>
+<td>P2 延期</td>
+<td>多地图、Boss、成长树、背包、多枪、联网、移动端、专门动画制作</td>
+<td>本次不纳入任务工时</td>
+</tr>
+</tbody>
+</table>
+<p>降范围时保留三种机关、投掷空中激活与真实连锁；优先减少美术、额外敌人行为和波次扩展。否则核心创意会退化为普通波次射击。</p>
+<h2 id="doc-game-section-7">8 早期验证与设计冻结</h2>
+<p>G0 从现有模板工程确认环境能编译并打包，工程创建子项已完成。G1 验证投掷、空中射击与方向理解。G2 验证同一规则在不同布局中产生连锁。G3 验证三波闭环。G4 核查提交包与审核状态。</p>
+<p>G2 通过后冻结道具类型、状态与接口；参数仍可调整。修改规则时，先在 <a href="#doc-decisions">设计决策</a> 记录原因、影响的规则 ID 和测试 ID，再更新权威文档及实现。冻结指减少变化，并不要求为常规修改向用户重复请求批准。</p>
+<p>原型失败时先定位相机、判定、反馈或规则问题；当 G1 尚未成立时，不进入完整场景美术制作。文档不能保证完全免返工，但能把不确定性集中在前期验证。</p>
+<h2 id="doc-game-section-8">9 成功标准与交付事实</h2>
+<p>设计目标：第一次试玩能理解三种道具；能够完成一次有意安排的空中激活；看到并尝试复现至少一种连锁；可以从标题进入战斗并完成胜负重开。</p>
+<p>这些是待验证目标。目前已核对模板工程文件存在，尚未验证本作自定义玩法、试玩或性能结果。开发任务、验收方法和证据格式分别见 <a href="#doc-plan">开发任务与排期</a> 与 <a href="#doc-test">测试计划与验收</a>。</p>
+<h2 id="doc-game-section-9">10 来源</h2>
+<p>用户确认来自本聊天的游戏创意、开发方式与资源情况。模板中的可控人物、基础移动动画和几何场景见 <a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic 第三人称模板</a>。赛事主题和截止见 <a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849">TapTap 官方主题公告</a>。其余内容为本项目的建议设计。</p>
+</section><section class="document" id="doc-rules"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Device_Interaction_Rules.md">02_Design_Doc/GDD/Device_Interaction_Rules.md</a></div><h1 id="doc-rules-motheffect">motheffect：道具与交互规则</h1>
+<p>版本 v0.3　日期 2026-10-02　性质 建议工作基线　状态 尚未实现</p>
+<p>本文件定义能直接转成代码和测试的行为契约。用户已经确认三种机关、拾取、投掷和空中射击；以下触发条件、状态和边界处理是建议基线。参数数值只在 <a href="#doc-parameters">玩法参数基线</a> 维护，自定义类与接口只在 <a href="#doc-technical">技术设计</a> 维护。规则改变必须更新 <a href="#doc-decisions">设计决策</a> 及关联验收项。</p>
+<h2 id="doc-rules-section">1 统一规则</h2>
+<table>
+<thead>
+<tr>
+<th>规则 ID</th>
+<th>规则</th>
+<th>可观察结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R01</td>
+<td>每个敌人死亡结算一次，在死亡位置生成固定类型的一件道具</td>
+<td>同帧重复伤害不产生第二件掉落</td>
+</tr>
+<tr>
+<td>R02</td>
+<td>仅有效弹丸命中可启动 Dormant，道具不因身体碰撞或爆炸伤害启动</td>
+<td>玩家枪、敌人弹、机关弹都能触发；普通碰撞只推动</td>
+</tr>
+<tr>
+<td>R03</td>
+<td>同一件道具仅允许一次 Dormant 到 Active 的转换</td>
+<td>同帧多次命中只有一次爆炸或启动</td>
+</tr>
+<tr>
+<td>R04</td>
+<td>未激活道具可拾取、放下和投掷；Held 不可激活且不模拟物理</td>
+<td>携带物不在手中误爆，但玩家仍会受伤</td>
+</tr>
+<tr>
+<td>R05</td>
+<td>触发来源不按阵营限制，角色伤害同样不按阵营限制</td>
+<td>敌人子弹能启动道具，机关火力会伤敌我</td>
+</tr>
+<tr>
+<td>R06</td>
+<td>启动后不可拾取或重复启动；结束进入 Spent 并清理</td>
+<td>玩家不会把工作中的发射器收回</td>
+</tr>
+<tr>
+<td>R07</td>
+<td>D01 向下探测可承托静态表面，固定该落点生成升降柱</td>
+<td>空中启动也在其下方起柱</td>
+</tr>
+<tr>
+<td>R08</td>
+<td>每根柱子一次伸出，对每个目标仅施加一次弹射</td>
+<td>持续重叠不会每帧叠加速度</td>
+</tr>
+<tr>
+<td>R09</td>
+<td>D02 在当前位置爆炸，角色受伤害和推力，道具只受推力</td>
+<td>装置被炸开而不形成自动引爆链</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>D03 锁定激活弹丸的世界飞行方向，方向不随装置翻滚或玩家转身改变</td>
+<td>移动中仍保持同一射击方向</td>
+</tr>
+<tr>
+<td>R11</td>
+<td>Active D03 保持物理运动，可被柱子和爆炸推开</td>
+<td>空中火线随装置位移</td>
+</tr>
+<tr>
+<td>R12</td>
+<td>一个飞行弹丸首次阻挡命中后消耗，一次命中只产生一次处理</td>
+<td>无反弹、穿透和同帧多次启动</td>
+</tr>
+<tr>
+<td>R13</td>
+<td>同一次左键按下负责投掷，释放后下一次按下才允许枪械开火</td>
+<td>连按或长按不会意外启动刚抛出的机关</td>
+</tr>
+<tr>
+<td>R14</td>
+<td>投掷与放下必须先检测前方空间；阻挡时保持 Held 并提示</td>
+<td>道具不会从身体或墙内生成</td>
+</tr>
+<tr>
+<td>R15</td>
+<td>Dormant 采用累计闲置时间，最后阶段提示过期；Held 暂停该计时</td>
+<td>拾取放下不刷新整段寿命</td>
+</tr>
+<tr>
+<td>R16</td>
+<td>数量受全场安全上限约束，清理策略明确且优先保留 Held 和 Active</td>
+<td>道具不会无界增长或突然从手里消失</td>
+</tr>
+<tr>
+<td>R17</td>
+<td>胜负、暂停和重开统一管理生成、计时与伤害</td>
+<td>结算停止攻击，重开没有上一局遗留</td>
+</tr>
+<tr>
+<td>R18</td>
+<td>道具球形射击判定、镜头遮挡与枪口阻挡统一处理</td>
+<td>不会穿墙拾取、穿掩体开火或靠判定打到遮挡后的道具</td>
+</tr>
+</tbody>
+</table>
+<p>R02 的弹丸包含命中扫描步枪造成的命中事件。爆炸不触发机关，是为保留玩家对启动时机的控制；发射装置的子弹仍可串联启动其他装置。若原型证明爆炸触发更好，需要明确变更 R02/R09，而不是只在某个道具蓝图里偷偷加入例外。</p>
+<h2 id="doc-rules-section-1">2 状态与输入</h2>
+<pre><code class="language-text">生成 → Dormant
+Dormant → Held → Dormant
+Dormant → Active → Spent → Destroyed
+Dormant 过期 → Spent → Destroyed
+任何非销毁状态 → 本局统一清理 → Destroyed
+</code></pre>
+<p>Held 仅由拥有者安全放下或投掷恢复 Dormant。Active 不是 Held 的直接后继。Destroyed 是生命周期终止的逻辑状态，可通过对象已销毁体现。</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>可拾取</th>
+<th>物理运动</th>
+<th>接受弹丸启动</th>
+<th>主要计时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dormant</td>
+<td>是，需距离与视线</td>
+<td>是，可落地休眠</td>
+<td>是</td>
+<td>累计闲置剩余时间</td>
+</tr>
+<tr>
+<td>Held</td>
+<td>由拥有者控制放下/投掷</td>
+<td>否，附着角色</td>
+<td>否，射击检测忽略</td>
+<td>闲置时间暂停</td>
+</tr>
+<tr>
+<td>Active D01</td>
+<td>否</td>
+<td>种子消耗，柱子固定落点</td>
+<td>否</td>
+<td>伸出、停留、收回</td>
+</tr>
+<tr>
+<td>Active D02</td>
+<td>否</td>
+<td>立即结算一次</td>
+<td>否</td>
+<td>结束效果后清理</td>
+</tr>
+<tr>
+<td>Active D03</td>
+<td>否</td>
+<td>是</td>
+<td>否，阻挡弹丸但不再次启动</td>
+<td>发射与有效期</td>
+</tr>
+<tr>
+<td>Spent</td>
+<td>否</td>
+<td>无交互碰撞</td>
+<td>否</td>
+<td>立即移出计数，短效果后销毁</td>
+</tr>
+</tbody>
+</table>
+<p>普通状态 E 拾取准星候选道具；持有状态 E 放下。候选必须在拾取半径内、没有墙体遮挡、状态为 Dormant。已有 Held 时不直接切换另一件道具，避免隐式抛弃当前物品。</p>
+<p>持有时左键启动一次投掷。动作完成后恢复步枪，但必须同时满足左键已松开和 <a href="#doc-parameters">Gameplay_Parameters.json.throw.minGunRecoverySeconds</a> 的恢复时间已结束，下一次按下才允许射击；R 换弹在持有状态不生效。暂停、结算或死亡时锁定交互输入。</p>
+<h2 id="doc-rules-section-2">3 命中上下文</h2>
+<p>每次命中至少携带 SourceActor、InstigatorPawn、ImpactPoint、ShotDirection、Damage、HitId，与 <a href="#doc-technical">技术设计</a> 的 FHitContext 同名。ShotDirection 是命中前弹丸的世界单位速度方向；步枪用实际枪口射线的单位方向。不能用表面法线、玩家之后的朝向或装置旋转替代。飞行弹丸 HitId 沿用其出生时唯一 ID；命中扫描每一枪生成新 ID。</p>
+<p>飞行弹丸忽略生成它的发射器或射手自身，其他目标按规则处理。忽略生成者仅避免出生自撞，不给其角色额外的爆炸免伤。敌人和机关共用弹丸处理路径。</p>
+<p>命中 Dormant 时，先以幂等检查锁定 Active，再执行效果。命中 Active 时只消耗弹丸，装置不重置寿命、不更改方向。角色受伤与道具激活是分别处理的目标类型，不能把道具当作血量归零后才启动。</p>
+<h2 id="doc-rules-d01">4 弹射装置 D01</h2>
+<p>流程：命中锁定 Active → 沿世界负 Z 探测 → 验证承托表面及整个最终柱体空间 → 生成柱子 → 扫描伸出过程中覆盖的角色/道具 → 对每个目标施加一次向上速度 → 停留与收回 → 清理。</p>
+<p>承托表面必须位于探测距离内，表面向上法线满足配置阈值，并被关卡标为可起柱。高台顶面可以标记为可承托表面；纯装饰、动态道具和其他柱子不作为地面。探测失败时消耗道具并播放明显的失效反馈，不在无限深处或天空生成柱子。</p>
+<p>柱子落点按激活时的位置固定。最终柱体体积被不可移动几何或天花板阻挡时采用同样失效处理；移动角色在柱子作用范围内属于正常弹射对象。生成柱子后，来源种子关闭本体可见、碰撞与物理，保留逻辑 Active 和同一名额直到柱子结束，不作为净空检查的占用物。</p>
+<p>角色使用运动组件的速度处理，可移动道具使用物理速度处理。弹射保留水平速度，把竖直速度设置为 <a href="#doc-parameters">玩法参数基线</a> 对应的目标值，柱子不直接造成伤害。P0 无坠落伤害，场地外安全处理见第 9 节。每个目标在本次柱子工作期间最多弹射一次，包括后来移动到柱体伸出区域的目标；伸出结束后不再新增弹射。</p>
+<p>柱子升起阶段关闭实体阻挡，以查询体积执行弹射，避免主动弹射与物理挤压叠加。完全伸出后，在停留阶段检查柱体体积是否已无角色及物理道具；净空才启用实体支撑与弹道阻挡，未净空就等待至停留结束，不强行夹住目标。收回前先关闭实体碰撞。矩阵中的柱子阻挡只在该实体阶段生效。</p>
+<h2 id="doc-rules-d02">5 爆炸装置 D02</h2>
+<p>流程：命中锁定 Active → 固定爆心 → 对半径内去重后的角色结算一次伤害 → 对有无遮挡作用路径的目标施加推力 → Spent → 效果结束销毁。</p>
+<p>建议初版范围内固定伤害；距离衰减延期。伤害与推力都受静态实体掩体遮挡，以爆心到目标代表点的静态遮挡查询为准。同一角色的多个碰撞组件不能导致多次伤害。</p>
+<p>水平推力沿爆心到目标的水平径向，附加向上速度；若水平距离为零，采用激活弹丸方向的水平投影，仍为零时采用固定世界前向。推力有速度上限，以免叠加把对象送出场地。</p>
+<p>Dormant 道具和 Active D03 接受推力，Held 道具不单独运动，柱子固定不被移动。角色持有道具时仍承受爆炸伤害和推力。爆炸不调用其他道具的激活接口。</p>
+<p>同一帧多个外部推力先按目标合并全部爆炸速度增量，再应用本帧柱子的目标 Z 速度，最后按 <a href="#doc-parameters">Gameplay_Parameters.json.limits.maxExternalVelocityCmPerSec</a> 限制速度大小。角色和可移动道具使用同一处理顺序，避免回调次序改变结果。</p>
+<h2 id="doc-rules-d03">6 发射装置 D03</h2>
+<p>流程：锁定 Active 与 Direction → 发射方向可见提示 → 等待短启动延迟 → 按固定间隔生成 P01 → 到期停止计时 → Spent → 清理。</p>
+<p>方向固定在世界空间。装置受重力、碰撞和推力影响，弹丸出生点跟随装置位置移动；外观发射口或方向标记必须与固定方向一致，不能展示为朝另一侧发射。</p>
+<p>启动后第一发与后续发射时刻由 <a href="#doc-parameters">玩法参数基线</a> 规定。到期时先停止计时，严格小于有效期的发射时刻才可生成弹丸。出生点被世界静态几何阻挡时消耗该发，不在墙内生成弹丸；不因此延长工作时间。</p>
+<h2 id="doc-rules-section-3">7 交互矩阵</h2>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>角色</th>
+<th>Dormant 道具</th>
+<th>Held 道具</th>
+<th>Active D03</th>
+<th>固定柱子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>玩家步枪命中</td>
+<td>伤害</td>
+<td>激活一次</td>
+<td>忽略</td>
+<td>阻挡，子弹消耗</td>
+<td>阻挡</td>
+</tr>
+<tr>
+<td>敌人或机关弹丸</td>
+<td>伤害并消耗</td>
+<td>激活并消耗</td>
+<td>忽略</td>
+<td>阻挡并消耗</td>
+<td>阻挡并消耗</td>
+</tr>
+<tr>
+<td>爆炸</td>
+<td>伤害与推力</td>
+<td>推动，不激活</td>
+<td>跟随持有者</td>
+<td>推动，不重启</td>
+<td>不移动</td>
+</tr>
+<tr>
+<td>柱子伸出</td>
+<td>弹射一次</td>
+<td>弹射一次</td>
+<td>跟随持有者</td>
+<td>弹射一次</td>
+<td>无相互起柱</td>
+</tr>
+<tr>
+<td>身体碰撞</td>
+<td>正常阻挡</td>
+<td>正常推动</td>
+<td>忽略独立碰撞</td>
+<td>正常推动</td>
+<td>正常支撑/阻挡</td>
+</tr>
+</tbody>
+</table>
+<p>矩阵不包括发射者对自己生成弹丸的出生避让，见第 3 节。碰撞通道配置见 <a href="#doc-technical">技术设计</a>，不能只按 Pawn/WorldDynamic 一类粗略过滤全部道具。</p>
+<h2 id="doc-rules-section-4">8 数量与计时边界</h2>
+<p>计数范围：Dormant、Held、Active 种子或装置各算一件道具；D01 从种子到柱子的转换沿用同一名额，不重复计入。Spent 立即移出计数，残留视觉效果不再参与玩法。已经飞出的弹丸独立采用寿命及弹丸上限。</p>
+<p>总道具满额且有新掉落时，清理最早生成的 Dormant 再生成新道具；没有 Dormant 时不生成本次掉落，并给出短提示。Held 和 Active 不被该策略抢占。直接生成新物件前检查容量，不能先超额再等待下帧清理。</p>
+<p>同类 Active 柱子或发射器满额时，启动新装置前结束最早启动的同类装置，再开始新的。关闭发射器计时器；柱子先释放 Active 名额并关闭实体碰撞，进入收回流程且不再弹射。无法安全释放名额时拒绝新启动，保持 Dormant 并提示，命中弹丸仍消耗。此为安全策略，正常三波应很少触及，测试必须覆盖。</p>
+<p>飞行弹丸达到上限时，本次生成失败并消耗该发，不延长发射器有效期或追加补发；敌人的射击也共用该限制。P01 为直线低速弹丸，重力系数为零；这是弹丸的规则，D03 机身仍保持重力。</p>
+<p>Dormant 累计闲置计时在 Held 时暂停、恢复时继续；Active 使用自身工作寿命。玩家死亡时 Held 道具随本局清理，不额外生成死亡掉落。暂停时所有玩法计时、物理和弹丸均停止，界面输入仍可工作。</p>
+<h2 id="doc-rules-section-5">9 关卡边界与重开</h2>
+<p>目标对象离开关卡安全体积时：玩家判负进入重开界面；敌人只注销一次并结算该波计数，不生成界外掉落；道具和弹丸清理并释放名额。以安全体积保证活着的敌人不能永久卡在地图外。</p>
+<p>重开复位血量、弹药、输入持有锁、波次、所有临时对象、计时器、道具计数和掉落结算记录。推荐重新加载本关作为 P0 重开方式。开始新波不等于重开：有效的未激活道具按剩余寿命保留，过期规则仍生效。清波必须同时满足存活敌人数为零和待生成敌人数为零，不能在两批之间提前进入下一波。</p>
+<h2 id="doc-rules-section-6">10 必须记录的原型问题</h2>
+<table>
+<thead>
+<tr>
+<th>验证 ID</th>
+<th>观察问题</th>
+<th>可调手段</th>
+<th>不应偷偷改变的规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V01</td>
+<td>道具空中是否经常出镜或难以命中</td>
+<td>相机偏移、尺寸、轨迹、判定球</td>
+<td>不加入穿墙自动命中</td>
+</tr>
+<tr>
+<td>V02</td>
+<td>玩家是否能预判发射方向</td>
+<td>箭头、短引导线、启动延迟</td>
+<td>不改成自动追踪</td>
+</tr>
+<tr>
+<td>V03</td>
+<td>弹射是否看得懂且能利用</td>
+<td>柱高、时间、推力、声音</td>
+<td>不让持续重叠反复加速</td>
+</tr>
+<tr>
+<td>V04</td>
+<td>连锁是否可复现</td>
+<td>布局、节奏、提示、数量</td>
+<td>不为固定组合另写技能脚本</td>
+</tr>
+<tr>
+<td>V05</td>
+<td>友军伤害是否过于突然</td>
+<td>敌弹速度、预警、伤害与装置密度</td>
+<td>例外免伤须作为规则变更记录</td>
+</tr>
+</tbody>
+</table>
+</section><section class="document" id="doc-level"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><h1 id="doc-level-motheffect">motheffect：关卡、界面与资源规格</h1>
+<p>游戏名：motheffect｜v0.3｜2026-10-02。魔法朋克风格已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏均为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。</p>
+<h2 id="doc-level-section">0. 魔法朋克表现方向</h2>
+<p>建议场景为灵光工坊：粗糙金属框架、铜色连接件、管线与发光符文并置，魔法能量具有可见传导方向。蛾翼轮廓用于徽记、机关外壳和界面图标，光点沿弹道传递，机关接续点亮，呼应名称与连锁主题。具体世界观、色板和道具称呼尚未冻结。</p>
+<table>
+<thead>
+<tr>
+<th>玩法 ID</th>
+<th>魔法朋克呈现建议</th>
+<th>必须保留的辨识与因果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W01 主武器</td>
+<td>魔导步枪，枪口短符文闪光</td>
+<td>命中反馈不遮准星，射击仍按原命中规则</td>
+</tr>
+<tr>
+<td>D01 弹射装置</td>
+<td>青蓝三角棱柱、竖直符文，激活地脉机械柱</td>
+<td>地面落点与向上箭头清楚，净空后实体阶段变化可见</td>
+</tr>
+<tr>
+<td>D02 爆炸装置</td>
+<td>橙色球形晶核、环形封印破裂</td>
+<td>爆心、危险范围和推力方向可理解</td>
+</tr>
+<tr>
+<td>D03 发射装置</td>
+<td>紫色长方咒印枪管、箭头符文</td>
+<td>锁定世界方向可见，飞行机身与直线弹道区分</td>
+</tr>
+<tr>
+<td>敌人</td>
+<td>模板角色加魔导构装背包</td>
+<td>一套 AI，三种背包预告固定掉落</td>
+</tr>
+</tbody>
+</table>
+<p>灰盒阶段只需模板人物、基础几何体、一套统一材质、三种自发光色和少量反馈。魔法朋克风格不增加新技能、召唤、蛾群 AI 或飞行系统；资源制作仍按原 P0/P1 优先级执行。</p>
+<h2 id="doc-level-section-1">1. 先建验证房，再扩建竞技场</h2>
+<p>坐标使用米，原点在房间中心，X 为横向、Y 为纵向、Z 为高度；下文坐标是编辑器摆放建议，不是独立的运行时参数来源。模型先用基础几何体，墙面保持低对比，机关和弹道占视觉重点。</p>
+<h3 id="doc-level-l01">20×20 验证房 L01</h3>
+<p>范围 X/Y 均为 [-10,10]，地面 Z=0。玩家起点 (-8,0)，正前方留贯通视线。最初只放一个方块靶：D03 放 (-4,0)，D02 放 (0,0)，靶放 (2.5,0)，检验“发射器弹丸启动炸弹”。第二轮用拾取和投掷代替地面 D03；第三轮加入 D01，把 D02 摆在其柱体覆盖处，测试搬运进弹道。</p>
+<p>北侧 (0,6) 和南侧 (0,-6) 各放一块矮掩体，先避免遮挡主测试线；墙内不设沟槽、台阶、狭门。房间入口旁放重置按钮，恢复玩家、靶和三件道具，便于连续重复测试。通过条件：玩家能理解并重复一次空中激活、一次间接启动；失败能从方向、遮挡或时机解释，不能靠隐藏触发器完成连锁。</p>
+<h3 id="doc-level-l02">60×50 主竞技场 L02</h3>
+<p>范围 X=[-30,30]、Y=[-25,25]，连续分成三区，不在区界放墙。玩家起点 (-22,-18)，三波共用整张场地。</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>坐标范围</th>
+<th>摆放与目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 起步区</td>
+<td>X=[-30,-10]</td>
+<td>两块矮掩体中心 (-22,-5)、(-16,8)；留平地学习投掷与射击，退路连接南侧</td>
+</tr>
+<tr>
+<td>B 连锁区</td>
+<td>X=[-10,10]</td>
+<td>矮掩体 (-5,-8)、(5,8)，高掩体 (-6,6)、(6,-6)；横向和斜向都能建立射线，避免单一路口解法</td>
+</tr>
+<tr>
+<td>C 压力区</td>
+<td>X=[10,30]</td>
+<td>矮掩体 (16,-8)、(22,8)，高掩体 (24,-5)；短平台中心 (18,12)，可从两侧走坡道，提供空中机关的观察角度</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-text">          北 Y+
+┌───────────┬───────────┬───────────┐
+│ A 起步区  │ B 连锁区  │ C 压力区  │
+│    ▱      │ ■     ▱   │     ▱ ▰   │
+│           ·   连锁线  ·           │
+│ ▱         │ ▱     ■   │ ▱     ■   │
+│ P →       ·   南侧回转通道 →      │
+└───────────┴───────────┴───────────┘
+P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
+</code></pre>
+<p>掩体建议矮高分别约 0.9/1.8 米，平台约 1.2 米；实际以越肩镜头、敌人射线和移动碰撞验证后回写配置。掩体不横断整区，南北各保留一条约 4 米的回转通道。起点附近不能同时承受三个出生方向的射线。除外墙外，不放无法跨越的连续高墙；不设只有弹射才能逃离的坑。柱子上方留开放空间，避免玩家被送入天花板或不可达墙顶。先用侧向移动、射击和投掷逐块验收，再加装饰。</p>
+<h2 id="doc-level-section-2">2. 三波流程和掉落安排</h2>
+<p>P0 只使用 BP_EnemyBase 的同一套射击 AI；三种外观只预告固定掉落，不能让玩家误以为对应三种攻击能力。清空上一波后再开下一波，始终满足存活敌人不超过 8；下面是关卡内容数量，调整时同步波次配置。</p>
+<table>
+<thead>
+<tr>
+<th>波次</th>
+<th>确切数量与掉落</th>
+<th>出生安排及学习目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4 人：D01×2、D02×1、D03×1</td>
+<td>A/B 边缘出场；D03 变体位于可见位置，先杀敌取得机关，建立一条主动火线</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6 人：D01×1、D02×2、D03×3</td>
+<td>B/C 边缘分两批各 3 人；把掉落带到三区连接处，练习搬运和间接启动</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8 人：D01×2、D02×3、D03×3</td>
+<td>场地边缘分两批各 4 人；通过回转通道换射击角度，形成多种连锁路径</td>
+</tr>
+</tbody>
+</table>
+<p>每波标注出生位置，敌人不在玩家近旁或镜头背后立即开火；出生提示先出现，进入场内后才进入攻击流程。教程奖励的三件道具在教程结束时清理并重置，正式波次重新计数，避免教学物资污染波次平衡。</p>
+<p>建议出生标记 S1=(-18,18)、S2=(-8,18)、S3=(8,18)、S4=(-8,-16)、S5=(18,18)、S6=(26,2)、S7=(18,-18)、S8=(2,-18)。波1使用 S1至S4，掉落依次 D01/D01/D02/D03；波2第一批 S2/S3/S5，掉落 D01/D02/D03，第二批 S4/S6/S7，掉落 D02/D03/D03；波3第一批 S1/S3/S5/S7，掉落 D01/D02/D03/D03，第二批 S2/S4/S6/S8，掉落 D01/D02/D02/D03。批次间隔从 <a href="#doc-parameters">Gameplay_Parameters.json.flow.batchSpawnDelaySeconds</a> 读取；位置与掩体冲突或距离玩家过近时暂缓该点生成，不在玩家背后突然替换到另一个未提示位置。进入场内后重新计算准星视线，不隔墙射击。</p>
+<p>生成前的安全距离、预警时长与重试间隔从 <a href="#doc-parameters">Gameplay_Parameters.json.enemy</a> 对应字段读取。被占用的生成点保留待生成记录并提示入场警戒圈，玩家离开后重新预警生成；清波要同时检查存活与待生成计数。不能因当前没有存活敌人就跳过尚未出场的第二批。</p>
+<h2 id="doc-level-section-3">3. 教程与越肩界面</h2>
+<p>教程建议仅三步，完成当前动作才显示下一条：①射击 D02，观察炸弹波及敌我，并用 D01 弹起方块靶；②用 E 拾取 D03，左键投掷，松开该次左键后再按左键，命中空中道具；③让 D03 的弹丸启动预置 D02，完成一次间接击杀。第二步失败可立即补发道具，第三步失败可重置阵列；不要求新手第一次就完成整套连锁。</p>
+<p>P0 HUD：中心准星及道具命中高亮；左下生命；右下当前弹药/换弹状态；顶端波次和剩余敌人；持有时显示“左键投掷／E 放下”。可拾取提示仅给距离内、视线可达的最近目标。Held 不显示“可射击激活”提示。</p>
+<p>投掷前显示从实际出手点指向初速度的短箭头，不能用镜头前方代替阻挡检测；出手受阻时给明确提示。瞄准 D03 时显示沿预计命中弹飞行方向的短射线，激活后用发光枪口固定方向；瞄准 D01 时在可承托地面显示落点圈，解释空中击中也会在下方伸柱。完整抛物线预览属于 P1，不阻塞首个可玩版本。</p>
+<p>建议色形共同编码：D01 青色＋向上三角棱柱；D02 橙色＋球体/爆炸环；D03 紫色＋长方枪管/方向箭头。敌人背包沿用对应形状，UI 同时显示 D01/D02/D03 图标。Dormant 常亮轮廓、Active 脉冲/运动、Spent 暗下并消失；色彩不能成为唯一状态证据。敌人起手闪光、低速弹丸轨迹和危险范围应优先于装饰特效。</p>
+<h2 id="doc-level-section-4">4. 资源取得与验收</h2>
+<p>资源 ID 是制作跟踪标签；新增资产存放路径遵循 <a href="#doc-coding">代码与资产命名规范</a>。已有模板角色、基础动画与原型几何资源，尚无本作专用角色、持枪/投掷动画和魔法朋克场景；先验证核心再补专用表现，不移动模板原资产。</p>
+<table>
+<thead>
+<tr>
+<th>Asset ID</th>
+<th>优先级与获取方式</th>
+<th>具体验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A01 角色与移动动画</td>
+<td>P0；复用当前 MothEffect 工程 ThirdPerson 与 Characters 模板资源</td>
+<td>资产文件已存在；行走、跑步、跳跃、碰撞与相机仍需实际运行验收</td>
+</tr>
+<tr>
+<td>A02 枪械表现</td>
+<td>P0；自建长方体枪身，基础挂点与简化持枪姿势</td>
+<td>枪口可识别，实际命中来自既定射击逻辑；无需先完成换弹手部动画</td>
+</tr>
+<tr>
+<td>A03 拾取与投掷表现</td>
+<td>P0；挂接持有物，使用简短姿势变化/释放特效</td>
+<td>出手点、松手时机可读，无需先制作完整抓握或投掷动画</td>
+</tr>
+<tr>
+<td>A04 三机关与柱体</td>
+<td>P0；基础几何体、自制色形材质</td>
+<td>静止、空中、远处可分辨；D03 朝向、D01 地面落点明显，物理根组件不被装饰网格干扰</td>
+</tr>
+<tr>
+<td>A05 敌人变体</td>
+<td>P0；复用 A01，加三种几何背包</td>
+<td>一套 AI、三种可辨掉落预告，死亡后掉落形状一致</td>
+</tr>
+<tr>
+<td>A06 房间与掩体</td>
+<td>P0；自建灰盒、平色材质</td>
+<td>L01/L02 坐标、碰撞、通路和视线检查通过，无卡人狭缝</td>
+</tr>
+<tr>
+<td>A07 HUD/图标</td>
+<td>P0；UMG 与自制简单图形</td>
+<td>默认分辨率可读，提示随状态切换；高对比与形状辨识有效</td>
+</tr>
+<tr>
+<td>A08 战斗反馈</td>
+<td>P0；基础粒子、线条及有明确使用许可的短音效</td>
+<td>枪响、命中、激活、爆炸可区分，特效不遮掉下一次瞄准</td>
+</tr>
+<tr>
+<td>A09 魔法朋克美术润色</td>
+<td>P1；自制或许可范围明确的金属、符文与晶核资源</td>
+<td>保留来源/许可记录，符合提交要求；优先给 P0 几何体换材质，保留机关轮廓和方向提示</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-level-section-5">5. 十秒展示镜头提案</h2>
+<p>在 L01 先调成可重复的真实操作：0–2 秒拾取并抛出 D03；2–3 秒空中击中它，镜头看见定向火线；3–4 秒射击预置 D01，把其上方 D02 弹进火线；4–5 秒 D03 弹丸启动 D02，爆炸击败靶/敌人；5–10 秒保留全景与新掉落，显示因果链。连锁动作需发生在 D03 的有效发射窗口内。距离和射击时机必须先实测调整，不能用录像专用脚本自动触发机关来冒充系统连锁。若空气中的轨迹难以稳定命中，先演示地面连锁，再单独展示一次空中激活，不以宣传镜头倒逼复杂系统。</p>
+</section><section class="document" id="doc-parameters"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Gameplay_Parameters.json">02_Design_Doc/GDD/Gameplay_Parameters.json</a></div><h1>motheffect：玩法参数基线</h1><p>建议参数，尚未实测。编辑对应 JSON，本文为阅读快照。</p><pre>{
+  &quot;documentVersion&quot;: &quot;0.5&quot;,
+  &quot;updatedAt&quot;: &quot;2026-10-03&quot;,
+  &quot;timezone&quot;: &quot;Asia/Hong_Kong&quot;,
+  &quot;engineVersion&quot;: &quot;5.8&quot;,
+  &quot;status&quot;: &quot;proposed_untested&quot;,
+  &quot;note&quot;: &quot;名称与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。&quot;,
+  &quot;units&quot;: {
+    &quot;distance&quot;: &quot;cm&quot;,
+    &quot;velocity&quot;: &quot;cm/s&quot;,
+    &quot;time&quot;: &quot;s&quot;,
+    &quot;direction&quot;: &quot;world-space normalized vector&quot;,
+    &quot;damage&quot;: &quot;HP&quot;,
+    &quot;angle&quot;: &quot;degree&quot;
+  },
+  &quot;world&quot;: {
+    &quot;prototypeWidthCm&quot;: 2000,
+    &quot;prototypeLengthCm&quot;: 2000,
+    &quot;arenaWidthCm&quot;: 6000,
+    &quot;arenaLengthCm&quot;: 5000,
+    &quot;groundUpNormalMin&quot;: 0.65,
+    &quot;columnSurfaceRequiresTag&quot;: true,
+    &quot;targetExperienceMinMinutes&quot;: 5,
+    &quot;targetExperienceMaxMinutes&quot;: 10
+  },
+  &quot;player&quot;: {
+    &quot;maxHealth&quot;: 100,
+    &quot;walkSpeedCmPerSec&quot;: 450,
+    &quot;sprintSpeedCmPerSec&quot;: 650,
+    &quot;jumpVelocityCmPerSec&quot;: 600,
+    &quot;fallDamageEnabled&quot;: false
+  },
+  &quot;camera&quot;: {
+    &quot;springArmLengthCm&quot;: 220,
+    &quot;socketOffsetRightCm&quot;: 60,
+    &quot;socketOffsetUpCm&quot;: 55,
+    &quot;hipFovDegrees&quot;: 85,
+    &quot;aimFovDegrees&quot;: 75,
+    &quot;aimBlendSeconds&quot;: 0.15
+  },
+  &quot;weapon&quot;: {
+    &quot;id&quot;: &quot;W01&quot;,
+    &quot;type&quot;: &quot;hitscan_rifle&quot;,
+    &quot;damage&quot;: 20,
+    &quot;fireIntervalSeconds&quot;: 0.18,
+    &quot;magazineSize&quot;: 24,
+    &quot;reloadSeconds&quot;: 1.3,
+    &quot;unlimitedReserveAmmo&quot;: true,
+    &quot;rangeCm&quot;: 8000,
+    &quot;shotConsumesAmmoOnBlockedMuzzle&quot;: true
+  },
+  &quot;throw&quot;: {
+    &quot;pickupRangeCm&quot;: 200,
+    &quot;forwardVelocityCmPerSec&quot;: 1000,
+    &quot;upwardVelocityCmPerSec&quot;: 450,
+    &quot;spawnForwardOffsetCm&quot;: 90,
+    &quot;spawnUpOffsetCm&quot;: 20,
+    &quot;releaseToFireRequired&quot;: true,
+    &quot;minGunRecoverySeconds&quot;: 0.12,
+    &quot;physicsMassKg&quot;: 2,
+    &quot;deviceTargetDiameterCm&quot;: 40,
+    &quot;deviceShotColliderRadiusCm&quot;: 25
+  },
+  &quot;projectile&quot;: {
+    &quot;id&quot;: &quot;P01&quot;,
+    &quot;speedCmPerSec&quot;: 1400,
+    &quot;gravityScale&quot;: 0,
+    &quot;damage&quot;: 10,
+    &quot;lifetimeSeconds&quot;: 3,
+    &quot;consumeOnFirstBlockingHit&quot;: true,
+    &quot;canActivateDormant&quot;: true,
+    &quot;ignoreSourceActor&quot;: true
+  },
+  &quot;enemy&quot;: {
+    &quot;maxHealth&quot;: 60,
+    &quot;shotIntervalSeconds&quot;: 1.2,
+    &quot;telegraphSeconds&quot;: 0.5,
+    &quot;baseAiArchetypes&quot;: 1,
+    &quot;dropVariants&quot;: 3,
+    &quot;fixedDropPerVariant&quot;: true,
+    &quot;spawnMinDistanceToPlayerCm&quot;: 600,
+    &quot;spawnWarningSeconds&quot;: 0.8,
+    &quot;spawnRetrySeconds&quot;: 0.5
+  },
+  &quot;launcher&quot;: {
+    &quot;id&quot;: &quot;D01&quot;,
+    &quot;groundProbeDistanceCm&quot;: 1500,
+    &quot;columnHeightCm&quot;: 350,
+    &quot;columnRadiusCm&quot;: 70,
+    &quot;riseSeconds&quot;: 0.2,
+    &quot;holdSeconds&quot;: 1.5,
+    &quot;retractSeconds&quot;: 0.3,
+    &quot;characterUpVelocityCmPerSec&quot;: 1000,
+    &quot;deviceUpVelocityCmPerSec&quot;: 1200,
+    &quot;applyOncePerTarget&quot;: true
+  },
+  &quot;bomb&quot;: {
+    &quot;id&quot;: &quot;D02&quot;,
+    &quot;radiusCm&quot;: 400,
+    &quot;damage&quot;: 60,
+    &quot;damageFalloff&quot;: false,
+    &quot;staticCoverBlocksDamageAndImpulse&quot;: true,
+    &quot;characterHorizontalVelocityAddCmPerSec&quot;: 650,
+    &quot;characterUpVelocityAddCmPerSec&quot;: 450,
+    &quot;deviceRadialVelocityAddCmPerSec&quot;: 1100,
+    &quot;activatesOtherDevices&quot;: false
+  },
+  &quot;emitter&quot;: {
+    &quot;id&quot;: &quot;D03&quot;,
+    &quot;durationSeconds&quot;: 3,
+    &quot;firstShotDelaySeconds&quot;: 0.1,
+    &quot;shotIntervalSeconds&quot;: 0.25,
+    &quot;directionPolicy&quot;: &quot;incoming_ballistic_world_direction&quot;,
+    &quot;directionLockedAfterActivation&quot;: true,
+    &quot;physicsContinuesWhileActive&quot;: true
+  },
+  &quot;limits&quot;: {
+    &quot;maxExternalVelocityCmPerSec&quot;: 1600,
+    &quot;maxAliveEnemies&quot;: 8,
+    &quot;maxDevicesTotal&quot;: 24,
+    &quot;maxActiveEmitters&quot;: 6,
+    &quot;maxActiveColumns&quot;: 6,
+    &quot;maxLiveProjectiles&quot;: 64,
+    &quot;dormantIdleLifetimeSeconds&quot;: 30,
+    &quot;dormantExpiryWarningSeconds&quot;: 5
+  },
+  &quot;flow&quot;: {
+    &quot;baselineWaves&quot;: 3,
+    &quot;prepareBetweenWavesSeconds&quot;: 5,
+    &quot;batchSpawnDelaySeconds&quot;: 3,
+    &quot;tutorialRequiredFirstRun&quot;: true,
+    &quot;stopGameplayOnResult&quot;: true
+  },
+  &quot;tuningLog&quot;: [
+    {
+      &quot;date&quot;: &quot;2026-10-02&quot;,
+      &quot;change&quot;: &quot;建立初始建议参数&quot;,
+      &quot;evidence&quot;: &quot;none&quot;,
+      &quot;validated&quot;: false
+    },
+    {
+      &quot;date&quot;: &quot;2026-10-02&quot;,
+      &quot;change&quot;: &quot;v0.2仅更新名称、风格与既有工程信息，战斗参数未改&quot;,
+      &quot;evidence&quot;: &quot;user_confirmation_and_local_project_manifest&quot;,
+      &quot;validated&quot;: false
+    }
+  ],
+  &quot;gameDisplayName&quot;: &quot;motheffect&quot;,
+  &quot;projectName&quot;: &quot;MothEffect&quot;,
+  &quot;artStyle&quot;: &quot;魔法朋克&quot;,
+  &quot;projectRoot&quot;: &quot;../../..&quot;,
+  &quot;documentAuthority&quot;: &quot;../..&quot;,
+  &quot;implementationStatus&quot;: &quot;template_project_exists_gameplay_unverified&quot;,
+  &quot;pathBase&quot;: &quot;this_json_file_directory&quot;
+}
+</pre></section><section class="document" id="doc-technical"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><h1 id="doc-technical-motheffect">motheffect：技术设计</h1>
+<p>版本 v0.5 · 2026-10-03 · 游戏名：motheffect</p>
+<p>用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 motheffect、魔法朋克风格。当前工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，已有第三人称模板源码与资源。本次只读核对文件，未修改或运行游戏实现；自定义玩法、编译与打包结果尚未验收。玩法以 <a href="#doc-rules">道具与交互规则</a> 为准，数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。</p>
+<h2 id="doc-technical-section">1. 起步与职责</h2>
+<p>建议沿用现有 Windows C++ Third Person 工程，以模板角色、移动动画与输入作为起点。空白工程适用于需要从零定制角色框架或已有基础资源的情况；本作单人周期内，模板能省去重新搭建这些基础功能的工作。用基础几何体表现枪、机关和敌人，先验证空中触发，再补持枪/投掷表现；模板本身不代表本作越肩射击系统已经接入。<a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic：Third Person 模板</a></p>
+<p>已存在的模板源码、资产、模块依赖与配置核对记录见 <a href="#doc-engine">UE 工程配置</a>；类与蓝图映射沿用下表。</p>
+<p>C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件组装、相机参数、魔法朋克材质、音效、特效、界面和关卡引用。蓝图调用 C++ 入口，不另写一套伤害或激活流程。继续使用已有运行时模块 <code>MothEffect</code>，不新建 <code>Jam</code> 模块；第一版不引入 GAS、Mass、自定义插件或联网框架。</p>
+<table>
+<thead>
+<tr>
+<th>C++ 类 / 父类</th>
+<th>蓝图资产</th>
+<th>责任</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMothEffectCharacter : ACharacter</code></td>
+<td><code>BP_ThirdPersonCharacter</code></td>
+<td>移动、越肩相机、拾取/投掷、输入门控、玩家受推力</td>
+</tr>
+<tr>
+<td><code>AMothEffectPlayerController : APlayerController</code></td>
+<td><code>BP_ThirdPersonPlayerController</code></td>
+<td>输入映射、暂停、HUD、胜负界面</td>
+</tr>
+<tr>
+<td><code>AMothEffectGameMode : AGameModeBase</code></td>
+<td><code>BP_ThirdPersonGameMode</code></td>
+<td>创建玩家、胜负、重开入口</td>
+</tr>
+<tr>
+<td><code>AMothEffectGameState : AGameStateBase</code>（新增计划）</td>
+<td><code>BP_MothEffectGameState</code>（新增计划）</td>
+<td>当前波次/局内状态及 UI 通知；无复制需求</td>
+</tr>
+<tr>
+<td><code>ARifle : AActor</code></td>
+<td><code>BP_Rifle</code></td>
+<td>W01 双段检测、射速、弹匣、换弹</td>
+</tr>
+<tr>
+<td><code>ADeviceBase : AActor</code></td>
+<td><code>BP_DeviceBase</code></td>
+<td>共用状态机、物理根、激活分派、过期/回收</td>
+</tr>
+<tr>
+<td>同上，通过 <code>EDeviceKind</code> 分派</td>
+<td><code>BP_DeviceLauncher / BP_DeviceBomb / BP_DeviceEmitter</code></td>
+<td>分别绑定 D01/D02/D03 数据与外观；不增加三个 C++ 子类</td>
+</tr>
+<tr>
+<td><code>ALaunchColumn : AActor</code></td>
+<td><code>BP_LaunchColumn</code></td>
+<td>升柱表现、上升路径检测、一次弹射、净空后实体支撑</td>
+</tr>
+<tr>
+<td><code>ARuleProjectile : AActor</code></td>
+<td><code>BP_RuleProjectile</code></td>
+<td>敌人与机关共用 P01，移动、命中、寿命</td>
+</tr>
+<tr>
+<td><code>AEnemyBase : ACharacter</code></td>
+<td><code>BP_EnemyBase</code></td>
+<td>射击 AI、死亡、固定类型掉落；用内建 AIController</td>
+</tr>
+<tr>
+<td><code>AWaveDirector : AActor</code></td>
+<td><code>BP_WaveDirector</code></td>
+<td>波次、生成点、存活敌人和机关容量登记</td>
+</tr>
+<tr>
+<td><code>UHealthComponent : UActorComponent</code></td>
+<td>角色上的组件</td>
+<td>HP、一次死亡事件</td>
+</tr>
+<tr>
+<td><code>UDeviceDefinition : UDataAsset</code></td>
+<td><code>DA_Device_D01 / D02 / D03</code></td>
+<td><code>FDeviceConfig</code> 与对应 BP 类/资源引用</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-technical-section-1">2. 数据与调用契约</h2>
+<p>以下名称、签名均为<strong>本项目规划的自定义 API</strong>，不是 UE 内建功能，也不是已经可编译的代码。实现时再补反射宏、导出宏和头文件。</p>
+<ul>
+<li><code>EDeviceState</code>：<code>Dormant, Held, Active, Spent, Destroyed</code>；<code>Destroyed</code> 是清理末态，可不留存于已销毁对象。</li>
+<li><code>EDeviceKind</code>：<code>Launcher, Bomb, Emitter</code>。</li>
+<li><code>FHitContext</code>（蓝图显示名 <code>ST_HitContext</code>）：<code>FGuid HitId</code>、<code>AActor* SourceActor</code>、<code>APawn* InstigatorPawn</code>、<code>FVector ImpactPoint</code>、<code>FVector ShotDirection</code>、<code>float Damage</code>。方向为归一化世界飞行方向，不用表面法线；引用仅在命中处理期间使用并验证有效性。</li>
+<li><code>FDeviceConfig</code>（蓝图显示名 <code>ST_DeviceConfig</code>）：包含 <code>EDeviceKind Kind</code> 及对应 launcher/bomb/emitter 参数；字段与 <a href="#doc-parameters">玩法参数基线</a> 对应，单位为 cm、秒、cm/s。伤害与容量分别来自 weapon/projectile/limits 组。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>自定义入口 / 事件签名</th>
+<th>调用约定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UBallisticReactive / IBallisticReactive</code>：<code>bool ReceiveBallisticHit(const FHitContext&amp; Context)</code></td>
+<td>角色转交 Health，机关转交 TryActivate；返回 true 只代表规则被接受</td>
+</tr>
+<tr>
+<td><code>UImpulseReceiver / IImpulseReceiver</code>：<code>void ReceiveImpulse(FVector Velocity, bool bOverrideZ, FGuid EventId)</code></td>
+<td>当帧缓存，EventId 去重；帧末先合并爆炸增量、再用柱子目标替换 Z、最后统一限速</td>
+</tr>
+<tr>
+<td><code>ADeviceBase::bool TryActivate(const FHitContext&amp; Context)</code></td>
+<td>仅 Dormant 且容量许可可成功；需释放旧同类时先按 <a href="#doc-rules">道具与交互规则</a> 结束，获准后置 Active，再执行效果</td>
+</tr>
+<tr>
+<td><code>ADeviceBase::bool TryPickup(AMothEffectCharacter* Picker)</code></td>
+<td>距离、遮挡、状态均满足才置 Held</td>
+</tr>
+<tr>
+<td><code>AMothEffectCharacter::bool TryReleaseHeldDevice(bool bThrow)</code></td>
+<td>统一放下/投掷安全检查；失败保持 Held</td>
+</tr>
+<tr>
+<td><code>UHealthComponent::bool ApplyHit(const FHitContext&amp; Context)</code></td>
+<td>HitId 去重；死者不再扣血；返回是否接受伤害</td>
+</tr>
+<tr>
+<td><code>OnDeviceStateChanged(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState)</code></td>
+<td>C++ 修改状态后广播，蓝图只更新表现</td>
+</tr>
+<tr>
+<td><code>OnHealthChanged(float CurrentHealth, float MaxHealth)</code>；<code>OnDied(AActor* Victim, AActor* SourceActor)</code></td>
+<td>动态多播委托；每个角色 OnDied 最多一次</td>
+</tr>
+<tr>
+<td><code>AWaveDirector::bool TryRegisterDevice(ADeviceBase* Device)</code>；<code>void UnregisterDevice(ADeviceBase* Device)</code></td>
+<td>登记/注销均幂等，不能在 UI 中另行计数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>阻挡命中即消耗 P01，无论接口返回 true 或 false。</strong> 墙体、Active D03 和已经启用实体碰撞的柱子阻挡弹丸；Held 本身关闭碰撞，弹丸可继续命中玩家。接口拒绝激活不返还弹丸，也不返还步枪弹药。爆炸和普通物理碰撞不调用 Ballistic 接口。</p>
+<p><a href="#doc-parameters">玩法参数基线</a> 是设计数值权威，运行时从 DataAsset/默认配置读取；本版不承诺自动导入 JSON。首次录入与每次调参都核对 <a href="#doc-parameters">玩法参数基线</a>，禁止在 Tick、关卡脚本或特效里藏伤害数值。</p>
+<h2 id="doc-technical-section-2">3. 越肩射击与输入</h2>
+<p>W01：①从相机沿准星射线找第一阻挡点；无命中则取射程终点。②从枪口向该点再检测，只有第二段实际命中才造成伤害/启动机关，<code>ShotDirection</code> 使用第二段方向。两段忽略玩家、枪及 Held 道具。先检测角色胸前到枪口的短段，枪口已被墙体阻挡或嵌入时取消射击伤害，提示“枪口受阻”，避免镜头看到目标却从墙另一侧开枪。SpringArm 防碰撞负责镜头，不能代替枪口检测。<a href="https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Collision/LineTraceByChannel">Epic：单次射线返回首个阻挡命中</a></p>
+<p>复用已有 /Game/Input 的 IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump，在现有控制器与角色输入绑定上扩展。新增 IMC_MothGameplay 只映射 IA_Primary/Interact/Aim/Reload/Sprint，不重复建立第二套移动与跳跃输入；新增输入资产放 /Game/MothEffect/Player/Input。<code>IA_Primary</code> 用简单 Boolean，不叠加 Hold/Release 触发器：Started 时若 Held，尝试投掷，并锁定本次按键为投掷；否则开枪。持续 Triggered 仅在本次为射击且满足间隔时开火。Completed 或 Canceled 停止连射并解除该次锁定；投掷后还需满足 <code>throw.minGunRecoverySeconds</code>，松键和恢复计时两项均完成才允许下一次 Started 开枪，失败投掷也须重新按键。暂停、失焦、死亡清除射击定时器，恢复游戏时若鼠标仍按住，先等待松开。这样一记投掷不会同帧把道具射爆。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine">Epic：Enhanced Input 事件</a></p>
+<p>E 在空手时拾取准星附近的最近合格 Dormant，道具到角色需无遮挡；Held 时安全放下，Held 时 R 换弹不生效。拾取关物理、关碰撞并附着手部挂点；投掷先从角色外侧到释放点做与道具体积一致的 Sweep，再检查终点重叠，不能把释放点直接放到摄像机位置。路径阻挡或终点不合法则保持 Held 并提示。Detach 后切回 Dormant、开启重力与物理，设置 <a href="#doc-parameters">玩法参数基线</a> 的初速度；可对物理根启用 CCD 并验证薄墙。放下同样检查空位，反复拾取放下不刷新累计闲置寿命。</p>
+<h2 id="doc-technical-section-3">4. 物理与三种机关</h2>
+<p>机关用一个 USphereComponent 作物理和射击判定根，视觉挂件不另模拟物理或接收命中。Dormant/投掷/Active 发射器由 Chaos 物理移动，重力始终开启；不同时用 ProjectileMovement 移动机关。P01 则用 Sphere 根 + ProjectileMovement，不启用根的 Simulate Physics，以 Sweep 检测命中，按 <a href="#doc-parameters">玩法参数基线</a> 设置 gravityScale=0，保持直线飞行。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent">Epic：ProjectileMovement 与物理模拟关系</a></p>
+<p>角色保持 CharacterMovement，不给胶囊开启物理。<code>ReceiveImpulse</code> 在角色/机关实现内缓存事件，按逻辑帧统一结算：当前速度加本帧全部爆炸增量 → 如有柱子事件，将 Z 替换为角色/道具的 launcher 对应目标速度 → 对角色和机关都按 <a href="#doc-parameters">玩法参数基线</a> 统一上限 Clamp。同帧多柱目标相同，不重复叠加；回调先后不影响结果。结算得到最终速度后，角色只调用一次 <code>LaunchCharacter(FinalVelocity, true, true)</code>；物理机关只对根调用一次 <code>AddImpulse(FinalVelocity-CurrentVelocity, NAME_None, true)</code>。角色 Launch 在下一移动 Tick 生效，不能在每个命中回调里分别 Launch 覆盖待处理速度。没有柱子时保留爆炸叠加结果；没有爆炸时柱子保留原 XY 并替换 Z。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/ACharacter/LaunchCharacter">Epic：LaunchCharacter</a>；<a href="https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Physics/AddImpulse">Epic：Add Impulse</a></p>
+<ul>
+<li><strong>D01</strong>：从激活位置沿世界 -Z 做 <code>JamGroundTrace</code>，只允许 WorldStatic，并校验关卡可承托标签与向上法线阈值，忽略 Pawn、道具和生成柱子。再检查<strong>整个最终柱体体积</strong>的静态空间，底部承托接触不算障碍；遇天花板、墙体或无合格表面都消耗种子并反馈失效。成功后种子关物理/碰撞/可见，保留逻辑 Active 到柱子结束，共用一个计数名额。柱子固定在落点，拆成视觉、上升查询、实体 Collider 三个组件：伸出时实体碰撞关闭，按上升路径检测 Pawn/JamDevice，<code>AffectedActors</code> 按 Actor 去重，每个对象弹一次。完全伸出后，在停留阶段检查完整实体体积，无角色/可移动道具占据才开启 WorldDynamic 的支撑/阻挡；有占据则等待净空，不强行开启挤压对象。停留结束前未净空则本次不启用实体。收回或被容量策略提前结束时先关实体碰撞、停弹射，再缓降网格。支撑尚未就绪时用较淡外观提示；启用后变实色，避免玩家误判可站立时机。</li>
+<li><strong>D02</strong>：激活时冻结世界爆心，用一次球形查询收集角色/可移动机关，按 Actor 去重；遮挡规则遵守 <a href="#doc-rules">道具与交互规则</a>。伤害只给 Health，推力只给 ImpulseReceiver，两条路径不能顺便触发机关。</li>
+<li><strong>D03</strong>：激活保存 <code>LockedDirection = Context.ShotDirection</code>，定时器使用当前装置位置和固定世界方向生成 P01；机身旋转、掉落、推力都不改方向。首发延迟、间隔和总时长来自 <a href="#doc-parameters">玩法参数基线</a>；到期清 Timer、置 Spent。弹丸忽略生成它的 Actor，除此不按阵营过滤；出生点到出口先检测，出口被墙挡住就消耗该发，不在墙后生成。方向箭头按锁定方向绘制。</li>
+</ul>
+<h2 id="doc-technical-collision">5. Collision 基线</h2>
+<p>在 Project Settings 定义对象通道 <code>JamDevice/JamProjectile</code>，查询通道 <code>JamWeaponTrace/JamGroundTrace</code>。表中 B=Block、I=Ignore；对象碰撞两边都配置相同响应。角色只由 Capsule 接收战斗命中，Mesh 忽略，防止一次命中被处理两次。查询与对象响应是 UE 的不同配置项。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-response-reference-in-unreal-engine">Epic：Collision Response Reference</a></p>
+<table>
+<thead>
+<tr>
+<th>根组件对象 / 状态</th>
+<th>WorldStatic</th>
+<th>WorldDynamic/柱体</th>
+<th>Pawn</th>
+<th>JamDevice</th>
+<th>JamProjectile</th>
+<th>WeaponTrace</th>
+<th>GroundTrace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静态场景 WorldStatic</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+</tr>
+<tr>
+<td>角色 Capsule / Pawn</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>I</td>
+</tr>
+<tr>
+<td>Dormant / Active D03，JamDevice</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>I</td>
+</tr>
+<tr>
+<td>P01 Sphere / JamProjectile，Query Only</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>I</td>
+<td>I</td>
+<td>I</td>
+</tr>
+<tr>
+<td>已启用实体柱体 / WorldDynamic</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>I</td>
+</tr>
+<tr>
+<td>Held / Active D01 种子 / Spent</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>I</td>
+<td>I</td>
+</tr>
+<tr>
+<td>柱子可见网格 / 未启用实体组件</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>无碰撞</td>
+<td>I</td>
+<td>I</td>
+</tr>
+</tbody>
+</table>
+<p>柱子用独立查询体积取得 Pawn/JamDevice，不依靠实体 Collider 的 Hit 触发弹射。只允许指定静态地面承托；静态墙虽响应 GroundTrace，命中仍需表面校验。机关和临时柱子不影响导航，AI 用灰盒静态 NavMesh；AI 路径可能被柱子暂时阻挡，需做停滞超时后换位置的原型验证，先不启用动态导航重建。</p>
+<h2 id="doc-technical-section-4">6. 生命周期与验证</h2>
+<p>死亡先设置 <code>bDeathProcessed</code>，停 AI/射击，再请求一次掉落并注销存活敌人。掉落 Spawn/登记失败也不能再次掉落；容量淘汰顺序遵守 <a href="#doc-rules">道具与交互规则</a>。Held/Active 仍计入场上机关数；Spent 进入时立即取消玩法 Timer、关闭碰撞并注销，短效果后 Destroy/EndPlay 再注销也无副作用。激活前先预占 Active 容量，同类满额先安全结束最老同类并释放名额；不能安全释放则拒绝本次激活、保持 Dormant 并提示，不能执行半个效果。D01 无地面/无生成空间属于已启动后的失效，需走 Spent 清理。</p>
+<p><code>AWaveDirector</code> 分开维护 <code>AliveCount</code> 与 <code>PendingSpawnCount</code>：排定批次时先登记全部待生成数，每个生成任务成功或明确取消时扣 Pending，成功才增加 Alive；敌人死亡或越界注销只扣一次 Alive。仅 <strong>AliveCount<mark>0 且 PendingSpawnCount</mark>0</strong> 才清波，不能在两批间无敌人时提前通关。生成间隔、安全距离、预警和重试读 <a href="#doc-parameters">玩法参数基线</a> 的 flow/enemy；失败重试仍计 Pending。重开/结算显式取消未完成任务并归零，不能把暂时失败当作成功清波。</p>
+<p>重开首版用重新加载主地图：先冻结生成/攻击，清 Timer、持有引用、弹丸和机关登记，再 OpenLevel；新局从关卡初值恢复。EndPlay 清理所有对象的 Timer/委托，回收弹丸先禁用碰撞并置 <code>bImpactProcessed</code>，再处理接口和 Destroy，阻止重复 Hit 或延迟回调。</p>
+<p>编译器、默认地图、Cook 和首个独立包检查见 <a href="#doc-engine">UE 工程配置</a>，按 G0 执行；当前没有运行通过证据。</p>
+<p>实现依次验收：空中投掷/方向锁定 → 连锁/幂等 → 角色与物理道具弹射 → 死亡掉落/容量 → 三波胜负/重开。每一步同时在 PIE 与独立包验证，具体案例见 <a href="#doc-test">测试计划与验收</a>。日志记录 HitId、状态前后、方向、登记数和构建版本；开发调试线/日志受 Development 开关控制，提交包关闭。</p>
+<p>新增源码与资产目录、命名和完整编译约定见 <a href="#doc-coding">代码与资产命名规范</a>。</p>
+<p>提交范围、Git LFS、缓存忽略与恢复约定见 <a href="#doc-version">版本管理规范</a>。规则或参数变化按 <a href="#doc-workflow">文档维护与变更流程</a> 同步文档及回归测试。</p>
+</section><section class="document" id="doc-decisions"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Decisions/Design_Decisions.md">02_Design_Doc/TDD/Decisions/Design_Decisions.md</a></div><h1 id="doc-decisions-motheffect">motheffect：设计决策与原型证据</h1>
+<p>版本 v0.5　建立日期 2026-10-02　更新日期 2026-10-03</p>
+<p>此文件记录已经确定的输入，以及当前可执行的建议基线。它负责说明规则为何存在、何时改变和如何验证。状态为建议或待验证的条目，不代表用户已最终确认；开发可按基线开始可逆原型，依据结果更新。</p>
+<h2 id="doc-decisions-section">1 决策账本</h2>
+<table>
+<thead>
+<tr>
+<th>决策 ID</th>
+<th>状态</th>
+<th>当前决策</th>
+<th>原因与影响</th>
+<th>复核条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEC01</td>
+<td>用户已确认</td>
+<td>单人，UE 5.8，C++ 与蓝图混合</td>
+<td>决定实现与工时预算</td>
+<td>用户更改工具链</td>
+</tr>
+<tr>
+<td>DEC02</td>
+<td>用户已确认</td>
+<td>越肩射击、大型场地、死亡原地掉落机关</td>
+<td>保留核心创意</td>
+<td>用户主动更改方向</td>
+</tr>
+<tr>
+<td>DEC03</td>
+<td>用户已确认</td>
+<td>弹射、爆炸、定向发射，支持拾取投掷与空中激活</td>
+<td>最小玩法必须包含</td>
+<td>用户主动更改方向</td>
+</tr>
+<tr>
+<td>DEC04</td>
+<td>建议基线</td>
+<td>PC 键鼠作为提交目标</td>
+<td>集中完成操作与打包</td>
+<td>移动端另立预算</td>
+</tr>
+<tr>
+<td>DEC05</td>
+<td>建议基线</td>
+<td>所有弹丸可激活机关，爆炸与碰撞不激活</td>
+<td>保留主动时机，同时支持真实串联</td>
+<td>G2 试玩</td>
+</tr>
+<tr>
+<td>DEC06</td>
+<td>建议基线</td>
+<td>柱子生成在装置激活位置下方地面</td>
+<td>地面与空中共用可理解规则</td>
+<td>G2 空中弹射测试</td>
+</tr>
+<tr>
+<td>DEC07</td>
+<td>建议基线</td>
+<td>发射器沿命中弹丸方向锁定，保持重力</td>
+<td>允许玩家布置移动火线</td>
+<td>G1 方向理解</td>
+</tr>
+<tr>
+<td>DEC08</td>
+<td>建议基线</td>
+<td>Held 免激活，玩家仍可受伤</td>
+<td>避免持有时误启动，保留战斗压力</td>
+<td>G2 风险体验</td>
+</tr>
+<tr>
+<td>DEC09</td>
+<td>建议基线</td>
+<td>一图一枪、一套 AI 三外观、三波</td>
+<td>在单人周期内交付闭环</td>
+<td>G3 与可用工时</td>
+</tr>
+<tr>
+<td>DEC10</td>
+<td>建议基线</td>
+<td>使用模板人物基础动画与自建灰盒资源</td>
+<td>当前没有资源，先验证核心</td>
+<td>G2 后视觉替换</td>
+</tr>
+<tr>
+<td>DEC11</td>
+<td>建议基线</td>
+<td>无坠落伤害，备用弹药不设耗尽限制</td>
+<td>鼓励弹射，避免战斗软锁</td>
+<td>试玩难度评估</td>
+</tr>
+<tr>
+<td>DEC12</td>
+<td>待原型验证</td>
+<td>数值与相机使用 <a href="#doc-parameters">玩法参数基线</a> 的初始值</td>
+<td>未实测，先给可运行起点</td>
+<td>G1/G2 实测更新</td>
+</tr>
+<tr>
+<td>DEC13</td>
+<td>建议基线</td>
+<td>10 月 17 日提交首版</td>
+<td>给平台审核与修复留时间</td>
+<td>官方后台实际状态</td>
+</tr>
+<tr>
+<td>DEC14</td>
+<td>待明确</td>
+<td>每日可投入时间、开发机与最低目标机器</td>
+<td>影响排期与性能证据</td>
+<td>开工记录实填</td>
+</tr>
+<tr>
+<td>DEC15</td>
+<td>建议基线</td>
+<td>升柱阶段仅查询弹射，完全伸出且净空后启用实体支撑，收回前关闭碰撞</td>
+<td>避免重复挤压和夹住角色，同时保留地形影响</td>
+<td>G2 与 TC33</td>
+</tr>
+<tr>
+<td>DEC16</td>
+<td>建议基线</td>
+<td>同帧先合并爆炸增量、再应用柱子目标 Z、最后统一限速</td>
+<td>使角色和道具结果不依赖回调次序</td>
+<td>G2 与 TC14</td>
+</tr>
+<tr>
+<td>DEC17</td>
+<td>用户已确认</td>
+<td>正式显示名 motheffect，工程与模块名 MothEffect</td>
+<td>对齐品牌显示与已有工程名称</td>
+<td>用户更改名称</td>
+</tr>
+<tr>
+<td>DEC18</td>
+<td>用户已确认</td>
+<td>美术风格魔法朋克</td>
+<td>统一机关、场景和界面的表现方向</td>
+<td>用户更改风格</td>
+</tr>
+<tr>
+<td>DEC19</td>
+<td>用户已确认并静态核对</td>
+<td>当前仓库已有 UE 5.8 第三人称模板工程 <a href="../../MothEffect.uproject">MothEffect.uproject</a></td>
+<td>复用现有源码与模板资源，G0 从编译打包开始</td>
+<td>实际工程变动</td>
+</tr>
+<tr>
+<td>DEC20</td>
+<td>建议基线</td>
+<td>继续使用当前第三人称模板作为实现起点</td>
+<td>适合单人、缺少自备资源的第三人称游戏，降低基础搭建工时</td>
+<td>用户决定改为空白工程</td>
+</tr>
+</tbody>
+</table>
+<p>正式名称和魔法朋克风格已经由用户确定。具体故事、角色身份、场景题材、色板和配乐仍是提案，推进时先用占位；不从模板人物推断最终角色外观。</p>
+<h2 id="doc-decisions-section-1">2 原型证据记录</h2>
+<p>每通过一个门槛，在以下记录中加入实际文件或视频路径。当前没有实现证据。</p>
+<table>
+<thead>
+<tr>
+<th>门槛</th>
+<th>当前状态</th>
+<th>证据应包含</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G0</td>
+<td>部分前置已核对，运行未验证</td>
+<td>工程已建立、声明 UE 5.8；编译器、运行机器与首个可启动 Windows 包仍需证据</td>
+</tr>
+<tr>
+<td>G1</td>
+<td>未验证</td>
+<td>空中投掷启动录像、重复尝试结果、方向理解反馈</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>未验证</td>
+<td>同规则至少两种布局的连锁录像，相关 TC 实测</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>未验证</td>
+<td>从标题到三波胜负及重开的完整录像</td>
+</tr>
+<tr>
+<td>G4</td>
+<td>未验证</td>
+<td>提交包版本、校验值、实测记录、平台过审状态</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-decisions-section-2">3 风险与处理顺序</h2>
+<table>
+<thead>
+<tr>
+<th>风险 ID</th>
+<th>具体风险</th>
+<th>先验证什么</th>
+<th>处理顺序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RISK01</td>
+<td>投掷物出镜或难以瞄准</td>
+<td>连续十次投掷与空中启动</td>
+<td>轨迹、相机、尺寸、命中判定</td>
+</tr>
+<tr>
+<td>RISK02</td>
+<td>火线方向难以理解</td>
+<td>玩家能否预判一枪启动结果</td>
+<td>箭头与延迟，再调整方向规则</td>
+</tr>
+<tr>
+<td>RISK03</td>
+<td>只有独立效果，没有连锁利用</td>
+<td>不同布局能否复现组合</td>
+<td>触发共用、推力与布局</td>
+</tr>
+<tr>
+<td>RISK04</td>
+<td>模板动画不足以表达动作</td>
+<td>无定制动画能否看懂持有与抛出</td>
+<td>手持位置、姿态与短反馈，再补动画</td>
+</tr>
+<tr>
+<td>RISK05</td>
+<td>多体推力与弹丸失控</td>
+<td>安全上限下计数与帧率</td>
+<td>去重、生命周期、上限、效果预算</td>
+</tr>
+<tr>
+<td>RISK06</td>
+<td>完整闭环进度被美术挤占</td>
+<td>G3 是否按期通过</td>
+<td>先完成 P0，减少 P1</td>
+</tr>
+<tr>
+<td>RISK07</td>
+<td>最后才发现无法打包或过审</td>
+<td>G0 小包与认证状态</td>
+<td>第一阶段打包，提前提交</td>
+</tr>
+</tbody>
+</table>
+<p>修改规则时遵循 <a href="#doc-workflow">文档维护与变更流程</a>，历次变更记录见 <a href="#doc-changelog">变更日志</a>。</p>
+</section><section class="document" id="doc-coding"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Coding_Conventions.md">03_Code_Standard/Coding_Conventions.md</a></div><h1 id="doc-coding-motheffect">motheffect：代码与资产命名规范</h1>
+<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件约定后续代码与资产的命名、目录和职责边界。当前只整理文档，未执行源码重命名或资源迁移。自定义类/接口签名以 <a href="#doc-technical">技术设计</a> 为准。</p>
+<h2 id="doc-coding-section">1. 命名与目录</h2>
+<p>新增资产统一放 <code>/Game/MothEffect/{Core,Player,Combat,Devices,Enemies,Levels,UI,Data,Audio,VFX,Tests}</code>，新增源码放在现有 Source/MothEffect 模块内。现有 ThirdPerson、Characters、Input、LevelPrototyping 与模板变体资产保持原路径；角色、控制器和游戏模式复用 <a href="#doc-technical">技术设计</a> 类映射表中的现有类及蓝图，不先做批量重命名。使用英文稳定名称：C++ 无 BP 前缀，新增蓝图 <code>BP_</code>，地图 <code>L_</code>，界面 <code>WBP_</code>，输入 <code>IA_/IMC_</code>，数据 <code>DA_</code>。必要的资源整理安排在 G1 后核对依赖再进行。</p>
+<h2 id="doc-coding-c">2. C++ 与蓝图职责</h2>
+<p>C++ 负责玩法状态、命中、伤害、推力、定时器与容量；蓝图负责组件组装、相机配置、界面及视听表现，调用既定 C++ 入口。伤害与激活流程只保留一套，具体类职责见 <a href="#doc-technical">技术设计</a>。机关行为以 <a href="#doc-rules">道具与交互规则</a> 为准，数值以 <a href="#doc-parameters">玩法参数基线</a> 为准，不在 Tick、关卡脚本或特效中另藏伤害数值。</p>
+<h2 id="doc-coding-section-1">3. 构建与调试</h2>
+<p>新建 UCLASS、改反射字段或继承关系后关闭编辑器做完整编译再打开，避免把 Live Coding 状态当作干净构建成功。</p>
+<p>日志记录 HitId、状态前后、方向、登记数和构建版本；开发调试线/日志受 Development 开关控制，提交包关闭。工具链与首包验收见 <a href="#doc-engine">UE 工程配置</a>，提交与恢复见 <a href="#doc-version">版本管理规范</a>。</p>
+</section><section class="document" id="doc-version"><div class="source">可编辑源文件：<a href="../03_Code_Standard/Version_Control.md">03_Code_Standard/Version_Control.md</a></div><h1 id="doc-version-motheffect-git">motheffect：版本管理与 Git 排除规范</h1>
+<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件定义仓库、排除规则与恢复约定。项目根目录已初始化 Git，当前分支 main；origin 为 <a href="https://github.com/YYchainsAw/MothEffect.git%E3%80%822026-10-03">https://github.com/YYchainsAw/MothEffect.git。2026-10-03</a> 只读访问远程成功，核查时为公开空仓库。已完成仓库级 Git LFS 初始化，并在根 .gitattributes 配置 .uasset/.umap。本次未暂存、提交、推送或打 tag；首次推送认证与写入权限尚未验证。</p>
+<h2 id="doc-version-section">1. 提交与忽略范围</h2>
+<p>Git 提交工程 <code>.uproject</code>、<code>Source/</code>、<code>Config/</code>、<code>Content/MothEffect/</code> 及本文档、<a href="#doc-parameters">玩法参数基线</a>、资源来源记录。Content 中其余目录与顶层文件全部忽略；这是用户指定的资源范围，仅影响版本管理，不删除本机资源。保留的 <code>.uasset/.umap</code> 用 Git LFS。忽略 <code>Binaries/Intermediate/Saved/DerivedDataCache/.vs</code>，不忽略整个 Plugins。每天可启动版本做一次提交，里程碑打 tag，改动规则时同步 <a href="#doc-rules">道具与交互规则</a>/<a href="#doc-decisions">设计决策</a>/<a href="#doc-parameters">玩法参数基线</a>。</p>
+<p>Docs 内 Markdown/JSON 是维护源文件，Reading_View.html 是由源文件生成的阅读快照；更新快照时与对应源文件同批提交。有效排除规则见根 <a href="../../.gitignore">.gitignore</a>，有效 LFS/文本规则见根 <a href="../../.gitattributes">.gitattributes</a>。首次提交时应一并纳入这两个文件；规则已配置，本次没有暂存资源或执行 LFS 上传。<a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage">GitHub：配置 Git LFS</a></p>
+<h2 id="doc-version-section-1">2. 提交与恢复</h2>
+<p>每天保存能启动的版本及构建标识，G0–G4 里程碑以实际验收为依据打 tag。规则、参数或范围改动按 <a href="#doc-workflow">文档维护与变更流程</a> 同步，并在 <a href="#doc-changelog">变更日志</a> 留痕。</p>
+<p>T03 要求形成实际版本记录，并从最近备份取回一个测试文件核对内容，不能只看备份目录存在；当前仅完成 Git、origin、忽略和 LFS 配置，提交与恢复仍待验收。任务与工时见 <a href="#doc-plan">开发任务与排期</a>。</p>
+<h2 id="doc-version-section-2">3. 资源来源</h2>
+<p>外部资源、授权与 AI 使用据实记录，资源验收见 <a href="#doc-level">关卡、界面与资源规格</a>，投稿说明见 <a href="#doc-release">发布检查清单</a>。不要把缓存目录当成项目源文件或唯一恢复来源。</p>
+<h2 id="doc-version-gitignore">4. .gitignore 的实际排除范围</h2>
+<p>规则只在根 .gitignore 维护，本说明用于解释，不作为第二套配置。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>排除内容</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UE 生成目录</td>
+<td>根 Binaries、Intermediate、Saved、DerivedDataCache</td>
+<td>编译结果、缓存、自动保存及日志，由本机重新生成</td>
+</tr>
+<tr>
+<td>游戏资源范围</td>
+<td>Content 中 MothEffect 以外的全部顶层目录与文件</td>
+<td>用户指定只保留 Content/MothEffect；其他资源留在本机</td>
+</tr>
+<tr>
+<td>插件缓存</td>
+<td>Plugins 下的 Intermediate、Saved、DerivedDataCache</td>
+<td>可重新生成；插件 Binaries 默认保留，以兼容仅提供二进制的插件</td>
+</tr>
+<tr>
+<td>IDE 本地状态</td>
+<td>.vs、.idea、.vscode、.fleet、生成的根 .sln/.slnx/.vcxproj、用户设置</td>
+<td>避免机器状态进入仓库；根 .vsconfig 保留</td>
+</tr>
+<tr>
+<td>打包输出</td>
+<td>根 Builds、Packages、Releases、Dist、Artifacts</td>
+<td>在发布渠道或单独保存构建包；不在这些目录存源文件</td>
+</tr>
+<tr>
+<td>私人资料</td>
+<td>根 _Local、Docs/Private、Config/Local、*.local.ini</td>
+<td>提供本机笔记和配置的明确位置，当前未搬移现有内容</td>
+</tr>
+<tr>
+<td>凭证及临时文件</td>
+<td>.env、证书/签名容器及常见临时文件</td>
+<td>.env.example/.env.sample 保留，但其内容不能含真实凭证</td>
+</tr>
+</tbody>
+</table>
+<p>保留 .uproject、Source、Config、Content/MothEffect、可公开的 Docs、Build 中图标/构建配置、SourceArt 及必要插件文件。不要全局排除图片、.obj 模型、DLL、LIB 或整个 Plugins；新增有源码插件时，确认其 Binaries 可重建后再添加精确排除规则。</p>
+<p>早期扫描的 Content 共 753 个 .uasset/.umap、约 134.4 MiB；此统计覆盖全部本机资源，不代表当前提交范围。当前只保留 Content/MothEffect，其余 Content 和生成目录均排除，实际候选文件数量以 git ls-files --others --exclude-standard 为准。</p>
+<p>当前 DefaultEngine.ini 的默认地图和游戏模式仍指向 /Game/ThirdPerson，源码/模板还使用 Characters、Input 等资源。按本轮规则，这些资源不会进入 Git；从远程全新克隆时，需要另行补齐模板资源或迁移依赖才能复现本机工程。本次未移动资产、修改引用或验证新克隆启动。以后若使用外置 Actor/Object 数据，还需核对 Content/<strong>ExternalActors</strong>、Content/<strong>ExternalObjects</strong> 中是否存在本作关卡的必要数据；当前它们也按用户要求忽略。</p>
+<p>.gitignore 只影响未跟踪文件，不能清除已有历史中的内容；未来误提交文件时需要另行处理索引或历史。<a href="https://docs.github.com/en/get-started/git-basics/ignoring-files">GitHub：忽略文件</a></p>
+<h2 id="doc-version-docs">5. Docs 公开建议与本次检查</h2>
+<p>现有 Docs 主要是本作策划、规则、技术方案、排期、测试和发布计划，适合在愿意公开完整设计的前提下发布。本轮已将个人磁盘路径替换为相对链接/路径，并同步 HTML 阅读快照；本次扫描未发现明显 Token、私钥或个人身份资料。Markdown 链接以所在文件目录为基准；JSON 的 projectRoot/documentAuthority 以该 JSON 所在目录为基准，pathBase 已明确声明。</p>
+<table>
+<thead>
+<tr>
+<th>内容类别</th>
+<th>涉及文件</th>
+<th>当前处理/约定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本地工程路径</td>
+<td>README、Project_Overview、Game_Design、Technical_Design、Design_Decisions、Development_Plan</td>
+<td>已保留工程与模块名称，并改为指向 .uproject 的相对链接</td>
+</tr>
+<tr>
+<td>环境绑定字段</td>
+<td>Gameplay_Parameters.json 的 projectRoot/documentAuthority</td>
+<td>已改为 ../../.. 和 ../..，基于 JSON 所在目录；玩法数值未改</td>
+</tr>
+<tr>
+<td>汇总副本</td>
+<td>Reading_View.html</td>
+<td>已按当前 Markdown/JSON 重新生成，移除旧个人路径</td>
+</tr>
+<tr>
+<td>后续私人材料</td>
+<td>后台截图、认证资料、真实试玩者信息及账户信息</td>
+<td>保留在本地；Docs/Private 已忽略，阅读快照也不能汇入该目录</td>
+</tr>
+</tbody>
+</table>
+<p>未实现规则和未执行测试继续保留对应状态。公开仓库允许他人查看及 fork，公开本身不自动授予 MIT 等开源许可。是否授权复用自有代码/文档由项目所有者决定；本次没有代选或新增 LICENSE。<a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">GitHub：仓库许可</a></p>
+<h2 id="doc-version-section-3">6. 首次公开提交前的项目检查</h2>
+<p>本项目当前目标为 Windows 单机，已在 Config/DefaultEngine.ini 的 AndroidFileServer 配置中设置 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值），保留 Shipping、Shipping 外部启动和独立 AFS 编译开关为 False。清空 Token 同时关闭该服务器用途，避免空 Token 取消认证检查；本次未输出旧值。配置节之外的内容未修改，未启动编辑器、编译或打包。以后需要 Android 文件服务器时，另行配置新的私有 Token，不把实际凭证写入公开默认配置。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine">Epic：Android File Server</a></p>
+<p>公开资源前逐项记录来源及可再分发范围。UE EULA 对 Samples/Templates 中的 Examples 允许源格式分发，不能把此权限推广到所有引擎内容或商城资产。Fab 标准许可允许项目使用及向项目协作者共享资产，同时限制素材单独再分发；公开可提取的原始资源需要依据其实际许可判断。<a href="https://www.unrealengine.com/en-US/eula/unreal">Unreal Engine EULA</a>、<a href="https://www.fab.com/eula">Fab 标准许可</a></p>
+</section><section class="document" id="doc-engine"><div class="source">可编辑源文件：<a href="../04_Engine_Config/UE_Project_Configuration.md">04_Engine_Config/UE_Project_Configuration.md</a></div><h1 id="doc-engine-motheffectue">motheffect：UE 工程配置</h1>
+<p>版本 v0.5 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，本轮仅修改 Android File Server 的三项配置；未启动编辑器、编译、安装工具链或打包。</p>
+<h2 id="doc-engine-section">1. 已静态核对的工程</h2>
+<p>静态核对结果：MothEffect.uproject 的 EngineAssociation 为 5.8，Runtime 模块为 MothEffect；现有 AMothEffectCharacter、AMothEffectPlayerController、AMothEffectGameMode 源码以及 ThirdPerson 蓝图/关卡文件均存在。Build.cs 已声明 EnhancedInput、AIModule、UMG 等依赖。模板还包含 Combat、Platforming、SideScrolling 变体和 StateTree 相关依赖，它们不自动成为本作玩法，G0 时核对标准 ThirdPerson 入口及蓝图父类，不重复添加已有模块，也不先批量删除示例文件。</p>
+<p>DefaultGame.ini 当前 ProjectName 为 Moth Effect，发布显示名由用户确定为 motheffect；后续制作标题、窗口名称与投稿资料时核对统一。此处仅记录显示名差异，尚未修改 DefaultGame.ini。</p>
+<p>现有入口为 /Game/ThirdPerson/Lvl_ThirdPerson，默认游戏模式指向 BP_ThirdPersonGameMode。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 <a href="#doc-technical">技术设计</a>。</p>
+<p>工程清单启用了 ModelingToolsEditorMode（仅 Editor）、StateTree、GameplayStateTree。模块声明中还包含 Slate 与 StateTree 相关依赖。插件启用、模块依赖和本作已实现功能是三种不同状态，不因依赖存在而判定玩法已完成。</p>
+<h2 id="doc-engine-section-1">2. 工具链与首个独立包</h2>
+<p>后续首个验证节点为“现有模板干净编译 → Windows Development 包 → 关闭编辑器独立启动”，不再安排重新建工程。当前入口声明为 /Game/ThirdPerson/Lvl_ThirdPerson，游戏模式为 BP_ThirdPersonGameMode；在编辑器核对后使用。检查 Game Default Map、游戏模式及必需地图/资产能被 Cook；界面和 DataAsset 引用不只靠编辑器临时加载。UE 5.8 的官方兼容表列 VS 2022 17.14+、VS 2026 18.0+；实际工具链与 Windows SDK 需本机核验，本文未替用户安装。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine">Epic：VS 配置</a>；<a href="https://dev.epicgames.com/documentation/unreal-engine/packaging-your-project">Epic：Packaging</a></p>
+<p>实际 UE 补丁号、编译器、SDK、测试机器、构建标识和启动截图需要在执行 G0 时补录。验收任务见 <a href="#doc-plan">开发任务与排期</a>，记录格式见 <a href="#doc-test">测试计划与验收</a>。</p>
+<h2 id="doc-engine-section-2">3. 碰撞、输入与运行配置的来源</h2>
+<p>JamDevice/JamProjectile 对象通道及 JamWeaponTrace/JamGroundTrace 查询通道是后续计划，碰撞矩阵只维护在 <a href="#doc-technical">技术设计</a>。输入门控、物理组件和生命周期也以技术设计为准；本次未向 Config 写入这些设置。</p>
+<p>运行时设计数值来自 DataAsset/默认配置，设计账本见 <a href="#doc-parameters">玩法参数基线</a>，该 JSON 不承诺自动导入。主地图及 UI/DataAsset 引用完成后，按 <a href="#doc-release">发布检查清单</a> 重新核对候选包包含的运行资源。</p>
+<h2 id="doc-engine-android-file-server">4. 公开仓库的 Android File Server 配置</h2>
+<p>当前 Windows 单机目标不使用 Android 文件服务器。在 DefaultEngine.ini 的 AndroidFileServerRuntimeSettings 节中，已设 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值）；bIncludeInShipping、bAllowExternalStartInShipping、bCompileAFSProject 均保留 False。未修改 .uproject 或该配置节之外的引擎设置。</p>
+<p>空 Token 会关闭令牌认证检查，因此必须与禁用该服务器用途同时处理。以后需要 Android 开发时，另行配置私有 Token 与部署方式。当前仅完成静态配置核对，没有编译/打包结果。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine">Epic：Android File Server</a></p>
+</section><section class="document" id="doc-plan"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><h1 id="doc-plan-motheffect">motheffect：开发任务与排期</h1>
+<p>版本：v0.5｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
+<p>当前状态：前期文档已更新，用户已建立第三人称模板工程，工程声明与模板目录已静态核对。环境运行、核心玩法、包体、试玩和投稿均未验收。T02 的工程创建子项已完成，编译与独立打包待验证；T03 的 Git/origin/忽略/LFS 已配置，提交与恢复待验收；其余任务没有完成证据。日期是建议目标，不代表实际进度。</p>
+<h2 id="doc-plan-section">1. 如何使用这份计划</h2>
+<p>每天从最早未通过的门槛开始，只做依赖已完成的任务。任务先进入“进行中”，满足可观察完成标准并留下证据后才改为“完成”。一段录屏能证明几个规则时可以共用证据，不必重复制作材料。</p>
+<p>玩法按 <a href="#doc-game">游戏策划案</a>，规则按 <a href="#doc-rules">道具与交互规则</a>，实现按 <a href="#doc-technical">技术设计</a>，关卡、AI、波次和资源按 <a href="#doc-level">关卡、界面与资源规格</a>，所有数值以 <a href="#doc-parameters">玩法参数基线</a> 为唯一基线。测试编号见 <a href="#doc-test">测试计划与验收</a>，G4 的平台步骤与审核状态见 <a href="#doc-release">发布检查清单</a>。</p>
+<p>单人开发允许顺序调整；门槛和任务依赖决定是否能够继续扩展。不要一边验证核心，一边同时制作成套独立角色、持枪动画、投掷动画或装饰场景。</p>
+<h2 id="doc-plan-section-1">2. 时间预算与必须保住的内容</h2>
+<p><strong>待确认的排期假设：每天实际可开发 4–6 小时，已具备基本 UE 与 C++/蓝图使用能力。</strong> 这不是用户承诺。10 月 2–17 日共 16 天，可用 64–96 小时；保留至少 15% 故障与返工缓冲后，净实施预算约 54.4–81.6 小时。安装下载、工具链故障、陌生功能学习、资产授权查验和重新审核均可能进一步占用时间。</p>
+<p>下表 T01–T27 合计 <strong>50.5–82.5 小时</strong>，是粗估区间而非承诺。上界略高于高时间预算下的净实施额度，也明显高于每天 4 小时的净额度。实际接近上界时，必须压缩允许裁剪的工作，不能靠假定每天额外工作抵消超支。T28 为 10 月 18–20 日另预留的 4–8 小时审核修复，不计入首版开发合计。可选开发日志另需约 2.5–5 小时；若争取对应奖项，应从净预算里先扣除。</p>
+<p>不可裁剪的核心是：一把主武器、三种装置、拾取投掷与空中射击启动、装置间真实规则连锁、一张主竞技场、一套射击 AI 的三种掉落外观、三波完整胜负流程、重开、最低必要反馈和可启动的 Windows 包体。不能把延期结果降成只有普通第三人称射击的游戏。</p>
+<p>可压缩的是：场景装饰数量、特效层数、非必要声音变化、录屏剪辑、额外外部试玩人数、外观精细程度。P1 内容（第二套冲撞 AI、五波、轨迹预览等）默认不进入本计划；多地图、Boss、成长树、移动端、联机均延期。</p>
+<h2 id="doc-plan-section-2">3. 五个开发门槛</h2>
+<table>
+<thead>
+<tr>
+<th>门槛</th>
+<th>目标日期</th>
+<th>必须观察到的结果</th>
+<th>证据与失败处理</th>
+<th>初始状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G0：环境与独立打包</td>
+<td>10/2</td>
+<td>本机能打开实际安装的 UE 5.8 项目，完成 C++ 编译；模板基础移动可用；Windows 包在关闭编辑器后能进入测试房间</td>
+<td>记录实际引擎补丁号、工具链、构建标识和启动截图。未通过时先解决环境与打包，不开始批量内容制作；若安装版本不可用，记录问题再决定版本，不默默更改用户版本</td>
+<td>未验收</td>
+</tr>
+<tr>
+<td>G1：投掷与空中启动</td>
+<td>10/3</td>
+<td>D03 能拾取、投掷、空中射击启动，沿命中射线方向发射并继续受重力；练习约 2 分钟后，安全测试房 10 次投掷中至少 8 次能完成空中启动，方向无误</td>
+<td>保存 TC03–TC06、TC12、TC17 的录屏和计数。命中率是内部原型指标；失败先改可读性、相机、投掷和输入，不扩大敌人数量</td>
+<td>未验收</td>
+</tr>
+<tr>
+<td>G2：真实规则连锁</td>
+<td>10/5</td>
+<td>D01、D02、D03 均完成；至少两种不同机关连锁由弹丸、推力和位置自然发生；换摆放位置会改变结果，不依靠关卡专用连锁脚本</td>
+<td>录下“发射弹启动另一装置”和“弹射/爆炸改变道具位置后被弹道启动”的过程；TC07–TC16 通过。失败停止新 AI 和美术，修正命中上下文或推力规则</td>
+<td>未验收</td>
+</tr>
+<tr>
+<td>G3：可试玩完整闭环</td>
+<td>10/9</td>
+<td>教程提示 → 三波战斗 → 胜利，或者死亡 → 失败 → 重开；三种敌人外观能预告对应掉落；无残留对象与定时器</td>
+<td>打包版本执行 TC20–TC26，录一段完整流程。失败保留一个 AI，调整出怪与场地，先实现完整闭环</td>
+<td>未验收</td>
+</tr>
+<tr>
+<td>G4：提交首版并跟踪审核</td>
+<td>10/17</td>
+<td>本地候选包完成阻断项验收；厂商认证与投稿资料已核对；由开发者在实际后台上传、完成自测并提审，保存页面状态和包体标识</td>
+<td>不能把“已上传”记成“已过审”。若尚有阻断缺陷不提审；10/18–20 只处理审核与阻断修复，最终应在官方截止前通过审核</td>
+<td>未验收</td>
+</tr>
+</tbody>
+</table>
+<p>G0 中的模板和工具链可用性须在用户实际安装环境中检查，本文件没有验证它们。G4 是未来操作步骤，本文档创建过程没有登录、上传、提交或发布。</p>
+<h2 id="doc-plan-section-3">4. 日期安排</h2>
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>主要结果</th>
+<th>工作顺序与检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10/2</td>
+<td>G0；最小射击测试房</td>
+<td>T01–T06 优先按依赖启动。先独立打包，余下工作可延至次日；不把一天内完成全部基础设施视为承诺</td>
+</tr>
+<tr>
+<td>10/3</td>
+<td>G1</td>
+<td>T07–T09；如果基础任务占用超过预算，优先完成 G1，用它判断后续可行性</td>
+</tr>
+<tr>
+<td>10/4–5</td>
+<td>G2</td>
+<td>T10–T13；装置独立测试后再测两种自然连锁；锁定触发和方向规则</td>
+</tr>
+<tr>
+<td>10/6–9</td>
+<td>G3</td>
+<td>T14–T18、T21；一套 AI、三种外观、三波、灰盒主场地、基础 UI 与教程；每天至少独立运行一次最近包体</td>
+</tr>
+<tr>
+<td>10/10–12</td>
+<td>清楚易懂的试玩版</td>
+<td>T19–T20；补清楚的启动/耗尽/过期提示，优化越肩瞄准遮挡和场地节奏；不做新系统</td>
+</tr>
+<tr>
+<td>10/13–15</td>
+<td>外部验证与稳定</td>
+<td>T22–T24；修理解成本、操作失败与性能问题；冻结新功能，已冻结规则的变更须记录影响与回归范围</td>
+</tr>
+<tr>
+<td>10/16–17</td>
+<td>候选包、首版提审</td>
+<td>T25–T27；在最终压缩包解压目录与平台自测环境验收，准备物料与投稿资料，由开发者执行提审</td>
+</tr>
+<tr>
+<td>10/18–20</td>
+<td>审核修复窗口</td>
+<td>T28；查看站内信和实际后台状态，按审核意见修复、重新打包及回归；不得用这个窗口补新玩法</td>
+</tr>
+<tr>
+<td>10/21 12:00 前</td>
+<td>通过审核</td>
+<td>留存有效投稿与审核通过证据；临近截止仍未通过不能认定参赛提交已完成</td>
+</tr>
+</tbody>
+</table>
+<p>官方要求在 <strong>10 月 21 日 12:00 前上传且通过审核</strong>，并建议在 18 日前上传。本计划把首次提审目标设为 17 日，提前留下缓冲。<a href="https://www.taptap.cn/moment/854692229854265392">官方主题公告</a>、<a href="https://www.taptap.cn/moment/851888213915075734">官方答疑</a></p>
+<h2 id="doc-plan-section-4">5. 任务清单</h2>
+<p>估时单位是有效工作小时，均含该任务局部验证，不含大范围返工。任务依赖表示执行前需要成立的条件；不必为了表格逐项增加形式化会议。类别“核心”不能删除，“可压缩”可减轻实现或验证规模，“选做”仅有时间才执行。</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>类别</th>
+<th>任务</th>
+<th>前置依赖</th>
+<th>粗估小时</th>
+<th>可观察完成标准</th>
+<th>初始状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T01</td>
+<td>核心</td>
+<td>核对文档、时间与决策</td>
+<td>无</td>
+<td>0.5–1</td>
+<td>在 <a href="#doc-decisions">设计决策</a> 中记录每日可用时间、PC 基线、版本环境待验项；确认规则与参数唯一来源，发现矛盾先修文档</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T02</td>
+<td>核心</td>
+<td>核对现有 UE 5.8 模板工程、干净编译与首次 Windows 打包</td>
+<td>T01</td>
+<td>2–4</td>
+<td>复用当前工程 <a href="../../MothEffect.uproject">MothEffect.uproject</a>；编译成功、模板基础角色可移动、关闭编辑器后包体能启动，G0 有记录</td>
+<td>部分完成：工程已建立；运行打包待验收</td>
+</tr>
+<tr>
+<td>T03</td>
+<td>核心</td>
+<td>目录、版本管理与恢复</td>
+<td>T02</td>
+<td>1–1.5</td>
+<td>项目按 <a href="#doc-coding">代码与资产命名规范</a> 目录归档，并遵循 <a href="#doc-version">版本管理规范</a>；源代码与资产有可恢复版本记录；从最近备份取回一个测试文件，且不把缓存当源文件</td>
+<td>部分完成：Git/origin/忽略/LFS 已配置；提交与恢复待验收</td>
+</tr>
+<tr>
+<td>T04</td>
+<td>核心</td>
+<td>测试房、越肩相机与基础输入</td>
+<td>T02</td>
+<td>2–3</td>
+<td>测试房能移动、跳跃、跑步、瞄准；墙边相机可用，角色与道具不持续遮挡准星</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T05</td>
+<td>核心</td>
+<td>W01 射击、弹匣换弹与生命伤害</td>
+<td>T04</td>
+<td>2–3</td>
+<td>静止/移动射击、伤害、空匣和换弹成立；射线由视线与枪口约束按 <a href="#doc-technical">技术设计</a> 实现；伤害事件可观察</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T06</td>
+<td>核心</td>
+<td>装置基类、状态与命中上下文</td>
+<td>T02</td>
+<td>1.5–2.5</td>
+<td>Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T07</td>
+<td>核心</td>
+<td>拾取、放下、投掷与阻挡处理</td>
+<td>T04、T06</td>
+<td>3–4</td>
+<td>E 能拾取/放下；Held 左键只投掷；近墙没有把道具塞入墙；抛出后恢复 Dormant</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T08</td>
+<td>核心</td>
+<td>D03 与基础 P01：空中启动方向锁定</td>
+<td>T05–T07</td>
+<td>3–5</td>
+<td>投掷中射击启动，沿命中方向持续发射；装置继续落下；达到 G1 可用性指标</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T09</td>
+<td>核心</td>
+<td>输入切换与单次激活边界</td>
+<td>T08</td>
+<td>1–2</td>
+<td>投掷后必须释放本次左键再按下才射击；Held 免启动但玩家可受伤；Active 不可拾取/重启；TC06、TC12、TC17 通过</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T10</td>
+<td>核心</td>
+<td>D02 爆炸、伤害与推力</td>
+<td>T05、T06</td>
+<td>2–3</td>
+<td>地面/空中在激活位置爆炸；敌我受到伤害；可移动道具受推力；爆炸不直接启动其他机关</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T11</td>
+<td>核心</td>
+<td>D01 探地、升柱与弹射</td>
+<td>T06、T07</td>
+<td>3–5</td>
+<td>向世界竖直下方探地，检查最终柱体静态净空；伸出阶段逐对象单次弹射；停留期间净空后开实体支撑/阻挡，收回前关闭，不夹住角色或道具；TC09、TC10、TC33 通过</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T12</td>
+<td>核心</td>
+<td>P01 统一触发与自然连锁</td>
+<td>T08、T10、T11</td>
+<td>2–4</td>
+<td>敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T13</td>
+<td>核心</td>
+<td>容量、过期、Spent 与清理</td>
+<td>T06、T12</td>
+<td>1.5–2.5</td>
+<td>按 <a href="#doc-rules">道具与交互规则</a> 与 <a href="#doc-parameters">玩法参数基线</a> 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T14</td>
+<td>核心</td>
+<td>一套射击 AI：移动、视线、预警、P01</td>
+<td>T05、T12</td>
+<td>3–5</td>
+<td>敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T15</td>
+<td>核心</td>
+<td>三种敌人外观与确定掉落</td>
+<td>T14、T10、T11</td>
+<td>1–2</td>
+<td>三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T16</td>
+<td>核心</td>
+<td>三波导演、胜负与重开</td>
+<td>T13、T15</td>
+<td>2–3</td>
+<td>出怪和波次内容符合 <a href="#doc-level">关卡、界面与资源规格</a>；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T17</td>
+<td>核心</td>
+<td>一张主竞技场灰盒、掩体与导航</td>
+<td>T14</td>
+<td>2–3</td>
+<td>按 <a href="#doc-level">关卡、界面与资源规格</a> 的三区和尺度落地；可完成战斗/投掷/弹射；导航及出生点无卡死；保留大型场地意图，不追加第二张地图</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T18</td>
+<td>核心</td>
+<td>最低 UI、教程与结果提示</td>
+<td>T07、T16、T17</td>
+<td>2–3</td>
+<td>新玩家能看见血量、弹药、持物、波次和关键操作；提示解释机关方向与空中激活；胜负有清楚重开入口</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T19</td>
+<td>可压缩</td>
+<td>提升命中、启动、方向与警告反馈</td>
+<td>T12、T18</td>
+<td>2–3</td>
+<td>枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T20</td>
+<td>可压缩</td>
+<td>模板资源整合、简单统一外观与授权记录</td>
+<td>T17、T19</td>
+<td>2–3</td>
+<td>角色沿用实际可用模板移动动画；道具与场景用几何体；每个外部资源能追溯来源，不制作独立定制动画；美术细节可缩减</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T21</td>
+<td>核心</td>
+<td>内部完整打包试玩与 G3 验收</td>
+<td>T09、T13、T16–T18</td>
+<td>2–3</td>
+<td>从包体起步通关三波并死亡重开，基础交互测试通过；有录屏和缺陷记录，阻断问题回流原任务</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T22</td>
+<td>可压缩</td>
+<td>外部盲玩反馈</td>
+<td>T19、T21</td>
+<td>1.5–2.5</td>
+<td>目标 3 人，不讲解操作先观察；至少 1 名不了解设计的人试玩；记录误操作、首次空中激活与理解连锁的过程；人数可减，真实观察保留</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T23</td>
+<td>核心</td>
+<td>根据证据调整参数与教学</td>
+<td>T22</td>
+<td>2–3</td>
+<td>只改已暴露问题；更新 <a href="#doc-parameters">玩法参数基线</a> 与资源参数，并回归相关测试；玩家可理解发射方向与危险来源，记录改前/改后</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T24</td>
+<td>核心</td>
+<td>性能压力、稳定与边界修复</td>
+<td>T13、T21、T23</td>
+<td>2–4</td>
+<td>在指定基准机器与最大配置密度下录性能；重开、退出、失败流程没有泄漏和崩溃；记录达标或具体问题，不能只写“流畅”</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T25</td>
+<td>核心</td>
+<td>候选包与提交阻断回归</td>
+<td>T20、T24</td>
+<td>2–3</td>
+<td>候选包从最终压缩包重新解压；<a href="#doc-test">测试计划与验收</a> 中阻断提交的测试通过；版本标识与证据一致，无仅在编辑器成立的结果</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T26</td>
+<td>可压缩</td>
+<td>参赛物料、玩法简介与资源说明</td>
+<td>T19、T25</td>
+<td>1.5–2.5</td>
+<td>按 <a href="#doc-release">发布检查清单</a> 与后台实际要求准备图标、宣传图、实机截图/视频、说明与资源记录；展示投掷空中启动及自然连锁；剪辑装饰可省</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T27</td>
+<td>核心</td>
+<td>开发者手动上传、自测、提审与状态记录</td>
+<td>T25、T26、厂商认证通过</td>
+<td>1–2</td>
+<td>按 <a href="#doc-release">发布检查清单</a> 的 PC 检查顺序核对最终包、平台自测和投稿信息；保存提交时间/包体版本/状态；不把等待审核算成有效工作小时</td>
+<td>未开始</td>
+</tr>
+<tr>
+<td>T28</td>
+<td>核心</td>
+<td>审核意见与阻断缺陷修复窗口</td>
+<td>T27</td>
+<td>4–8，另留</td>
+<td>留存审核意见；只修改必须问题；新包执行受影响回归与 <a href="#doc-release">发布检查清单</a>；实际状态为“审核通过”后才能结束</td>
+<td>未开始</td>
+</tr>
+</tbody>
+</table>
+<p>表中多个依赖写成区间表示包含区间内全部任务，例如 T16–T18 包含 T16、T17、T18。T14、T17、T18 应围绕最小可用场地交错实施，而不是等装饰完成才验证闭环。</p>
+<h2 id="doc-plan-section-5">6. 超时后的取舍顺序</h2>
+<p>每天结束时重算“剩余净时间”和“剩余任务粗估”，包含尚未解决的缺陷。剩余工作下界都超过剩余时间时，当天减范围，不能等到最后两天。</p>
+<ol>
+<li>先取消所有 P1、额外敌人行为、额外波次和额外道具；这些本来就未列入首版。</li>
+<li>T20 只保模板角色与几何体统一颜色；删独立定制动画和装饰，T19 保方向/伤害/激活信息即可。</li>
+<li>T22 从 3 人减至 1 人；T26 用清楚的原始实机视频和截图，少做剪辑。不得删除外部操作观察或平台要求的物料。</li>
+<li>主竞技场保三个可辨认区域和可用投掷/弹射空间，用更少掩体降低导航、碰撞和装饰工作；仍是一张主竞技场，不增加关卡。</li>
+<li>降低同时敌人数、同时活跃机关及视觉粒子密度，但须同步修改 <a href="#doc-parameters">玩法参数基线</a>，并回归三波节奏和上限测试；保持三类道具、三波闭环与真实连锁。</li>
+<li>G1 或 G2 延期超过一个开发日时，暂停其他内容，优先修核心。不把未达到核心标准的版本包装为完成；更新时间、未实现项和风险。</li>
+</ol>
+<p>如果实际每天只有 2–3 小时，10/2–17 只有 32–48 小时，扣缓冲后不足下表粗估下界。此时原三波参赛版不能被保证：应先集中约 4–6 个开发日完成 G0–G2，确认剩余时间后重估。保住可运行核心原型和真实连锁的价值，再决定参赛版能否完成；不要为赶截止删除本作特色。</p>
+<h2 id="doc-plan-section-6">7. 开发日志与过程证据</h2>
+<p>以下日志是选做，只有争取“全程参与奖”时才进入奖项计划。官方该奖项还要求按时有效投稿、完整核心循环和评审期至少 50 位有效试玩；五篇日志本身不保证获奖或达到试玩门槛。日志不是所有参赛者的强制条件。<a href="https://www.taptap.cn/moment/851888213915075734">官方答疑</a></p>
+<table>
+<thead>
+<tr>
+<th>建议日期</th>
+<th>日志主题</th>
+<th>应来自哪些真实证据</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10/3</td>
+<td>为什么空中启动值得做；第一次操作验证</td>
+<td>G1 录屏、成功率、误操作与实际调整</td>
+<td>未撰写；选做</td>
+</tr>
+<tr>
+<td>10/5</td>
+<td>三个装置如何产生连锁</td>
+<td>G2 两种连锁、统一规则与失败案例</td>
+<td>未撰写；选做</td>
+</tr>
+<tr>
+<td>10/9</td>
+<td>敌人死亡位置如何改变下一波</td>
+<td>G3 三波闭环、场地与掉落布局</td>
+<td>未撰写；选做</td>
+</tr>
+<tr>
+<td>10/13</td>
+<td>玩家第一次试玩暴露了什么</td>
+<td>经同意使用的真实反馈、可理解性改动前后</td>
+<td>未撰写；选做</td>
+</tr>
+<tr>
+<td>10/17</td>
+<td>首版边界与提交准备</td>
+<td>实际候选包、已通过测试与仍保留的限制；尚未提审时明确写“准备中”</td>
+<td>未撰写；选做</td>
+</tr>
+</tbody>
+</table>
+<p>单篇粗估 0.5–1 小时，避免额外拍摄一套素材。未完成门槛时，日志写真实问题与尝试，不能为了日期写成已成功。本文档只安排日志，不对外发布任何内容。</p>
+<h2 id="doc-plan-section-7">8. 每日结束时保存的最小记录</h2>
+<p>每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 <a href="#doc-workflow">文档维护与变更流程</a> 在 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a> 中记录原因、关联任务/测试，并让 <a href="#doc-rules">道具与交互规则</a>、<a href="#doc-technical">技术设计</a>、<a href="#doc-level">关卡、界面与资源规格</a>、<a href="#doc-parameters">玩法参数基线</a> 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。</p>
+<p>当前进度：G0–G4 均未验收；T02 的工程创建子项已完成，T03 已完成本地 Git/origin/忽略/LFS 配置但提交与恢复待验收，其余实施任务没有完成证据；日志均未撰写；尚无已验收构建、录屏、性能数据、试玩结果或审核状态。沿用第三人称模板是当前建议，不需要重新建空白工程。</p>
+</section><section class="document" id="doc-workflow"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Documentation_Workflow.md">05_Development_Guide/Documentation_Workflow.md</a></div><h1 id="doc-workflow-motheffect">motheffect：文档维护与变更流程</h1>
+<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件规定文档归属、命名与变更顺序，用来避免多个文件维护不同版本的规则。目录入口见 <a href="#doc-readme">文档入口</a>；设计依据见 <a href="#doc-decisions">设计决策</a>，变更历史见 <a href="#doc-changelog">变更日志</a>。</p>
+<h2 id="doc-workflow-section">1. 唯一来源与状态</h2>
+<p>玩法目标和优先级以 <a href="#doc-game">游戏策划案</a> 为准；交互行为以 <a href="#doc-rules">道具与交互规则</a> 为准；类接口与碰撞以 <a href="#doc-technical">技术设计</a> 为准；场地、波次和资源需求以 <a href="#doc-level">关卡、界面与资源规格</a> 为准；数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。其他文件引用这些来源，避免复制第二份参数表或状态机。</p>
+<p>每份文档保留标题、版本、日期及实际状态。用户已确认、建议基线、待原型验证和已实测分别记录；未执行的任务/测试不能填写通过。REQ、R、D、T、G、TC、DEC、CHG、RISK 等现有 ID 保持稳定，重命名文件不重排 ID。</p>
+<h2 id="doc-workflow-section-1">2. 命名与归档</h2>
+<p>保留已有阶段目录编号；文件使用英文语义名称和下划线，扩展名小写，例如 Technical_Design.md。目录已经表示阶段，文件不再附加另一套顺序编号。README.md 为根目录入口，正文继续使用中文。</p>
+<p>GDD 放玩法设计和玩法参数；TDD 放实现设计；Decisions 放设计决策；Code_Standard 放源码/资产约定；Engine_Config 放 UE 配置；Development_Guide 放任务和变更流程；Test_Doc 放测试；Release 放打包投稿检查。Assets/UML 供后续实际产出的图示使用，当前保留空目录，不创建占位图。</p>
+<p>本轮保留综合决策账本，避免单人 Jam 为每个决策另建空模板；较大技术决策后续可按 ADR_序号_主题.md 独立记录，并从决策账本链接。</p>
+<h2 id="doc-workflow-section-2">3. 修改规则的工作流程</h2>
+<p>先复现问题并写清症状，再判断是参数、表现、规则还是范围变化。</p>
+<p>参数变化：更新 <a href="#doc-parameters">玩法参数基线</a> 中对应字段，更新版本和调参理由，重跑受影响的 TC。相机数值及道具大小变动属于此类。</p>
+<p>规则变化：先更新 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a>，再更新 <a href="#doc-rules">道具与交互规则</a>、相关 <a href="#doc-technical">技术设计</a> 实现及 <a href="#doc-test">测试计划与验收</a> 测试。例子是爆炸也能启动道具、激活发射器能重新拾取、空中柱子改为平台。这些变化不能只落在单个蓝图里。</p>
+<p>范围变化：更新 <a href="#doc-game">游戏策划案</a> 优先级、<a href="#doc-level">关卡、界面与资源规格</a> 内容和 <a href="#doc-plan">开发任务与排期</a> 工时。增加一种敌人前先说明挤占的工作与对应验收项。</p>
+<p>日常修复：只改变实现使其符合已有规则，记录缺陷及修复版本，不必重写策划案。</p>
+<h2 id="doc-workflow-section-3">4. 阅读快照与证据</h2>
+<p>先修改对应 Markdown/JSON 源文件，再同步版本和日期、修正文档相对链接，并重新生成 <a href="#doc-readme">浏览器阅读版</a>。阅读版只用于浏览，不能单独修改为与源文件冲突的另一套设计。</p>
+<p>任务、规则或测试变更时保留关联 ID；实际构建/缺陷证据按 <a href="#doc-test">测试计划与验收</a> 记录。发布状态按 <a href="#doc-release">发布检查清单</a> 记录，上传成功不能替代审核通过。</p>
+</section><section class="document" id="doc-changelog"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><h1 id="doc-changelog-motheffect">motheffect：变更日志</h1>
+<p>版本 v0.6 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理文档结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置；当前 v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录。未提交推送，玩法规则、参数数值和游戏源码均未修改。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
+<h2 id="doc-changelog-section">1. 变更记录</h2>
+<table>
+<thead>
+<tr>
+<th>变更 ID</th>
+<th>日期</th>
+<th>内容</th>
+<th>原因</th>
+<th>影响与验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHG001</td>
+<td>2026-10-02</td>
+<td>建立 v0.1 文档基线</td>
+<td>把创意转换为可执行设计</td>
+<td>尚未实现，需 G0 至 G4 验证</td>
+</tr>
+<tr>
+<td>CHG002</td>
+<td>2026-10-02</td>
+<td>确认 UE 5.8 与混合开发，无现成资源</td>
+<td>用户补充</td>
+<td><a href="#doc-technical">技术设计</a> 使用混合架构，<a href="#doc-level">关卡、界面与资源规格</a> 采用模板与自建灰盒</td>
+</tr>
+<tr>
+<td>CHG003</td>
+<td>2026-10-02</td>
+<td>更新 v0.2，正式名 motheffect、魔法朋克风格</td>
+<td>用户确定名称与风格</td>
+<td>更新标题、表现提案和元数据，战斗数值未改</td>
+</tr>
+<tr>
+<td>CHG004</td>
+<td>2026-10-02</td>
+<td>记录既有模板工程与 MothEffect 模块，复用现有角色/控制器/游戏模式</td>
+<td>用户创建工程，本次只读核对</td>
+<td>更新 <a href="#doc-technical">技术设计</a>/<a href="#doc-plan">开发任务与排期</a>，T02 标部分完成；编译与打包未执行</td>
+</tr>
+<tr>
+<td>CHG005</td>
+<td>2026-10-02</td>
+<td>整理 v0.3 文档：统一英文语义文件名、阶段归档、拆分职责、更新导航与阅读版</td>
+<td>用户要求按已有文档结构规范管理</td>
+<td>保留所有规则/任务/测试/决策 ID，参数数值未改；澄清 TC29 本地验收与平台自测的执行顺序，校验文件链接与内容保留</td>
+</tr>
+<tr>
+<td>CHG006</td>
+<td>2026-10-03</td>
+<td>初始化本地 main、连接 GitHub origin、配置 .gitignore 与 Git LFS、补充公开建议</td>
+<td>用户要求连接仓库并明确禁止提交推送</td>
+<td>未暂存/提交/推送；T03 标部分完成，恢复仍待验收；标记个人路径与配置凭证字段，未输出凭证值、未修改游戏实现或引擎配置</td>
+</tr>
+<tr>
+<td>CHG007</td>
+<td>2026-10-03</td>
+<td>将个人磁盘路径改为相对链接/路径，同步 HTML，处理 AndroidFileServer Token</td>
+<td>用户准备自行提交推送，要求清理公开内容</td>
+<td>JSON 路径基准为其文件目录，玩法参数未改；禁用 AFS 用途和网络连接、Token 显式清空；未暂存/提交/推送</td>
+</tr>
+<tr>
+<td>CHG008</td>
+<td>2026-10-03</td>
+<td>Content 下只将 MothEffect 子目录纳入 Git，其余目录和顶层文件排除</td>
+<td>用户指定提交范围</td>
+<td>本机资源未删除，LFS 继续用于保留资产；记录当前 ThirdPerson 等依赖不会随仓库分发的限制；未暂存/提交/推送</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-changelog-section-1">2. 本轮归档说明</h2>
+<p>阅读指南归入项目概览；游戏策划、道具规则、关卡/界面/资源和参数归入 GDD；UE 实现设计归入 TDD，并拆出代码规范、版本管理和工程配置；测试与提交拆为测试计划、发布清单；决策与变更拆为设计决策、维护流程和本变更日志。根目录 README 提供有效文件索引，阅读版同步为新结构。</p>
+<p>早期 v0.1/v0.2 文件包是历史快照；当前有效基线以项目 Docs 为准。</p>
+</section><section class="document" id="doc-test"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><h1 id="doc-test-motheffect">motheffect：测试计划与验收</h1>
+<p>版本：v0.3｜制定日期：2026-10-02｜时间：香港时间（UTC+8）</p>
+<p>当前状态：用户已建立 MothEffect 第三人称模板工程，本次仅静态核对文件。以下测试全部<strong>未执行</strong>；没有本作核心玩法验收、测试构建、性能实测、平台上传或审核通过证据。“预期结果”是计划验收标准，不能当作已通过结果。</p>
+<h2 id="doc-test-section">1. 验收依据与执行方式</h2>
+<p>规则唯一依据是 <a href="#doc-rules">道具与交互规则</a>，实现职责见 <a href="#doc-technical">技术设计</a>，AI、三波与场地见 <a href="#doc-level">关卡、界面与资源规格</a>，数值唯一依据是 <a href="#doc-parameters">玩法参数基线</a>。测试里的时长、距离、伤害、速度和数量均从该 JSON 当次基线读取，不在本文件再维护一份数值表。</p>
+<p>先在验证房用固定位置、可显示状态/命中方向/伤害的调试对象执行规则测试，再在主竞技场执行流程和压力测试。PIE 可帮助定位问题；G0、G3、G4 的关键结果必须在独立 Windows 包体复现。调试生成、强制状态和计数工具仅供开发测试，最终公开包不得依赖它们才能玩。</p>
+<p>每次测试记录构建标识、参数基线版本、环境、步骤、实际结果和证据。状态只用“未执行 / 通过 / 失败 / 阻塞 / 不适用”；不适用必须说明为何已不属于当前范围，不能把核心机关测试标成不适用。</p>
+<h2 id="doc-test-section-1">2. 提交阻断级别</h2>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>定义与例子</th>
+<th>提交处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0 致命</td>
+<td>游戏无法启动、可重复崩溃、包体缺失、无法进入主关卡、无法完成必经流程、审核拒绝且未修复</td>
+<td>阻断提交；必须解决并重测</td>
+</tr>
+<tr>
+<td>S1 重大</td>
+<td>空中启动、方向锁定、真实连锁等核心规则错误；重复爆炸/持续弹射；重开残留；三波不可完成；容量失控；平台下载后的包不可玩；基准配置严重卡顿影响瞄准</td>
+<td>阻断提交；不能用说明文字代替修复</td>
+</tr>
+<tr>
+<td>S2 一般</td>
+<td>非核心提示不清、偶发轻微穿插、可绕开的场景问题，核心流程完整且不会误导规则</td>
+<td>可带已知限制提交；记录复现、影响与取舍。若实际阻挡教程或核心操作，升级 S1</td>
+</tr>
+<tr>
+<td>S3 外观</td>
+<td>装饰缺失、低影响特效瑕疵、非必要动画表现</td>
+<td>可延期；不为此挤占审核缓冲</td>
+</tr>
+</tbody>
+</table>
+<p>关键规则测试全部需有结果。未执行的核心规则/本地包测试不等于没有 S1，应当阻断候选包本地放行。TC29 分阶段记录：本地部分在上传前完成，平台自测部分在上传后、提审前完成；两部分都通过才把 TC29 标为通过。全部测试通过也不能代替 <a href="#doc-release">发布检查清单</a> 中的平台认证、上传解析、自测与审核。</p>
+<h2 id="doc-test-section-2">3. 规则与操作测试</h2>
+<p>每项可根据实际调试工具设置前置状态；人工观察不清的步骤应加状态、触发计数或速度方向日志。下表初始状态统一为未执行。</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>检查项与具体操作</th>
+<th>预期可观察结果</th>
+<th>失败默认级别</th>
+<th>初始状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC01</td>
+<td>主武器伤害：固定敌人不移动，按 <a href="#doc-parameters">玩法参数基线</a> 发射一次，再连续击杀；对比血量、命中计数和死亡事件</td>
+<td>每次有效命中只结算一次配置伤害；死亡只触发一次；不因帧率重复伤害</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC02</td>
+<td>道具拾取/放下：在范围内外分别按 E；携带一个道具时尝试拾取第二个；再放下</td>
+<td>按 <a href="#doc-rules">道具与交互规则</a> 的范围与单持有规则执行；状态 Dormant → Held → Dormant；未发生隐式复制、丢失或墙内生成</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC03</td>
+<td>D03 地面方向：分别从前后左右命中静止装置，记录启动弹丸世界方向；启动后移动玩家并旋转镜头</td>
+<td>四次都沿各自命中弹丸的世界飞行方向发射；方向在启动时锁定，不跟踪玩家或后续镜头</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC04</td>
+<td>D03 空中方向：沿不同方向投掷，分别在上升段、顶点附近、下降段命中；故意让命中方向与投掷速度不同</td>
+<td>发射方向取命中方向，不能误取道具前向或投掷速度；发射器继续受重力，世界方向不随物理旋转改变</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC05</td>
+<td>空中操作可用性：安全房间熟悉约 2 分钟，连续尝试 10 次“捡起 → 投掷 → 空中射击启动”；记录失败原因</td>
+<td>至少 8 次成功启动；轮廓和射击反馈可见；未成功可以区分漏枪、遮挡或操作时序；这是内部目标，未实测</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC06</td>
+<td>携带状态与输入：Held 时按左键并保持，随后释放再按；同时让敌人弹击中携带道具/玩家附近</td>
+<td>第一次按下仅投掷，持续按住不立即开枪；释放后下一次按下可射击；Held 道具不启动，玩家仍按有效命中受到伤害，不产生持物护盾</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC07</td>
+<td>外来弹激活与弹道：让敌人 P01 和另一台 D03 的 P01 分别命中地面/空中 Dormant 道具；交换敌我生成者，另发一颗到空旷区观察</td>
+<td>外来弹丸可以启动装置，与玩家 W01 共用触发契约；P01 建议重力比例 0，保持低速直线飞行，与受重力的道具区分；首次阻挡命中消耗，不穿透/反弹，未命中按寿命清理</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC08</td>
+<td>排除爆炸和碰撞触发：把 Dormant D01/D03 放在 D02 范围内引爆；再把三种道具从高度扔下、互撞和撞敌人</td>
+<td>爆炸可推开且可伤害角色，但不直接启动其他装置；地面/物体碰撞不启动装置；被推动后遭弹丸命中才启动</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC09</td>
+<td>D01 地面探测与净空：在平地、上方空中、斜面、平台边缘、超过向下探地范围和低天花板下分别启动</td>
+<td>沿世界竖直下方找可承托静态地面；升柱前检查最终柱体整体静态净空；无承托面或天花板阻挡时消耗并明显提示，不能凭空造平台、穿入天花板或持续循环重试</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC10</td>
+<td>D01 单次推力：让玩家、敌人与可移动道具同时处在弹射范围，停留覆盖整个伸出/停留过程</td>
+<td>三类目标均按配置获得推力；同一升柱对每个目标只弹射一次；没有每帧重复上冲，柱子按阶段结束并清理</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC11</td>
+<td>D02 位置、半径与友伤：分别在地面/半空启动；把玩家、敌人和道具放在范围内外及掩体两侧</td>
+<td>爆炸中心是激活位置；范围、伤害、推力与 <a href="#doc-rules">道具与交互规则</a>/<a href="#doc-parameters">玩法参数基线</a> 一致；敌我同规则受伤；静态实体掩体阻挡伤害与推力，多组件目标只结算一次；道具只有推力而不被激活</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC12</td>
+<td>幂等与生命周期：同一帧/相邻帧多发命中同一道具；对 Active 和 Spent 再射击、拾取；激活后计时到结束</td>
+<td>一件装置只启动一次；Active 不重启、不拾取；效果次数及 D03 持续时间不因再次命中增加；结束只进入一次 Spent/Destroyed 清理</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC13</td>
+<td>发射器推力：启动空中/地面 D03 后，分别用柱子和爆炸推动它</td>
+<td>仍按启动时锁定的世界方向发射；位置轨迹改变且继续受重力；不是锁在原地或自动浮空，Active 仍不可拾取</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC14</td>
+<td>角色与物理根处理：用 D01/D02 推玩家、敌人与静止/上升/下降中的道具，记录前后速度；贴墙重测；让爆炸和柱子同帧发生并交换回调次序</td>
+<td>角色用移动系统，道具用物理根；D01 保留 XY、把 Z 设置为 <a href="#doc-parameters">玩法参数基线</a> 的目标竖直速度；D02 叠加推力；同帧先合并爆炸、再设置柱子 Z、最后统一限速，交换次序不改变结果；无整身物理失控或穿墙</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC15</td>
+<td>自身弹丸排除与敌我伤害：D03 在狭小空间发射，让自身、新装置、玩家、敌人分别接近弹道</td>
+<td>生成者忽略自己生成的弹丸，不误伤/误触自身；外部角色和装置均按规则命中；其他同阵营对象仍会受伤或启动</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC16</td>
+<td>两种真实连锁：① D03 弹命中另一 Dormant 装置；② D01 或 D02 改变装置位置，使其进入 D03 弹道；移动摆放位置再试</td>
+<td>两种结果均由普通弹丸、推力、命中和位置产生，不靠测试专用联动脚本；位置不同会改变结果；无无限连锁和重复启动</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC17</td>
+<td>投掷近墙与相机遮挡：背贴墙、正对近墙、掩体旁、视角朝上/下投掷；射击准星后存在枪口遮挡的对象</td>
+<td>投掷阻挡处理按 <a href="#doc-rules">道具与交互规则</a>/<a href="#doc-technical">技术设计</a>，不塞墙/穿墙；视线与枪口约束一致，枪口有墙时不越墙命中准星后目标；道具轮廓可辨认</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC18</td>
+<td>Dormant 过期：松散道具等待到警告和过期；警告期间拾取再放下、投掷；持续携带越过松散过期时刻</td>
+<td>闲置时间累计，Held 暂停、放下/投掷后继续，不刷新整段寿命；携带时不突然消失；最后阶段有警告，过期后计数正确扣除，没有遗留效果</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC19</td>
+<td>上限：依次达到总道具、活跃柱/发射器、同时敌人和飞行弹丸上限，再继续掉落/拾取/激活/发射；让部分对象过期</td>
+<td><a href="#doc-parameters">玩法参数基线</a> 的计数不突破；总道具满时只回收最早 Dormant，无 Dormant 则不掉落并提示；不误删 Held/Active；同类 Active 满时按 <a href="#doc-rules">道具与交互规则</a> 结束最早装置并启动新的；弹丸满额消耗该发、不补发延长；额度释放后恢复</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+</tbody>
+</table>
+<p>TC09、TC11、TC18、TC19 的边界处置由 <a href="#doc-rules">道具与交互规则</a> 决定。若实现时发现文档未规定某一分支，先把分支写入 <a href="#doc-rules">道具与交互规则</a> 与 <a href="#doc-decisions">设计决策</a>，在 <a href="#doc-changelog">变更日志</a> 留痕，再测试；不能让蓝图恰巧发生的结果替代设计决定。</p>
+<h2 id="doc-test-section-3">4. 流程、稳定与体验测试</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>检查项与具体操作</th>
+<th>预期可观察结果</th>
+<th>失败默认级别</th>
+<th>初始状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC20</td>
+<td>敌人确定掉落：分别击杀三种外观，在有坡度、墙边和已有机关的地点重测；用玩家枪、机关弹和爆炸分别击杀</td>
+<td>类型与 <a href="#doc-level">关卡、界面与资源规格</a> 的预告对应；原死亡位置附近有效掉落一次；无重复死亡掉落、墙内不可拾取或空气中卡住；额度满时按 <a href="#doc-rules">道具与交互规则</a> 处理</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC21</td>
+<td>AI 与掩体：玩家在掩体前后、不同高度、超出/进入可攻击区移动，观察预警、开火、追踪与导航</td>
+<td>AI 按 <a href="#doc-level">关卡、界面与资源规格</a> 射击与移动；子弹被实物挡住；预警清楚；不因为障碍永远卡住导致无法清波；没有无预警瞬间持续开火</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC22</td>
+<td>完整三波：从干净启动包进入教程，再完成 <a href="#doc-level">关卡、界面与资源规格</a> 的全部波次；在第二批出场前消灭第一批，并站进一个生成警戒圈；计数敌人、掉落和过渡</td>
+<td>波次按预定数据生成，存活及待生成计数均为零才清波；批次空窗不提前推进，生成点被占用时提示并延迟，移开后重新预警出场；三个装置均有使用机会；第三波结束胜利</td>
+<td>S0</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC23</td>
+<td>死亡与重开清理：同时有 Held、Active D03、柱子和飞行弹时死亡；重开连续 10 次，记录对象数与计时器</td>
+<td>死亡后不继续战斗；重开所有对象/持物/弹丸/柱子/波次/事件清到初始状态；旧定时器不伤新角色、不额外生成</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC24</td>
+<td>弹药耗尽：空匣连续按射击、持物投掷后空匣射击、Held 时按 R、换弹中受伤；记录弹量变化</td>
+<td><a href="#doc-parameters">玩法参数基线</a> 建议无限备用弹；空匣不开枪；空手 R 按配置换弹，Held 时 R 不生效；无负数或绕过间隔连射；死亡/暂停不遗留开火计时器</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC25</td>
+<td>退出、失败、胜利与重新进入：三个状态分别回到入口/退出程序，再重新启动</td>
+<td>入口可用、结果清楚、可重开；退出没有挂起；重新启动不保留失效战斗状态；包体不需要 UE 编辑器</td>
+<td>S0</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC26</td>
+<td>新玩家理解：按 <a href="#doc-plan">开发任务与排期</a> 的外部盲玩安排，先不讲解，记录第一次拾取、投掷、空中启动、机关连锁和死亡原因</td>
+<td>至少一位真实试玩者能通过界面找到操作，能复述“击中启动、锁定方向、机关互相作用”并完成一次空中启动；不能理解时修教程再观察</td>
+<td>S1，纯次要措辞可 S2</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC27</td>
+<td>最大配置密度与帧率：使用 <a href="#doc-parameters">玩法参数基线</a> 的容量上限组合，持续战斗至少 3 分钟；重复投掷、连锁和生成清理，记录帧耗时与计数</td>
+<td>按下节指定机器/画质/分辨率评估；无容量突破、持续增长、长时间卡顿或连锁冻结；达到/未达到都记录实际数据</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC28</td>
+<td>长时间与变速：连续运行约 20 分钟，包含多次三波和重开；在约 30/60/高帧率环境重复投掷、D01、D03 与 P01</td>
+<td>没有随时间累积对象/定时器；规则不随帧率改变；弹丸不因为低帧率穿过目标；方向、持续时长和伤害次数保持一致</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC29</td>
+<td>最终压缩包与平台自测：从候选 zip/7z 解压到另一目录，关闭编辑器启动；在实际后台自测最终上传的相同包体</td>
+<td>正确入口 exe 启动，地图和资源完整，无编辑器路径依赖；键鼠输入、教程、空中启动、三波、退出正常；平台包与验收包版本相同</td>
+<td>S0</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC30</td>
+<td>故障可追踪与发布一致性：对照构建标识、<a href="#doc-parameters">玩法参数基线</a> 参数、测试记录、截图/视频、发布页说明与资源清单</td>
+<td>测试证据指向最终版本；物料展示真实实现；没实现的 P1 不作为当前功能宣传；授权/AI资产说明符合实际；无调试作弊入口泄露</td>
+<td>S1，次要文字可 S2</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC31</td>
+<td>暂停与失焦：按住开火时暂停/切换窗口，携带或激活道具时暂停，等待超过工作寿命再恢复</td>
+<td>暂停期间玩法计时、物理、弹丸停止，恢复不瞬间耗尽寿命；界面可操作；失焦/暂停清开火计时，鼠标仍按住时先等释放，不立即投掷/开火</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC32</td>
+<td>界外安全与跨波保留：把玩家、敌人、道具和弹丸分别推出安全体积；让有效 Dormant 留到下一波</td>
+<td>玩家界外判负，敌人只注销一次且不界外掉落，道具/弹丸清理释放容量；下一波保留有效道具的剩余闲置时间，不重置寿命；无界外敌人阻止清波</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+<tr>
+<td>TC33</td>
+<td>柱体实体阶段：在伸出过程中放角色/道具进入柱体区域，随后让其离开；另一次保持体积占用至停留结束；尝试在净空后柱顶落地及让弹丸穿越柱身</td>
+<td>伸出阶段实体碰撞关闭，仅查询并单次弹射；完全伸出后，停留期间体积净空才开启实体支撑/阻挡，角色可站立且柱身挡弹；占用则等待至停留结束，不强行夹住对象；收回前关闭实体碰撞，不额外弹射</td>
+<td>S1</td>
+<td>未执行</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-test-section-4">5. 性能基准：机器未定，结果未测</h2>
+<p><strong>以下仅为建议目标，基准机器和质量档必须先定，不能宣称已经达到 60 FPS。</strong> 在指定 Windows 基准机器、1920×1080、选定画质档、独立包体中，目标为正常最大配置密度下能稳定瞄准和连续操作，初步以大部分帧耗时不超过 16.7 ms、长段不跌至 30 FPS 以下作为排查依据。首次加载与稳定战斗分开记录，不用菜单帧率代表战斗性能。</p>
+<table>
+<thead>
+<tr>
+<th>记录项</th>
+<th>初始值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU / GPU / 显存 / 内存 / 存储</td>
+<td>待填：用户实际测试机器</td>
+</tr>
+<tr>
+<td>Windows 版本、图形驱动、实际 UE 5.8 补丁号</td>
+<td>待填</td>
+</tr>
+<tr>
+<td>分辨率、画质档、渲染路径、帧率限制</td>
+<td>待填；建议先固定 1080p 基线</td>
+</tr>
+<tr>
+<td>构建标识、参数基线版本、测试场景与上限组合</td>
+<td>待填</td>
+</tr>
+<tr>
+<td>正常战斗与压力战斗帧耗时、明显卡顿次数</td>
+<td>未测</td>
+</tr>
+<tr>
+<td>20 分钟对象数/内存变化与异常日志</td>
+<td>未测</td>
+</tr>
+<tr>
+<td>结论及适用范围</td>
+<td>未验收</td>
+</tr>
+</tbody>
+</table>
+<p>先用引擎基础性能统计定位 CPU、GPU、物理、弹丸和粒子开销，再决定削减表现或并发。修改容量需同步 <a href="#doc-parameters">玩法参数基线</a> 并重测 TC19、TC22、TC27；降低画质需重新记录配置，不直接把新的结果算成旧基准达标。无需在 GameJam 阶段建设完整自动化性能平台。</p>
+<h2 id="doc-test-section-5">6. 证据与缺陷记录</h2>
+<p>每个关键门槛至少保存一段可重现的短录屏或日志。建议开发项目内用 <code>QA/&lt;构建标识&gt;/</code> 存截图、录屏、测试记录和缺陷记录；这些目录是未来项目约定，不是本次已经创建的测试证据。</p>
+<p>测试记录最小字段：测试 ID、构建标识、参数版本、执行日期/人、环境、实际步骤、预期、实际结果、状态、证据位置、关联缺陷 ID。缺陷记录最小字段：BUG 编号、S0–S3 级别、可复现步骤、出现频率、影响、关联测试、修复构建、回归状态。字段用于以后真实执行，不预填“通过”。</p>
+<p>最低回归范围按影响确定：触发/碰撞/命中上下文变更重测 TC03–TC19、TC33；状态/生命周期/计数变更重测 TC06、TC12、TC18–TC20、TC23、TC27–TC28、TC31–TC33；波次/AI/场地变更重测 TC17、TC20–TC23、TC26–TC29、TC32–TC33；纯参数变更重测相关规则与完整三波。提交候选包至少重测全部核心规则、三波、重开、压力及最终包启动。通过后没有新变更或新问题，不无限重复所有测试。</p>
+<h2 id="doc-test-section-6">7. 首版验收结论记录</h2>
+<p>当前结论：<strong>未验收，尚不具备提交判断依据。</strong></p>
+<ul>
+<li>TC01–TC33：全部未执行。</li>
+<li>G0–G4：全部未验收。</li>
+<li>构建标识、参数执行版本、测试机器：待实际开发填写。</li>
+<li>S0/S1 缺陷数量：未知，未测试不能填零。</li>
+<li>已知 S2/S3 限制：尚未形成实际试玩数据。</li>
+<li>平台认证、解析、自测、投稿、审核通过：均未核对或未执行，详见 <a href="#doc-release">发布检查清单</a>。</li>
+</ul>
+<p>开发完成后，把上述初始状态替换为真实结果与证据链接，并保留历史构建记录。本文档提供执行标准，不构成已实现或已完成测试的声明。</p>
+<p>平台官方要求、最终打包、上传与审核顺序已归入 <a href="#doc-release">发布检查清单</a>。TC29/TC30 仍在本文件维护测试标准，发布清单引用这些测试。</p>
+</section><section class="document" id="doc-release"><div class="source">可编辑源文件：<a href="../07_Release/Release_Checklist.md">07_Release/Release_Checklist.md</a></div><h1 id="doc-release-motheffect">motheffect：发布检查清单</h1>
+<p>版本 v0.3 · 2026-10-02 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>适用 Windows 单机投稿，香港时间 UTC+8。当前仅有模板工程和文档；候选包、平台认证、自测、投稿与审核均未核对或未执行。发布是否完成需要真实后台状态与包体验收证据。</p>
+<p>测试唯一来源为 <a href="#doc-test">测试计划与验收</a>。上传前完成核心规则与本地包验收，核对 S0/S1 阻断项、TC29 本地部分和 TC30；上传后完成 TC29 平台自测部分，再提交审核。任务与时间见 <a href="#doc-plan">开发任务与排期</a>。</p>
+<h2 id="doc-release-section">1. 投稿前需要核实的官方要求</h2>
+<p>核实日期：2026-10-02。以投稿时实际后台和最新官方说明为准。以下链接都是主办方或 TapTap 官方来源，不依赖第三方攻略。</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>已核对到的官方信息</th>
+<th>开发者待执行状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创作与截止</td>
+<td>本届主题“涌现”；截止为 10/21 12:00，届时作品须已上传且通过审核；官方建议 18 日前上传</td>
+<td>未上传、未提审、未过审。<a href="https://www.taptap.cn/moment/854692229854265392">主题公告</a></td>
+</tr>
+<tr>
+<td>账号与认证</td>
+<td>使用报名的队长账号；确认报名厂商已认证；上传教程要求个人主体</td>
+<td>认证状态未核对。<a href="https://www.taptap.cn/moment/851888213915075734">答疑</a>、<a href="https://www.taptap.cn/moment/854478457231377904">新版上传教程</a></td>
+</tr>
+<tr>
+<td>参赛端与玩法</td>
+<td>支持 Windows；赛事作品不能提供联网服务；本项目按 PC 单机准备，PC 游戏需按要求在 TapTap Windows 版运行</td>
+<td>实际运行未验收。<a href="https://www.taptap.cn/moment/851888213915075734">答疑</a></td>
+</tr>
+<tr>
+<td>广告</td>
+<td>活动期间不能接入广告</td>
+<td>最终包待核对。<a href="https://www.taptap.cn/moment/851888213915075734">答疑</a></td>
+</tr>
+<tr>
+<td>PC 上传</td>
+<td>旧版官方教程列明 zip/7z、填写正确可执行文件、等待解析、先自测再提审；新版入口不同，按实际后台选择对应教程</td>
+<td>包体与入口路径未核对。<a href="https://www.taptap.cn/moment/854478404412507237">旧版上传教程</a>、<a href="https://www.taptap.cn/moment/854478457231377904">新版上传教程</a></td>
+</tr>
+<tr>
+<td>物料与平台配置</td>
+<td>后台有物料规格；要按对应教程配置 Windows 包、防沉迷状态、版本内容说明及投稿选项；不能把“解析成功”当作审核通过</td>
+<td>物料、版本、配置未核对。<a href="https://www.taptap.cn/moment/854478457231377904">新版上传教程</a></td>
+</tr>
+<tr>
+<td>资源与 AI 说明</td>
+<td>使用 AI 美术资产时须据实附说明；官方对 AI 美术资产占比达到 50% 或以上的最佳美术评选有条件限制</td>
+<td>资产来源和 AI 使用尚未发生，最终需据实记录。<a href="https://www.taptap.cn/moment/851888213915075734">答疑</a></td>
+</tr>
+<tr>
+<td>可选全程参与奖</td>
+<td>除有效投稿和完整循环，还需至少五篇真实开发日志与评审期至少 50 位有效试玩；不属于所有参赛者统一必选条件</td>
+<td>日志未发布、试玩未统计。<a href="https://www.taptap.cn/moment/851888213915075734">答疑</a></td>
+</tr>
+</tbody>
+</table>
+<p>官方教程内的部分截图只针对 Android。本项目当前只选 Windows，不照抄 Android 隐私或 TapPlay 项目，不为双端奖额外勾选一个未开发的平台。身份资料只在官方后台由开发者本人填写，文档不收集身份证图片或家庭地址。</p>
+<h2 id="doc-release-section-1">2. 本地候选包与发布检查顺序</h2>
+<p>下列为开发者将来执行的顺序，本次只创建文档，不执行任何上线操作。每项当前状态均为“待执行”。</p>
+<ol>
+<li>冻结候选包的代码、资产与 <a href="#doc-parameters">玩法参数基线</a> 参数，标明版本和已知 S2/S3 限制；查清 S0/S1 与未执行的核心规则/本地包测试为零。TC29 平台部分在上传后按第 6 步完成，未通过时不提审。</li>
+<li>完整 Windows 打包，确认入口地图、主竞技场与验证所需运行资源正确包含；公开包不含开发专用测试入口、调试作弊开关或不必要符号文件。</li>
+<li>把<strong>完整运行目录</strong>压为后台接受的 zip/7z；不要只取单个 exe。重新解压到独立目录，关闭编辑器，执行 TC29 的本地部分；准备正确入口 exe 相对路径，遵循实际后台示例。</li>
+<li>用报名账号确认个人厂商认证状态、参赛项目归属；按对应后台教程选择 Windows 常规发布/提供游玩等实际配置，填写游戏资料、当前版本说明、物料、真实资产说明；不要宣称未实现功能。</li>
+<li>上传最终候选包，保存包体标识与校验信息，等待解析完成；在后台核对实际可执行文件路径及版本设置。首次或更新包都按实际后台要求填写，更新版号递增。</li>
+<li>执行平台自测，确认<strong>上传的相同包体</strong>能启动、接受输入、完成空中启动和三波、退出重开；不能只凭本地测试跳过这一步。</li>
+<li>核对报名投稿选项与游戏发布状态；依据实际接入情况与对应 PC 后台教程填写防沉迷等配置。内容全部就绪后由开发者提交审核，记录提交时间、版本、项目与后台状态。</li>
+<li>查看站内信和后台审核结果。被退回时记录具体原因，只改必要项，重新打包/验收受影响内容，再上传提审；旧审核结果不自动覆盖新包。</li>
+<li>在 10/21 12:00 前确认官方状态确为通过审核且参赛关联有效，保存证据。游戏实际可下载/游玩后，从平台提供的包再验证启动与核心操作。</li>
+</ol>
+<p>新增版本会重新影响审核与时间，10/18–20 只做必要修复。提交时间、审核完成时间和可游玩状态分别记录；只有上传记录不能判定 G4 或有效投稿完成。</p>
+<h2 id="doc-release-section-2">3. 发布状态与证据</h2>
+<p>候选包构建标识/参数版本、包体校验值、入口 exe 相对路径、本地验收、平台自测、上传解析、提审时间、审核完成时间、参赛关联与可下载状态分别记录。当前全部待填；上传记录不能作为审核通过或 G4 完成的依据。</p>
+<p>涉及测试结果的证据回链到 <a href="#doc-test">测试计划与验收</a>；变更与修复版本写入 <a href="#doc-changelog">变更日志</a>。</p>
+</section></main></body></html>

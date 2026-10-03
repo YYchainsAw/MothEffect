@@ -1,10 +1,12 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.12 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.13 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
 
 用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
 
 v0.12：用户报告当前移动/瞄准动画测试成功；T05 已写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead。新代码未编译/运行，配置步骤见 [步枪、换弹与生命接入](../../05_Development_Guide/Weapon_Setup.md)。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍未实现。此前用户仅要求改代码的移动速度调参尚待同步账本，当前差异见 Player_Setup。
+
+v0.13：用户希望在角色蓝图预览并调整完整武器，Character 新增 Mesh 下的 UChildActorComponent **RifleComponent**，通过 WeaponSocket 挂接 BP_Rifle。RifleClass/RifleAttachSocket 控制类型与挂点，组件 Transform 控制偏移；OnConstruction 同步类型/挂点但不重设偏移，仅在类实际变化时设置 ChildActorClass。BeginPlay 获取现有子 Actor 并绑定事件，EndPlay 解绑并取消任务，由组件负责销毁；旧 SpawnActor 路径和 RifleRelativeTransform 字段移除，已有偏移需按接入文档手动迁移。源码静态复核，编译/预览/运行尚未验收。
 
 ## 1. 起步与职责
 

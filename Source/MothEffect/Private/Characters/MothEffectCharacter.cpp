@@ -4,6 +4,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/ChildActorComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
@@ -29,6 +30,9 @@ AMothEffectCharacter::AMothEffectCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	RifleComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("RifleComponent"));
+	RifleComponent->SetupAttachment(GetMesh(), RifleAttachSocket);
+	RifleComponent->SetChildActorOwnerOnCreation(true);
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -68,6 +72,12 @@ AMothEffectCharacter::AMothEffectCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void AMothEffectCharacter::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	ConfigureRifleComponent();
+}
+
 void AMothEffectCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -75,7 +85,14 @@ void AMothEffectCharacter::BeginPlay()
 	// Apply the new settings after template Blueprint component overrides load.
 	ApplyPlayerSettings();
 	HealthComponent->OnDied.AddDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
-	SpawnRifle();
+	RifleComponent->OnChildActorCreated().AddUObject(this, &AMothEffectCharacter::HandleRifleCreated);
+	ConfigureRifleComponent();
+	// Registration normally creates the child before this actor's BeginPlay.
+	HandleRifleCreated(RifleComponent->GetChildActor());
+	if (!IsValid(Rifle))
+	{
+		UE_LOG(LogMothEffect, Warning, TEXT("Assign RifleClass=BP_Rifle and a valid RifleAttachSocket in the player Blueprint."));
+	}
 }
 
 void AMothEffectCharacter::Tick(float DeltaSeconds)
@@ -93,18 +110,11 @@ void AMothEffectCharacter::Tick(float DeltaSeconds)
 void AMothEffectCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
+	RifleComponent->OnChildActorCreated().RemoveAll(this);
 	CancelCombatInput();
 	HealthComponent->OnDied.RemoveDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
-	if (IsValid(Rifle))
-	{
-		Rifle->OnShotFired.RemoveDynamic(this, &AMothEffectCharacter::HandleShotFired);
-		Rifle->OnReloadStarted.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
-		Rifle->OnReloadFinished.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
-		Rifle->OnDestroyed.RemoveDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
-		Rifle->CancelReload();
-		Rifle->Destroy();
-	}
-	Rifle = nullptr;
+	UnbindRifle();
+	// The child actor component owns destruction of its rifle.
 	ResetMovementInput();
 	Super::EndPlay(EndPlayReason);
 }
@@ -315,33 +325,71 @@ void AMothEffectCharacter::ResetMovementInput()
 	RefreshMovementSpeed();
 }
 
-void AMothEffectCharacter::SpawnRifle()
+void AMothEffectCharacter::ConfigureRifleComponent()
 {
-	if (!RifleClass || !GetMesh()->DoesSocketExist(RifleAttachSocket))
-	{
-		UE_LOG(LogMothEffect, Warning, TEXT("Assign RifleClass and a valid RifleAttachSocket in the player Blueprint."));
-		return;
-	}
-	FActorSpawnParameters Params;
-	Params.Owner = this;
-	Params.Instigator = this;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass, GetActorTransform(), Params);
-	if (!IsValid(Rifle))
+	if (bEndingPlay)
 	{
 		return;
 	}
-	if (!Rifle->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RifleAttachSocket))
+	RifleComponent->SetChildActorOwnerOnCreation(true);
+	if (RifleComponent->GetAttachParent() != GetMesh() || RifleComponent->GetAttachSocketName() != RifleAttachSocket)
 	{
-		Rifle->Destroy();
-		Rifle = nullptr;
+		RifleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, RifleAttachSocket);
+	}
+	// Same-class SetChildActorClass recreates registered children; do not call it on viewport drags.
+	if (RifleComponent->GetChildActorClass().Get() != RifleClass.Get())
+	{
+		RifleComponent->SetChildActorClass(RifleClass.Get());
+	}
+	// The component transform is the editable offset. Never overwrite it during construction.
+}
+
+void AMothEffectCharacter::HandleRifleCreated(AActor* ChildActor)
+{
+	ARifle* CreatedRifle = Cast<ARifle>(ChildActor);
+	if (bEndingPlay || !IsValid(CreatedRifle) || CreatedRifle == Rifle.Get())
+	{
 		return;
 	}
-	Rifle->SetActorRelativeTransform(RifleRelativeTransform);
-	Rifle->OnShotFired.AddDynamic(this, &AMothEffectCharacter::HandleShotFired);
-	Rifle->OnReloadStarted.AddDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
-	Rifle->OnReloadFinished.AddDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
-	Rifle->OnDestroyed.AddDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+	if (!GetMesh()->DoesSocketExist(RifleAttachSocket))
+	{
+		UE_LOG(LogMothEffect, Warning, TEXT("RifleAttachSocket '%s' does not exist on the player Mesh."), *RifleAttachSocket.ToString());
+		return;
+	}
+	if (IsValid(Rifle))
+	{
+		CancelCombatInput();
+		UnbindRifle();
+	}
+	if (ActionState == EPlayerActionState::Reloading)
+	{
+		HandleReloadFinished(false);
+	}
+	if (bEndingPlay || !IsValid(CreatedRifle))
+	{
+		return;
+	}
+	Rifle = CreatedRifle;
+	Rifle->SetOwner(this);
+	Rifle->SetInstigator(this);
+	Rifle->OnShotFired.AddUniqueDynamic(this, &AMothEffectCharacter::HandleShotFired);
+	Rifle->OnReloadStarted.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
+	Rifle->OnReloadFinished.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
+	Rifle->OnDestroyed.AddUniqueDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+}
+
+void AMothEffectCharacter::UnbindRifle()
+{
+	if (IsValid(Rifle))
+	{
+		Rifle->OnShotFired.RemoveDynamic(this, &AMothEffectCharacter::HandleShotFired);
+		Rifle->OnReloadStarted.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
+		Rifle->OnReloadFinished.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
+		Rifle->OnDestroyed.RemoveDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+		Rifle->StopFire();
+		Rifle->CancelReload();
+	}
+	Rifle = nullptr;
 }
 
 bool AMothEffectCharacter::IsGameplayEnabled() const

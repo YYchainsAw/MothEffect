@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：步枪、换弹与生命接入
 
-版本 v0.2 · 2026-10-03 · T05 进行中 · C++ 已写入，编译与运行待用户验收
+版本 v0.3 · 2026-10-03 · T05 进行中 · C++ 已写入，组件预览与运行待用户验收
 
 用户报告上一轮移动/瞄准动画测试成功，本轮推进步枪闭环。协作方式继续为助手修改 C++、用户配置 UE 资产与试玩；助手没有编译、运行 PIE 或修改二进制资产。新增原生类/接口/反射字段需由用户保存工作、关闭编辑器后自行完成 C++ 编译，再打开工程配置。
 
@@ -14,7 +14,7 @@
 | [HealthComponent.h](../../Source/MothEffect/Public/Components/HealthComponent.h) / [HealthComponent.cpp](../../Source/MothEffect/Private/Components/HealthComponent.cpp) | 血量、HitId 去重、一次死亡；暂停/结束/死亡后拒绝伤害 |
 | [HitContext.h](../../Source/MothEffect/Public/Types/HitContext.h) / [BallisticReactive.h](../../Source/MothEffect/Public/Interfaces/BallisticReactive.h) | 蓝图可用 ST_HitContext 与 Receive Ballistic Hit；角色/测试靶/后续机关共用命中入口 |
 | [PlayerActionState.h](../../Source/MothEffect/Public/Types/PlayerActionState.h) | 玩家行动和左键归属枚举 |
-| [MothEffectCharacter.h](../../Source/MothEffect/Public/Characters/MothEffectCharacter.h) / [MothEffectCharacter.cpp](../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp) | 输入授权、生成并挂接步枪、行动转换、开火/换弹 Montage、死亡停止玩法 |
+| [MothEffectCharacter.h](../../Source/MothEffect/Public/Characters/MothEffectCharacter.h) / [MothEffectCharacter.cpp](../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp) | 输入授权、Mesh 下的 RifleComponent 子 Actor 与编辑器预览、行动转换、开火/换弹 Montage、死亡停止玩法 |
 | [MothEffectPlayerController.cpp](../../Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp) | 输入 Flush/暂停时停火，要求实际松开左键后重新按；暂停保留换弹任务 |
 
 步枪用 Timer 连射，松键不会清除射速冷却，因此快速点击不能绕过射速。枪口受阻仍消耗弹药，但不调用伤害接口。空匣不自动换弹；满匣按 R 不启动任务。换弹取消不补弹，只有当前有效任务到期才补满；无限备弹，不另存一份备用弹药数。动画只负责表现，不添加 Notify 来扣弹、判定命中或补弹。[Epic：Gameplay Timers](https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-timers-in-unreal-engine)
@@ -39,9 +39,24 @@
 3. 调整 WeaponMesh 的相对位置/旋转；选 **Muzzle**，把它放到实际枪管前端。Muzzle 是 Scene Component，不需要添加碰撞球。先让枪械蓝图的 +X 朝枪口前方，避免网格与枪口各朝不同方向。
 4. 在 Class Defaults → Weapon 核对参数与账本；测试时勾选 Weapon → Debug → **Draw Debug Shots**。
 5. 用户已在 `hand_r` 下创建 **WeaponSocket**。保存该 Socket 所属骨架/网格资产；打开现有 `BP_ThirdPersonCharacter`，Class Defaults → Player → Weapon：**Rifle Class=BP_Rifle**，**Rifle Attach Socket=WeaponSocket**。C++ 默认值已同步为 WeaponSocket；已有蓝图可能仍保存旧值，需要在编辑器明确核对。
-6. 若使用 WeaponSocket 调整持枪位置，先将 **Rifle Relative Transform** 设为位置/旋转零、缩放一，在 Socket 上完成对齐；需要额外偏移时再修改此字段。先用骨架 Socket 的 Preview Asset 辅助对齐，再在 PIE 看实际挂接；Preview Asset 不会生成运行时武器。
+6. 在角色 Components 中选择新增的继承组件 **RifleComponent**（位于 Mesh 下）。它是完整 BP_Rifle 的 Child Actor Component，枪体应直接出现在角色蓝图 Viewport 中。位置、旋转、缩放使用该组件的 **Transform**，可用视口移动/旋转工具直接对齐手部；这些偏移相对于 WeaponSocket 保存，构造时不会强制重置。
+7. 角色 **Rifle Class** 为武器类型的唯一配置，组件的 Child Actor Class 由 C++ 自动同步；挂点仍通过 **Rifle Attach Socket** 配置。UE 的继承组件可能不允许直接编辑 Parent Socket，使用角色字段即可。[Epic：Child Actor Component](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UChildActorComponent)
 
-玩家 BeginPlay 自动生成一把 Owned Rifle 并挂到 Mesh，不在关卡另摆第二把枪，也不在角色 Construction Script 重复生成。角色退出时清除其枪械和定时器。当前 ARifle 不需要 Event Tick 或额外 Blueprint 开火计时器。
+~~~text
+BP_ThirdPersonCharacter
+  Mesh
+    RifleComponent（挂点 WeaponSocket；在这里调整 Transform）
+      BP_Rifle（由 Child Actor Component 创建）
+        SceneRoot
+          WeaponMesh
+          Muzzle
+~~~
+
+旧 **Rifle Relative Transform** 字段已移除。如果此前修改过它，重新加载新代码前先记录数值，再填到 RifleComponent 的 Transform；旧偏移不会自动迁移。Socket 已完成对齐时，组件偏移保持位置/旋转零、缩放一即可。不要同时用 Socket 和组件叠加同一段偏移。
+
+组件负责创建和销毁这把 BP_Rifle；Character 在 BeginPlay 获取它并设置 Owner/Instigator、绑定开火/换弹事件。原先 SpawnActor 生成步枪的流程已移除，不再额外创建第二把武器。不要手动再添加一个枪械 Child Actor Component 或在角色 Construction Script 生成枪。退出时解绑事件、停止开火/换弹，随后由组件清理子 Actor；ARifle 不需要 Event Tick 或额外 Blueprint 开火计时器。
+
+先检查角色视口中出现一把枪、调整后保存/重新打开偏移仍在、PIE 中仍只有一把枪且位置与预览一致，再执行第 6 节的武器分支验收。助手未编译或打开 UE，这些编辑器行为仍待用户验证。
 
 当前 **Weapon Trace Channel 默认 Visibility**，用于先打通验证房。墙和靶子至少有一层碰撞 Block Visibility；不要让场景中用于提示/触发的透明碰撞体挡住它。正式 `JamWeaponTrace` 的配置与矩阵仍按 TDD 接入，未配置前不要把这一阶段当作正式碰撞验收完成。
 

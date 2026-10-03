@@ -1,12 +1,14 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.12 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.13 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05 并补充步枪接入。文档集版本为 v0.12，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
+本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器。文档集版本为 v0.13，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
 
 工程：[MothEffect.uproject](../MothEffect.uproject) · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 [版本管理与公开建议](03_Code_Standard/Version_Control.md)。
 
 玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 [技术设计第 3 节](02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)，依据见 DEC22–DEC27；操作规则补充 R19–R23，验收新增 TC34–TC38。T04 用户报告当前移动/瞄准动画测试成功，完整分支仍待留证；T05 已写入步枪、手动换弹、生命与行动状态 C++，按 [步枪、换弹与生命接入](05_Development_Guide/Weapon_Setup.md) 配置资产。助手未编译，新代码与武器玩法待用户验收；候选机关仍待选制作。
+
+武器预览接入：BP_ThirdPersonCharacter 的 Mesh 下新增 RifleComponent，完整 BP_Rifle 由子 Actor 组件创建，在角色视口直接调整组件 Transform；Rifle Class 与 Rifle Attach Socket 保留在角色默认值。旧偏移迁移与预览验收见 Weapon_Setup 第 3 节，预览和运行均待用户核验。
 
 ## 1. 目录与有效文件
 

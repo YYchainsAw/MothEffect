@@ -1,10 +1,11 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.12</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.13</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.12<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect飞蛾效应开发文档入口"></span><h1 id="doc-readme-moth-effect">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p>版本 v0.12 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05 并补充步枪接入。文档集版本为 v0.12，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.13<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect飞蛾效应开发文档入口"></span><h1 id="doc-readme-moth-effect">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p>版本 v0.13 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器。文档集版本为 v0.13，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
 <p>工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 <a href="#doc-version">版本管理与公开建议</a>。</p>
 <p>玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>，依据见 DEC22–DEC27；操作规则补充 R19–R23，验收新增 TC34–TC38。T04 用户报告当前移动/瞄准动画测试成功，完整分支仍待留证；T05 已写入步枪、手动换弹、生命与行动状态 C++，按 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a> 配置资产。助手未编译，新代码与武器玩法待用户验收；候选机关仍待选制作。</p>
+<p>武器预览接入：BP_ThirdPersonCharacter 的 Mesh 下新增 RifleComponent，完整 BP_Rifle 由子 Actor 组件创建，在角色视口直接调整组件 Transform；Rifle Class 与 Rifle Attach Socket 保留在角色默认值。旧偏移迁移与预览验收见 Weapon_Setup 第 3 节，预览和运行均待用户核验。</p>
 <span id="doc-readme-1-目录与有效文件"></span><h2 id="doc-readme-section">1. 目录与有效文件</h2>
 <table>
 <thead>
@@ -1151,9 +1152,10 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 }
 </code></pre></section>
 <section class="document" id="doc-technical"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><span id="doc-technical-moth-effect飞蛾效应技术设计"></span><h1 id="doc-technical-moth-effect">Moth Effect（飞蛾效应）：技术设计</h1>
-<p>版本 v0.12 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）</p>
+<p>版本 v0.13 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）</p>
 <p>用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 <a href="#doc-player-setup">玩家第一步接入</a>；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 <a href="#doc-rules">道具与交互规则</a> 为准，数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。</p>
 <p>v0.12：用户报告当前移动/瞄准动画测试成功；T05 已写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead。新代码未编译/运行，配置步骤见 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a>。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍未实现。此前用户仅要求改代码的移动速度调参尚待同步账本，当前差异见 Player_Setup。</p>
+<p>v0.13：用户希望在角色蓝图预览并调整完整武器，Character 新增 Mesh 下的 UChildActorComponent <strong>RifleComponent</strong>，通过 WeaponSocket 挂接 BP_Rifle。RifleClass/RifleAttachSocket 控制类型与挂点，组件 Transform 控制偏移；OnConstruction 同步类型/挂点但不重设偏移，仅在类实际变化时设置 ChildActorClass。BeginPlay 获取现有子 Actor 并绑定事件，EndPlay 解绑并取消任务，由组件负责销毁；旧 SpawnActor 路径和 RifleRelativeTransform 字段移除，已有偏移需按接入文档手动迁移。源码静态复核，编译/预览/运行尚未验收。</p>
 <span id="doc-technical-1-起步与职责"></span><h2 id="doc-technical-section">1. 起步与职责</h2>
 <p>建议沿用现有 Windows C++ Third Person 工程，以模板角色、移动动画与输入作为起点。空白工程适用于需要从零定制角色框架或已有基础资源的情况；本作单人周期内，模板能省去重新搭建这些基础功能的工作。用基础几何体表现枪、机关和敌人，先验证空中触发，再补持枪/投掷表现；模板本身不代表本作越肩射击系统已经接入。<a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic：Third Person 模板</a></p>
 <p>已存在的模板源码、资产、模块依赖与配置核对记录见 <a href="#doc-engine">UE 工程配置</a>；类与蓝图映射沿用下表。</p>
@@ -2632,7 +2634,7 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 <p>移动与瞄准已有 C++ 数据来源，T05 已加入 Ready/Reloading/Dead；Carrying/ThrowRecovery 随 T06–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 <a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>。</p>
 </section>
 <section class="document" id="doc-weapon-setup"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Weapon_Setup.md">05_Development_Guide/Weapon_Setup.md</a></div><span id="doc-weapon-setup-moth-effect飞蛾效应步枪换弹与生命接入"></span><h1 id="doc-weapon-setup-moth-effect">Moth Effect（飞蛾效应）：步枪、换弹与生命接入</h1>
-<p>版本 v0.2 · 2026-10-03 · T05 进行中 · C++ 已写入，编译与运行待用户验收</p>
+<p>版本 v0.3 · 2026-10-03 · T05 进行中 · C++ 已写入，组件预览与运行待用户验收</p>
 <p>用户报告上一轮移动/瞄准动画测试成功，本轮推进步枪闭环。协作方式继续为助手修改 C++、用户配置 UE 资产与试玩；助手没有编译、运行 PIE 或修改二进制资产。新增原生类/接口/反射字段需由用户保存工作、关闭编辑器后自行完成 C++ 编译，再打开工程配置。</p>
 <p>本轮先实现 W01、Ready/Reloading/Dead、生命组件和命中接口。Carrying/ThrowRecovery/Throw 已保留枚举，拾取、投掷、机关、AI、HUD 和整局胜负随后续任务接入；T05 不因源码存在而标记完成。行为契约见 <a href="#doc-technical">技术设计</a>，武器与生命数值按 <a href="#doc-parameters">玩法参数基线</a>。</p>
 <span id="doc-weapon-setup-1-已写入的-c"></span><h2 id="doc-weapon-setup-c">1. 已写入的 C++</h2>
@@ -2662,7 +2664,7 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 </tr>
 <tr>
 <td><a href="../../Source/MothEffect/Public/Characters/MothEffectCharacter.h">MothEffectCharacter.h</a> / <a href="../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp">MothEffectCharacter.cpp</a></td>
-<td>输入授权、生成并挂接步枪、行动转换、开火/换弹 Montage、死亡停止玩法</td>
+<td>输入授权、Mesh 下的 RifleComponent 子 Actor 与编辑器预览、行动转换、开火/换弹 Montage、死亡停止玩法</td>
 </tr>
 <tr>
 <td><a href="../../Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp">MothEffectPlayerController.cpp</a></td>
@@ -2703,9 +2705,20 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 <li>调整 WeaponMesh 的相对位置/旋转；选 <strong>Muzzle</strong>，把它放到实际枪管前端。Muzzle 是 Scene Component，不需要添加碰撞球。先让枪械蓝图的 +X 朝枪口前方，避免网格与枪口各朝不同方向。</li>
 <li>在 Class Defaults → Weapon 核对参数与账本；测试时勾选 Weapon → Debug → <strong>Draw Debug Shots</strong>。</li>
 <li>用户已在 <code>hand_r</code> 下创建 <strong>WeaponSocket</strong>。保存该 Socket 所属骨架/网格资产；打开现有 <code>BP_ThirdPersonCharacter</code>，Class Defaults → Player → Weapon：<strong>Rifle Class=BP_Rifle</strong>，<strong>Rifle Attach Socket=WeaponSocket</strong>。C++ 默认值已同步为 WeaponSocket；已有蓝图可能仍保存旧值，需要在编辑器明确核对。</li>
-<li>若使用 WeaponSocket 调整持枪位置，先将 <strong>Rifle Relative Transform</strong> 设为位置/旋转零、缩放一，在 Socket 上完成对齐；需要额外偏移时再修改此字段。先用骨架 Socket 的 Preview Asset 辅助对齐，再在 PIE 看实际挂接；Preview Asset 不会生成运行时武器。</li>
+<li>在角色 Components 中选择新增的继承组件 <strong>RifleComponent</strong>（位于 Mesh 下）。它是完整 BP_Rifle 的 Child Actor Component，枪体应直接出现在角色蓝图 Viewport 中。位置、旋转、缩放使用该组件的 <strong>Transform</strong>，可用视口移动/旋转工具直接对齐手部；这些偏移相对于 WeaponSocket 保存，构造时不会强制重置。</li>
+<li>角色 <strong>Rifle Class</strong> 为武器类型的唯一配置，组件的 Child Actor Class 由 C++ 自动同步；挂点仍通过 <strong>Rifle Attach Socket</strong> 配置。UE 的继承组件可能不允许直接编辑 Parent Socket，使用角色字段即可。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UChildActorComponent">Epic：Child Actor Component</a></li>
 </ol>
-<p>玩家 BeginPlay 自动生成一把 Owned Rifle 并挂到 Mesh，不在关卡另摆第二把枪，也不在角色 Construction Script 重复生成。角色退出时清除其枪械和定时器。当前 ARifle 不需要 Event Tick 或额外 Blueprint 开火计时器。</p>
+<pre><code class="language-text">BP_ThirdPersonCharacter
+  Mesh
+    RifleComponent（挂点 WeaponSocket；在这里调整 Transform）
+      BP_Rifle（由 Child Actor Component 创建）
+        SceneRoot
+          WeaponMesh
+          Muzzle
+</code></pre>
+<p>旧 <strong>Rifle Relative Transform</strong> 字段已移除。如果此前修改过它，重新加载新代码前先记录数值，再填到 RifleComponent 的 Transform；旧偏移不会自动迁移。Socket 已完成对齐时，组件偏移保持位置/旋转零、缩放一即可。不要同时用 Socket 和组件叠加同一段偏移。</p>
+<p>组件负责创建和销毁这把 BP_Rifle；Character 在 BeginPlay 获取它并设置 Owner/Instigator、绑定开火/换弹事件。原先 SpawnActor 生成步枪的流程已移除，不再额外创建第二把武器。不要手动再添加一个枪械 Child Actor Component 或在角色 Construction Script 生成枪。退出时解绑事件、停止开火/换弹，随后由组件清理子 Actor；ARifle 不需要 Event Tick 或额外 Blueprint 开火计时器。</p>
+<p>先检查角色视口中出现一把枪、调整后保存/重新打开偏移仍在、PIE 中仍只有一把枪且位置与预览一致，再执行第 6 节的武器分支验收。助手未编译或打开 UE，这些编辑器行为仍待用户验证。</p>
 <p>当前 <strong>Weapon Trace Channel 默认 Visibility</strong>，用于先打通验证房。墙和靶子至少有一层碰撞 Block Visibility；不要让场景中用于提示/触发的透明碰撞体挡住它。正式 <code>JamWeaponTrace</code> 的配置与矩阵仍按 TDD 接入，未配置前不要把这一阶段当作正式碰撞验收完成。</p>
 <span id="doc-weapon-setup-4-创建一个可扣血的射击测试靶"></span><h2 id="doc-weapon-setup-section-1">4. 创建一个可扣血的射击测试靶</h2>
 <ol>
@@ -2793,7 +2806,7 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <p>任务、规则或测试变更时保留关联 ID；实际构建/缺陷证据按 <a href="#doc-test">测试计划与验收</a> 记录。发布状态按 <a href="#doc-release">发布检查清单</a> 记录，上传成功不能替代审核通过。</p>
 </section>
 <section class="document" id="doc-changelog"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect飞蛾效应变更日志"></span><h1 id="doc-changelog-moth-effect">Moth Effect（飞蛾效应）：变更日志</h1>
-<p>版本 v0.12 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>版本 v0.13 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理结构，v0.4 配置版本管理，v0.5 清理公开内容，v0.6 收敛 Content 范围，v0.7 统一中英文名称，v0.8 新增待选机关，v0.9 补齐玩家方案，v0.10 开始 T04 C++，v0.11 补齐动画接线，v0.12 开始 T05 步枪/换弹/生命。用户报告上一轮移动/瞄准动画成功；本轮新增 C++ 尚待用户编译/运行。助手未编译、修改二进制资产、暂存、提交或推送。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
 <span id="doc-changelog-1-变更记录"></span><h2 id="doc-changelog-section">1. 变更记录</h2>
 <table>
@@ -2904,6 +2917,13 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <td>开始 T05：ARifle 双段射击/弹匣/手动换弹、生命与命中接口、行动状态和 Montage 入口；新增 Weapon_Setup，补记用户移动速度代码调参与 AO -1～1 归一化步骤</td>
 <td>用户报告本轮测试成功并询问下一步，沿已确认协作方式继续制作</td>
 <td>用户此前只改代码的移动速度调参保留，JSON 未同步且已标明差异；枪械/生命默认参数沿用账本。T04 局部成功由用户报告，T05 进行中；新代码未编译/运行，资产配置和武器验收待用户完成；同步文档链接/阅读快照</td>
+</tr>
+<tr>
+<td>CHG015</td>
+<td>2026-10-03</td>
+<td>新增角色 Mesh 下的 RifleComponent，使用完整 BP_Rifle 子 Actor 预览/持枪；移除独立 SpawnActor 与旧偏移字段，保留类型/挂点设置并完善绑定/清理</td>
+<td>用户反馈原方案无法方便地在角色蓝图预览和调整位置</td>
+<td>组件 Transform 成为偏移来源，旧偏移需手动迁移；类不变时不重新设置 ChildActorClass；组件负责武器生命周期。复核本地 UE 5.8 API 与源码，未编译/预览/试玩，未修改资产；更新接入文档与阅读版</td>
 </tr>
 </tbody>
 </table>

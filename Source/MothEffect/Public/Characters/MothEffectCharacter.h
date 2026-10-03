@@ -13,6 +13,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UHealthComponent;
+class UChildActorComponent;
 class UAnimMontage;
 class ARifle;
 struct FInputActionValue;
@@ -41,6 +42,10 @@ class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallistic
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	TObjectPtr<UHealthComponent> HealthComponent;
+
+	/** Complete rifle actor, visible and positionable in the character Blueprint viewport. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UChildActorComponent> RifleComponent;
 	
 protected:
 
@@ -77,9 +82,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
 	FName RifleAttachSocket = TEXT("WeaponSocket");
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
-	FTransform RifleRelativeTransform = FTransform::Identity;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
 	FVector RifleSafetyOriginOffset = FVector(0.0f, 0.0f, 30.0f);
@@ -147,6 +149,7 @@ public:
 	AMothEffectCharacter();	
 
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 protected:
 
@@ -155,7 +158,9 @@ protected:
 
 	void ApplyPlayerSettings();
 	void RefreshMovementSpeed();
-	void SpawnRifle();
+	void ConfigureRifleComponent();
+	void HandleRifleCreated(AActor* ChildActor);
+	void UnbindRifle();
 	void SetActionState(EPlayerActionState NewState);
 	void TryClearPrimaryReleaseGate();
 	bool IsPrimaryButtonPhysicallyDown() const;

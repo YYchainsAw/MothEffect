@@ -21,6 +21,7 @@ class AMothEffectPlayerController : public APlayerController
 public:
 
 	virtual void FlushPressedKeys() override;
+	virtual bool SetPause(bool bPause, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
 	
 protected:
 

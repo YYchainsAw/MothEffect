@@ -1,8 +1,10 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.11 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.12 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
 
 用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
+
+v0.12：用户报告当前移动/瞄准动画测试成功；T05 已写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead。新代码未编译/运行，配置步骤见 [步枪、换弹与生命接入](../../05_Development_Guide/Weapon_Setup.md)。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍未实现。此前用户仅要求改代码的移动速度调参尚待同步账本，当前差异见 Player_Setup。
 
 ## 1. 起步与职责
 
@@ -27,14 +29,14 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `AEnemyBase : ACharacter` | `BP_EnemyBase` | 射击 AI、死亡、固定类型掉落；用内建 AIController |
 | `AWaveDirector : AActor` | `BP_WaveDirector` | 波次、生成点、存活敌人和机关容量登记 |
 | `UHealthComponent : UActorComponent` | 角色上的组件 | HP、一次死亡事件 |
-| `UAnimInstance`（UE 内建父类，先不新增 C++ 动画类） | `ABP_MothPlayer`（新增计划） | 读取玩家与移动组件快照，执行移动状态机、AimOffset、上半身分层；不修改玩法状态 |
+| `UAnimInstance`（UE 内建父类，先不新增 C++ 动画类） | `ABP_MothPlayer`（用户已创建） | 读取玩家与移动组件快照，执行移动状态机、AimOffset、上半身分层；不修改玩法状态 |
 | `UDeviceDefinition : UDataAsset` | `DA_Device_D01 / D02 / D03` | `FDeviceConfig` 与对应 BP 类/资源引用 |
 
 拾取、放下、投掷先保留在 Character 的独立方法中；复杂度增加后再抽成交互组件，并同步本表。枪械只由 ARifle 维护弹匣、射速和换弹任务，HealthComponent 只维护一份血量，Character 只维护一份 Held 引用，不额外创建重复持有这些数据的 WeaponComponent 或背包系统。
 
 ## 2. 数据与调用契约
 
-以下名称、签名均为**本项目规划的自定义 API**，不是 UE 内建功能，也不是已经可编译的代码。实现时再补反射宏、导出宏和头文件。
+以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，但编译与运行尚待用户验证；机关、投掷、推力、波次等其余入口仍为计划接口，实现时补反射宏、导出宏和头文件。
 
 - `EDeviceState`：`Dormant, Held, Active, Spent, Destroyed`；`Destroyed` 是清理末态，可不留存于已销毁对象。
 - `EDeviceKind`：`Launcher, Bomb, Emitter`。
@@ -114,7 +116,7 @@ Reloading --拾取成功，取消未完成换弹--> Carrying
 
 本地 `/Game/Characters/Mannequins/Anims/Rifle` 已静态核对存在 `MM_Rifle_Fire / Reload / Equip / DryFire`、`MF_Rifle_Idle_ADS`、八方向 Walk/Jog、Rifle 跳跃系列、HitReact 与 `AIM/AO_Rifle`。文件存在不等于骨架、Additive、Root Motion 或 Notify 已验收；在编辑器逐项核对后引用。先复用本地资产，不把模板 Combat 近战示例当作本作射击实现。
 
-新增动画资产沿用户实际目录 `/Game/MothEffect/Animations/Player`：`ABP_MothPlayer` 位于该目录，`BS_MothRifleLocomotion` 位于 Combat 子目录，后续 `AM_MothRifleFire / AM_MothRifleReload` 也归入 Combat；按实际需要增加携带姿态/短释放表现。用户已报告 ABP、BlendSpace 与 IsAiming 变量创建，文件已静态核对，内部接线与运行待验收。角色仍使用现有 BP_ThirdPersonCharacter，配置其 Mesh Anim Class；节点步骤见 [玩家输入与动画接入](../../05_Development_Guide/Player_Setup.md#5-连接-abp_mothplayer)。
+新增动画资产沿用户实际目录 `/Game/MothEffect/Animations/Player`：`ABP_MothPlayer` 位于该目录，`BS_MothRifleLocomotion` 位于 Combat 子目录，`AM_MothRifleFire / AM_MothRifleReload` 也归入 Combat；按实际需要增加携带姿态/短释放表现。用户报告当前移动/瞄准动画测试成功，完整分支待留证；角色仍使用现有 BP_ThirdPersonCharacter。移动/AO 节点见 [玩家输入与动画接入](../../05_Development_Guide/Player_Setup.md#5-连接-abp_mothplayer)，上半身 Slot/骨骼分层见 [步枪接入](../../05_Development_Guide/Weapon_Setup.md#5-再接入上半身射击与换弹)。
 
 ~~~text
 Character / CharacterMovement / Rifle 的只读快照

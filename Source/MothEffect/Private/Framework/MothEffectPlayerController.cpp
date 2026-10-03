@@ -69,10 +69,24 @@ bool AMothEffectPlayerController::ShouldUseTouchControls() const
 
 void AMothEffectPlayerController::FlushPressedKeys()
 {
-	Super::FlushPressedKeys();
-
 	if (AMothEffectCharacter* PlayerCharacter = Cast<AMothEffectCharacter>(GetPawn()))
 	{
+		PlayerCharacter->CancelCombatInput();
 		PlayerCharacter->ResetMovementInput();
 	}
+	Super::FlushPressedKeys();
+}
+
+bool AMothEffectPlayerController::SetPause(bool bPause, FCanUnpause CanUnpauseDelegate)
+{
+	const bool bSucceeded = Super::SetPause(bPause, CanUnpauseDelegate);
+	if (bSucceeded && bPause)
+	{
+		if (AMothEffectCharacter* PlayerCharacter = Cast<AMothEffectCharacter>(GetPawn()))
+		{
+			PlayerCharacter->CancelCombatInput();
+			PlayerCharacter->ResetMovementInput();
+		}
+	}
+	return bSucceeded;
 }

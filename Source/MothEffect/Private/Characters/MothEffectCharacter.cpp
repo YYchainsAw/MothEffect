@@ -4,17 +4,31 @@
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/HealthComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
+#include "Engine/World.h"
+#include "Framework/Application/SlateApplication.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InputCoreTypes.h"
 #include "MothEffect.h"
+#include "Weapons/Rifle.h"
+
+#if PLATFORM_WINDOWS
+#include "Windows/WindowsHWrapper.h"
+#endif
 
 AMothEffectCharacter::AMothEffectCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -60,11 +74,14 @@ void AMothEffectCharacter::BeginPlay()
 
 	// Apply the new settings after template Blueprint component overrides load.
 	ApplyPlayerSettings();
+	HealthComponent->OnDied.AddDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
+	SpawnRifle();
 }
 
 void AMothEffectCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	TryClearPrimaryReleaseGate();
 
 	const float TargetAlpha = bIsAiming ? 1.0f : 0.0f;
 	AimBlendAlpha = AimBlendSeconds > UE_SMALL_NUMBER
@@ -75,6 +92,19 @@ void AMothEffectCharacter::Tick(float DeltaSeconds)
 
 void AMothEffectCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	bEndingPlay = true;
+	CancelCombatInput();
+	HealthComponent->OnDied.RemoveDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
+	if (IsValid(Rifle))
+	{
+		Rifle->OnShotFired.RemoveDynamic(this, &AMothEffectCharacter::HandleShotFired);
+		Rifle->OnReloadStarted.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
+		Rifle->OnReloadFinished.RemoveDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
+		Rifle->OnDestroyed.RemoveDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+		Rifle->CancelReload();
+		Rifle->Destroy();
+	}
+	Rifle = nullptr;
 	ResetMovementInput();
 	Super::EndPlay(EndPlayReason);
 }
@@ -146,9 +176,23 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMothEffectCharacter::DoSprintEnd);
 			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AMothEffectCharacter::DoSprintEnd);
 		}
+		if (PrimaryAction)
+		{
+			EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoPrimaryStart);
+			EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Completed, this, &AMothEffectCharacter::DoPrimaryEnd);
+			EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Canceled, this, &AMothEffectCharacter::DoPrimaryCanceled);
+		}
+		if (ReloadAction)
+		{
+			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoReloadStart);
+		}
 		if (!AimAction || !SprintAction)
 		{
 			UE_LOG(LogMothEffect, Warning, TEXT("Assign AimAction and SprintAction in the player Blueprint and map them in IMC_MothGameplay."));
+		}
+		if (!PrimaryAction || !ReloadAction)
+		{
+			UE_LOG(LogMothEffect, Warning, TEXT("Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."));
 		}
 	}
 	else
@@ -177,7 +221,7 @@ void AMothEffectCharacter::Look(const FInputActionValue& Value)
 
 void AMothEffectCharacter::DoMove(float Right, float Forward)
 {
-	if (GetController() != nullptr)
+	if (GetController() != nullptr && IsGameplayEnabled())
 	{
 		// find out which way is forward
 		const FRotator Rotation = GetController()->GetControlRotation();
@@ -197,7 +241,7 @@ void AMothEffectCharacter::DoMove(float Right, float Forward)
 
 void AMothEffectCharacter::DoLook(float Yaw, float Pitch)
 {
-	if (GetController() != nullptr)
+	if (GetController() != nullptr && IsGameplayEnabled())
 	{
 		// add yaw and pitch input to controller
 		AddControllerYawInput(Yaw);
@@ -208,7 +252,10 @@ void AMothEffectCharacter::DoLook(float Yaw, float Pitch)
 void AMothEffectCharacter::DoJumpStart()
 {
 	// signal the character to jump
-	Jump();
+	if (IsGameplayEnabled())
+	{
+		Jump();
+	}
 }
 
 void AMothEffectCharacter::DoJumpEnd()
@@ -219,6 +266,10 @@ void AMothEffectCharacter::DoJumpEnd()
 
 void AMothEffectCharacter::DoAimStart()
 {
+	if (!IsGameplayEnabled())
+	{
+		return;
+	}
 	bIsAiming = true;
 	CancelSprintUntilRelease();
 }
@@ -231,7 +282,7 @@ void AMothEffectCharacter::DoAimEnd()
 
 void AMothEffectCharacter::DoSprintStart()
 {
-	if (bIsAiming || bSprintRequiresRelease)
+	if (!IsGameplayEnabled() || bIsAiming || bSprintRequiresRelease)
 	{
 		bSprintRequiresRelease = true;
 		return;
@@ -262,4 +313,264 @@ void AMothEffectCharacter::ResetMovementInput()
 	bSprintRequiresRelease = false;
 	StopJumping();
 	RefreshMovementSpeed();
+}
+
+void AMothEffectCharacter::SpawnRifle()
+{
+	if (!RifleClass || !GetMesh()->DoesSocketExist(RifleAttachSocket))
+	{
+		UE_LOG(LogMothEffect, Warning, TEXT("Assign RifleClass and a valid RifleAttachSocket in the player Blueprint."));
+		return;
+	}
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+	Params.Instigator = this;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass, GetActorTransform(), Params);
+	if (!IsValid(Rifle))
+	{
+		return;
+	}
+	if (!Rifle->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RifleAttachSocket))
+	{
+		Rifle->Destroy();
+		Rifle = nullptr;
+		return;
+	}
+	Rifle->SetActorRelativeTransform(RifleRelativeTransform);
+	Rifle->OnShotFired.AddDynamic(this, &AMothEffectCharacter::HandleShotFired);
+	Rifle->OnReloadStarted.AddDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
+	Rifle->OnReloadFinished.AddDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
+	Rifle->OnDestroyed.AddDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+}
+
+bool AMothEffectCharacter::IsGameplayEnabled() const
+{
+	return bGameplayEnabled && !bEndingPlay && ActionState != EPlayerActionState::Dead
+		&& HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused();
+}
+
+bool AMothEffectCharacter::CanFireRifle() const
+{
+	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready
+		&& PrimaryPressMode == EPrimaryPressMode::Fire && !bRequirePrimaryRelease;
+}
+
+bool AMothEffectCharacter::CanReloadRifle() const
+{
+	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready;
+}
+
+bool AMothEffectCharacter::GetRifleView(FVector& ViewLocation, FVector& ViewDirection) const
+{
+	if (!IsGameplayEnabled())
+	{
+		return false;
+	}
+	FRotator ViewRotation;
+	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		PlayerController->GetPlayerViewPoint(ViewLocation, ViewRotation);
+	}
+	else
+	{
+		ViewLocation = FollowCamera->GetComponentLocation();
+		ViewRotation = FollowCamera->GetComponentRotation();
+	}
+	ViewDirection = ViewRotation.Vector().GetSafeNormal();
+	return !ViewLocation.ContainsNaN() && !ViewDirection.IsNearlyZero();
+}
+
+FVector AMothEffectCharacter::GetRifleSafetyOrigin() const
+{
+	return GetActorLocation() + GetActorRotation().RotateVector(RifleSafetyOriginOffset);
+}
+
+void AMothEffectCharacter::DoPrimaryStart()
+{
+	if (bRequirePrimaryRelease || !IsGameplayEnabled() || ActionState != EPlayerActionState::Ready || !IsValid(Rifle))
+	{
+		PrimaryPressMode = EPrimaryPressMode::Blocked;
+		return;
+	}
+	PrimaryPressMode = EPrimaryPressMode::Fire;
+	if (!Rifle->TryStartFire())
+	{
+		PrimaryPressMode = EPrimaryPressMode::Blocked;
+	}
+}
+
+void AMothEffectCharacter::DoPrimaryEnd()
+{
+	if (IsValid(Rifle))
+	{
+		Rifle->StopFire();
+	}
+	if (bRequirePrimaryRelease)
+	{
+		TryClearPrimaryReleaseGate();
+		return;
+	}
+	if (IsPrimaryButtonPhysicallyDown())
+	{
+		CancelCombatInput();
+		return;
+	}
+	bRequirePrimaryRelease = false;
+	PrimaryPressMode = EPrimaryPressMode::None;
+}
+
+void AMothEffectCharacter::DoPrimaryCanceled()
+{
+	CancelCombatInput();
+}
+
+void AMothEffectCharacter::CancelCombatInput()
+{
+	PrimaryPressMode = EPrimaryPressMode::Blocked;
+	bRequirePrimaryRelease = true;
+	if (IsValid(Rifle))
+	{
+		Rifle->StopFire();
+	}
+}
+
+bool AMothEffectCharacter::IsPrimaryButtonPhysicallyDown() const
+{
+#if PLATFORM_WINDOWS
+	// PlayerInput keys are cleared by FlushPressedKeys; poll hardware for a real release.
+	return (::GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+#else
+	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	return PlayerController && PlayerController->IsInputKeyDown(EKeys::LeftMouseButton);
+#endif
+}
+
+void AMothEffectCharacter::TryClearPrimaryReleaseGate()
+{
+	if (!bRequirePrimaryRelease || bEndingPlay || !IsGameplayEnabled())
+	{
+		return;
+	}
+	if (FSlateApplication::IsInitialized() && !FSlateApplication::Get().IsActive())
+	{
+		return;
+	}
+	if (!IsPrimaryButtonPhysicallyDown())
+	{
+		bRequirePrimaryRelease = false;
+		PrimaryPressMode = EPrimaryPressMode::None;
+	}
+}
+
+void AMothEffectCharacter::DoReloadStart()
+{
+	if (CanReloadRifle() && IsValid(Rifle))
+	{
+		Rifle->TryBeginReload();
+	}
+}
+
+void AMothEffectCharacter::SetActionState(EPlayerActionState NewState)
+{
+	if (ActionState == NewState)
+	{
+		return;
+	}
+	const EPlayerActionState OldState = ActionState;
+	ActionState = NewState;
+	OnPlayerActionStateChanged.Broadcast(OldState, NewState);
+}
+
+void AMothEffectCharacter::HandleShotFired(ARifle* FiredRifle)
+{
+	if (bEndingPlay || FiredRifle != Rifle.Get() || !IsGameplayEnabled() || ActionState != EPlayerActionState::Ready)
+	{
+		return;
+	}
+	if (FireMontage)
+	{
+		PlayAnimMontage(FireMontage);
+	}
+}
+
+void AMothEffectCharacter::HandleReloadStarted(ARifle* ReloadingRifle)
+{
+	if (bEndingPlay || ReloadingRifle != Rifle.Get())
+	{
+		return;
+	}
+	CancelCombatInput();
+	SetActionState(EPlayerActionState::Reloading);
+	if (ReloadMontage && IsGameplayEnabled() && IsValid(Rifle) && Rifle->IsReloading())
+	{
+		const float PlayRate = ReloadMontage->GetPlayLength() / FMath::Max(0.01f, Rifle->GetReloadSeconds());
+		PlayAnimMontage(ReloadMontage, FMath::Max(UE_KINDA_SMALL_NUMBER, PlayRate));
+	}
+}
+
+void AMothEffectCharacter::HandleReloadFinished(bool bCompleted)
+{
+	if (bEndingPlay || ActionState != EPlayerActionState::Reloading)
+	{
+		return;
+	}
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		if (ReloadMontage)
+		{
+			AnimInstance->Montage_Stop(0.1f, ReloadMontage);
+		}
+	}
+	SetActionState(EPlayerActionState::Ready);
+}
+
+void AMothEffectCharacter::SetGameplayEnabled(bool bEnabled)
+{
+	bGameplayEnabled = bEnabled;
+	if (!bEnabled)
+	{
+		CancelCombatInput();
+		ResetMovementInput();
+		if (IsValid(Rifle))
+		{
+			Rifle->CancelReload();
+		}
+	}
+}
+
+bool AMothEffectCharacter::ReceiveBallisticHit_Implementation(const FHitContext& Context)
+{
+	return IsGameplayEnabled() && HealthComponent->ApplyHit(Context);
+}
+
+void AMothEffectCharacter::HandlePlayerDied(AActor* Victim, AActor* SourceActor)
+{
+	if (bEndingPlay || Victim != this || ActionState == EPlayerActionState::Dead)
+	{
+		return;
+	}
+	SetActionState(EPlayerActionState::Dead);
+	SetGameplayEnabled(false);
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->DisableMovement();
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->StopAllMontages(0.1f);
+	}
+	OnPlayerDied(SourceActor);
+}
+
+void AMothEffectCharacter::HandleRifleDestroyed(AActor* DestroyedActor)
+{
+	if (bEndingPlay || DestroyedActor != Rifle.Get())
+	{
+		return;
+	}
+	Rifle = nullptr;
+	CancelCombatInput();
+	if (ActionState == EPlayerActionState::Reloading)
+	{
+		HandleReloadFinished(false);
+	}
 }

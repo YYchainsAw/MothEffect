@@ -1,16 +1,16 @@
 # Moth Effect（飞蛾效应）：玩家输入与动画接入
 
-版本 v0.2 · 2026-10-03 · T04 进行中 · 动画接线与运行验收待用户完成
+版本 v0.3 · 2026-10-03 · T04 进行中 · 用户报告本轮移动/瞄准动画测试成功，完整分支待留证
 
 协作方式已经用户确认：助手修改 C++，用户在 UE 中配置资产与试玩验收。用户明确要求助手不代为编译，后续编译由用户自行执行。C++ 已写入越肩相机、镜头水平朝向、瞄准/冲刺；本轮复用现有读取接口，继续接入动画图。
 
-用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对这些资产文件存在；BlendSpace 包含 direction / Speed 名称。蓝图内部接线、轴范围、动作引用和 PIE 结果仍待用户验证，资产存在不代表验收通过。
+用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对资产存在并阅读用户粘贴的节点文本；用户随后报告当前移动/瞄准动画测试成功。助手没有运行 PIE，不把该报告扩展为全部 TC34/TC35 或 T04 完成；下一步见 [步枪、换弹与生命接入](Weapon_Setup.md)。
 
 ## 1. C++ 已写入的内容
 
 - [MothEffectCharacter.h](../../Source/MothEffect/Public/Characters/MothEffectCharacter.h) / [MothEffectCharacter.cpp](../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp)：越肩相机配置、镜头 Yaw 朝向、移动/跳跃参数、瞄准 FOV 混合、瞄准/冲刺互斥与蓝图可读状态。
 - [MothEffectPlayerController.h](../../Source/MothEffect/Public/Framework/MothEffectPlayerController.h) / [MothEffectPlayerController.cpp](../../Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp)：FlushPressedKeys 时清理瞄准/冲刺/持续跳跃状态。
-- 保留原有 Move/Look/MouseLook/Jump 动作与控制器输入映射；新增 AimAction、SprintAction 需要在编辑器指定资产。数值按 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 初始化，未实测。
+- 保留原有 Move/Look/MouseLook/Jump 动作与控制器输入映射；新增 AimAction、SprintAction 在编辑器指定。用户此前要求只改代码，WalkSpeed/AimMoveSpeed 已改为 300、SprintSpeed 改为 625，动画由用户调整；[玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 仍保留旧移动速度，后续调参归档时需同步，不用旧账本值覆盖当前代码/动画。其余起步数值沿用账本。
 
 本次新增 UPROPERTY/UFUNCTION 与原生默认值。用户保存当前工作、关闭 UE 后自行完成 C++ 编译，再重新打开工程进行以下配置；不要把旧编辑器会话或 Live Coding 中可见的旧字段当作新代码已经加载。助手没有编译修改后的代码，静态检查不能替代编译成功。
 
@@ -24,7 +24,7 @@
 | IA_Sprint | Input Action；Value Type 为 Digital/Bool；Triggers、Modifiers 留空 | 在映射上下文中指定 Left Shift |
 | IMC_MothGameplay | Input Mapping Context；添加上述两个动作映射 | Right Mouse Button / Left Shift |
 
-此阶段只创建 Aim/Sprint；IA_Primary/Reload/Interact 随后续枪械与机关接入。移动、视角和跳跃继续使用现有 `/Game/Input`，不重新映射到新上下文。C++ 已绑定 Started 与 Completed/Canceled，UE 不需要再写一套瞄准或冲刺输入事件。[Epic：Enhanced Input](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
+本页对应 Aim/Sprint；IA_Primary/IA_Reload 按 Weapon_Setup 接入，IA_Interact 随机关接入。移动、视角和跳跃继续使用现有 `/Game/Input`，不重新映射到新上下文。C++ 已绑定 Started 与 Completed/Canceled，UE 不需要再写一套瞄准或冲刺输入事件。[Epic：Enhanced Input](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
 
 ## 3. 给现有角色和控制器赋值
 
@@ -45,7 +45,7 @@
 5. 保持瞄准/冲刺后切换窗口，回到游戏核对状态已清理；新输入可正常工作。
 6. 靠墙移动与转镜头，检查 SpringArm 遮挡与角色是否持续挡住屏幕中心。这里只验收镜头，枪口遮挡与安全投掷随 T05/T07 执行。
 
-射击取消冲刺的入口 CancelSprintUntilRelease 已准备，但当前没有 ARifle，不能把“开火取消冲刺”记为通过。输入与相机配置完成后，按第 5 节连接已创建的 ABP_MothPlayer、八方向 Rifle BlendSpace 与基础腾空状态机；然后进入 T05 枪械/换弹/血量。
+T05 已写入 ARifle 并调用 CancelSprintUntilRelease，实际“开火取消冲刺”仍须配置武器后验收。输入与相机配置完成后，按第 5 节连接 ABP_MothPlayer、八方向 Rifle BlendSpace 与腾空状态机；然后按 Weapon_Setup 接入枪械/换弹/血量。
 
 ## 5. 连接 ABP_MothPlayer
 
@@ -82,7 +82,7 @@
 | Direction | Float | Calculate Direction：Velocity 接角色速度，Base Rotation 接角色 Get Actor Rotation |
 | IsFalling | Boolean | 角色 Get Character Movement → Is Falling |
 | VerticalSpeed | Float | Velocity 的世界 Z |
-| AimPitch | Float | 角色 Get Base Aim Rotation 与 Get Actor Rotation → Delta (Rotator)，取标准化 Pitch 并按 AO 资产俯仰范围限制 |
+| AimPitch | Float | 角色 Get Base Aim Rotation 与 Get Actor Rotation → Delta (Rotator)，取 Pitch；当前 AO_Rifle 轴为 -1～1，将角度按下文归一化 |
 
 Calculate Direction 输出的是相对角色朝向的水平角度；前向约 0°、右侧约 90°、左侧约 -90°、后退约 ±180°。这是已确定的局部水平速度表达的角度/速度形式。变量的普通对象调用在 Event Graph 完成，AnimGraph 使用这些快照。[Epic：CalculateDirection](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/AnimGraphRuntime/UKismetAnimationLibrary/CalculateDirection)
 
@@ -119,7 +119,9 @@ AimBlendAlpha ──────────────────────
 Two Way Blend → 现有最终姿态链 → Output Pose
 ~~~
 
-AO_Rifle 的俯仰轴输入 AimPitch，另一轴先为 0，因为当前身体已经跟随镜头 Yaw；具体 X/Y 顺序与可用范围在 AO 资产中检查。若轴仅名为 X/Y，先在资产预览中移动轴，确认哪个轴控制上下瞄准。使用 Two Way Blend，Alpha Input Type 设为 Float；Alpha 在 0 时使用 A、1 时使用 B。AimBlendAlpha 同时驱动相机与动画平滑，右键的 IsAiming 用于调试/条件判断。
+用户确认 AO_Rifle 的轴为 -1～1。AimPitch 使用：`视角 Pitch - 角色 Pitch → Normalize Axis → / 90 → Clamp(-1, 1)`；如已使用 Delta (Rotator)，其 Pitch 已标准化，再除以 90 并 Clamp。不要直接把角度 Clamp 到 -1～1，否则超过一度就落到端点。预览验证上下方向，若资产符号相反再取负。
+
+AO_Rifle 的俯仰轴输入 AimPitch，另一轴先为 0，因为当前身体已经跟随镜头 Yaw；具体 X/Y 顺序在 AO 资产中检查。若轴仅名为 X/Y，先在资产预览中移动轴，确认哪个轴控制上下瞄准。使用 Two Way Blend，Alpha Input Type 设为 Float；Alpha 在 0 时使用 A、1 时使用 B。AimBlendAlpha 同时驱动相机与动画平滑，右键的 IsAiming 用于调试/条件判断。
 
 AO 节点已经把 Additive 应用于 Base Pose，其输出按普通最终姿态参加混合。先保留模板末端仍需要的 IK/Control Rig，并检查它们是否影响持枪；开火/换弹的 UpperBody Slot 与 Layered Blend per Bone 随 T05 接入。
 
@@ -129,6 +131,6 @@ AO 节点已经把 Additive 应用于 Base Pose，其输出按普通最终姿态
 - W/S/A/D 与斜向使用正确 Rifle 移动；冲刺时 GroundSpeed 与移动组件一致。
 - 移动中瞄准，腿部仍由移动状态机驱动；向上/下看改变持枪俯仰，身体不整体倾斜。
 - 跳跃和走落边缘都进入 InAir，落地恢复 Grounded；无持续 Accessed None 或线程安全调用警告。
-- 上述结果由用户记录为 TC34/TC35 的已执行分支；目前助手未运行 PIE，测试表仍保持未执行。
+- 用户已报告当前移动/瞄准动画测试成功；仍需记录实际执行的 TC34/TC35 分支，助手未运行 PIE，完整案例测试表不因此改为通过。
 
-移动状态与瞄准已经有 C++ 数据来源；Ready/Carrying/ThrowRecovery/Reloading/Dead 的完整行动状态机随 T05–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 [开发计划](Development_Plan.md) 和 [测试计划](../06_Test_Doc/Test_Plan.md)。
+移动与瞄准已有 C++ 数据来源，T05 已加入 Ready/Reloading/Dead；Carrying/ThrowRecovery 随 T06–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 [开发计划](Development_Plan.md) 和 [测试计划](../06_Test_Doc/Test_Plan.md)。

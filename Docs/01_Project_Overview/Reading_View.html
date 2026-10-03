@@ -1,10 +1,10 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.11</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.12</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.11<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect飞蛾效应开发文档入口"></span><h1 id="doc-readme-moth-effect">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p>版本 v0.11 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线并同步用户实际资产目录。文档集版本为 v0.11，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.12<br>2026-10-03 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总当前文档。模板工程已存在；玩法、编译、独立包、测试与发布仍待验收。</p></header><section class="document" id="doc-readme"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect飞蛾效应开发文档入口"></span><h1 id="doc-readme-moth-effect">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p>版本 v0.12 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05 并补充步枪接入。文档集版本为 v0.12，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
 <p>工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 <a href="#doc-version">版本管理与公开建议</a>。</p>
-<p>玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>，依据见 DEC22–DEC27；操作规则补充 R19–R23，验收新增 TC34–TC38。T04 已写入相机/转向/瞄准冲刺 C++ 基础，用户按 <a href="#doc-player-setup">玩家第一步接入</a> 配置 UE 资产；用户要求助手不代为编译，修改后代码与玩法尚未验收，参数未实测，候选机关仍待选制作。</p>
+<p>玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>，依据见 DEC22–DEC27；操作规则补充 R19–R23，验收新增 TC34–TC38。T04 用户报告当前移动/瞄准动画测试成功，完整分支仍待留证；T05 已写入步枪、手动换弹、生命与行动状态 C++，按 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a> 配置资产。助手未编译，新代码与武器玩法待用户验收；候选机关仍待选制作。</p>
 <span id="doc-readme-1-目录与有效文件"></span><h2 id="doc-readme-section">1. 目录与有效文件</h2>
 <table>
 <thead>
@@ -87,6 +87,11 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
+<td><a href="#doc-weapon-setup">Weapon_Setup.md</a></td>
+<td>T05 步枪/输入/测试靶/上半身动画配置与分支验收</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
 <td><a href="#doc-workflow">Documentation_Workflow.md</a></td>
 <td>文档维护与变更流程</td>
 </tr>
@@ -123,7 +128,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </ol>
 <span id="doc-readme-3-维护约定"></span><h2 id="doc-readme-section-2">3. 维护约定</h2>
 <p>目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。</p>
-<p>交互、接口、内容、数值各保留唯一来源，具体分工见 <a href="#doc-workflow">文档维护与变更流程</a>。建议基线和待原型验证仍需实测；参数账本不是可直接导入 UE 的 DataTable。T02 保留工程已建立但运行打包待验收，T03 已配置版本管理但提交与恢复待验收；T04 进行中，C++ 基础待用户接入与验收，其余任务/测试状态未变。</p>
+<p>交互、接口、内容、数值各保留唯一来源，具体分工见 <a href="#doc-workflow">文档维护与变更流程</a>。参数账本不是可直接导入 UE 的 DataTable；此前用户只要求改代码的移动速度尚待同步账本，差异见 Player_Setup。T02 保留工程已建立但运行打包待验收，T03 已配置版本管理但恢复待验收；T04/T05 进行中，完整案例与武器新代码仍待验收，其余任务状态未变。</p>
 <p>修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。</p>
 </section>
 <section class="document" id="doc-overview"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><span id="doc-overview-moth-effect飞蛾效应项目概览与阅读指南"></span><h1 id="doc-overview-moth-effect">Moth Effect（飞蛾效应）：项目概览与阅读指南</h1>
@@ -1146,8 +1151,9 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 }
 </code></pre></section>
 <section class="document" id="doc-technical"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><span id="doc-technical-moth-effect飞蛾效应技术设计"></span><h1 id="doc-technical-moth-effect">Moth Effect（飞蛾效应）：技术设计</h1>
-<p>版本 v0.11 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）</p>
+<p>版本 v0.12 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）</p>
 <p>用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 <a href="#doc-player-setup">玩家第一步接入</a>；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 <a href="#doc-rules">道具与交互规则</a> 为准，数值只维护在 <a href="#doc-parameters">玩法参数基线</a>。</p>
+<p>v0.12：用户报告当前移动/瞄准动画测试成功；T05 已写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead。新代码未编译/运行，配置步骤见 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a>。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍未实现。此前用户仅要求改代码的移动速度调参尚待同步账本，当前差异见 Player_Setup。</p>
 <span id="doc-technical-1-起步与职责"></span><h2 id="doc-technical-section">1. 起步与职责</h2>
 <p>建议沿用现有 Windows C++ Third Person 工程，以模板角色、移动动画与输入作为起点。空白工程适用于需要从零定制角色框架或已有基础资源的情况；本作单人周期内，模板能省去重新搭建这些基础功能的工作。用基础几何体表现枪、机关和敌人，先验证空中触发，再补持枪/投掷表现；模板本身不代表本作越肩射击系统已经接入。<a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine">Epic：Third Person 模板</a></p>
 <p>已存在的模板源码、资产、模块依赖与配置核对记录见 <a href="#doc-engine">UE 工程配置</a>；类与蓝图映射沿用下表。</p>
@@ -1223,7 +1229,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </tr>
 <tr>
 <td><code>UAnimInstance</code>（UE 内建父类，先不新增 C++ 动画类）</td>
-<td><code>ABP_MothPlayer</code>（新增计划）</td>
+<td><code>ABP_MothPlayer</code>（用户已创建）</td>
 <td>读取玩家与移动组件快照，执行移动状态机、AimOffset、上半身分层；不修改玩法状态</td>
 </tr>
 <tr>
@@ -1235,7 +1241,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </table>
 <p>拾取、放下、投掷先保留在 Character 的独立方法中；复杂度增加后再抽成交互组件，并同步本表。枪械只由 ARifle 维护弹匣、射速和换弹任务，HealthComponent 只维护一份血量，Character 只维护一份 Held 引用，不额外创建重复持有这些数据的 WeaponComponent 或背包系统。</p>
 <span id="doc-technical-2-数据与调用契约"></span><h2 id="doc-technical-section-1">2. 数据与调用契约</h2>
-<p>以下名称、签名均为<strong>本项目规划的自定义 API</strong>，不是 UE 内建功能，也不是已经可编译的代码。实现时再补反射宏、导出宏和头文件。</p>
+<p>以下名称、签名为<strong>本项目自定义 API 契约</strong>，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，但编译与运行尚待用户验证；机关、投掷、推力、波次等其余入口仍为计划接口，实现时补反射宏、导出宏和头文件。</p>
 <ul>
 <li><code>EDeviceState</code>：<code>Dormant, Held, Active, Spent, Destroyed</code>；<code>Destroyed</code> 是清理末态，可不留存于已销毁对象。</li>
 <li><code>EDeviceKind</code>：<code>Launcher, Bomb, Emitter</code>。</li>
@@ -1381,7 +1387,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </ol>
 <span id="doc-technical-34-动画资产与图结构"></span><h3 id="doc-technical-section-6">3.4 动画资产与图结构</h3>
 <p>本地 <code>/Game/Characters/Mannequins/Anims/Rifle</code> 已静态核对存在 <code>MM_Rifle_Fire / Reload / Equip / DryFire</code>、<code>MF_Rifle_Idle_ADS</code>、八方向 Walk/Jog、Rifle 跳跃系列、HitReact 与 <code>AIM/AO_Rifle</code>。文件存在不等于骨架、Additive、Root Motion 或 Notify 已验收；在编辑器逐项核对后引用。先复用本地资产，不把模板 Combat 近战示例当作本作射击实现。</p>
-<p>新增动画资产沿用户实际目录 <code>/Game/MothEffect/Animations/Player</code>：<code>ABP_MothPlayer</code> 位于该目录，<code>BS_MothRifleLocomotion</code> 位于 Combat 子目录，后续 <code>AM_MothRifleFire / AM_MothRifleReload</code> 也归入 Combat；按实际需要增加携带姿态/短释放表现。用户已报告 ABP、BlendSpace 与 IsAiming 变量创建，文件已静态核对，内部接线与运行待验收。角色仍使用现有 BP_ThirdPersonCharacter，配置其 Mesh Anim Class；节点步骤见 <a href="#doc-player-setup-5-连接-abp_mothplayer">玩家输入与动画接入</a>。</p>
+<p>新增动画资产沿用户实际目录 <code>/Game/MothEffect/Animations/Player</code>：<code>ABP_MothPlayer</code> 位于该目录，<code>BS_MothRifleLocomotion</code> 位于 Combat 子目录，<code>AM_MothRifleFire / AM_MothRifleReload</code> 也归入 Combat；按实际需要增加携带姿态/短释放表现。用户报告当前移动/瞄准动画测试成功，完整分支待留证；角色仍使用现有 BP_ThirdPersonCharacter。移动/AO 节点见 <a href="#doc-player-setup-5-连接-abp_mothplayer">玩家输入与动画接入</a>，上半身 Slot/骨骼分层见 <a href="#doc-weapon-setup-5-再接入上半身射击与换弹">步枪接入</a>。</p>
 <pre><code class="language-text">Character / CharacterMovement / Rifle 的只读快照
   → 移动状态机 Grounded / JumpStart / InAir / Land
   → 持枪或携带基础姿态 + 持枪 AimOffset
@@ -1981,9 +1987,9 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p>空 Token 会关闭令牌认证检查，因此必须与禁用该服务器用途同时处理。以后需要 Android 开发时，另行配置私有 Token 与部署方式。当前仅完成静态配置核对，没有编译/打包结果。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine">Epic：Android File Server</a></p>
 </section>
 <section class="document" id="doc-plan"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><span id="doc-plan-moth-effect飞蛾效应开发任务与排期"></span><h1 id="doc-plan-moth-effect">Moth Effect（飞蛾效应）：开发任务与排期</h1>
-<p>版本：v0.11｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
-<p>当前状态：T04 进行中，越肩相机/镜头 Yaw 朝向/瞄准冲刺 C++ 已写入。用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay、ABP_MothPlayer、Rifle 八方向 BlendSpace 与 ABP 的 IsAiming 变量，资产文件已静态核对；内部引用、动画接线与运行验收待用户完成，见 <a href="#doc-player-setup">玩家输入与动画接入</a>。助手按用户要求不编译，当前没有修改后构建与试玩结果。T02 的工程创建子项已完成，干净编译与独立打包待验证；T03 已配置 Git/origin/忽略/LFS 且仓库已有本地提交，恢复待验收；其他任务没有完成证据。日期是建议目标，不代表实际进度。</p>
-<p>v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。只完成设计确认与文档补齐，不把 T04 等玩法任务标为完成；最低玩家动画安排进 T04/T05/T07，T20 保留资源整合和润色。</p>
+<p>版本：v0.12｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
+<p>当前状态：T04 用户报告当前移动/瞄准动画测试成功，完整 TC34/TC35 分支仍待留证，见 <a href="#doc-player-setup">玩家输入与动画接入</a>。T05 进入进行中：ARifle、UHealthComponent、命中接口与 Ready/Reloading/Dead 已写入 C++，输入/枪械蓝图/测试靶/上半身 Montage 按 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a> 配置。助手按用户要求不编译，新代码尚无构建或运行结果。T02 的工程创建子项已完成，干净编译与独立打包待验证；T03 已配置 Git/origin/忽略/LFS 且仓库已有本地提交，恢复待验收；其他任务没有完成证据。日期是建议目标，不代表实际进度。</p>
+<p>v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。T04/T05 正在按该方案实施，尚不标为完整完成；最低玩家动画安排进 T04/T05/T07，T20 保留资源整合和润色。</p>
 <span id="doc-plan-1-如何使用这份计划"></span><h2 id="doc-plan-section">1. 如何使用这份计划</h2>
 <p>每天从最早未通过的门槛开始，只做依赖已完成的任务。任务先进入“进行中”，满足可观察完成标准并留下证据后才改为“完成”。一段录屏能证明几个规则时可以共用证据，不必重复制作材料。</p>
 <p>玩法按 <a href="#doc-game">游戏策划案</a>，规则按 <a href="#doc-rules">道具与交互规则</a>，实现按 <a href="#doc-technical">技术设计</a>，关卡、AI、波次和资源按 <a href="#doc-level">关卡、界面与资源规格</a>，所有数值以 <a href="#doc-parameters">玩法参数基线</a> 为唯一基线。测试编号见 <a href="#doc-test">测试计划与验收</a>，G4 的平台步骤与审核状态见 <a href="#doc-release">发布检查清单</a>。</p>
@@ -2150,7 +2156,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T02</td>
 <td>3–4</td>
 <td>镜头 Yaw 转向与八方向移动、跳跃/跑步/瞄准；最低 AnimBP/BlendSpace 可用，瞄准与冲刺互斥；墙边相机可用；TC34/TC35 基础分支有证据</td>
-<td>进行中：C++ 基础与输入/ABP/BlendSpace 资产已存在；引用、动画接线和运行待验收</td>
+<td>进行中：用户报告当前移动/瞄准动画测试成功；完整分支与证据待补</td>
 </tr>
 <tr>
 <td>T05</td>
@@ -2159,7 +2165,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T04</td>
 <td>3–4</td>
 <td>静止/移动射击、双段枪口检测、手动换弹、血量与一次死亡成立；ARifle 统一射速/弹匣/任务；上身 Montage 不锁腿部；TC24/TC36/TC38 武器分支有证据</td>
-<td>未开始</td>
+<td>进行中：C++ 已写入；用户编译/资产配置/试玩待执行</td>
 </tr>
 <tr>
 <td>T06</td>
@@ -2445,14 +2451,14 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p>当前进度：G0–G4 均未验收；T02 的工程创建子项已完成，T03 已配置版本管理且仓库已有本地提交，T04 正在接入玩家基础。用户已创建输入与移动动画资产，IsAiming 的数据同步与动画图按接入指南继续制作；助手不代为编译，没有修改后构建与输入/动画/包体验收证据。其余实施任务没有完成证据；日志均未撰写；尚无已验收构建、录屏、性能数据、试玩结果或审核状态。玩家框架沿用现有第三人称模板。</p>
 </section>
 <section class="document" id="doc-player-setup"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Player_Setup.md">05_Development_Guide/Player_Setup.md</a></div><span id="doc-player-setup-moth-effect飞蛾效应玩家输入与动画接入"></span><h1 id="doc-player-setup-moth-effect">Moth Effect（飞蛾效应）：玩家输入与动画接入</h1>
-<p>版本 v0.2 · 2026-10-03 · T04 进行中 · 动画接线与运行验收待用户完成</p>
+<p>版本 v0.3 · 2026-10-03 · T04 进行中 · 用户报告本轮移动/瞄准动画测试成功，完整分支待留证</p>
 <p>协作方式已经用户确认：助手修改 C++，用户在 UE 中配置资产与试玩验收。用户明确要求助手不代为编译，后续编译由用户自行执行。C++ 已写入越肩相机、镜头水平朝向、瞄准/冲刺；本轮复用现有读取接口，继续接入动画图。</p>
-<p>用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对这些资产文件存在；BlendSpace 包含 direction / Speed 名称。蓝图内部接线、轴范围、动作引用和 PIE 结果仍待用户验证，资产存在不代表验收通过。</p>
+<p>用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对资产存在并阅读用户粘贴的节点文本；用户随后报告当前移动/瞄准动画测试成功。助手没有运行 PIE，不把该报告扩展为全部 TC34/TC35 或 T04 完成；下一步见 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a>。</p>
 <span id="doc-player-setup-1-c-已写入的内容"></span><h2 id="doc-player-setup-c">1. C++ 已写入的内容</h2>
 <ul>
 <li><a href="../../Source/MothEffect/Public/Characters/MothEffectCharacter.h">MothEffectCharacter.h</a> / <a href="../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp">MothEffectCharacter.cpp</a>：越肩相机配置、镜头 Yaw 朝向、移动/跳跃参数、瞄准 FOV 混合、瞄准/冲刺互斥与蓝图可读状态。</li>
 <li><a href="../../Source/MothEffect/Public/Framework/MothEffectPlayerController.h">MothEffectPlayerController.h</a> / <a href="../../Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp">MothEffectPlayerController.cpp</a>：FlushPressedKeys 时清理瞄准/冲刺/持续跳跃状态。</li>
-<li>保留原有 Move/Look/MouseLook/Jump 动作与控制器输入映射；新增 AimAction、SprintAction 需要在编辑器指定资产。数值按 <a href="#doc-parameters">玩法参数基线</a> 初始化，未实测。</li>
+<li>保留原有 Move/Look/MouseLook/Jump 动作与控制器输入映射；新增 AimAction、SprintAction 在编辑器指定。用户此前要求只改代码，WalkSpeed/AimMoveSpeed 已改为 300、SprintSpeed 改为 625，动画由用户调整；<a href="#doc-parameters">玩法参数基线</a> 仍保留旧移动速度，后续调参归档时需同步，不用旧账本值覆盖当前代码/动画。其余起步数值沿用账本。</li>
 </ul>
 <p>本次新增 UPROPERTY/UFUNCTION 与原生默认值。用户保存当前工作、关闭 UE 后自行完成 C++ 编译，再重新打开工程进行以下配置；不要把旧编辑器会话或 Live Coding 中可见的旧字段当作新代码已经加载。助手没有编译修改后的代码，静态检查不能替代编译成功。</p>
 <span id="doc-player-setup-2-在-ue-创建输入资产"></span><h2 id="doc-player-setup-ue">2. 在 UE 创建输入资产</h2>
@@ -2483,7 +2489,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </tr>
 </tbody>
 </table>
-<p>此阶段只创建 Aim/Sprint；IA_Primary/Reload/Interact 随后续枪械与机关接入。移动、视角和跳跃继续使用现有 <code>/Game/Input</code>，不重新映射到新上下文。C++ 已绑定 Started 与 Completed/Canceled，UE 不需要再写一套瞄准或冲刺输入事件。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine">Epic：Enhanced Input</a></p>
+<p>本页对应 Aim/Sprint；IA_Primary/IA_Reload 按 Weapon_Setup 接入，IA_Interact 随机关接入。移动、视角和跳跃继续使用现有 <code>/Game/Input</code>，不重新映射到新上下文。C++ 已绑定 Started 与 Completed/Canceled，UE 不需要再写一套瞄准或冲刺输入事件。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine">Epic：Enhanced Input</a></p>
 <span id="doc-player-setup-3-给现有角色和控制器赋值"></span><h2 id="doc-player-setup-section">3. 给现有角色和控制器赋值</h2>
 <ol>
 <li>打开 <code>/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter</code>，在 Class Defaults 的 Input 中将 <strong>Aim Action</strong> 指定为 IA_Aim、<strong>Sprint Action</strong> 指定为 IA_Sprint；保留原 Move/Look/MouseLook/Jump 引用。</li>
@@ -2502,7 +2508,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <li>保持瞄准/冲刺后切换窗口，回到游戏核对状态已清理；新输入可正常工作。</li>
 <li>靠墙移动与转镜头，检查 SpringArm 遮挡与角色是否持续挡住屏幕中心。这里只验收镜头，枪口遮挡与安全投掷随 T05/T07 执行。</li>
 </ol>
-<p>射击取消冲刺的入口 CancelSprintUntilRelease 已准备，但当前没有 ARifle，不能把“开火取消冲刺”记为通过。输入与相机配置完成后，按第 5 节连接已创建的 ABP_MothPlayer、八方向 Rifle BlendSpace 与基础腾空状态机；然后进入 T05 枪械/换弹/血量。</p>
+<p>T05 已写入 ARifle 并调用 CancelSprintUntilRelease，实际“开火取消冲刺”仍须配置武器后验收。输入与相机配置完成后，按第 5 节连接 ABP_MothPlayer、八方向 Rifle BlendSpace 与腾空状态机；然后按 Weapon_Setup 接入枪械/换弹/血量。</p>
 <span id="doc-player-setup-5-连接-abp_mothplayer"></span><h2 id="doc-player-setup-abp_mothplayer">5. 连接 ABP_MothPlayer</h2>
 <p>本地资产为 <code>/Game/MothEffect/Animations/Player/ABP_MothPlayer</code> 与 <code>/Game/MothEffect/Animations/Player/Combat/BS_MothRifleLocomotion</code>。沿用内建 UAnimInstance 父类，角色与移动组件提供只读数据，用户在 UE 配置动画图；本轮助手没有修改二进制资产或执行编译。</p>
 <span id="doc-player-setup-51-把-isaiming-变量连接到角色"></span><h3 id="doc-player-setup-isaiming">5.1 把 IsAiming 变量连接到角色</h3>
@@ -2569,7 +2575,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <tr>
 <td>AimPitch</td>
 <td>Float</td>
-<td>角色 Get Base Aim Rotation 与 Get Actor Rotation → Delta (Rotator)，取标准化 Pitch 并按 AO 资产俯仰范围限制</td>
+<td>角色 Get Base Aim Rotation 与 Get Actor Rotation → Delta (Rotator)，取 Pitch；当前 AO_Rifle 轴为 -1～1，将角度按下文归一化</td>
 </tr>
 </tbody>
 </table>
@@ -2612,7 +2618,8 @@ Use Cached Pose（MothLocomotion）→ AO_Rifle.Base Pose → AO输出 → Two W
 AimBlendAlpha ───────────────────────────────────────────────→ Two Way Blend.Alpha
 Two Way Blend → 现有最终姿态链 → Output Pose
 </code></pre>
-<p>AO_Rifle 的俯仰轴输入 AimPitch，另一轴先为 0，因为当前身体已经跟随镜头 Yaw；具体 X/Y 顺序与可用范围在 AO 资产中检查。若轴仅名为 X/Y，先在资产预览中移动轴，确认哪个轴控制上下瞄准。使用 Two Way Blend，Alpha Input Type 设为 Float；Alpha 在 0 时使用 A、1 时使用 B。AimBlendAlpha 同时驱动相机与动画平滑，右键的 IsAiming 用于调试/条件判断。</p>
+<p>用户确认 AO_Rifle 的轴为 -1～1。AimPitch 使用：<code>视角 Pitch - 角色 Pitch → Normalize Axis → / 90 → Clamp(-1, 1)</code>；如已使用 Delta (Rotator)，其 Pitch 已标准化，再除以 90 并 Clamp。不要直接把角度 Clamp 到 -1～1，否则超过一度就落到端点。预览验证上下方向，若资产符号相反再取负。</p>
+<p>AO_Rifle 的俯仰轴输入 AimPitch，另一轴先为 0，因为当前身体已经跟随镜头 Yaw；具体 X/Y 顺序在 AO 资产中检查。若轴仅名为 X/Y，先在资产预览中移动轴，确认哪个轴控制上下瞄准。使用 Two Way Blend，Alpha Input Type 设为 Float；Alpha 在 0 时使用 A、1 时使用 B。AimBlendAlpha 同时驱动相机与动画平滑，右键的 IsAiming 用于调试/条件判断。</p>
 <p>AO 节点已经把 Additive 应用于 Base Pose，其输出按普通最终姿态参加混合。先保留模板末端仍需要的 IK/Control Rig，并检查它们是否影响持枪；开火/换弹的 UpperBody Slot 与 Layered Blend per Bone 随 T05 接入。</p>
 <span id="doc-player-setup-56-本轮手动检查"></span><h3 id="doc-player-setup-section-5">5.6 本轮手动检查</h3>
 <ul>
@@ -2620,9 +2627,149 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 <li>W/S/A/D 与斜向使用正确 Rifle 移动；冲刺时 GroundSpeed 与移动组件一致。</li>
 <li>移动中瞄准，腿部仍由移动状态机驱动；向上/下看改变持枪俯仰，身体不整体倾斜。</li>
 <li>跳跃和走落边缘都进入 InAir，落地恢复 Grounded；无持续 Accessed None 或线程安全调用警告。</li>
-<li>上述结果由用户记录为 TC34/TC35 的已执行分支；目前助手未运行 PIE，测试表仍保持未执行。</li>
+<li>用户已报告当前移动/瞄准动画测试成功；仍需记录实际执行的 TC34/TC35 分支，助手未运行 PIE，完整案例测试表不因此改为通过。</li>
 </ul>
-<p>移动状态与瞄准已经有 C++ 数据来源；Ready/Carrying/ThrowRecovery/Reloading/Dead 的完整行动状态机随 T05–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 <a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>。</p>
+<p>移动与瞄准已有 C++ 数据来源，T05 已加入 Ready/Reloading/Dead；Carrying/ThrowRecovery 随 T06–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 <a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>。</p>
+</section>
+<section class="document" id="doc-weapon-setup"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Weapon_Setup.md">05_Development_Guide/Weapon_Setup.md</a></div><span id="doc-weapon-setup-moth-effect飞蛾效应步枪换弹与生命接入"></span><h1 id="doc-weapon-setup-moth-effect">Moth Effect（飞蛾效应）：步枪、换弹与生命接入</h1>
+<p>版本 v0.2 · 2026-10-03 · T05 进行中 · C++ 已写入，编译与运行待用户验收</p>
+<p>用户报告上一轮移动/瞄准动画测试成功，本轮推进步枪闭环。协作方式继续为助手修改 C++、用户配置 UE 资产与试玩；助手没有编译、运行 PIE 或修改二进制资产。新增原生类/接口/反射字段需由用户保存工作、关闭编辑器后自行完成 C++ 编译，再打开工程配置。</p>
+<p>本轮先实现 W01、Ready/Reloading/Dead、生命组件和命中接口。Carrying/ThrowRecovery/Throw 已保留枚举，拾取、投掷、机关、AI、HUD 和整局胜负随后续任务接入；T05 不因源码存在而标记完成。行为契约见 <a href="#doc-technical">技术设计</a>，武器与生命数值按 <a href="#doc-parameters">玩法参数基线</a>。</p>
+<span id="doc-weapon-setup-1-已写入的-c"></span><h2 id="doc-weapon-setup-c">1. 已写入的 C++</h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../Source/MothEffect/Public/Weapons/Rifle.h">Rifle.h</a> / <a href="../../Source/MothEffect/Private/Weapons/Rifle.cpp">Rifle.cpp</a></td>
+<td>枪网格/枪口组件；射速、弹匣、手动换弹；相机到目标与枪口到目标检测；枪口短段/重叠检查；开火、空匣、受阻、弹药与换弹事件</td>
+</tr>
+<tr>
+<td><a href="../../Source/MothEffect/Public/Components/HealthComponent.h">HealthComponent.h</a> / <a href="../../Source/MothEffect/Private/Components/HealthComponent.cpp">HealthComponent.cpp</a></td>
+<td>血量、HitId 去重、一次死亡；暂停/结束/死亡后拒绝伤害</td>
+</tr>
+<tr>
+<td><a href="../../Source/MothEffect/Public/Types/HitContext.h">HitContext.h</a> / <a href="../../Source/MothEffect/Public/Interfaces/BallisticReactive.h">BallisticReactive.h</a></td>
+<td>蓝图可用 ST_HitContext 与 Receive Ballistic Hit；角色/测试靶/后续机关共用命中入口</td>
+</tr>
+<tr>
+<td><a href="../../Source/MothEffect/Public/Types/PlayerActionState.h">PlayerActionState.h</a></td>
+<td>玩家行动和左键归属枚举</td>
+</tr>
+<tr>
+<td><a href="../../Source/MothEffect/Public/Characters/MothEffectCharacter.h">MothEffectCharacter.h</a> / <a href="../../Source/MothEffect/Private/Characters/MothEffectCharacter.cpp">MothEffectCharacter.cpp</a></td>
+<td>输入授权、生成并挂接步枪、行动转换、开火/换弹 Montage、死亡停止玩法</td>
+</tr>
+<tr>
+<td><a href="../../Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp">MothEffectPlayerController.cpp</a></td>
+<td>输入 Flush/暂停时停火，要求实际松开左键后重新按；暂停保留换弹任务</td>
+</tr>
+</tbody>
+</table>
+<p>步枪用 Timer 连射，松键不会清除射速冷却，因此快速点击不能绕过射速。枪口受阻仍消耗弹药，但不调用伤害接口。空匣不自动换弹；满匣按 R 不启动任务。换弹取消不补弹，只有当前有效任务到期才补满；无限备弹，不另存一份备用弹药数。动画只负责表现，不添加 Notify 来扣弹、判定命中或补弹。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-timers-in-unreal-engine">Epic：Gameplay Timers</a></p>
+<p>本轮左键松键检查按 Windows 桌面鼠标配置实现；后续增加手柄/重绑定时再扩展物理按键查询。完整暂停菜单和局内状态框架尚未制作。</p>
+<span id="doc-weapon-setup-2-先接入开火与换弹输入"></span><h2 id="doc-weapon-setup-section">2. 先接入开火与换弹输入</h2>
+<p>在 <code>/Game/MothEffect/Input/Actions</code> 创建以下动作，Value Type 都为 Digital/Bool，Triggers、Modifiers 留空：</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>IMC_MothGameplay 的按键</th>
+<th>BP_ThirdPersonCharacter 的 Input 引用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IA_Primary</td>
+<td>Left Mouse Button</td>
+<td>Primary Action</td>
+</tr>
+<tr>
+<td>IA_Reload</td>
+<td>R</td>
+<td>Reload Action</td>
+</tr>
+</tbody>
+</table>
+<p>把映射追加到现有 <code>/Game/MothEffect/Input/Mapping/IMC_MothGameplay</code>。控制器此前已追加该上下文，不再重复添加，也不移除原有 Move/Look/Jump/Aim/Sprint。角色 C++ 绑定 Primary 的 Started/Completed/Canceled 与 Reload 的 Started，蓝图不要再写第二套输入开火。</p>
+<span id="doc-weapon-setup-3-创建并挂接-bp_rifle"></span><h2 id="doc-weapon-setup-bp_rifle">3. 创建并挂接 BP_Rifle</h2>
+<ol>
+<li>用户已在 <code>/Game/MothEffect/Weapons</code> 创建 <strong>BP_Rifle</strong>，沿用该资产；确认其父类为 <strong>Rifle</strong>。</li>
+<li>打开 Components，选继承的 <strong>WeaponMesh</strong>，指定枪械 Static Mesh；没有枪模型时可先用缩放后的长方体。枪体 Collision 为 NoCollision，由 C++ 射线完成命中。</li>
+<li>调整 WeaponMesh 的相对位置/旋转；选 <strong>Muzzle</strong>，把它放到实际枪管前端。Muzzle 是 Scene Component，不需要添加碰撞球。先让枪械蓝图的 +X 朝枪口前方，避免网格与枪口各朝不同方向。</li>
+<li>在 Class Defaults → Weapon 核对参数与账本；测试时勾选 Weapon → Debug → <strong>Draw Debug Shots</strong>。</li>
+<li>用户已在 <code>hand_r</code> 下创建 <strong>WeaponSocket</strong>。保存该 Socket 所属骨架/网格资产；打开现有 <code>BP_ThirdPersonCharacter</code>，Class Defaults → Player → Weapon：<strong>Rifle Class=BP_Rifle</strong>，<strong>Rifle Attach Socket=WeaponSocket</strong>。C++ 默认值已同步为 WeaponSocket；已有蓝图可能仍保存旧值，需要在编辑器明确核对。</li>
+<li>若使用 WeaponSocket 调整持枪位置，先将 <strong>Rifle Relative Transform</strong> 设为位置/旋转零、缩放一，在 Socket 上完成对齐；需要额外偏移时再修改此字段。先用骨架 Socket 的 Preview Asset 辅助对齐，再在 PIE 看实际挂接；Preview Asset 不会生成运行时武器。</li>
+</ol>
+<p>玩家 BeginPlay 自动生成一把 Owned Rifle 并挂到 Mesh，不在关卡另摆第二把枪，也不在角色 Construction Script 重复生成。角色退出时清除其枪械和定时器。当前 ARifle 不需要 Event Tick 或额外 Blueprint 开火计时器。</p>
+<p>当前 <strong>Weapon Trace Channel 默认 Visibility</strong>，用于先打通验证房。墙和靶子至少有一层碰撞 Block Visibility；不要让场景中用于提示/触发的透明碰撞体挡住它。正式 <code>JamWeaponTrace</code> 的配置与矩阵仍按 TDD 接入，未配置前不要把这一阶段当作正式碰撞验收完成。</p>
+<span id="doc-weapon-setup-4-创建一个可扣血的射击测试靶"></span><h2 id="doc-weapon-setup-section-1">4. 创建一个可扣血的射击测试靶</h2>
+<ol>
+<li>在 <code>/Game/MothEffect/Tests</code> 创建 Actor 蓝图 <strong>BP_ShootingTarget</strong>。添加一个有碰撞的 Static Mesh（Cube 即可），设 Block Visibility，放在玩家面前。</li>
+<li>Add Component → 添加本项目的 <strong>Health Component</strong>。默认 Max Health 使用 player.maxHealth；需要其他目标血量时在组件默认值中指定。</li>
+<li>Class Settings → Implemented Interfaces，添加 <strong>Ballistic Reactive</strong>。接口允许蓝图实现，不需要创建敌人 C++ 类。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/interfaces-in-unreal-engine">Epic：Interfaces</a></li>
+<li>在 My Blueprint → Interfaces 打开 <strong>Receive Ballistic Hit</strong>。它有 bool 返回值，通常显示为函数图。把输入 <strong>Context</strong> 接到 Health Component 的 <strong>Apply Hit</strong>，执行链调用后将返回值接到函数 Return Node。</li>
+</ol>
+<pre><code class="language-text">Receive Ballistic Hit(Context)
+  → Health Component.Apply Hit(Context)
+  → Return（Apply Hit 的 bool 返回值）
+</code></pre>
+<ol start="5">
+<li>选 Health Component，在 Details → Events 添加 <strong>On Health Changed</strong>，Print String 显示 Current Health；添加 <strong>On Died</strong>，打印一次“Target Dead”，再隐藏靶子并关闭 Actor Collision。先保留 Actor，方便查看一次死亡和当前血量。</li>
+</ol>
+<p>靶子只转发已有命中上下文，不自己构造新的 HitId、叠加伤害或修改弹匣。步枪给每发命中创建唯一 HitId，Health Component 负责去重；后续敌人和机关可沿用这个入口。</p>
+<p>到这里即可先验收实际射击，不要求 Montage 已配置。准星临时放在屏幕中心；没有 UI 时根据青色相机检测线定位目标。青色是相机段、黄色是胸前到枪口的安全段，红色是枪口段，受阻时枪口段显示橙色。</p>
+<span id="doc-weapon-setup-5-再接入上半身射击与换弹"></span><h2 id="doc-weapon-setup-section-2">5. 再接入上半身射击与换弹</h2>
+<p>在 <code>/Game/MothEffect/Animations/Player/Combat</code> 创建：</p>
+<table>
+<thead>
+<tr>
+<th>Montage</th>
+<th>先引用的模板动画</th>
+<th>角色 Player → Animation 字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AM_MothRifleFire</td>
+<td>/Game/Characters/Mannequins/Anims/Rifle/MM_Rifle_Fire</td>
+<td>Fire Montage</td>
+</tr>
+<tr>
+<td>AM_MothRifleReload</td>
+<td>/Game/Characters/Mannequins/Anims/Rifle/MM_Rifle_Reload</td>
+<td>Reload Montage</td>
+</tr>
+</tbody>
+</table>
+<p>先核对与玩家 Mesh 的骨架兼容和动画预览；不把 AO 的 Additive 样本当普通射击/换弹序列。关闭推动玩家的 Root Motion。射击每次实际扣一发由 C++ 请求 Montage；换弹只在有效任务开始时播放，C++ 根据 Montage 长度调整播放速率以匹配换弹时长。</p>
+<p>在 Anim Slot Manager 创建 <strong>UpperBody</strong> Slot（可放在 DefaultGroup），两个 Montage 的 Slot 都改为 <strong>DefaultGroup.UpperBody</strong>。同组同时只保留一个 Montage，有效换弹会接替正在播放的射击；动作是否允许由 C++ 决定。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-slots-in-unreal-engine">Epic：Animation Slots</a></p>
+<p>打开 ABP_MothPlayer，保留已经验证的移动状态机与 AimOffset 混合。在 <strong>Two Way Blend 的输出之后</strong>缓存持枪基础姿态，再分两路：</p>
+<pre><code class="language-text">移动状态机 + AO_Rifle + Two Way Blend → Save Cached Pose（MothArmedBase）
+Use Cached Pose（MothArmedBase）───────────────────→ Layered Blend per Bone.Base Pose
+Use Cached Pose（MothArmedBase）→ Slot（UpperBody）→ Layered Blend per Bone.Blend Pose 0
+Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
+</code></pre>
+<p>Layered Blend per Bone 先用 Branch Filter；Blend Pose 0 的权重为 1，在 Layer Setup[0] 添加 Bone Name=<code>spine_01</code>、Blend Depth=1。以玩家实际 Skeleton 的脊柱骨名为准。这样上半身播放 Montage，腿部继续使用移动/腾空姿态；仅添加 Slot 而不做骨骼分层会让换弹覆盖全身。替换原先输出链上的全身 Slot，避免同一个 Montage 经两条链重复覆盖。若现有 IK 覆盖手臂结果，先检查其骨骼作用范围。</p>
+<p>Reloading 时若现有 AimOffset 扭曲换弹姿势，可在 Event Graph 读取 <strong>Get Action State</strong>，将 Reloading 的动画 AO 权重降低或设 0；这只调整动画，不取消玩家右键瞄准和镜头控制。</p>
+<span id="doc-weapon-setup-6-本轮验收顺序"></span><h2 id="doc-weapon-setup-section-3">6. 本轮验收顺序</h2>
+<p>记录 PIE 构建/实际参数与结果，对应 TC24、TC34–TC36、TC38 的武器分支；不要一次勾选整条案例通过。</p>
+<ol>
+<li>点击/长按左键能单发/连射，松键停火；移动、瞄准、跳跃中仍能命中。快速点击不能突破射速。</li>
+<li>看 Get Rifle → Get Ammo In Magazine；打空后不再命中、不自动换弹。少弹时 R 开始任务，完成后补满；满匣 R 没有动作。</li>
+<li>按住左键再按 R，或者换弹期间按住左键；换弹结束都不自动开火，松开后重新按才开火。普通受伤不取消换弹。</li>
+<li>枪口靠墙/进入墙体时仍扣弹，但墙后靶子不受伤；相机能看到靶子也不能穿墙射击。调试线和实际血量一起检查。</li>
+<li>固定伤害命中后靶子逐次扣血；血量到零只广播一次死亡，后续不再接受伤害。同一 HitId 重放给 Apply Hit 也不能重复扣血。</li>
+<li>冲刺中有效开火立即取消冲刺，仍按住 Shift 不自动恢复；需松开再按 Shift。射击/换弹动画不锁腿部，不影响转向/跳跃。</li>
+<li>连射时 Alt+Tab 后停火；返回且仍按住左键不会续射，实际松开再按恢复。R 换弹期间停止 Montage，计时仍正常完成，不留下 Reloading。</li>
+<li>通过控制器 Set Pause 测暂停：停止连射、清瞄准/冲刺，换弹进度冻结；恢复继续剩余计时，左键仍须重新按。当前没有暂停菜单，可先用测试蓝图按键调用。</li>
+<li>换弹期间调用角色 Set Gameplay Enabled(false) 或让角色死亡：不补弹、不继续攻击；EndPlay/重新进入 PIE 不残留任务。暂停请用 Set Pause，Set Gameplay Enabled(false) 是结算取消语义。</li>
+</ol>
+<p>这轮通过后进入 T06/T07：装置基类、拾取/放下/安全投掷，再接 D03 空中射击启动。先验证一个灰盒装置的完整操作，不提前批量制作机关效果。</p>
 </section>
 <section class="document" id="doc-workflow"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Documentation_Workflow.md">05_Development_Guide/Documentation_Workflow.md</a></div><span id="doc-workflow-moth-effect飞蛾效应文档维护与变更流程"></span><h1 id="doc-workflow-moth-effect">Moth Effect（飞蛾效应）：文档维护与变更流程</h1>
 <p>版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
@@ -2646,8 +2793,8 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 <p>任务、规则或测试变更时保留关联 ID；实际构建/缺陷证据按 <a href="#doc-test">测试计划与验收</a> 记录。发布状态按 <a href="#doc-release">发布检查清单</a> 记录，上传成功不能替代审核通过。</p>
 </section>
 <section class="document" id="doc-changelog"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect飞蛾效应变更日志"></span><h1 id="doc-changelog-moth-effect">Moth Effect（飞蛾效应）：变更日志</h1>
-<p>版本 v0.11 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理结构，v0.4 配置版本管理，v0.5 清理公开内容，v0.6 收敛 Content 范围，v0.7 统一中英文名称，v0.8 新增待选机关，v0.9 补齐玩家方案，v0.10 开始 T04 C++，v0.11 补齐动画接线并同步用户实际资产目录。本轮复用已有 C++ 读取接口，只更新接入说明和进度；助手未编译、运行、修改二进制资产或既有玩法数值，未暂存、提交或推送。用户创建的资产与本地提交单独记录，运行仍待验收。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
+<p>版本 v0.12 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p>本文件保留按日期追加的文档与项目变更历史。v0.3 整理结构，v0.4 配置版本管理，v0.5 清理公开内容，v0.6 收敛 Content 范围，v0.7 统一中英文名称，v0.8 新增待选机关，v0.9 补齐玩家方案，v0.10 开始 T04 C++，v0.11 补齐动画接线，v0.12 开始 T05 步枪/换弹/生命。用户报告上一轮移动/瞄准动画成功；本轮新增 C++ 尚待用户编译/运行。助手未编译、修改二进制资产、暂存、提交或推送。状态与原型依据见 <a href="#doc-decisions">设计决策</a>，修改顺序见 <a href="#doc-workflow">文档维护与变更流程</a>。</p>
 <span id="doc-changelog-1-变更记录"></span><h2 id="doc-changelog-section">1. 变更记录</h2>
 <table>
 <thead>
@@ -2751,16 +2898,25 @@ Two Way Blend → 现有最终姿态链 → Output Pose
 <td>用户报告完成输入、复制 ABP、八方向 BlendSpace 和 IsAiming 变量，要求继续制作</td>
 <td>复用现有 C++ getter 与 UAnimInstance；静态核对资产存在及 BlendSpace 命名，不推断内部接线或试玩成功；T04 继续进行中，运行测试仍未执行；助手未编译或修改资产，更新阅读快照</td>
 </tr>
+<tr>
+<td>CHG014</td>
+<td>2026-10-03</td>
+<td>开始 T05：ARifle 双段射击/弹匣/手动换弹、生命与命中接口、行动状态和 Montage 入口；新增 Weapon_Setup，补记用户移动速度代码调参与 AO -1～1 归一化步骤</td>
+<td>用户报告本轮测试成功并询问下一步，沿已确认协作方式继续制作</td>
+<td>用户此前只改代码的移动速度调参保留，JSON 未同步且已标明差异；枪械/生命默认参数沿用账本。T04 局部成功由用户报告，T05 进行中；新代码未编译/运行，资产配置和武器验收待用户完成；同步文档链接/阅读快照</td>
+</tr>
 </tbody>
 </table>
 <span id="doc-changelog-2-本轮归档说明"></span><h2 id="doc-changelog-section-1">2. 本轮归档说明</h2>
+<p>T05 接入补记（2026-10-03）：用户已创建 <code>/Game/MothEffect/Weapons/BP_Rifle</code>，并在 <code>hand_r</code> 下添加 WeaponSocket；C++ 默认挂点与 Weapon_Setup 已同步，已有角色蓝图仍需核对挂点字段。助手未修改资产或执行编译/试玩。</p>
 <p>阅读指南归入项目概览；游戏策划、道具规则、关卡/界面/资源和参数归入 GDD；UE 实现设计归入 TDD，并拆出代码规范、版本管理和工程配置；测试与提交拆为测试计划、发布清单；决策与变更拆为设计决策、维护流程和本变更日志。根目录 README 提供有效文件索引，阅读版同步为新结构。</p>
 <p>早期 v0.1/v0.2 文件包是历史快照；当前有效基线以项目 Docs 为准。</p>
 </section>
 <section class="document" id="doc-test"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><span id="doc-test-moth-effect飞蛾效应测试计划与验收"></span><h1 id="doc-test-moth-effect">Moth Effect（飞蛾效应）：测试计划与验收</h1>
-<p>版本：v0.9｜制定日期：2026-10-02｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
-<p>当前状态：用户已建立 MothEffect 第三人称模板工程，本次仅静态核对文件。以下测试全部<strong>未执行</strong>；没有本作核心玩法验收、测试构建、性能实测、平台上传或审核通过证据。“预期结果”是计划验收标准，不能当作已通过结果。</p>
+<p>版本：v0.12｜制定日期：2026-10-02｜更新日期：2026-10-03｜时间：香港时间（UTC+8）</p>
+<p>当前状态：用户报告当前移动/瞄准动画测试成功，但未列出 TC34/TC35 的实际分支、构建与记录。以下表格以完整案例计，仍保持<strong>未执行</strong>，不把用户的局部成功扩展为完整案例通过。T05 新 C++ 仅做静态检查，助手没有编译或运行；仍缺完整核心玩法、性能、平台上传与审核证据。“预期结果”是计划验收标准，不能当作已通过结果。</p>
 <p>v0.9 玩家方案已确认，本轮只补充 TC34–TC38 并细化既有案例；文档一致性检查不属于游戏测试通过证据。玩家实施分阶段执行专项验收，G3 完整体验验收前应形成全部适用分支的结果。</p>
+<p>v0.12 已开始 T05；本轮武器分支的配置与手动步骤见 <a href="#doc-weapon-setup-6-本轮验收顺序">步枪、换弹与生命接入</a>。记录局部结果时注明分支，完整案例覆盖全部适用分支后再改变表格状态。</p>
 <span id="doc-test-1-验收依据与执行方式"></span><h2 id="doc-test-section">1. 验收依据与执行方式</h2>
 <p>规则唯一依据是 <a href="#doc-rules">道具与交互规则</a>，实现职责见 <a href="#doc-technical">技术设计</a>，AI、三波与场地见 <a href="#doc-level">关卡、界面与资源规格</a>，数值唯一依据是 <a href="#doc-parameters">玩法参数基线</a>。测试里的时长、距离、伤害、速度和数量均从该 JSON 当次基线读取，不在本文件再维护一份数值表。</p>
 <p>先在验证房用固定位置、可显示状态/命中方向/伤害的调试对象执行规则测试，再在主竞技场执行流程和压力测试。PIE 可帮助定位问题；G0、G3、G4 的关键结果必须在独立 Windows 包体复现。调试生成、强制状态和计数工具仅供开发测试，最终公开包不得依赖它们才能玩。</p>

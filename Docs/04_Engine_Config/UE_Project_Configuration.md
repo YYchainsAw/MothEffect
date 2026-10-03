@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：UE 工程配置
 
-版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.10 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。已静态核对文件，此前仅修改 Android File Server 的三项配置；本轮仅统一文档名称。未启动编辑器、编译、安装工具链或打包。
+本文件记录工程现状和 G0 配置检查，区分静态核对与待执行项。本地已核对 UE 5.8.0、VS 2026 18.4 与 Windows SDK 10.0.26100.0 存在。修改前一次模板目标检查返回 Target is up to date，不构成新代码或 G0 干净编译证据。用户随后明确要求助手不代为编译；T04 源码修改后未编译/运行，资产配置与验收由用户执行。本轮未修改工程配置、安装工具链或打包。
 
 ## 1. 已静态核对的工程
 
@@ -13,6 +13,10 @@ DefaultGame.ini 当前 ProjectName 与 ProjectDisplayedTitle 均为 Moth Effect�
 现有入口为 /Game/ThirdPerson/Lvl_ThirdPerson，默认游戏模式指向 BP_ThirdPersonGameMode。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)。
 
 工程清单启用了 ModelingToolsEditorMode（仅 Editor）、StateTree、GameplayStateTree。模块声明中还包含 Slate 与 StateTree 相关依赖。插件启用、模块依赖和本作已实现功能是三种不同状态，不因依赖存在而判定玩法已完成。
+
+本地 `/Game/Characters/Mannequins/Anims/Rifle` 已核对有 Fire/Reload/Equip/DryFire、八方向 Walk/Jog、跳跃与 AO_Rifle 文件；尚未核验骨架/Additive/Root Motion/Notify 或实际播放。当前角色源码已经增加越肩相机、镜头 Yaw 朝向、Aim/Sprint 输入与状态，保留原 Move/Look/Jump；新的输入动作引用/映射和动画图仍待用户按 [接入步骤](../05_Development_Guide/Player_Setup.md) 配置，修改后未编译，不能视为玩家系统已验收。
+
+用户确认首版不使用 GAS，现有 .uproject/Build.cs 未显式启用或声明 GameplayAbilities/GameplayTags/GameplayTasks；本轮不添加这些依赖，也不为玩家新增 StateTree。后续新增输入与动画资产、镜头 Yaw 转向、Anim Class 配置遵循 [技术设计第 3 节](../02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)；在编辑器逐项核验并以独立包测试，模板资源恢复仍按 [版本管理](../03_Code_Standard/Version_Control.md)。
 
 ## 2. 工具链与首个独立包
 

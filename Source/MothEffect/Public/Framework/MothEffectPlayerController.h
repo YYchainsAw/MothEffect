@@ -17,6 +17,11 @@ UCLASS(abstract)
 class AMothEffectPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+
+	virtual void FlushPressedKeys() override;
+	virtual bool SetPause(bool bPause, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
 	
 protected:
 

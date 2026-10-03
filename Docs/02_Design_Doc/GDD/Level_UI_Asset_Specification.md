@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：关卡、界面与资源规格
 
-游戏名：Moth Effect（飞蛾效应）｜v0.9｜2026-10-03。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。
+游戏名：Moth Effect（飞蛾效应）｜v0.11｜2026-10-03。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。
 
 ## 0. 魔法朋克表现方向
 
@@ -96,7 +96,7 @@ P0 HUD：中心准星及道具命中高亮；左下生命；右下当前弹药/�
 
 已确认使用本地 `/Game/Characters/Mannequins/Anims/Rifle`，以实际资产属性为准：待机 `MF_Rifle_Idle_ADS`、八方向 Walk/Jog、Rifle Jump 系列、`MM_Rifle_Fire`、`MM_Rifle_Reload`、`MM_Rifle_Equip`、`MM_Rifle_DryFire`、`AIM/AO_Rifle`。HitReact 可供表现评估，不能据此加入受击硬直；死亡资源以本地已有且骨架兼容的资产核验后引用。
 
-新增 `ABP_MothPlayer / BS_MothRifleLocomotion / AM_MothRifleFire / AM_MothRifleReload` 放 `/Game/MothEffect/Player/Animations`；状态机、Slot/Group、AimOffset 和中断契约只维护在 [技术设计第 3 节](../TDD/Technical_Design.md#3-越肩射击与输入)。T04/T05 就接入最低移动/枪械表现，T07 加入持物挂点/短释放，T20 仅整合与润色。
+新增 `ABP_MothPlayer / BS_MothRifleLocomotion / AM_MothRifleFire / AM_MothRifleReload` 沿用户实际目录 `/Game/MothEffect/Animations/Player`，BlendSpace 与枪械 Montage 归入 Combat 子目录；状态机、Slot/Group、AimOffset 和中断契约只维护在 [技术设计第 3 节](../TDD/Technical_Design.md#3-越肩射击与输入)。T04/T05 就接入最低移动/枪械表现，T07 加入持物挂点/短释放，T20 仅整合与润色。
 
 验收时逐项核对 Skeleton、Additive、Root Motion、Slot 与骨骼遮罩、动画时长和挂点。投掷先用简化姿态/释放特效，持物时收枪到挂点或隐藏枪网格；动作反馈不得延长枪械恢复窗口。新资产引用的模板资源不自动进入 Git，按 [版本管理](../../03_Code_Standard/Version_Control.md) 的模板依赖恢复约定留记录；本轮没有迁移资产或改变忽略范围。
 

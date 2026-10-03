@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：代码与资产命名规范
 
-版本 v0.9 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.11 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件约定后续代码与资产的命名、目录和职责边界。当前只整理文档，未执行源码重命名或资源迁移。自定义类/接口签名以 [技术设计](../02_Design_Doc/TDD/Technical_Design.md) 为准。
 
@@ -8,7 +8,7 @@
 
 新增资产统一放 `/Game/MothEffect/{Core,Player,Combat,Devices,Enemies,Levels,UI,Data,Audio,VFX,Tests}`，新增源码放在现有 Source/MothEffect 模块内。现有 ThirdPerson、Characters、Input、LevelPrototyping 与模板变体资产保持原路径；角色、控制器和游戏模式复用 [技术设计](../02_Design_Doc/TDD/Technical_Design.md) 类映射表中的现有类及蓝图，不先做批量重命名。使用英文稳定名称：C++ 无 BP 前缀，新增蓝图 `BP_`，地图 `L_`，界面 `WBP_`，输入 `IA_/IMC_`，数据 `DA_`。必要的资源整理安排在 G1 后核对依赖再进行。
 
-玩家新增动画资产使用 `ABP_`（动画蓝图）、`BS_`（混合空间）、`AM_`（动画蒙太奇），放 `/Game/MothEffect/Player/Animations`；新增输入放 `/Game/MothEffect/Player/Input`。这些前缀是蓝图 `BP_` 通则的明确分类，不要求重命名已有模板动画。具体资产清单与状态结构只维护在 [技术设计第 3 节](../02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)。
+玩家新增动画资产使用 `ABP_`（动画蓝图）、`BS_`（混合空间）、`AM_`（动画蒙太奇），沿用户已创建的 `/Game/MothEffect/Animations/Player` 与 Combat 子目录；新增输入归入 `/Game/MothEffect/Input/Actions` 和 `/Game/MothEffect/Input/Mapping`。这些前缀是蓝图 `BP_` 通则的明确分类，不要求重命名已有模板动画。具体资产清单与状态结构只维护在 [技术设计第 3 节](../02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)。
 
 ## 2. C++ 与蓝图职责
 

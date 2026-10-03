@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.10 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.11 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
 
 用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
 
@@ -68,7 +68,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 
 W01：①从相机沿准星射线找第一阻挡点；无命中则取射程终点。②从枪口向该点再检测，只有第二段实际命中才造成伤害/启动机关，`ShotDirection` 使用第二段方向。两段忽略玩家、枪及 Held 道具。先检测角色胸前到枪口的短段，枪口已被墙体阻挡或嵌入时取消射击伤害，提示“枪口受阻”，避免镜头看到目标却从墙另一侧开枪。SpringArm 防碰撞负责镜头，不能代替枪口检测。[Epic：单次射线返回首个阻挡命中](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Collision/LineTraceByChannel)
 
-复用已有 /Game/Input 的 IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump，在现有控制器与角色输入绑定上扩展。新增 IMC_MothGameplay 只映射 IA_Primary/Interact/Aim/Reload/Sprint，不重复建立第二套移动与跳跃输入；新增输入资产放 /Game/MothEffect/Player/Input。`IA_Primary` 用简单 Boolean，不叠加 Hold/Release 触发器；单次交互与换弹绑定 Started，移动/视角轴使用 Triggered。左键一次按压流程与取消语义见第 3.3 节。[Epic：Enhanced Input 事件](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
+复用已有 /Game/Input 的 IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump，在现有控制器与角色输入绑定上扩展。新增 IMC_MothGameplay 只映射 IA_Primary/Interact/Aim/Reload/Sprint，不重复建立第二套移动与跳跃输入；新增输入资产沿用户实际目录，Action 放 /Game/MothEffect/Input/Actions，Mapping Context 放 /Game/MothEffect/Input/Mapping。`IA_Primary` 用简单 Boolean，不叠加 Hold/Release 触发器；单次交互与换弹绑定 Started，移动/视角轴使用 Triggered。左键一次按压流程与取消语义见第 3.3 节。[Epic：Enhanced Input 事件](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
 
 E 在空手时拾取准星附近的最近合格 Dormant，道具到角色需无遮挡；Held 时安全放下，Held 时 R 换弹不生效。拾取关物理、关碰撞并附着手部挂点；投掷先从角色外侧到释放点做与道具体积一致的 Sweep，再检查终点重叠，不能把释放点直接放到摄像机位置。路径阻挡或终点不合法则保持 Held 并提示。Detach 后切回 Dormant、开启重力与物理，设置 [玩法参数基线](../GDD/Gameplay_Parameters.json) 的初速度；可对物理根启用 CCD 并验证薄墙。放下同样检查空位，反复拾取放下不刷新累计闲置寿命。
 
@@ -114,7 +114,7 @@ Reloading --拾取成功，取消未完成换弹--> Carrying
 
 本地 `/Game/Characters/Mannequins/Anims/Rifle` 已静态核对存在 `MM_Rifle_Fire / Reload / Equip / DryFire`、`MF_Rifle_Idle_ADS`、八方向 Walk/Jog、Rifle 跳跃系列、HitReact 与 `AIM/AO_Rifle`。文件存在不等于骨架、Additive、Root Motion 或 Notify 已验收；在编辑器逐项核对后引用。先复用本地资产，不把模板 Combat 近战示例当作本作射击实现。
 
-新增动画资产放 `/Game/MothEffect/Player/Animations`：`ABP_MothPlayer`、`BS_MothRifleLocomotion`、`AM_MothRifleFire`、`AM_MothRifleReload`，按实际需要增加携带姿态/短释放表现。角色仍使用现有 BP_ThirdPersonCharacter，配置其 Mesh Anim Class，不先复制第二套玩家角色。
+新增动画资产沿用户实际目录 `/Game/MothEffect/Animations/Player`：`ABP_MothPlayer` 位于该目录，`BS_MothRifleLocomotion` 位于 Combat 子目录，后续 `AM_MothRifleFire / AM_MothRifleReload` 也归入 Combat；按实际需要增加携带姿态/短释放表现。用户已报告 ABP、BlendSpace 与 IsAiming 变量创建，文件已静态核对，内部接线与运行待验收。角色仍使用现有 BP_ThirdPersonCharacter，配置其 Mesh Anim Class；节点步骤见 [玩家输入与动画接入](../../05_Development_Guide/Player_Setup.md#5-连接-abp_mothplayer)。
 
 ~~~text
 Character / CharacterMovement / Rifle 的只读快照
@@ -126,7 +126,7 @@ Character / CharacterMovement / Rifle 的只读快照
 
 | 动画部分 | 选择与转换依据 | 必须保证 |
 |---|---|---|
-| Grounded | 局部水平速度的二维 BlendSpace，复用八方向 Walk/Jog 和待机 | 侧移/倒退姿态与真实移动方向一致 |
+| Grounded | 局部水平速度的二维 BlendSpace；现有资产以等价的 Direction / GroundSpeed 表达，复用八方向 Walk/Jog 和待机 | 侧移/倒退姿态与真实移动方向一致 |
 | JumpStart / InAir / Land | 主动跳跃可进 JumpStart；被弹射、爆炸推动或走落边缘直接进 InAir；竖直速度选择上升/顶点/下落，落地回 Grounded | 任意地面状态都可直接转 InAir；新外力可中断 Land；落地动画不锁玩法 |
 | AimOffset | 存活持枪时根据镜头相对角色的瞄准方向混合，范围按 AO 资产能力核验 | 携带仍能调整镜头/投掷方向，但不用步枪 AO 强行扭曲携带姿态；换弹时按姿态需要降低 AO 权重 |
 | Fire / Reload Montage | OnShotFired 与有效换弹事件请求上半身动画；UpperBody Slot 必须配合 Layered Blend per Bone/骨骼遮罩 | 不覆盖腿部移动；Reload 优先于 Fire，动作许可在 C++ 处理，同组 Montage 不互相误抢 |

@@ -56,13 +56,13 @@ protected:
 	TObjectPtr<UInputAction> SprintAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float WalkSpeed = 450.0f;
+	float WalkSpeed = 300.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float AimMoveSpeed = 450.0f;
+	float AimMoveSpeed = 300.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float SprintSpeed = 650.0f;
+	float SprintSpeed = 625.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
 	float JumpVelocity = 600.0f;
@@ -178,4 +178,3 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
-

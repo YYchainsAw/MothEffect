@@ -2,6 +2,7 @@
 
 
 #include "Framework/MothEffectPlayerController.h"
+#include "Characters/MothEffectCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "InputMappingContext.h"
@@ -64,4 +65,14 @@ bool AMothEffectPlayerController::ShouldUseTouchControls() const
 {
 	// are we on a mobile platform? Should we force touch?
 	return SVirtualJoystick::ShouldDisplayTouchInterface() || bForceTouchControls;
+}
+
+void AMothEffectPlayerController::FlushPressedKeys()
+{
+	Super::FlushPressedKeys();
+
+	if (AMothEffectCharacter* PlayerCharacter = Cast<AMothEffectCharacter>(GetPawn()))
+	{
+		PlayerCharacter->ResetMovementInput();
+	}
 }

@@ -1,17 +1,18 @@
 {
-  "documentVersion": "0.7",
+  "documentVersion": "0.9",
   "updatedAt": "2026-10-03",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "英文名 Moth Effect、中文名飞蛾效应与魔法朋克风格已由用户确认，工程声明已静态核对。战斗数值未实测；本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。 projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "英文名 Moth Effect、中文名飞蛾效应、魔法朋克风格与 v0.9 玩家方案已由用户确认，工程及 Rifle 动画文件存在已静态核对。数值仍未实测；aimMoveSpeedCmPerSec 起步沿用走路速度，airControl 沿用本地 Character 源码默认值。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
     "time": "s",
     "direction": "world-space normalized vector",
     "damage": "HP",
-    "angle": "degree"
+    "angle": "degree",
+    "ratio": "dimensionless"
   },
   "world": {
     "prototypeWidthCm": 2000,
@@ -26,8 +27,10 @@
   "player": {
     "maxHealth": 100,
     "walkSpeedCmPerSec": 450,
+    "aimMoveSpeedCmPerSec": 450,
     "sprintSpeedCmPerSec": 650,
     "jumpVelocityCmPerSec": 600,
+    "airControl": 0.35,
     "fallDamageEnabled": false
   },
   "camera": {
@@ -142,6 +145,12 @@
       "date": "2026-10-02",
       "change": "v0.2仅更新名称、风格与既有工程信息，战斗参数未改",
       "evidence": "user_confirmation_and_local_project_manifest",
+      "validated": false
+    },
+    {
+      "date": "2026-10-03",
+      "change": "v0.9 确认玩家方案；新增瞄准移动速度为既有走路速度、空中控制为本地源码默认值，其他既有数值未改",
+      "evidence": "user_confirmed_player_design_and_local_character_source",
       "validated": false
     }
   ],

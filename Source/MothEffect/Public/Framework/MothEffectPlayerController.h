@@ -17,6 +17,10 @@ UCLASS(abstract)
 class AMothEffectPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+
+	virtual void FlushPressedKeys() override;
 	
 protected:
 

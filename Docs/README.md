@@ -1,14 +1,14 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.13 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.14 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器。文档集版本为 v0.13，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
+本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器，v0.14 同步 GitHub 开发流程、六阶段排期与任务状态。文档集版本为 v0.14，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
 
-工程：[MothEffect.uproject](../MothEffect.uproject) · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。第三人称模板工程已存在；自定义玩法、编译、独立包、测试与发布均待验收。已配置本地 Git/origin/忽略/LFS；本轮未暂存、提交或推送，详见 [版本管理与公开建议](03_Code_Standard/Version_Control.md)。
+工程：[MothEffect.uproject](../MothEffect.uproject) · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。GitHub 仓库已公开并存在提交，`main`/`develop` 已纳入轻量 Actions 和 Issue/PR 模板；Project 与 M1–M6 已建立。日常使用见 [GitHub 开发流程](05_Development_Guide/GitHub_Workflow.md)，提交范围与资源依赖见 [版本管理](03_Code_Standard/Version_Control.md)。
 
-玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 [技术设计第 3 节](02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)，依据见 DEC22–DEC27；操作规则补充 R19–R23，验收新增 TC34–TC38。T04 用户报告当前移动/瞄准动画测试成功，完整分支仍待留证；T05 已写入步枪、手动换弹、生命与行动状态 C++，按 [步枪、换弹与生命接入](05_Development_Guide/Weapon_Setup.md) 配置资产。助手未编译，新代码与武器玩法待用户验收；候选机关仍待选制作。
+玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 [技术设计第 3 节](02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)，依据见 DEC22–DEC27；操作规则为 R19–R23，验收为 TC34–TC38。2026-10-06 核对：T01–T03 的 Issue 已关闭、Project 为 Done，记录明细仍待补；T04 Issue 已关闭、Project 仍为 Pending Acceptance；T05 为 In Progress，基础武器接入、射击、换弹与生命项已勾选，上半身 Montage 及测试记录尚未完成。完整案例及 G0–G4 以真实证据验收，详见 [开发计划](05_Development_Guide/Development_Plan.md)。
 
-武器预览接入：BP_ThirdPersonCharacter 的 Mesh 下新增 RifleComponent，完整 BP_Rifle 由子 Actor 组件创建，在角色视口直接调整组件 Transform；Rifle Class 与 Rifle Attach Socket 保留在角色默认值。旧偏移迁移与预览验收见 Weapon_Setup 第 3 节，预览和运行均待用户核验。
+武器预览接入：BP_ThirdPersonCharacter 的 Mesh 下使用 RifleComponent，由子 Actor 组件创建完整 BP_Rifle，在角色视口直接调整组件 Transform；Rifle Class 与 Rifle Attach Socket 保留在角色默认值。T05 Issue 已勾选预览与运行仅一把武器，具体构建与证据仍待补；旧偏移迁移及检查步骤见 [Weapon_Setup](05_Development_Guide/Weapon_Setup.md)。
 
 ## 1. 目录与有效文件
 
@@ -29,6 +29,7 @@
 | 05_Development_Guide/ | [Development_Plan.md](05_Development_Guide/Development_Plan.md) | 开发任务与排期 |
 | 05_Development_Guide/ | [Player_Setup.md](05_Development_Guide/Player_Setup.md) | 玩家 C++ 交付范围、输入引用、ABP 数据/移动/瞄准接线与手动验收 |
 | 05_Development_Guide/ | [Weapon_Setup.md](05_Development_Guide/Weapon_Setup.md) | T05 步枪/输入/测试靶/上半身动画配置与分支验收 |
+| 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
 | 06_Test_Doc/ | [Test_Plan.md](06_Test_Doc/Test_Plan.md) | 测试计划与验收 |
@@ -49,6 +50,6 @@ GDD = 游戏设计文档，TDD = 技术设计文档。玩法数值归属 GDD，U
 
 目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。
 
-交互、接口、内容、数值各保留唯一来源，具体分工见 [文档维护与变更流程](05_Development_Guide/Documentation_Workflow.md)。参数账本不是可直接导入 UE 的 DataTable；此前用户只要求改代码的移动速度尚待同步账本，差异见 Player_Setup。T02 保留工程已建立但运行打包待验收，T03 已配置版本管理但恢复待验收；T04/T05 进行中，完整案例与武器新代码仍待验收，其余任务状态未变。
+交互、接口、内容、数值各保留唯一来源，具体分工见 [文档维护与变更流程](05_Development_Guide/Documentation_Workflow.md)。参数账本不是可直接导入 UE 的 DataTable；此前只改代码的移动速度差异仍按 Player_Setup 记录，本次不变更玩法数值。当前任务开关状态、Project Status 与验收证据分别记录，进度快照和 Issue 对照在开发计划维护。
 
 修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。

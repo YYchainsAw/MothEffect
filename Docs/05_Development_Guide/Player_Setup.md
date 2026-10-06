@@ -1,10 +1,10 @@
 # Moth Effect（飞蛾效应）：玩家输入与动画接入
 
-版本 v0.3 · 2026-10-03 · T04 进行中 · 用户报告本轮移动/瞄准动画测试成功，完整分支待留证
+版本 v0.4 · 2026-10-06 · T04 Issue 已关闭 / Project 为 Pending Acceptance · 基础项已勾选，完整分支证据待补
 
 协作方式已经用户确认：助手修改 C++，用户在 UE 中配置资产与试玩验收。用户明确要求助手不代为编译，后续编译由用户自行执行。C++ 已写入越肩相机、镜头水平朝向、瞄准/冲刺；本轮复用现有读取接口，继续接入动画图。
 
-用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对资产存在并阅读用户粘贴的节点文本；用户随后报告当前移动/瞄准动画测试成功。助手没有运行 PIE，不把该报告扩展为全部 TC34/TC35 或 T04 完成；下一步见 [步枪、换弹与生命接入](Weapon_Setup.md)。
+用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对资产存在并阅读用户粘贴的节点文本；用户随后报告当前移动/瞄准动画测试成功。2026-10-06 的 [T04 Issue #6](https://github.com/YYchainsAw/MothEffect/issues/6) 已关闭、四项基础验收已勾选，但 Project 仍为 Pending Acceptance，记录字段待填。助手没有运行 PIE，不把局部报告或勾选扩展为完整 TC34/TC35 通过；下一步见 [步枪、换弹与生命接入](Weapon_Setup.md)。
 
 ## 1. C++ 已写入的内容
 
@@ -98,7 +98,7 @@ Calculate Direction 输出的是相对角色朝向的水平角度；前向约 0�
 
 ### 5.4 先验证基础腾空，再细分状态
 
-T04 最低接入先使用 Grounded 与 InAir，完成后再细分技术设计规定的 JumpStart / InAir / Land，不因此把完整 T04 标为完成：
+T04 最低接入先使用 Grounded 与 InAir，完成后再细分技术设计规定的 JumpStart / InAir / Land；T04 的 Issue 状态与完整专项测试分别记录：
 
 | 转换 | 条件 |
 |---|---|

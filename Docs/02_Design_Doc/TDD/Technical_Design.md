@@ -1,12 +1,12 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.13 · 2026-10-03 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.14 · 2026-10-06 · 游戏名：Moth Effect（飞蛾效应）
 
-用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。修改后的代码、完整玩家系统与打包结果均未验收。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
+用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。2026-10-06 的任务状态和记录情况见 [开发计划](../../05_Development_Guide/Development_Plan.md)；完整玩家系统与包体仍须对应测试证据。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
 
-v0.12：用户报告当前移动/瞄准动画测试成功；T05 已写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead。新代码未编译/运行，配置步骤见 [步枪、换弹与生命接入](../../05_Development_Guide/Weapon_Setup.md)。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍未实现。此前用户仅要求改代码的移动速度调参尚待同步账本，当前差异见 Player_Setup。
+v0.12 历史交付：用户报告移动/瞄准动画成功；T05 写入 ARifle、UHealthComponent、FHitContext、BallisticReactive、玩家输入门控与 Ready/Reloading/Dead，交付时助手未编译/运行。2026-10-06 同步：T05 基础接入、射击、换弹与生命项已勾选，上半身 Montage 和适用测试记录待补，见 [Weapon_Setup](../../05_Development_Guide/Weapon_Setup.md)。Carrying/ThrowRecovery 仅保留枚举，机关与整局任务仍为 Todo。移动速度的已知代码/账本差异继续在 Player_Setup 记录，本次不调整数值。
 
-v0.13：用户希望在角色蓝图预览并调整完整武器，Character 新增 Mesh 下的 UChildActorComponent **RifleComponent**，通过 WeaponSocket 挂接 BP_Rifle。RifleClass/RifleAttachSocket 控制类型与挂点，组件 Transform 控制偏移；OnConstruction 同步类型/挂点但不重设偏移，仅在类实际变化时设置 ChildActorClass。BeginPlay 获取现有子 Actor 并绑定事件，EndPlay 解绑并取消任务，由组件负责销毁；旧 SpawnActor 路径和 RifleRelativeTransform 字段移除，已有偏移需按接入文档手动迁移。源码静态复核，编译/预览/运行尚未验收。
+v0.13：用户希望在角色蓝图预览并调整完整武器，Character 新增 Mesh 下的 UChildActorComponent **RifleComponent**，通过 WeaponSocket 挂接 BP_Rifle。RifleClass/RifleAttachSocket 控制类型与挂点，组件 Transform 控制偏移；OnConstruction 同步类型/挂点但不重设偏移，仅在类实际变化时设置 ChildActorClass。BeginPlay 获取现有子 Actor 并绑定事件，EndPlay 解绑并取消任务，由组件负责销毁；旧 SpawnActor 路径和 RifleRelativeTransform 字段移除，已有偏移需按接入文档手动迁移。当次交付仅复核源码；2026-10-06 的 T05 Issue 已勾选组件预览与运行单武器项，相关构建与证据待补。
 
 ## 1. 起步与职责
 
@@ -143,7 +143,7 @@ AnimBP 从角色、移动组件、武器读取局部速度、竖直速度、IsFa
 
 ### 3.5 玩家实施顺序与验收
 
-G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生命与上半身动画 → T06–T09 持物/投掷恢复/D03 空中启动 → T10–T12 外力与连锁 → T14–T18 敌人掉落/三波/HUD/重开。早期只制作最低可读动画，不等 T20 美术整合才验证移动、射击或释放。玩家新增验收为 TC34–TC38，原 TC06/TC24/TC31 同步补齐；所有功能仍待实际实现与验收。
+G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生命与上半身动画 → T06–T09 持物/投掷恢复/D03 空中启动 → T10–T12 外力与连锁 → T14–T18 敌人掉落/三波/HUD/重开。早期只制作最低可读动画，不等 T20 美术整合才验证移动、射击或释放。玩家新增验收为 TC34–TC38，原 TC06/TC24/TC31 同步补齐；各功能按任务进度与实际测试分支分别验收；T04 基础项与 T05 前三项已勾选，机关和闭环任务仍为 Todo。
 
 ### 3.6 GAS 决策与扩展边界
 

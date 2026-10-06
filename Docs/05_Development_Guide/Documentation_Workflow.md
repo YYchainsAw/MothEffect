@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：文档维护与变更流程
 
-版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.8 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件规定文档归属、命名与变更顺序，用来避免多个文件维护不同版本的规则。目录入口见 [文档入口](../README.md)；设计依据见 [设计决策](../02_Design_Doc/TDD/Decisions/Design_Decisions.md)，变更历史见 [变更日志](Changelog.md)。
 
@@ -36,4 +36,16 @@ GDD 放玩法设计和玩法参数；TDD 放实现设计；Decisions 放设计�
 
 先修改对应 Markdown/JSON 源文件，再同步版本和日期、修正文档相对链接，并重新生成 [浏览器阅读版](../01_Project_Overview/Reading_View.html)。阅读版只用于浏览，不能单独修改为与源文件冲突的另一套设计。
 
+在工程根目录运行 `py scripts/build_reading_view.py`，用 [生成脚本](../../scripts/build_reading_view.py) 更新阅读版。生成需要已登录的 `gh` 和网络，使用 GitHub Markdown 渲染接口；未变化的章节按源文件摘要复用，保留页面样式与既有标题锚点。新增文档时同时维护脚本里的章节清单和文档入口。
+
+运行 `py scripts/build_reading_view.py --check` 可离线核对快照是否覆盖当前源文件，以及页面锚点和相对文件链接是否有效；再运行 `py scripts/validate_repo.py` 检查仓库静态规则。生成脚本不加入 Actions 的自动步骤，现有 CI 保持轻量。
+
 任务、规则或测试变更时保留关联 ID；实际构建/缺陷证据按 [测试计划与验收](../06_Test_Doc/Test_Plan.md) 记录。发布状态按 [发布检查清单](../07_Release/Release_Checklist.md) 记录，上传成功不能替代审核通过。
+
+## 5. Issue、Project 与 Docs 同步
+
+GitHub 的当前用法见 [GitHub 开发流程](GitHub_Workflow.md)。排期与任务编号仍在 [开发计划](Development_Plan.md) 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。
+
+同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。
+
+PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。

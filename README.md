@@ -44,6 +44,7 @@
 - [道具与交互规则](Docs/02_Design_Doc/GDD/Device_Interaction_Rules.md)
 - [技术设计](Docs/02_Design_Doc/TDD/Technical_Design.md)
 - [开发计划](Docs/05_Development_Guide/Development_Plan.md)
+- [GitHub 开发流程：任务、看板、PR 与 Actions](Docs/05_Development_Guide/GitHub_Workflow.md)
 
 工程入口为 [MothEffect.uproject](MothEffect.uproject)。当前仓库仅纳入 `Content/MothEffect/` 下的自有内容；模板资源保留在开发者本机，现有默认地图与游戏模式仍引用 `ThirdPerson`。克隆后需要补齐这些依赖，才能复现本地模板工程，详见 [版本管理说明](Docs/03_Code_Standard/Version_Control.md)。
 

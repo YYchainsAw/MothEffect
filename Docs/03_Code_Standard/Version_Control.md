@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：版本管理与 Git 排除规范
 
-版本 v0.7 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.8 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件定义仓库、排除规则与恢复约定。项目根目录已初始化 Git，当前分支 main；origin 为 https://github.com/YYchainsAw/MothEffect.git。2026-10-03 只读访问远程成功，核查时为公开空仓库。已完成仓库级 Git LFS 初始化，并在根 .gitattributes 配置 .uasset/.umap。本次未暂存、提交、推送或打 tag；首次推送认证与写入权限尚未验证。
+本文件定义仓库、排除规则与恢复约定。origin 为 https://github.com/YYchainsAw/MothEffect.git，远程为已公开、有提交的仓库。2026-10-06 核对 `main` 与 `develop` 均包含 [PR #30](https://github.com/YYchainsAw/MothEffect/pull/30) 的轻量 Actions 和 [PR #31](https://github.com/YYchainsAw/MothEffect/pull/31) 的 Issue/PR 模板；核对时两分支指向 `bea7273cf4a7319f85469eb572a10425c4e67ca6`。Git/origin/忽略/LFS 已配置，远程写入和 PR 合并已完成；里程碑 tag 仍以实际验收为依据。
 
 ## 1. 提交与忽略范围
 
@@ -14,7 +14,7 @@ Docs 内 Markdown/JSON 是维护源文件，Reading_View.html 是由源文件生
 
 每天保存能启动的版本及构建标识，G0–G4 里程碑以实际验收为依据打 tag。规则、参数或范围改动按 [文档维护与变更流程](../05_Development_Guide/Documentation_Workflow.md) 同步，并在 [变更日志](../05_Development_Guide/Changelog.md) 留痕。
 
-T03 要求形成实际版本记录，并从最近备份取回一个测试文件核对内容，不能只看备份目录存在；当前仅完成 Git、origin、忽略和 LFS 配置，提交与恢复仍待验收。任务与工时见 [开发任务与排期](../05_Development_Guide/Development_Plan.md)。
+T03 的 [Issue #5](https://github.com/YYchainsAw/MothEffect/issues/5) 已关闭，Project 状态为 Done；版本与资源依赖恢复的验收项、恢复文件和证据字段仍待补。远程提交可核对不等于已验证完整工程恢复：需记录 Content/MothEffect 之外的实际依赖及补齐方法，从最近备份取回测试文件并核对内容。任务状态与工时见 [开发计划](../05_Development_Guide/Development_Plan.md)。
 
 ## 3. 资源来源
 
@@ -60,3 +60,7 @@ T03 要求形成实际版本记录，并从最近备份取回一个测试文件�
 本项目当前目标为 Windows 单机，已在 Config/DefaultEngine.ini 的 AndroidFileServer 配置中设置 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值），保留 Shipping、Shipping 外部启动和独立 AFS 编译开关为 False。清空 Token 同时关闭该服务器用途，避免空 Token 取消认证检查；本次未输出旧值。配置节之外的内容未修改，未启动编辑器、编译或打包。以后需要 Android 文件服务器时，另行配置新的私有 Token，不把实际凭证写入公开默认配置。[Epic：Android File Server](https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine)
 
 公开资源前逐项记录来源及可再分发范围。UE EULA 对 Samples/Templates 中的 Examples 允许源格式分发，不能把此权限推广到所有引擎内容或商城资产。Fab 标准许可允许项目使用及向项目协作者共享资产，同时限制素材单独再分发；公开可提取的原始资源需要依据其实际许可判断。[Unreal Engine EULA](https://www.unrealengine.com/en-US/eula/unreal)、[Fab 标准许可](https://www.fab.com/eula)
+
+## 7. GitHub 分支、PR 与检查
+
+日常任务、分支、Project Status、模板及 Actions 用法见 [GitHub 开发流程](../05_Development_Guide/GitHub_Workflow.md)。PR 通过 `Refs #实际编号` 关联任务；游戏改动合并后补齐受影响的 UE 验收再完成任务。静态 CI 检查 JSON、文档相对文件链接和 LFS 属性，不验证资源上传完整性、编译、打包或恢复。

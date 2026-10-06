@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.13 · 2026-10-03 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.14 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件保留按日期追加的文档与项目变更历史。v0.3 整理结构，v0.4 配置版本管理，v0.5 清理公开内容，v0.6 收敛 Content 范围，v0.7 统一中英文名称，v0.8 新增待选机关，v0.9 补齐玩家方案，v0.10 开始 T04 C++，v0.11 补齐动画接线，v0.12 开始 T05 步枪/换弹/生命。用户报告上一轮移动/瞄准动画成功；本轮新增 C++ 尚待用户编译/运行。助手未编译、修改二进制资产、暂存、提交或推送。状态与原型依据见 [设计决策](../02_Design_Doc/TDD/Decisions/Design_Decisions.md)，修改顺序见 [文档维护与变更流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖 2026-10-06 已完成的远程配置、合并和任务状态。当前文档集为 v0.14，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -23,6 +23,10 @@
 | CHG013 | 2026-10-03 | 补充 ABP 的 IsAiming 数据同步、Direction/GroundSpeed、基础腾空与 AimOffset 混合步骤，同步实际输入/动画目录 | 用户报告完成输入、复制 ABP、八方向 BlendSpace 和 IsAiming 变量，要求继续制作 | 复用现有 C++ getter 与 UAnimInstance；静态核对资产存在及 BlendSpace 命名，不推断内部接线或试玩成功；T04 继续进行中，运行测试仍未执行；助手未编译或修改资产，更新阅读快照 |
 | CHG014 | 2026-10-03 | 开始 T05：ARifle 双段射击/弹匣/手动换弹、生命与命中接口、行动状态和 Montage 入口；新增 Weapon_Setup，补记用户移动速度代码调参与 AO -1～1 归一化步骤 | 用户报告本轮测试成功并询问下一步，沿已确认协作方式继续制作 | 用户此前只改代码的移动速度调参保留，JSON 未同步且已标明差异；枪械/生命默认参数沿用账本。T04 局部成功由用户报告，T05 进行中；新代码未编译/运行，资产配置和武器验收待用户完成；同步文档链接/阅读快照 |
 | CHG015 | 2026-10-03 | 新增角色 Mesh 下的 RifleComponent，使用完整 BP_Rifle 子 Actor 预览/持枪；移除独立 SpawnActor 与旧偏移字段，保留类型/挂点设置并完善绑定/清理 | 用户反馈原方案无法方便地在角色蓝图预览和调整位置 | 组件 Transform 成为偏移来源，旧偏移需手动迁移；类不变时不重新设置 ChildActorClass；组件负责武器生命周期。复核本地 UE 5.8 API 与源码，未编译/预览/试玩，未修改资产；更新接入文档与阅读版 |
+| CHG016 | 2026-10-06 | 建立 M1–M6、27 条 T01–T27 Issue 和首版开发 Project，确认 10/17 DDL | 用户要求用 gh 落地任务管理 | 已核对阶段截止与 Issue/任务对照；T01–T03 为 Done，T04 仍为 Pending Acceptance，T05 为 In Progress；记录不足不自动补作完整验收 |
+| CHG017 | 2026-10-06 | 配置四个 Project 视图与轻量 Repository checks | 用户要求补 Views 与 Actions | [PR #30](https://github.com/YYchainsAw/MothEffect/pull/30) 已合入 main/develop，PR 及两分支 CI 通过；静态检查不编译/运行 UE |
+| CHG018 | 2026-10-06 | 配置开发任务、Bug 和默认 PR 模板 | 用户要求配置 Issue/PR 模板 | [PR #31](https://github.com/YYchainsAw/MothEffect/pull/31) 已合入 main/develop，GitHub 已识别模板，CI 通过；Refs 关联任务，验收与关闭分别记录 |
+| CHG019 | 2026-10-06 | 同步 v0.14：入口、六阶段排期、27 条 Issue 对照、当前状态、GitHub 流程及阅读快照，补充快照生成/离线核对脚本 | 用户要求 Docs 同步 | 保留既有 T/G/TC/DEC/CHG ID 和玩法数值；T04 Closed / Pending Acceptance 与缺失记录如实归档，完整游戏验收状态保持待证据；文档链接、快照源摘要/锚点及静态检查验证见对应 PR |
 
 ## 2. 本轮归档说明
 

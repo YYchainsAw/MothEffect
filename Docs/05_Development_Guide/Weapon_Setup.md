@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：步枪、换弹与生命接入
 
-版本 v0.3 · 2026-10-03 · T05 进行中 · C++ 已写入，组件预览与运行待用户验收
+版本 v0.4 · 2026-10-06 · T05 为 In Progress · 基础接入、射击、换弹与生命项已勾选，Montage 与测试记录待补
 
-用户报告上一轮移动/瞄准动画测试成功，本轮推进步枪闭环。协作方式继续为助手修改 C++、用户配置 UE 资产与试玩；助手没有编译、运行 PIE 或修改二进制资产。新增原生类/接口/反射字段需由用户保存工作、关闭编辑器后自行完成 C++ 编译，再打开工程配置。
+2026-10-06 的 [T05 Issue #7](https://github.com/YYchainsAw/MothEffect/issues/7) 已勾选 RifleComponent/BP_Rifle/WeaponSocket 接入、静止/移动射击与枪口检测、手动换弹及生命/一次死亡三项；上半身 Montage 和 TC01/TC24/TC36/TC38 适用分支记录尚未完成，Issue 保持 Open、Project 为 In Progress。勾选内容按用户记录同步，本次助手未编译、运行 PIE 或修改二进制资产。以下步骤继续用于配置核对和后续代码更新，不要求重做已完成且证据有效的分支。
 
 本轮先实现 W01、Ready/Reloading/Dead、生命组件和命中接口。Carrying/ThrowRecovery/Throw 已保留枚举，拾取、投掷、机关、AI、HUD 和整局胜负随后续任务接入；T05 不因源码存在而标记完成。行为契约见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，武器与生命数值按 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json)。
 

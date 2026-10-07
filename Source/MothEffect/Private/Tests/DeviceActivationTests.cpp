@@ -2,7 +2,10 @@
 
 #include "Devices/DeviceBase.h"
 #include "Components/SphereComponent.h"
+#include "Engine/Engine.h"
+#include "Engine/URL.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/WorldSettings.h"
 #include "Misc/AutomationTest.h"
@@ -12,12 +15,40 @@ namespace
 {
 	struct FDeviceTestWorld
 	{
-		UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+		UWorld* World = nullptr;
+
+		FDeviceTestWorld()
+		{
+			if (!GEngine)
+			{
+				return;
+			}
+			World = UWorld::CreateWorld(EWorldType::Game, false);
+			if (World)
+			{
+				GEngine->CreateNewWorldContext(World->WorldType).SetCurrentWorld(World);
+				World->SetShouldTick(false);
+				// Interface Execute calls go through Actor::ProcessEvent, which requires
+				// world-level actor initialization as well as the actor's own BeginPlay.
+				World->InitializeActorsForPlay(FURL());
+			}
+		}
+
 		~FDeviceTestWorld()
 		{
 			if (World)
 			{
+				// Actors begin play individually in these tests, without a game mode.
+				World->BeginTearingDown();
+				for (FActorIterator It(World); It; ++It)
+				{
+					It->RouteEndPlay(EEndPlayReason::Quit);
+				}
 				World->DestroyWorld(false);
+				if (GEngine)
+				{
+					GEngine->DestroyWorldContext(World);
+				}
 			}
 		}
 	};
@@ -44,6 +75,11 @@ bool FMothDeviceActivationTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
+	if (!TestTrue(TEXT("Test world initializes actors for reflected interface calls"),
+		Fixture.World->AreActorsInitialized()))
+	{
+		return false;
+	}
 	const FHitContext FirstHit = MakeDeviceHit();
 	TestFalse(TEXT("No activation before BeginPlay"), Device->TryActivate(FirstHit));
 	Device->DispatchBeginPlay();
@@ -64,8 +100,12 @@ bool FMothDeviceActivationTest::RunTest(const FString& Parameters)
 			SpentTransitions += NewState == EDeviceState::Spent;
 			DestroyedTransitions += NewState == EDeviceState::Destroyed;
 		});
-	TestTrue(TEXT("Ballistic interface accepts a zero-damage activation"),
-		IBallisticReactive::Execute_ReceiveBallisticHit(Device, FirstHit));
+	if (!TestTrue(TEXT("Ballistic interface accepts a zero-damage activation"),
+		IBallisticReactive::Execute_ReceiveBallisticHit(Device, FirstHit)))
+	{
+		Device->OnDeviceStateChangedNative.Remove(StateObserver);
+		return false;
+	}
 	TestTrue(TEXT("First hit commits Active"), Device->GetDeviceState() == EDeviceState::Active);
 	TestFalse(TEXT("Active cannot be picked up"), Device->CanBePickedUp());
 	TestTrue(TEXT("Direction is normalized in world space"),

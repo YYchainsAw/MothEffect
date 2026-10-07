@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：机关状态与命中接入
 
-版本 v0.1 · 2026-10-07 · T06 原生基础已写入，待用户编译与 PIE 验收
+版本 v0.2 · 2026-10-07 · 用户已运行 Automation；测试 World 已修正，待重新编译和复测
 
 对应 [T06 Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8)。复用 T05 的 `FHitContext`、`IBallisticReactive` 与 Rifle 命中入口；本轮未编译或运行 UE。接口与碰撞的权威定义见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，规则见 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，默认尺寸与质量对应 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 的 throw 组。
 
@@ -46,11 +46,27 @@
 | `RejectInvalidAndDisabledHits` | 无效 HitId、零方向、非有限点/方向/伤害被拒绝；暂停与玩法禁用拒绝命中；被拒绝的 Dormant 之后仍可合法激活；Spent 不复活 |
 | `CancelDuringActivationCallback` | Active 通知期间取消玩法立即进入 Spent；返回后不重新开启物理，也不能恢复激活资格 |
 
-用户完成编译后，可在 Automation 面板搜索 `MothEffect.Devices` 运行。当前测试尚未由助手编译或执行；不将源码存在或文档检查成功记为自动化通过。
+用户完成编译后，可在 Automation 面板搜索 `MothEffect.Devices` 运行。用户已执行修正前的三项测试，结果见第 6 节；本轮修正后的测试待重新编译和复测。助手未代为编译或执行 UE。
 
 ## 5. 当前验证记录
 
-- 工作分支：`develop`；基线 HEAD 为 `cc88f04cb4d044c06bf57de52dfc344c62f7b10c`，T06 源码尚未提交，测试时还需注明包含本轮工作区修改。
+- 工作分支：`develop`；用户已提交 T06 基础，当前源码基线 HEAD 为 `3b0e93f1fa4c2369e466139acdf3c39b308da44c`。本轮测试 World 修正尚未提交；复测记录还需注明包含该工作区修改及实际编译标识。
 - 玩法参数文档：v0.9；机关默认物理尺寸、命中球半径和质量对应 throw 组。本轮未调整参数；玩家移动速度的既有差异见 Player_Setup。
-- 助手验证范围：UE 5.8 本机接口/生命周期源码核对及仓库静态检查。完整 C++ 编译、上述三项 Automation、PIE 步枪命中和状态日志均待用户执行。
+- 助手验证范围：UE 5.8 本机接口/生命周期源码核对及仓库静态检查。本轮修正后的编译、三项 Automation 复测、PIE 步枪命中和状态日志仍待用户执行。
 - [Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8) 仍为 Open / In Progress。完成编译与本轮 PIE 分支并留下记录后，再按实际验收推进；完整 TC12 随 T07/T08/T13 补测。
+
+## 6. 2026-10-07 Automation Test Run 3 与修正
+
+用户提供编辑器 Automation 结果，本机 `Saved/Logs/MothEffect.log` 的 07:21:19–07:21:20 UTC 记录与之相符：
+
+| 测试 | 修正前实际结果 |
+|---|---|
+| `ActivationIsSingleUse` | 失败：接口首次调用未激活，之后直接 TryActivate 才激活，导致五条断言失败；销毁时有 World has no context 警告 |
+| `CancelDuringActivationCallback` | 通过（用户执行） |
+| `RejectInvalidAndDisabledHits` | 通过（用户执行） |
+
+原因已通过 UE 5.8 源码和本机 UHT 生成代码定位：`Execute_ReceiveBallisticHit` 通过 `AActor::ProcessEvent` 调用接口，后者要求 World 已初始化 Actor。原测试仅对机关调用 `DispatchBeginPlay`，未调用 World 的 `InitializeActorsForPlay`，也未注册 World Context；直接 C++ 调用不经过该分发检查，因此其余测试可通过。
+
+本轮仅修正测试环境：创建 World 后注册对应 Context，并调用 `InitializeActorsForPlay`；清理时先给已开始运行的 Actor 发送 EndPlay，再销毁 World 并注销 Context。保留接口 Execute 调用，并增加 World 初始化前置断言；首次接口激活失败即停止后续依赖断言，避免连带报错。
+
+待用户保存并关闭编辑器、重新编译后，再运行全部三项 `MothEffect.Devices`。修正后的结果目前为待执行；既有两个通过结果不自动替代修改后的复测。

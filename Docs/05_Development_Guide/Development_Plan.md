@@ -1,10 +1,10 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.14｜更新日期：2026-10-07｜时间：香港时间（UTC+8）
+版本：v0.15｜更新日期：2026-10-07｜时间：香港时间（UTC+8）
 
-当前状态（2026-10-07）：已建立六个 Milestone 和 27 条 T01–T27 Issue，首版提交 DDL 为 **2026-10-17**。T01–T03 为 Closed / Done；T04 为 Closed / Pending Acceptance；T05 为 Open / In Progress，前三项基础武器验收已勾选，Montage 与测试记录待补；T06–T27 为 Open / Todo。每日 4–6 小时与少量原创机关、场景资产和 UI 已由用户确认；T01–T04 的环境、构建与证据尚未完整填写，G0–G4 仍待完整验收记录。仓库 Actions 和模板已合入 main/develop，操作见 [GitHub 开发流程](GitHub_Workflow.md)。
+当前状态（2026-10-07）：已建立六个 Milestone 和 27 条 T01–T27 Issue，首版提交 DDL 为 **2026-10-17**。T01–T03 为 Closed / Done；T04 为 Closed / Pending Acceptance；T05 为 Closed / Done，[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并；T06 为 Open / In Progress，原生基础已写入，待用户编译与 PIE；T07–T27 为 Open / Todo。每日 4–6 小时与少量原创机关、场景资产和 UI 已由用户确认；T01–T04 的环境、构建与证据尚未完整填写，G0–G4 仍待完整验收记录。仓库 Actions 和模板已合入 main/develop，操作见 [GitHub 开发流程](GitHub_Workflow.md)。
 
-v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。T04 基础项和 T05 前三项按 Issue 勾选记录同步，完整测试分支继续随实现归档；最低玩家动画安排进 T04/T05/T07；T18 负责 UI，T20 负责少量原创资产与资源整合。源码审计发现 T06 的共用命中上下文、T09 的部分射击中断保护已有基础；这些是可复用前置，完整机关任务尚未完成，详见 [10/7 进度核查](Progress_Audit_2026-10-07.md)。
+v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。T05 当前动画和边界 PIE 已由用户确认通过，结果见 [Weapon_Setup](Weapon_Setup.md)，完整测试分支继续随后续实现归档。T06 当前代码、灰盒配置及未执行的测试见 [Device_Setup](Device_Setup.md)；最低玩家动画安排进 T04/T05/T07，T18 负责 UI，T20 负责少量原创资产与资源整合。[10/7 进度核查](Progress_Audit_2026-10-07.md) 保留实施本轮机关代码前的历史状态。
 
 ## 1. 如何使用这份计划
 
@@ -18,7 +18,7 @@ v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动�
 
 **2026-10-07 用户确认：每天 4–6 小时；首版加入少量原创机关、场景资产和 UI。** 10/7–17 共 11 个日历日，最多 44–66 小时；扣除 15% 缓冲后，净实施额度约 **37.4–56.1 小时**。这是按每天完整可用计算的上限，10/7 已经用掉的时间应扣除。开发机/目标机、干净编译、独立包和恢复证据另按原任务补档。
 
-原 T06–T27 粗估 44–71 小时；T18 从 2–3 调为 4–6 小时，T20 从 2–3 调为 6–8 小时后，尚未完整验收的 T06–T27 粗估变成 **50–79 小时**。另暂留 T05 剩余与 T01–T04 补档/核验 **2–5 小时**，当前待完成工作约 **52–84 小时**。T06/T09 的已有前置可减少重复编码，但未实测前不直接按整个任务扣除工时。
+原 T06–T27 粗估 44–71 小时；T18 从 2–3 调为 4–6 小时，T20 从 2–3 调为 6–8 小时后，T06–T27 原始预算为 **50–79 小时**。10/7 初次排期另暂留 T05 剩余与 T01–T04 补档/核验 **2–5 小时**，当时合计 **52–84 小时**。本轮 T05 已完成、T06 代码已推进，后续按实际剩余验收与补档重新估时；已有代码和前置未实测前不直接按整个任务扣除工时。
 
 这意味着：**多数天只有 4 小时无法覆盖完整范围；接近每天 6 小时、返工较少并采用最小资源规格，才可能完成工作下界。** 下面的每日表安排 55 小时有效工作、其余最多 11 小时留作分散缓冲和 10/17 阻断修复；它是紧凑目标，不是完成承诺。每天按剩余分支重估，不把已过去的日期、已关闭任务或 CI 通过折算为可用时间。
 
@@ -93,8 +93,8 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T02 | [#3](https://github.com/YYchainsAw/MothEffect/issues/3) | 核心 | 核对现有 UE 5.8 模板工程、干净编译与首次 Windows 打包 | T01 | 2–4 | 复用当前工程 [MothEffect.uproject](../../MothEffect.uproject)；编译成功、模板基础角色可移动、关闭编辑器后包体能启动，G0 有记录 | Done；找到 UE 5.8.0/PIE 日志，干净编译/独立包待证据 |
 | T03 | [#5](https://github.com/YYchainsAw/MothEffect/issues/5) | 核心 | 目录、版本管理与恢复 | T02 | 1–1.5 | 项目按 [代码与资产命名规范](../03_Code_Standard/Coding_Conventions.md) 目录归档，并遵循 [版本管理规范](../03_Code_Standard/Version_Control.md)；源代码与资产有可恢复版本记录；从最近备份取回一个测试文件，且不把缓存当源文件 | Done；忽略/LFS 已核对，模板恢复与实际备份恢复待证据 |
 | T04 | [#6](https://github.com/YYchainsAw/MothEffect/issues/6) | 核心 | 测试房、越肩相机、移动/转向与基础动画 | T02 | 3–4 | 镜头 Yaw 转向与八方向移动、跳跃/跑步/瞄准；最低 AnimBP/BlendSpace 可用，瞄准与冲刺互斥；墙边相机可用；TC34/TC35 基础分支有证据 | Pending Acceptance；已关闭，基础项已勾选，证据待补 |
-| T05 | [#7](https://github.com/YYchainsAw/MothEffect/issues/7) | 核心 | W01、玩家行动状态、换弹与生命伤害/上身动画 | T04 | 3–4 | 静止/移动射击、双段枪口检测、手动换弹、血量与一次死亡成立；ARifle 统一射速/弹匣/任务；上身 Montage 不锁腿部；TC24/TC36/TC38 武器分支有证据 | In Progress；前三项已勾选，Montage/测试记录待补 |
-| T06 | [#8](https://github.com/YYchainsAw/MothEffect/issues/8) | 核心 | 装置基类、状态与命中上下文 | T02 | 1.5–2.5 | Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果 | Todo；FHitContext/命中接口已有，机关接入与状态未实现 |
+| T05 | [#7](https://github.com/YYchainsAw/MothEffect/issues/7) | 核心 | W01、玩家行动状态、换弹与生命伤害/上身动画 | T04 | 3–4 | 静止/移动射击、双段枪口检测、手动换弹、血量与一次死亡成立；ARifle 统一射速/弹匣/任务；上身 Montage 不锁腿部；TC24/TC36/TC38 武器分支有证据 | Done / Closed；用户确认动画与边界 PIE 通过，PR #34 已合并 |
+| T06 | [#8](https://github.com/YYchainsAw/MothEffect/issues/8) | 核心 | 装置基类、状态与命中上下文 | T02 | 1.5–2.5 | Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果 | In Progress / Open；ADeviceBase/状态/接口接入已写入，用户编译、Automation 与 PIE 待执行；Held 操作随 T07 接入 |
 | T07 | [#9](https://github.com/YYchainsAw/MothEffect/issues/9) | 核心 | 拾取、放下、投掷与最低持物表现 | T04、T06 | 3–4 | E 拾取/放下、Held 左键只投掷；安全检测失败保留 Held；成功释放到 Dormant，玩家进入投掷恢复；持物挂点/短释放可读；TC06/TC17/TC37 有证据 | Todo |
 | T08 | [#10](https://github.com/YYchainsAw/MothEffect/issues/10) | 核心 | D03 与基础 P01：空中启动方向锁定 | T05–T07 | 3–5 | 投掷中射击启动，沿命中方向持续发射；装置继续落下；达到 G1 可用性指标 | Todo |
 | T09 | [#11](https://github.com/YYchainsAw/MothEffect/issues/11) | 核心 | 输入切换、恢复、中断与单次激活边界 | T08 | 2–3 | 投掷松键与恢复后的新按压才射击，提前按下不缓存；失焦/暂停/动画中断/取消不留锁或任务；Held 免启动但玩家受伤；Active 不拾取/重启；TC06/TC12/TC17/TC31/TC37/TC38 适用分支通过 | Todo；武器松键/失焦/暂停保护已有，投掷边界未实现 |

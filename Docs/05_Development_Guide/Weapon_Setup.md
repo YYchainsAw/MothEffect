@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：步枪、换弹与生命接入
 
-版本 v0.4 · 2026-10-06 · T05 为 In Progress · 基础接入、射击、换弹与生命项已勾选，Montage 与测试记录待补
+版本 v0.5 · 2026-10-07 · T05 动画与当前边界由用户报告 PIE 通过，构建和证据归档待补
+
+2026-10-07 用户在本次会话报告 PIE 通过，并明确覆盖：射击/换弹动画与移动跳跃共存、动画中断、长按换弹不续射、死亡取消、暂停与失焦。[T05 Issue #7](https://github.com/YYchainsAw/MothEffect/issues/7) 已关闭、Project 为 Done，[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并。结果按用户报告归档，具体工具链、参数差异和录屏/日志继续补档；后续未实现分支随对应任务验证。T06 原生基础继续按 [机关状态与命中接入](Device_Setup.md) 配置和验收。
 
 2026-10-06 的 [T05 Issue #7](https://github.com/YYchainsAw/MothEffect/issues/7) 已勾选 RifleComponent/BP_Rifle/WeaponSocket 接入、静止/移动射击与枪口检测、手动换弹及生命/一次死亡三项；上半身 Montage 和 TC01/TC24/TC36/TC38 适用分支记录尚未完成，Issue 保持 Open、Project 为 In Progress。勾选内容按用户记录同步，本次助手未编译、运行 PIE 或修改二进制资产。以下步骤继续用于配置核对和后续代码更新，不要求重做已完成且证据有效的分支。
 
@@ -81,7 +83,7 @@ Receive Ballistic Hit(Context)
 
 ## 5. 再接入上半身射击与换弹
 
-在 `/Game/MothEffect/Animations/Player/Combat` 创建：
+用户当前将 Montage 保存于 `/Game/MothEffect/Animations/Player/Combat/Montages`：
 
 | Montage | 先引用的模板动画 | 角色 Player → Animation 字段 |
 |---|---|---|
@@ -89,6 +91,8 @@ Receive Ballistic Hit(Context)
 | AM_MothRifleReload | /Game/Characters/Mannequins/Anims/Rifle/MM_Rifle_Reload | Reload Montage |
 
 先核对与玩家 Mesh 的骨架兼容和动画预览；不把 AO 的 Additive 样本当普通射击/换弹序列。关闭推动玩家的 Root Motion。射击每次实际扣一发由 C++ 请求 Montage；换弹只在有效任务开始时播放，C++ 根据 Montage 长度调整播放速率以匹配换弹时长。
+
+本机 `MM_Rifle_Fire` 的资产标签为 Mesh Space Additive，`MM_Rifle_Reload` 为非叠加动画。Fire Montage 在 Asset Details → Additive Settings → **Preview Base Pose** 指定 `MF_Rifle_Idle_ADS`，以便在编辑器预览持枪姿态上的开枪动作；保留源动画的叠加设置。运行时由下面的 Slot 输入提供基础姿态，无需额外重复应用叠加。
 
 在 Anim Slot Manager 创建 **UpperBody** Slot（可放在 DefaultGroup），两个 Montage 的 Slot 都改为 **DefaultGroup.UpperBody**。同组同时只保留一个 Montage，有效换弹会接替正在播放的射击；动作是否允许由 C++ 决定。[Epic：Animation Slots](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-slots-in-unreal-engine)
 
@@ -120,3 +124,15 @@ Reloading 时若现有 AimOffset 扭曲换弹姿势，可在 Event Graph 读取 
 9. 换弹期间调用角色 Set Gameplay Enabled(false) 或让角色死亡：不补弹、不继续攻击；EndPlay/重新进入 PIE 不残留任务。暂停请用 Set Pause，Set Gameplay Enabled(false) 是结算取消语义。
 
 这轮通过后进入 T06/T07：装置基类、拾取/放下/安全投掷，再接 D03 空中射击启动。先验证一个灰盒装置的完整操作，不提前批量制作机关效果。
+
+## 7. 2026-10-07 用户报告的局部结果
+
+| 范围 | 实际结果来源 | 状态 |
+|---|---|---|
+| 上半身射击/换弹，移动跳跃正常 | 用户报告 PIE 测试通过 | 通过（用户报告） |
+| Fire/Reload 动画中断不改变玩法结算 | 用户明确确认边界覆盖 | 通过（用户报告） |
+| 长按换弹结束不续射，须松键再按 | 用户明确确认边界覆盖 | 通过（用户报告） |
+| 死亡取消、暂停和失焦 | 用户明确确认边界覆盖 | 通过（用户报告） |
+| TC36 拾取竞争、TC38 Held/ThrowRecovery、整局重开 | 相应功能尚未接入 | 待 T07–T09/整局联调 |
+
+执行环境为用户 PIE；引擎工程关联 5.8，实际工具链、参数基线及差异、详细计数和录屏/日志待归档。用户提交 `cc88f04cb4d044c06bf57de52dfc344c62f7b10c` 保存 ABP_MothPlayer、AM_MothRifleFire 和 AM_MothRifleReload；PR #34 合并提交为 `e703f07ec4b5f219b843d207a3a0be550210ac42`。这些是资产交付版本，实际编译标识仍需按用户测试环境填写。T05 已按用户完成记录设为 Done / Closed；完整 TC36/TC38 等未来分支不因此自动记为通过。

@@ -3,7 +3,7 @@
 #include "Devices/DeviceBase.h"
 #include "Components/SphereComponent.h"
 #include "Engine/Engine.h"
-#include "Engine/URL.h"
+#include "Engine/EngineBaseTypes.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/PlayerState.h"

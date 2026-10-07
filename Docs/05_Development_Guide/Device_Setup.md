@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：机关状态与命中接入
 
-版本 v0.2 · 2026-10-07 · 用户已运行 Automation；测试 World 已修正，待重新编译和复测
+版本 v0.3 · 2026-10-07 · 测试 World 及 FURL 头文件路径已修正，待重新编译和复测
 
 对应 [T06 Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8)。复用 T05 的 `FHitContext`、`IBallisticReactive` 与 Rifle 命中入口；本轮未编译或运行 UE。接口与碰撞的权威定义见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，规则见 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，默认尺寸与质量对应 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 的 throw 组。
 
@@ -50,7 +50,7 @@
 
 ## 5. 当前验证记录
 
-- 工作分支：`develop`；用户已提交 T06 基础，当前源码基线 HEAD 为 `3b0e93f1fa4c2369e466139acdf3c39b308da44c`。本轮测试 World 修正尚未提交；复测记录还需注明包含该工作区修改及实际编译标识。
+- 工作分支：`develop`；用户已提交 T06 基础及测试 World 修正，当前源码基线 HEAD 为 `808580188159c23e7360031636103aaf4199090a`。本轮 FURL 头文件路径修正尚未提交；复测记录还需注明包含该工作区修改及实际编译标识。
 - 玩法参数文档：v0.9；机关默认物理尺寸、命中球半径和质量对应 throw 组。本轮未调整参数；玩家移动速度的既有差异见 Player_Setup。
 - 助手验证范围：UE 5.8 本机接口/生命周期源码核对及仓库静态检查。本轮修正后的编译、三项 Automation 复测、PIE 步枪命中和状态日志仍待用户执行。
 - [Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8) 仍为 Open / In Progress。完成编译与本轮 PIE 分支并留下记录后，再按实际验收推进；完整 TC12 随 T07/T08/T13 补测。
@@ -70,3 +70,5 @@
 本轮仅修正测试环境：创建 World 后注册对应 Context，并调用 `InitializeActorsForPlay`；清理时先给已开始运行的 Actor 发送 EndPlay，再销毁 World 并注销 Context。保留接口 Execute 调用，并增加 World 初始化前置断言；首次接口激活失败即停止后续依赖断言，避免连带报错。
 
 待用户保存并关闭编辑器、重新编译后，再运行全部三项 `MothEffect.Devices`。修正后的结果目前为待执行；既有两个通过结果不自动替代修改后的复测。
+
+同日 15:29（香港时间）用户重新编译失败，MSB3073 / code 6 的底层原因已由 UBT 日志确认：`DeviceActivationTests.cpp` 报 C1083，无法找到本轮误写的 `Engine/URL.h`。已改为本机 UE 5.8 中定义 FURL 的 `Engine/EngineBaseTypes.h`，并核对测试文件全部 9 个引号 include 都能解析到项目/引擎头文件；该路径核对不代表 C++ 编译通过。等待用户再次编译及 Automation 复测。

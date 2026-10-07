@@ -1,10 +1,10 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.14</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.15</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.14<br>2026-10-06 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-06 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="b4d7220c81626bb4bb2534ad759b60a1ae1afe266263484651b739c9e96bce86"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p dir="auto">版本 v0.14 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p dir="auto">本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器，v0.14 同步 GitHub 开发流程、六阶段排期与任务状态。文档集版本为 v0.14，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.15<br>2026-10-07 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-07 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="ea525ae2bea8729e680a4a50b5263d5d32a60f65582eace2155038c962b25414"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p dir="auto">版本 v0.15 · 2026-10-07 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器，v0.14 同步 GitHub 开发流程、六阶段排期与任务状态。v0.15 核对本机/远程的实际实现，确认每日 4–6 小时，并预留少量原创机关/场景资产和 UI；文档集版本为 v0.15，各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，<a href="#doc-readme">浏览器阅读版</a> 是汇总快照。</p>
 <p dir="auto">工程：<a href="../../MothEffect.uproject">MothEffect.uproject</a> · 英文名：Moth Effect · 中文名：飞蛾效应 · 风格：魔法朋克。GitHub 仓库已公开并存在提交，<code class="notranslate">main</code>/<code class="notranslate">develop</code> 已纳入轻量 Actions 和 Issue/PR 模板；Project 与 M1–M6 已建立。日常使用见 <a href="#doc-github">GitHub 开发流程</a>，提交范围与资源依赖见 <a href="#doc-version">版本管理</a>。</p>
-<p dir="auto">玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>，依据见 DEC22–DEC27；操作规则为 R19–R23，验收为 TC34–TC38。2026-10-06 核对：T01–T03 的 Issue 已关闭、Project 为 Done，记录明细仍待补；T04 Issue 已关闭、Project 仍为 Pending Acceptance；T05 为 In Progress，基础武器接入、射击、换弹与生命项已勾选，上半身 Montage 及测试记录尚未完成。完整案例及 G0–G4 以真实证据验收，详见 <a href="#doc-plan">开发计划</a>。</p>
+<p dir="auto">玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>，依据见 DEC22–DEC27；操作规则为 R19–R23，验收为 TC34–TC38。2026-10-07 核对：T01–T03 的 Issue 已关闭、Project 为 Done，记录明细仍待补；T04 Issue 已关闭、Project 仍为 Pending Acceptance；T05 为 In Progress，基础武器接入、射击、换弹与生命项已勾选，上半身 Montage 及测试记录尚未完成。完整案例及 G0–G4 以真实证据验收，详见 <a href="#doc-plan">开发计划</a> 和 <a href="#doc-audit-20261007">10/7 进度核查</a>。UI 预留 4–6 小时、少量原创资产预留 6–8 小时，必要反馈另留 2–3 小时；剩余预算偏紧，修订节点保持 10/17 DDL。</p>
 <p dir="auto">武器预览接入：BP_ThirdPersonCharacter 的 Mesh 下使用 RifleComponent，由子 Actor 组件创建完整 BP_Rifle，在角色视口直接调整组件 Transform；Rifle Class 与 Rifle Attach Socket 保留在角色默认值。T05 Issue 已勾选预览与运行仅一把武器，具体构建与证据仍待补；旧偏移迁移及检查步骤见 <a href="#doc-weapon-setup">Weapon_Setup</a>。</p>
 <span id="doc-readme-section"></span><h2 id="doc-readme-1-目录与有效文件">1. 目录与有效文件</h2>
 <markdown-accessiblity-table><table role="table">
@@ -83,6 +83,11 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
+<td><a href="#doc-audit-20261007">Progress_Audit_2026-10-07.md</a></td>
+<td>27 条任务的静态实现/资产审计、可复用前置与缺失证据</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
 <td><a href="#doc-player-setup">Player_Setup.md</a></td>
 <td>玩家 C++ 交付范围、输入引用、ABP 数据/移动/瞄准接线与手动验收</td>
 </tr>
@@ -135,8 +140,8 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <span id="doc-readme-section-2"></span><h2 id="doc-readme-3-维护约定">3. 维护约定</h2>
 <p dir="auto">目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。</p>
 <p dir="auto">交互、接口、内容、数值各保留唯一来源，具体分工见 <a href="#doc-workflow">文档维护与变更流程</a>。参数账本不是可直接导入 UE 的 DataTable；此前只改代码的移动速度差异仍按 Player_Setup 记录，本次不变更玩法数值。当前任务开关状态、Project Status 与验收证据分别记录，进度快照和 Issue 对照在开发计划维护。</p>
-<p dir="auto">修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。</p></section><section class="document" id="doc-overview" data-source-sha256="acc7877b05869acd4f9e66a3bd5992d1eb171ec7250f57c38ca265a14749f89f"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><span id="doc-overview-moth-effect"></span><h1 id="doc-overview-moth-effect飞蛾效应项目概览与阅读指南">Moth Effect（飞蛾效应）：项目概览与阅读指南</h1>
-<p dir="auto">版本 v0.12　日期 2026-10-06　适用 单人 UE 5.8 C++ 与蓝图混合 GameJam</p>
+<p dir="auto">修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。</p></section><section class="document" id="doc-overview" data-source-sha256="e85845c254ef4f5a5abac2908a3d020f8b49ff7e294a820b4c054162f8b3094e"><div class="source">可编辑源文件：<a href="Project_Overview.md">01_Project_Overview/Project_Overview.md</a></div><span id="doc-overview-moth-effect"></span><h1 id="doc-overview-moth-effect飞蛾效应项目概览与阅读指南">Moth Effect（飞蛾效应）：项目概览与阅读指南</h1>
+<p dir="auto">版本 v0.13　日期 2026-10-07　适用 单人 UE 5.8 C++ 与蓝图混合 GameJam</p>
 <p dir="auto">这套文档把第三人称越肩射击、敌人掉落机关、投掷与空中激活转成可追踪的执行基线。正式英文名为 Moth Effect，中文名为飞蛾效应，美术风格为魔法朋克。T04 玩家基础与 T05 步枪/换弹/生命 C++ 已进入仓库，用户负责 UE 资产配置与验收，助手仍不代为编译。项目用 M1–M6 推进至 2026-10-17 首版提交 DDL，进度和证据见 <a href="#doc-plan">开发计划</a>，日常协作见 <a href="#doc-github">GitHub 开发流程</a>。</p>
 <span id="doc-overview-section"></span><h2 id="doc-overview-0-当前工程与文档位置">0 当前工程与文档位置</h2>
 <p dir="auto">工程根目录为 <code class="notranslate">../..</code>（相对于本文件所在目录），工程文件为 <a href="../../MothEffect.uproject">MothEffect.uproject</a>，声明的引擎版本为 5.8，运行时模块为 MothEffect。对外英文名统一为 Moth Effect，中文名统一为飞蛾效应；工程名与模块名保留 MothEffect。</p>
@@ -153,7 +158,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <p dir="auto">建议基线：为让开发可执行而提供的方案，可以用于可逆原型；不是用户已经同意所有细节。</p>
 <p dir="auto">待原型验证：手感、方向提示和数值等未知，需通过早期实际操作决定。</p>
 <p dir="auto">延期 P2：本次不纳入工时。P1 只有在 P0 和门槛验收完成后才进入。</p>
-<p dir="auto">2026-10-06 核对：T01–T03 为 Closed / Done，T04 为 Closed / Pending Acceptance，T05 为 Open / In Progress，T06–T27 为 Open / Todo。Issue 关闭或勾选项是实际管理记录；构建、测试分支和证据仍需补齐后才能判断完整验收。参数账本仍为未实测基线，G0–G4 的完整通过记录尚未归档；细节统一见开发计划与测试计划。</p>
+<p dir="auto">2026-10-07 核对：T01–T03 为 Closed / Done，T04 为 Closed / Pending Acceptance，T05 为 Open / In Progress，T06–T27 为 Open / Todo。Issue 关闭或勾选项是实际管理记录；构建、测试分支和证据仍需补齐后才能判断完整验收。参数账本仍为未实测基线，G0–G4 的完整通过记录尚未归档；细节见开发计划、测试计划和 <a href="#doc-audit-20261007">10/7 进度核查</a>；T06/T09 的可复用前置与完整机关验收分别记录。</p>
 <span id="doc-overview-section-4"></span><h2 id="doc-overview-4-减少返工的四个约束">4 减少返工的四个约束</h2>
 <p dir="auto">交互行为以 <a href="#doc-rules">道具与交互规则</a> 为准，自定义接口以 <a href="#doc-technical">技术设计</a> 为准，内容数量以 <a href="#doc-level">关卡、界面与资源规格</a> 为准，数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。其他文档引用它们，不独立维护第二套规则。</p>
 <p dir="auto">先验证空中投掷启动，再验证机关连锁，再制作完整流程，最后扩大视觉完成度。无法验证的手感不靠增加道具类型补救。</p>
@@ -161,11 +166,11 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <p dir="auto">每天保留能启动的版本；在第一阶段打出 Windows 小包，提交前依据 <a href="#doc-test">测试计划与验收</a> 留下实际证据，并按 <a href="#doc-release">发布检查清单</a> 核对发布。</p>
 <span id="doc-overview-section-5"></span><h2 id="doc-overview-5-现在可以先做的工作">5 现在可以先做的工作</h2>
 <p dir="auto">当前先按 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a> 补齐 T05 上半身 Montage 和受影响测试记录，并补档 T01–T04 的环境、构建、恢复及基础动画证据。随后按依赖推进 T06–T09 的机关状态、拾取/安全投掷和 D03 空中启动，达到 G1。已关闭任务不用重建 Issue，缺失记录补在原任务中。</p>
-<p dir="auto">每日可用工时、开发机和最低目标机器的具体记录仍待补。开发计划的每天四至六小时是预算假设，不从 T01 已关闭推断实际时长；剩余预算按当天真实可投入时间重算。</p>
+<p dir="auto">2026-10-07 用户确认每天 4–6 小时，并希望首版加入少量原创机关、场景资产和 UI。开发计划为 UI 预留 4–6 小时、原创资产与整合预留 6–8 小时，必要反馈另留 2–3 小时；剩余完整范围约 52–84 小时，接近每天 6 小时且返工较少才可能覆盖下界。开发机、目标机与实际构建/恢复证据仍待补。</p>
 <span id="doc-overview-section-6"></span><h2 id="doc-overview-6-活动依据与日期">6 活动依据与日期</h2>
 <p dir="auto">本包日期、排期与截止使用香港时间 UTC+8。官方创作时间为 2026-10-01 12:00 至 2026-10-21 12:00，须在截止前上传并通过审核，官方建议 10 月 18 日前上传。用户已将 2026 年 10 月 17 日设为首版提交 DDL；六个 Milestone 按此倒排，10/16 优先完成首次提交、10/17 处理阻断回归与补提交。<a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849" rel="nofollow">官方主题公告</a></p>
-<p dir="auto">赛事仅支持单机及无网络的本地多人。全程参与奖还要求至少五篇开发日志和至少五十个有效试玩人数，这两项不是全部参赛作品的强制门槛。详细材料与检查见 <a href="#doc-release">发布检查清单</a>。<a href="https://www.taptap.cn/moment/851888213915075734?group_id=792849" rel="nofollow">官方答疑</a></p></section><section class="document" id="doc-game" data-source-sha256="5b1c24bc516d2bcf1558bf8294cd5c5aa101720a883125638d54ffff32a27595"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Game_Design.md">02_Design_Doc/GDD/Game_Design.md</a></div><span id="doc-game-moth-effect"></span><h1 id="doc-game-moth-effect飞蛾效应游戏策划案">Moth Effect（飞蛾效应）：游戏策划案</h1>
-<p dir="auto">版本 v0.9　日期 2026-10-03　游戏名 Moth Effect（飞蛾效应）　开发者 单人</p>
+<p dir="auto">赛事仅支持单机及无网络的本地多人。全程参与奖还要求至少五篇开发日志和至少五十个有效试玩人数，这两项不是全部参赛作品的强制门槛。详细材料与检查见 <a href="#doc-release">发布检查清单</a>。<a href="https://www.taptap.cn/moment/851888213915075734?group_id=792849" rel="nofollow">官方答疑</a></p></section><section class="document" id="doc-game" data-source-sha256="87adfe770644ffc81d8a32052d8eac0c2e48f0dea4a65a0039816f992093e710"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Game_Design.md">02_Design_Doc/GDD/Game_Design.md</a></div><span id="doc-game-moth-effect"></span><h1 id="doc-game-moth-effect飞蛾效应游戏策划案">Moth Effect（飞蛾效应）：游戏策划案</h1>
+<p dir="auto">版本 v0.10　日期 2026-10-07　游戏名 Moth Effect（飞蛾效应）　开发者 单人</p>
 <p dir="auto">平台建议 Windows PC　引擎 UE 5.8　开发方式 C++ 与蓝图混合</p>
 <p dir="auto">本策划案把已确定的创意落实为可在本次 GameJam 中验证和交付的版本。游戏名 Moth Effect（飞蛾效应），风格魔法朋克，采用已建立的 MothEffect 第三人称模板工程作为建议实现起点。玩家以第三人称越肩视角射击敌人，把敌人原地掉落的机关拾取、投掷，再通过射击激活。交互规则以 <a href="#doc-rules">道具与交互规则</a> 为准，所有初始数值以 <a href="#doc-parameters">玩法参数基线</a> 为准。本文件负责体验目标与内容边界，不重复技术接口和参数表。</p>
 <span id="doc-game-section"></span><h2 id="doc-game-1-已确认需求与建议基线">1 已确认需求与建议基线</h2>
@@ -220,7 +225,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 <tr>
 <td>REQ09</td>
-<td>用户已确认方案，尚未实现</td>
+<td>方案已确认；移动/武器基础已有，机关行动与上身动画待完成</td>
 <td>玩家使用 C++ 玩法状态机与 AnimBP 移动状态机，开火/换弹用上半身 Montage；复用本地模板 Rifle 动画，首版不使用 GAS</td>
 </tr>
 <tr>
@@ -377,6 +382,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
+<p dir="auto">2026-10-07 用户确认首版增加少量原创机关、场景资产和 UI。制作范围见 <a href="#doc-level">关卡、界面与资源规格</a>，预留工时与日期见 <a href="#doc-plan">开发计划</a>。这属于现有三机关、一图和界面的表现制作，不增加机关类型、地图或独立角色动画。</p>
 <p dir="auto">降范围时保留三种机关、投掷空中激活与真实连锁；优先减少美术、额外敌人行为和波次扩展。否则核心创意会退化为普通波次射击。</p>
 <span id="doc-game-section-7"></span><h2 id="doc-game-8-早期验证与设计冻结">8 早期验证与设计冻结</h2>
 <p dir="auto">G0 从现有模板工程确认环境能编译并打包，工程创建子项已完成。G1 验证投掷、空中射击与方向理解。G2 验证同一规则在不同布局中产生连锁。G3 验证三波闭环。G4 核查提交包与审核状态。</p>
@@ -794,8 +800,8 @@ Dormant 过期 → Spent → Destroyed
 <li><a href="#doc-level">关卡、界面与资源规格</a>：获取或掉落方式、外观辨识、操作与方向提示。</li>
 <li><a href="#doc-parameters">玩法参数基线</a>、<a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>：原型数值、实际工时与可观察验收项。</li>
 </ol>
-<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="7faa5cb60a1e1fae1f3ba7b52bb2243de62aea1bbefee5b694e94921d4d57e16"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
-<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.11｜2026-10-03。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。</p>
+<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="cf9f7fc9cecfb7f065acf8283a4e29fbe9dbdac16f76d2c24c203d2a3a27ee44"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
+<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.12｜2026-10-07。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。</p>
 <span id="doc-level-section"></span><h2 id="doc-level-0-魔法朋克表现方向">0. 魔法朋克表现方向</h2>
 <p dir="auto">建议场景为灵光工坊：粗糙金属框架、铜色连接件、管线与发光符文并置，魔法能量具有可见传导方向。蛾翼轮廓用于徽记、机关外壳和界面图标，光点沿弹道传递，机关接续点亮，呼应名称与连锁主题。具体世界观、色板和道具称呼尚未冻结。</p>
 <markdown-accessiblity-table><table role="table">
@@ -916,7 +922,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <p dir="auto">投掷前显示从实际出手点指向初速度的短箭头，不能用镜头前方代替阻挡检测；出手受阻时给明确提示。瞄准 D03 时显示沿预计命中弹飞行方向的短射线，激活后用发光枪口固定方向；瞄准 D01 时在可承托地面显示落点圈，解释空中击中也会在下方伸柱。完整抛物线预览属于 P1，不阻塞首个可玩版本。</p>
 <p dir="auto">建议色形共同编码：D01 青色＋向上三角棱柱；D02 橙色＋球体/爆炸环；D03 紫色＋长方枪管/方向箭头。敌人背包沿用对应形状，UI 同时显示 D01/D02/D03 图标。Dormant 常亮轮廓、Active 脉冲/运动、Spent 暗下并消失；色彩不能成为唯一状态证据。敌人起手闪光、低速弹丸轨迹和危险范围应优先于装饰特效。</p>
 <span id="doc-level-section-4"></span><h2 id="doc-level-4-资源取得与验收">4. 资源取得与验收</h2>
-<p dir="auto">资源 ID 是制作跟踪标签；新增资产存放路径遵循 <a href="#doc-coding">代码与资产命名规范</a>。已有模板角色、基础移动与 Rifle 射击动画、原型几何资源，尚无本作专用动画图、完整投掷动画和魔法朋克场景；先验证核心再补专用表现，不移动模板原资产。动画文件存在尚不代表骨架、播放或玩法接入已验收。</p>
+<p dir="auto">资源 ID 是制作跟踪标签；新增资产存放路径遵循 <a href="#doc-coding">代码与资产命名规范</a>。已有模板角色、基础移动与 Rifle 射击动画、原型几何资源，已有 ABP_MothPlayer 与 BS_MothRifleLocomotion；上半身 Montage、完整投掷动画与本作魔法朋克场景尚待完成；先验证核心再补专用表现，不移动模板原资产。动画文件存在尚不代表骨架、播放或玩法接入已验收。</p>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -943,7 +949,7 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </tr>
 <tr>
 <td>A04 三机关与柱体</td>
-<td>P0；基础几何体、自制色形材质</td>
+<td>P0；先几何灰盒，G2 后制作三种简洁原创外壳与共用色形材质</td>
 <td>静止、空中、远处可分辨；D03 朝向、D01 地面落点明显，物理根组件不被装饰网格干扰</td>
 </tr>
 <tr>
@@ -953,12 +959,12 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </tr>
 <tr>
 <td>A06 房间与掩体</td>
-<td>P0；自建灰盒、平色材质</td>
+<td>P0；自建灰盒，G2 后增加一个可复用原创掩体模块</td>
 <td>L01/L02 坐标、碰撞、通路和视线检查通过，无卡人狭缝</td>
 </tr>
 <tr>
 <td>A07 HUD/图标</td>
-<td>P0；UMG 与自制简单图形</td>
+<td>P0；UMG、自制三机关图标与统一 HUD/菜单样式</td>
 <td>默认分辨率可读，提示随状态切换；高对比与形状辨识有效</td>
 </tr>
 <tr>
@@ -968,12 +974,56 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 </tr>
 <tr>
 <td>A09 魔法朋克美术润色</td>
-<td>P1；自制或许可范围明确的金属、符文与晶核资源</td>
-<td>保留来源/许可记录，符合提交要求；优先给 P0 几何体换材质，保留机关轮廓和方向提示</td>
+<td>首版少量；一个原创符文/灯光装饰与统一金属/发光材质；更丰富装饰留在 P1</td>
+<td>保留来源/许可记录，符合提交要求；替换后保留机关轮廓/方向与场地通路，不追加复杂资源套件</td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<span id="doc-level-section-5"></span><h3 id="doc-level-41-玩家动画资源清单与接入">4.1 玩家动画资源清单与接入</h3>
+<h3 id="doc-level-41-首版-ui-与少量原创资产的制作边界">4.1 首版 UI 与少量原创资产的制作边界</h3>
+<p dir="auto">2026-10-07 用户确认增加少量原创机关、场景资产和 UI。工时与日期只在 <a href="#doc-plan">开发计划</a> 维护：T18 预留 4–6 小时，T20 预留 6–8 小时，T19 必要反馈另留 2–3 小时。这些工作不创建新机关类型或角色动画任务。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>交付物</th>
+<th>最小制作范围</th>
+<th>接入验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HUD 与提示</td>
+<td>一套 UMG HUD：准星、生命、弹药/换弹、持物、波次/剩余敌人；教程与受阻/危险提示共用文本样式</td>
+<td>初始状态主动读取 getter，后续订阅事件；重新开局不残留旧值或重复绑定；Held 与可激活提示区分</td>
+</tr>
+<tr>
+<td>共用菜单面板</td>
+<td>标题/开始、Esc 暂停/继续、胜利或失败/重开共用布局与按钮样式</td>
+<td>输入模式、鼠标显示和焦点随状态切换；继续时不误射，暂停和结算按原规则处理</td>
+</tr>
+<tr>
+<td>三机关原创图标</td>
+<td>D01 上箭头、D02 爆炸环、D03 定向箭头；以轮廓加颜色辨识</td>
+<td>HUD、敌人标记与实际掉落类型一致；不依赖颜色单独传意</td>
+</tr>
+<tr>
+<td>三种简洁机关外壳</td>
+<td>D01 三角升柱底座、D02 球形核心、D03 长方枪管；自制简单几何与共用金属/发光材质</td>
+<td>仅替换外观子网格，保持物理根和交互尺寸；D03 方向、D01 柱体运动、D02 危险区清晰</td>
+</tr>
+<tr>
+<td>一个可复用场景模块</td>
+<td>低复杂度金属掩体/工坊箱体，靠旋转与摆放复用</td>
+<td>与灰盒碰撞/导航和视线等价；不挤占通路或形成狭缝</td>
+</tr>
+<tr>
+<td>一个符文/灯光装饰</td>
+<td>一个自制符文贴花或灯具，复用在地面/掩体</td>
+<td>不抢机关/弹丸对比，不遮 HUD；额外数量和效果可删减</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">UI 草稿可在 G1 之后用占位数据制作，真实数据按依赖接入；原创几何制作在 G2 通过后开始。敌人继续复用模板角色，三种背包标记复用机关轮廓；场地其余部分保留灰盒/基础材质。完成资产替换后重测命中、拾取、投掷、方向、掩体遮挡、导航与独立包，来源/许可/作者和模板依赖记录归入 T20/T03。新增制作源文件按命名规范存放在 SourceArt，自有运行资产在 Content/MothEffect；不自动扩大 Content 的 Git 范围。</p>
+<h3 id="doc-level-42-玩家动画资源清单与接入">4.2 玩家动画资源清单与接入</h3>
 <p dir="auto">已确认使用本地 <code class="notranslate">/Game/Characters/Mannequins/Anims/Rifle</code>，以实际资产属性为准：待机 <code class="notranslate">MF_Rifle_Idle_ADS</code>、八方向 Walk/Jog、Rifle Jump 系列、<code class="notranslate">MM_Rifle_Fire</code>、<code class="notranslate">MM_Rifle_Reload</code>、<code class="notranslate">MM_Rifle_Equip</code>、<code class="notranslate">MM_Rifle_DryFire</code>、<code class="notranslate">AIM/AO_Rifle</code>。HitReact 可供表现评估，不能据此加入受击硬直；死亡资源以本地已有且骨架兼容的资产核验后引用。</p>
 <p dir="auto">新增 <code class="notranslate">ABP_MothPlayer / BS_MothRifleLocomotion / AM_MothRifleFire / AM_MothRifleReload</code> 沿用户实际目录 <code class="notranslate">/Game/MothEffect/Animations/Player</code>，BlendSpace 与枪械 Montage 归入 Combat 子目录；状态机、Slot/Group、AimOffset 和中断契约只维护在 <a href="#doc-technical-3-越肩射击与输入">技术设计第 3 节</a>。T04/T05 就接入最低移动/枪械表现，T07 加入持物挂点/短释放，T20 仅整合与润色。</p>
 <p dir="auto">验收时逐项核对 Skeleton、Additive、Root Motion、Slot 与骨骼遮罩、动画时长和挂点。投掷先用简化姿态/释放特效，持物时收枪到挂点或隐藏枪网格；动作反馈不得延长枪械恢复窗口。新资产引用的模板资源不自动进入 Git，按 <a href="#doc-version">版本管理</a> 的模板依赖恢复约定留记录；本轮没有迁移资产或改变忽略范围。</p>
@@ -1543,8 +1593,8 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p dir="auto">编译器、默认地图、Cook 和首个独立包检查见 <a href="#doc-engine">UE 工程配置</a>，按 G0 执行；当前没有运行通过证据。</p>
 <p dir="auto">实现依次验收：空中投掷/方向锁定 → 连锁/幂等 → 角色与物理道具弹射 → 死亡掉落/容量 → 三波胜负/重开。每一步同时在 PIE 与独立包验证，具体案例见 <a href="#doc-test">测试计划与验收</a>。日志记录 HitId、状态前后、方向、登记数和构建版本；开发调试线/日志受 Development 开关控制，提交包关闭。</p>
 <p dir="auto">新增源码与资产目录、命名和完整编译约定见 <a href="#doc-coding">代码与资产命名规范</a>。</p>
-<p dir="auto">提交范围、Git LFS、缓存忽略与恢复约定见 <a href="#doc-version">版本管理规范</a>。规则或参数变化按 <a href="#doc-workflow">文档维护与变更流程</a> 同步文档及回归测试。</p></section><section class="document" id="doc-decisions" data-source-sha256="cd8b49364824dfdd87a6ab2ca7cff256bd50b81682f3d52669b7c3badd3e75c6"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Decisions/Design_Decisions.md">02_Design_Doc/TDD/Decisions/Design_Decisions.md</a></div><span id="doc-decisions-moth-effect"></span><h1 id="doc-decisions-moth-effect飞蛾效应设计决策与原型证据">Moth Effect（飞蛾效应）：设计决策与原型证据</h1>
-<p dir="auto">版本 v0.10　建立日期 2026-10-02　更新日期 2026-10-06</p>
+<p dir="auto">提交范围、Git LFS、缓存忽略与恢复约定见 <a href="#doc-version">版本管理规范</a>。规则或参数变化按 <a href="#doc-workflow">文档维护与变更流程</a> 同步文档及回归测试。</p></section><section class="document" id="doc-decisions" data-source-sha256="f3861708864f2742930c729860f98a93553feddd2aab6497d66e1463901acb8e"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Decisions/Design_Decisions.md">02_Design_Doc/TDD/Decisions/Design_Decisions.md</a></div><span id="doc-decisions-moth-effect"></span><h1 id="doc-decisions-moth-effect飞蛾效应设计决策与原型证据">Moth Effect（飞蛾效应）：设计决策与原型证据</h1>
+<p dir="auto">版本 v0.11　建立日期 2026-10-02　更新日期 2026-10-07</p>
 <p dir="auto">此文件记录已经确定的输入，以及当前可执行的建议基线。它负责说明规则为何存在、何时改变和如何验证。状态为建议或待验证的条目，不代表用户已最终确认；开发可按基线开始可逆原型，依据结果更新。</p>
 <span id="doc-decisions-section"></span><h2 id="doc-decisions-1-决策账本">1 决策账本</h2>
 <markdown-accessiblity-table><table role="table">
@@ -1651,10 +1701,10 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </tr>
 <tr>
 <td>DEC14</td>
-<td>待明确</td>
-<td>每日可投入时间、开发机与最低目标机器</td>
-<td>影响排期与性能证据</td>
-<td>开工记录实填</td>
+<td>时间已由用户确认；机器基线待补</td>
+<td>2026-10-07 确认每天 4–6 小时；开发机与最低目标机器继续实填</td>
+<td>从 10/7 起计算 44–66 小时总额度，不沿用已过去日期的工时</td>
+<td>每日实耗与剩余任务；性能/工具链记录</td>
 </tr>
 <tr>
 <td>DEC15</td>
@@ -1746,6 +1796,13 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>投掷实际释放后计时，松键与恢复均完成后的新按压才射击；提前按下不缓存；暂停冻结合法计时，失焦/输入取消要求检查实际松键</td>
 <td>防止一记投掷误启动、动画结束延长恢复或输入上下文切换造成连射</td>
 <td>R13/R14 与 TC06/TC31/TC37/TC38</td>
+</tr>
+<tr>
+<td>DEC28</td>
+<td>用户已确认目标；制作规格为最小执行基线</td>
+<td>首版增加少量原创机关、场景资产和 UI；T18 4–6 小时、T20 6–8 小时，T19 必要反馈另留 2–3 小时</td>
+<td>采用三种简洁外壳、一个掩体模块、一个符文/灯光装饰与统一 HUD/菜单；接近每天 6 小时才可能覆盖剩余下界</td>
+<td>G1/G2 进度、每日剩余净工时与资产替换后的规则/打包回归</td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
@@ -1974,19 +2031,62 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p dir="auto">运行时设计数值来自 DataAsset/默认配置，设计账本见 <a href="#doc-parameters">玩法参数基线</a>，该 JSON 不承诺自动导入。主地图及 UI/DataAsset 引用完成后，按 <a href="#doc-release">发布检查清单</a> 重新核对候选包包含的运行资源。</p>
 <span id="doc-engine-android-file-server"></span><h2 id="doc-engine-4-公开仓库的-android-file-server-配置">4. 公开仓库的 Android File Server 配置</h2>
 <p dir="auto">当前 Windows 单机目标不使用 Android 文件服务器。在 DefaultEngine.ini 的 AndroidFileServerRuntimeSettings 节中，已设 bEnablePlugin=False、bAllowNetworkConnection=False、SecurityToken=（显式空值）；bIncludeInShipping、bAllowExternalStartInShipping、bCompileAFSProject 均保留 False。未修改 .uproject 或该配置节之外的引擎设置。</p>
-<p dir="auto">空 Token 会关闭令牌认证检查，因此必须与禁用该服务器用途同时处理。以后需要 Android 开发时，另行配置私有 Token 与部署方式。上述 AFS 配置已静态核对；未归档与该配置对应的编译/打包结果。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine" rel="nofollow">Epic：Android File Server</a></p></section><section class="document" id="doc-plan" data-source-sha256="a5cfeaa230cce3a427e8a6b6e7a99b8744d27de0f72d3a874922ab0737e9437e"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><span id="doc-plan-moth-effect"></span><h1 id="doc-plan-moth-effect飞蛾效应开发任务与排期">Moth Effect（飞蛾效应）：开发任务与排期</h1>
-<p dir="auto">版本：v0.13｜更新日期：2026-10-06｜时间：香港时间（UTC+8）</p>
-<p dir="auto">当前状态（2026-10-06）：已建立六个 Milestone 和 27 条 T01–T27 Issue，首版提交 DDL 为 <strong>2026-10-17</strong>。T01–T03 为 Closed / Done；T04 为 Closed / Pending Acceptance；T05 为 Open / In Progress，前三项基础武器验收已勾选，Montage 与测试记录待补；T06–T27 为 Open / Todo。T01–T04 的具体环境、构建与证据尚未完整填写，G0–G4 仍待完整验收记录。仓库 Actions 和模板已合入 main/develop，操作见 <a href="#doc-github">GitHub 开发流程</a>。</p>
-<p dir="auto">v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。T04 基础项和 T05 前三项按 Issue 勾选记录同步，完整测试分支继续随实现归档；最低玩家动画安排进 T04/T05/T07，T20 保留资源整合与润色。</p>
+<p dir="auto">空 Token 会关闭令牌认证检查，因此必须与禁用该服务器用途同时处理。以后需要 Android 开发时，另行配置私有 Token 与部署方式。上述 AFS 配置已静态核对；未归档与该配置对应的编译/打包结果。<a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/android-file-server-for-unreal-engine" rel="nofollow">Epic：Android File Server</a></p></section><section class="document" id="doc-plan" data-source-sha256="266d66d2d7b2d7bc084e93366390e530b4e96b2fb741f6625623d913c6a57175"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Development_Plan.md">05_Development_Guide/Development_Plan.md</a></div><span id="doc-plan-moth-effect"></span><h1 id="doc-plan-moth-effect飞蛾效应开发任务与排期">Moth Effect（飞蛾效应）：开发任务与排期</h1>
+<p dir="auto">版本：v0.14｜更新日期：2026-10-07｜时间：香港时间（UTC+8）</p>
+<p dir="auto">当前状态（2026-10-07）：已建立六个 Milestone 和 27 条 T01–T27 Issue，首版提交 DDL 为 <strong>2026-10-17</strong>。T01–T03 为 Closed / Done；T04 为 Closed / Pending Acceptance；T05 为 Open / In Progress，前三项基础武器验收已勾选，Montage 与测试记录待补；T06–T27 为 Open / Todo。每日 4–6 小时与少量原创机关、场景资产和 UI 已由用户确认；T01–T04 的环境、构建与证据尚未完整填写，G0–G4 仍待完整验收记录。仓库 Actions 和模板已合入 main/develop，操作见 <a href="#doc-github">GitHub 开发流程</a>。</p>
+<p dir="auto">v0.9 玩家方案已经用户确认：首版不用 GAS，复用本地 Rifle 动画，C++ 行动状态与 AnimBP 移动状态分开，开火/换弹用上半身 Montage。T04 基础项和 T05 前三项按 Issue 勾选记录同步，完整测试分支继续随实现归档；最低玩家动画安排进 T04/T05/T07；T18 负责 UI，T20 负责少量原创资产与资源整合。源码审计发现 T06 的共用命中上下文、T09 的部分射击中断保护已有基础；这些是可复用前置，完整机关任务尚未完成，详见 <a href="#doc-audit-20261007">10/7 进度核查</a>。</p>
 <span id="doc-plan-section"></span><h2 id="doc-plan-1-如何使用这份计划">1. 如何使用这份计划</h2>
 <p dir="auto">每天从最早未通过的门槛开始，只做依赖已完成的任务。任务先进入“进行中”，满足可观察完成标准并留下证据后才改为“完成”。一段录屏能证明几个规则时可以共用证据，不必重复制作材料。</p>
 <p dir="auto">玩法按 <a href="#doc-game">游戏策划案</a>，规则按 <a href="#doc-rules">道具与交互规则</a>，实现按 <a href="#doc-technical">技术设计</a>，关卡、AI、波次和资源按 <a href="#doc-level">关卡、界面与资源规格</a>，所有数值以 <a href="#doc-parameters">玩法参数基线</a> 为唯一基线。测试编号见 <a href="#doc-test">测试计划与验收</a>，G4 的平台步骤与审核状态见 <a href="#doc-release">发布检查清单</a>。</p>
-<p dir="auto">单人开发允许顺序调整；门槛和任务依赖决定是否能够继续扩展。不要一边验证核心，一边同时制作成套独立角色、持枪动画、投掷动画或装饰场景。</p>
+<p dir="auto">单人开发允许顺序调整；门槛和任务依赖决定是否能够继续扩展。UI 布局和图标草稿可提前做；原创机关外壳和场景模块在 G2 后制作，按已预留的时段替换灰盒，不抢最后的测试与提交时间。</p>
 <span id="doc-plan-section-1"></span><h2 id="doc-plan-2-时间预算与必须保住的内容">2. 时间预算与必须保住的内容</h2>
-<p dir="auto"><strong>原始预算假设：每天实际可开发 4–6 小时，已具备基本 UE 与 C++/蓝图使用能力。</strong> 2026-10-06 核对时 T01 已关闭，但每日可用时间未填写，不能将假设当作实填。原 10/2–17 的 64–96 小时、扣 15% 缓冲后的 54.4–81.6 小时只解释最初预算；剩余时间从当前日期按实际可投入时数重算，已过去的日期不再计入。安装、工具链、学习、授权查验和重新审核继续占用预算。</p>
-<p dir="auto">下表 T01–T27 合计 <strong>53.5–85.5 小时</strong>，是粗估区间而非承诺。T04/T05/T09 已计入玩家状态、模板动画接入和中断验证；新增字段与资产兼容问题仍可能增加返工。上界高于高时间预算下的净实施额度，也明显高于每天 4 小时的净额度。实际接近上界时，必须压缩允许裁剪的工作，不能靠假定每天额外工作抵消超支。T28 为 10 月 18–20 日另预留的 4–8 小时审核修复，不计入首版开发合计。可选开发日志另需约 2.5–5 小时；若争取对应奖项，应从净预算里先扣除。</p>
-<p dir="auto">不可裁剪的核心是：一把主武器、三种装置、拾取投掷与空中射击启动、装置间真实规则连锁、一张主竞技场、一套射击 AI 的三种掉落外观、三波完整胜负流程、重开、最低必要反馈和可启动的 Windows 包体。不能把延期结果降成只有普通第三人称射击的游戏。</p>
-<p dir="auto">可压缩的是：场景装饰数量、特效层数、非必要声音变化、录屏剪辑、额外外部试玩人数、外观精细程度。P1 内容（第二套冲撞 AI、五波、轨迹预览等）默认不进入本计划；多地图、Boss、成长树、移动端、联机均延期。</p>
+<p dir="auto"><strong>2026-10-07 用户确认：每天 4–6 小时；首版加入少量原创机关、场景资产和 UI。</strong> 10/7–17 共 11 个日历日，最多 44–66 小时；扣除 15% 缓冲后，净实施额度约 <strong>37.4–56.1 小时</strong>。这是按每天完整可用计算的上限，10/7 已经用掉的时间应扣除。开发机/目标机、干净编译、独立包和恢复证据另按原任务补档。</p>
+<p dir="auto">原 T06–T27 粗估 44–71 小时；T18 从 2–3 调为 4–6 小时，T20 从 2–3 调为 6–8 小时后，尚未完整验收的 T06–T27 粗估变成 <strong>50–79 小时</strong>。另暂留 T05 剩余与 T01–T04 补档/核验 <strong>2–5 小时</strong>，当前待完成工作约 <strong>52–84 小时</strong>。T06/T09 的已有前置可减少重复编码，但未实测前不直接按整个任务扣除工时。</p>
+<p dir="auto">这意味着：<strong>多数天只有 4 小时无法覆盖完整范围；接近每天 6 小时、返工较少并采用最小资源规格，才可能完成工作下界。</strong> 下面的每日表安排 55 小时有效工作、其余最多 11 小时留作分散缓冲和 10/17 阻断修复；它是紧凑目标，不是完成承诺。每天按剩余分支重估，不把已过去的日期、已关闭任务或 CI 通过折算为可用时间。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>预留内容</th>
+<th>有效小时</th>
+<th>纳入任务</th>
+<th>边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI 布局、三机关图标、HUD、教程与共用菜单面板</td>
+<td>4–6</td>
+<td>T18</td>
+<td>制作与接入都计入；先占位数据，后接真实血量/弹药/持物/波次/结果</td>
+</tr>
+<tr>
+<td>少量原创机关和场景资产、整合与来源记录</td>
+<td>6–8</td>
+<td>T20</td>
+<td>三种简洁机关外壳、一个可复用掩体模块、一个符文/灯光装饰；复用人物与动画</td>
+</tr>
+<tr>
+<td>必要战斗反馈</td>
+<td>2–3</td>
+<td>T19</td>
+<td>枪口/命中、启动/方向、危险/过期提示；不做多套复杂特效</td>
+</tr>
+<tr>
+<td>独立包内部试玩、盲玩、调参、稳定性和候选回归</td>
+<td>9.5–15.5</td>
+<td>T21–T25</td>
+<td>与各任务局部验证分别安排，不因美术延后而取消</td>
+</tr>
+<tr>
+<td>投稿材料与首次上传/自测/提审</td>
+<td>2.5–4.5</td>
+<td>T26–T27</td>
+<td>优先 10/16 首次提交，10/17 留给修复与补提交</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">这些预留已经计入任务表，<strong>不再次加总</strong>。T01–T27 修订总粗估为 59.5–93.5 小时，包含已经过去的工作，只用作原计划对照。T28 是提交后按审核反馈触发的 4–8 小时，不计入 10/17 前预算；选做开发日志另需 2.5–5 小时，有意参与时必须从现有预算扣除。</p>
+<p dir="auto">必须保住：一把主武器、三种装置、拾取投掷与空中射击启动、真实规则连锁、一张主竞技场、一套射击 AI 的三种掉落外观、三波胜负与重开、可读 UI/必要反馈和可启动 Windows 包。原创资产先做到可辨认且可整合，精细打磨与额外装饰可压缩。第二套 AI、额外波次、候选机关、完整轨迹预览、多地图、Boss、成长树、移动端、联机继续延期。</p>
 <span id="doc-plan-section-2"></span><h2 id="doc-plan-3-五个开发门槛">3. 五个开发门槛</h2>
 <markdown-accessiblity-table><table role="table">
 <thead>
@@ -2001,28 +2101,28 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <tbody>
 <tr>
 <td>G0：环境与独立打包</td>
-<td>10/5</td>
+<td>10/8 补齐</td>
 <td>本机能打开实际安装的 UE 5.8 项目，完成 C++ 编译；模板基础移动可用；Windows 包在关闭编辑器后能进入测试房间</td>
 <td>记录实际引擎补丁号、工具链、构建标识和启动截图。未通过时先解决环境与打包，不开始批量内容制作；若安装版本不可用，记录问题再决定版本，不默默更改用户版本</td>
 <td>未验收</td>
 </tr>
 <tr>
 <td>G1：投掷与空中启动</td>
-<td>10/7</td>
+<td>10/9</td>
 <td>D03 能拾取、投掷、空中射击启动，沿命中射线方向发射并继续受重力；练习约 2 分钟后，安全测试房 10 次投掷中至少 8 次能完成空中启动，方向无误</td>
 <td>保存 TC03–TC06、TC12、TC17 的录屏和计数。命中率是内部原型指标；失败先改可读性、相机、投掷和输入，不扩大敌人数量</td>
 <td>未验收</td>
 </tr>
 <tr>
 <td>G2：真实规则连锁</td>
-<td>10/9</td>
+<td>10/11</td>
 <td>D01、D02、D03 均完成；至少两种不同机关连锁由弹丸、推力和位置自然发生；换摆放位置会改变结果，不依靠关卡专用连锁脚本</td>
-<td>录下“发射弹启动另一装置”和“弹射/爆炸改变道具位置后被弹道启动”的过程；TC07–TC16 通过。失败停止新 AI 和美术，修正命中上下文或推力规则</td>
+<td>录下“发射弹启动另一装置”和“弹射/爆炸改变道具位置后被弹道启动”的过程；TC07–TC16 通过。失败暂停原创模型与场景装饰，修正命中上下文或推力规则；已预留的必要 UI 接入保留</td>
 <td>未验收</td>
 </tr>
 <tr>
 <td>G3：可试玩完整闭环</td>
-<td>10/12 内部；10/15 完整</td>
+<td>10/13 内部；10/15 完整</td>
 <td>教程提示 → 三波战斗 → 胜利，或者死亡 → 失败 → 重开；三种敌人外观能预告对应掉落；无残留对象与定时器</td>
 <td>M4 用独立包完成 TC20–TC25 内部流程及玩家专项；M5 补齐 TC26 外部盲玩后再验收完整 G3，保存对应记录。失败保留一个 AI，调整出怪与场地，先实现完整闭环</td>
 <td>未验收</td>
@@ -2038,7 +2138,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </table></markdown-accessiblity-table>
 <p dir="auto">G0 中的模板、工具链和独立包证据需对应用户实际安装环境与构建；T02 已关闭，但完整记录尚未补档。G4 的上传、平台自测、提审及过审仍需真实后台状态，本次 GitHub/Docs 配置没有执行这些操作。</p>
 <span id="doc-plan-section-3"></span><h2 id="doc-plan-4-日期安排">4. 日期安排</h2>
-<p dir="auto">以下为已创建的六个 Milestone，按 10/17 DDL 倒排。截止日期是目标，状态与完整测试证据分别记录；截至 10/6，M1 目标日期已过，T05 仍在进行中，不能仅按已关闭 Issue 数量判定阶段通过。</p>
+<p dir="auto">以下保留原六个 Milestone 与任务归属，依据 10/7 核查重排目标日期。原 M1/M2/M3/M4/M5 目标为 10/5、10/7、10/9、10/12、10/15，本轮调整为 10/8、10/9、10/11、10/13、10/16；M6 保持 10/17。10/15 完成外部试玩与调参，10/16 先通过候选回归再首次提交。原目标未通过的事实保留，改日期不代表补作验收。</p>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -2051,33 +2151,33 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <tbody>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/2">M1 · 可运行的射击基础</a></td>
-<td>2026-10-05</td>
+<td>2026-10-08</td>
 <td>T01–T05</td>
 <td>补齐 G0：核验环境、干净编译、独立 Windows 包启动和恢复流程；移动、瞄准、步枪、手动换弹、生命与一次死亡可用，相关适用测试有证据。提前核对平台提交条件与认证状态。</td>
 </tr>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/3">M2 · 投掷与空中激活</a></td>
-<td>2026-10-07</td>
+<td>2026-10-09</td>
 <td>T06–T09</td>
 <td>通过 G1：机关状态与命中上下文、拾取、安全放下、投掷、D03/P01 可用；命中方向锁定且机身受重力；熟悉后十次至少八次空中启动成功；同次按压不会同时投掷与射击。</td>
 </tr>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/4">M3 · 三机关与自然连锁</a></td>
-<td>2026-10-09</td>
+<td>2026-10-11</td>
 <td>T10–T13</td>
 <td>通过 G2：D01/D02/D03 成立，至少两种连锁由真实弹丸、推力与位置产生，改变布局会改变结果；重复命中、容量和清理有测试结果。通过后冻结规则与接口。</td>
 </tr>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/5">M4 · 三波可玩闭环</a></td>
-<td>2026-10-12</td>
+<td>2026-10-13</td>
 <td>T14–T18、T21</td>
-<td>完成 G3 内部流程测试：一套射击 AI、三种固定掉落外观、一张主场地、最低教程与 HUD；独立包可完成三波胜利、死亡失败与重开，对象和计时器清理有证据。TC26 外部盲玩在 M5 补齐后再验收完整 G3。</td>
+<td>完成 G3 内部流程测试：一套射击 AI、三种固定掉落外观、一张主场地、教程与 HUD/共用菜单；独立包可完成三波胜利、死亡失败与重开，对象和计时器清理有证据。TC26 外部盲玩在 M5 补齐后再验收完整 G3。</td>
 </tr>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/6">M5 · 试玩与候选包验收</a></td>
-<td>2026-10-15</td>
+<td>2026-10-16</td>
 <td>T19–T20、T22–T25</td>
-<td>完成必要反馈与资源整合；至少一位不了解设计的人盲玩，补齐 TC26 后验收完整 G3；按实际问题调参并回归；完成压力、稳定性和候选压缩包验收，冻结可交付候选包及证据。</td>
+<td>完成必要反馈、少量原创资产与资源整合；至少一位不了解设计的人盲玩，补齐 TC26 后验收完整 G3；按实际问题调参并回归；完成压力、稳定性和候选压缩包验收，冻结可交付候选包及证据，通过后才首次提交。</td>
 </tr>
 <tr>
 <td><a href="https://github.com/YYchainsAw/MothEffect/milestone/7">M6 · 最终包与提交</a></td>
@@ -2087,6 +2187,87 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
+<h3 id="doc-plan-41-每日工作时段">4.1 每日工作时段</h3>
+<p dir="auto">工时含当日相关局部验证；实际顺序由依赖与结果决定。下表是接近每天 6 小时时的 55 小时实施目标；额外可用时间优先用于当日缺陷，10/17 不安排新增内容。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>日期</th>
+<th>有效小时</th>
+<th>核心/验收重点</th>
+<th>UI、美术与反馈时段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10/7</td>
+<td>6</td>
+<td>T05 Montage 与武器分支；开始 T06 和 T07；核对现有构建/恢复记录</td>
+<td>先确定 UI 和机关外壳清单，本日不增加模型任务</td>
+</tr>
+<tr>
+<td>10/8</td>
+<td>6</td>
+<td>完成拾取/安全释放，推进 D03/P01；补齐 G0 独立包与恢复证据</td>
+<td>使用几何占位验证，不打磨外观</td>
+</tr>
+<tr>
+<td>10/9</td>
+<td>5</td>
+<td>T08/T09 联调，通过 G1；若未通过立即占用缓冲修核心</td>
+<td>T18：1 小时，HUD/菜单布局和三机关图标草稿</td>
+</tr>
+<tr>
+<td>10/10</td>
+<td>6</td>
+<td>D02、D01 基本效果；可用场地灰盒与导航准备</td>
+<td>T18：1 小时，统一字体、颜色、图标与提示样式；使用占位数据</td>
+</tr>
+<tr>
+<td>10/11</td>
+<td>5</td>
+<td>两种自然连锁、容量与清理，G2 验证</td>
+<td>T20：1 小时，仅在 G2 通过后确定外壳轮廓和模块；未通过则修核心</td>
+</tr>
+<tr>
+<td>10/12</td>
+<td>6</td>
+<td>接入射击 AI、三种掉落；推进三波/场地</td>
+<td>T20：2 小时，三种机关简洁原创外壳；共享材质与背包标记</td>
+</tr>
+<tr>
+<td>10/13</td>
+<td>6</td>
+<td>三波/胜负/重开与 T21 独立包内部验收</td>
+<td>T18：2 小时，接入真实 HUD/教程/暂停/结果数据；T20：1 小时，可复用掩体</td>
+</tr>
+<tr>
+<td>10/14</td>
+<td>5</td>
+<td>收尾资源整合，解决内部试玩阻断项</td>
+<td>T20：2 小时，符文/灯光装饰、替换与记录；T19：2 小时，必要反馈</td>
+</tr>
+<tr>
+<td>10/15</td>
+<td>5</td>
+<td>一人盲玩、针对问题调参/回归、性能与稳定性，验收完整 G3</td>
+<td>冻结 UI 和资产数量，只修提示/辨识问题</td>
+</tr>
+<tr>
+<td>10/16</td>
+<td>5</td>
+<td>候选压缩包回归、物料、上传、自测与提审；补齐 M5/M6 记录</td>
+<td>从同一实机版本取截图/视频，不追加展示资产</td>
+</tr>
+<tr>
+<td>10/17</td>
+<td>缓冲</td>
+<td>阻断修复、受影响回归和必要补提交，保存最终版本及后台状态</td>
+<td>只修已有 UI/资产影响操作或打包的问题</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时从分散缓冲拿时间；不从测试或 10/17 截止之后借时间。UI 布局可早做，真实数据、暂停和结果必须等对应逻辑存在后接入；T20 制作与最终替换分别核验，模型外观不更改已验证的物理根、碰撞和机关方向。</p>
 <p dir="auto">10/16 优先完成首次提交，10/17 留给阻断修复、回归与补提交。T28 为首版提交后由实际审核反馈触发的条件任务，尚未创建 Issue，不借该窗口补首版核心玩法。</p>
 <p dir="auto">官方截止与审核要求继续按 <a href="#doc-release">发布检查清单</a> 及实际后台核对；内部 10/17 DDL 与平台审核完成状态分别留证。</p>
 <span id="doc-plan-section-4"></span><h2 id="doc-plan-5-任务清单">5. 任务清单</h2>
@@ -2101,7 +2282,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <th>前置依赖</th>
 <th>粗估小时</th>
 <th>可观察完成标准</th>
-<th>状态（10/6）</th>
+<th>状态（10/7）</th>
 </tr>
 </thead>
 <tbody>
@@ -2113,7 +2294,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>无</td>
 <td>0.5–1</td>
 <td>在 <a href="#doc-decisions">设计决策</a> 中记录每日可用时间、PC 基线、版本环境待验项；确认规则与参数唯一来源，发现矛盾先修文档</td>
-<td>Done；已关闭，时间/环境明细待补</td>
+<td>Done；4–6 小时已确认，环境/平台明细待补</td>
 </tr>
 <tr>
 <td>T02</td>
@@ -2123,7 +2304,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T01</td>
 <td>2–4</td>
 <td>复用当前工程 <a href="../../MothEffect.uproject">MothEffect.uproject</a>；编译成功、模板基础角色可移动、关闭编辑器后包体能启动，G0 有记录</td>
-<td>Done；已关闭，编译/独立包证据待补</td>
+<td>Done；找到 UE 5.8.0/PIE 日志，干净编译/独立包待证据</td>
 </tr>
 <tr>
 <td>T03</td>
@@ -2133,7 +2314,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T02</td>
 <td>1–1.5</td>
 <td>项目按 <a href="#doc-coding">代码与资产命名规范</a> 目录归档，并遵循 <a href="#doc-version">版本管理规范</a>；源代码与资产有可恢复版本记录；从最近备份取回一个测试文件，且不把缓存当源文件</td>
-<td>Done；已关闭，依赖恢复记录待补</td>
+<td>Done；忽略/LFS 已核对，模板恢复与实际备份恢复待证据</td>
 </tr>
 <tr>
 <td>T04</td>
@@ -2163,7 +2344,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T02</td>
 <td>1.5–2.5</td>
 <td>Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果</td>
-<td>Todo</td>
+<td>Todo；FHitContext/命中接口已有，机关接入与状态未实现</td>
 </tr>
 <tr>
 <td>T07</td>
@@ -2193,7 +2374,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T08</td>
 <td>2–3</td>
 <td>投掷松键与恢复后的新按压才射击，提前按下不缓存；失焦/暂停/动画中断/取消不留锁或任务；Held 免启动但玩家受伤；Active 不拾取/重启；TC06/TC12/TC17/TC31/TC37/TC38 适用分支通过</td>
-<td>Todo</td>
+<td>Todo；武器松键/失焦/暂停保护已有，投掷边界未实现</td>
 </tr>
 <tr>
 <td>T10</td>
@@ -2223,7 +2404,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T08、T10、T11</td>
 <td>2–4</td>
 <td>敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2</td>
-<td>Todo</td>
+<td>Todo；可复用命中契约，P01/连锁未实现</td>
 </tr>
 <tr>
 <td>T13</td>
@@ -2279,11 +2460,11 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T18</td>
 <td><a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a></td>
 <td>核心</td>
-<td>最低 UI、教程与结果提示</td>
+<td>UI 布局/图标、HUD/教程与共用菜单接入</td>
 <td>T07、T16、T17</td>
-<td>2–3</td>
-<td>新玩家能看见血量、弹药、持物、波次和关键操作；提示解释机关方向与空中激活；胜负有清楚重开入口</td>
-<td>Todo</td>
+<td>4–6</td>
+<td>完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过</td>
+<td>Todo；血量/弹药事件已有，尚无本作 HUD；预留 4–6 小时</td>
 </tr>
 <tr>
 <td>T19</td>
@@ -2293,17 +2474,17 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <td>T12、T18</td>
 <td>2–3</td>
 <td>枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除</td>
-<td>Todo</td>
+<td>Todo；武器事件已有，实际声音/特效与机关反馈待做</td>
 </tr>
 <tr>
 <td>T20</td>
 <td><a href="https://github.com/YYchainsAw/MothEffect/issues/22" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/22/hovercard">#22</a></td>
 <td>可压缩</td>
-<td>模板资源整合、简单统一外观与授权记录</td>
-<td>T17、T19</td>
-<td>2–3</td>
-<td>整合已在早期接入的 Rifle 移动/射击/换弹与持物表现，核对模板依赖恢复记录；道具与场景用几何体；来源可追溯，不制作独立定制动画；美术细节可缩减</td>
-<td>Todo</td>
+<td>少量原创机关/场景资产、整合与来源记录</td>
+<td>T17 灰盒；最终整合依赖 T19</td>
+<td>6–8</td>
+<td>完成三种简洁原创机关外壳、一个可复用掩体和一个符文/灯光装饰；统一色形/材质，敌人标记与掉落对应；保留来源/制作记录，核对模板依赖恢复；不改变玩法碰撞与方向，替换后验证操作与打包</td>
+<td>Todo；已有 Rifle 动画/BP_Rifle，原创机关与场景资产待做；预留 6–8 小时</td>
 </tr>
 <tr>
 <td>T21</td>
@@ -2387,7 +2568,7 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p dir="auto">表中多个依赖写成区间表示包含区间内全部任务，例如 T16–T18 包含 T16、T17、T18。T14、T17、T18 应围绕最小可用场地交错实施，而不是等装饰完成才验证闭环。</p>
+<p dir="auto">表中多个依赖写成区间表示包含区间内全部任务，例如 T16–T18 包含 T16、T17、T18。T14、T17、T18 应围绕最小可用场地交错实施。T18 的布局/图标可提前做，依赖成立后接真实数据；T20 的外壳制作在 G2 后开始，最终整合仍依赖场地与反馈成立。</p>
 <span id="doc-plan-a"></span><h2 id="doc-plan-5a-候选扩展的评估入口">5A. 候选扩展的评估入口</h2>
 <p dir="auto"><a href="#doc-candidates">候选机关道具</a> 已收录牵引核心、诱光灯、折光棱镜、静滞锚和换位匣，状态均为待选制作。本次不增加 T29 等实施任务，不计入 T01–T28 的工时、日期或门槛。</p>
 <p dir="auto">若决定制作其中某项，先核对 G3 完整体验与剩余提交缓冲，再记录选定范围、额外工时和受影响的规则及测试；冻结新功能及审核修复窗口继续按现有日期执行。没有可用工时则保留候选，不影响 D01–D03 的核心交付。</p>
@@ -2398,18 +2579,18 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <li>T05：实现 Ready/Reloading/Dead 与 Rifle/Health，接入 Fire/Reload 上身表现；T06 保持机关自己的状态机，避免混入玩家行动。</li>
 <li>T07–T09：接入 Carrying/ThrowRecovery、单次按压归属、安全释放、持物/释放反馈及取消收尾；换弹中拾取在武器与机关均存在后联调。验证 D03 空中启动达到 G1。</li>
 <li>T10–T12：加入爆炸/弹射，补测 TC35 的直接腾空与落地可操作分支，达到真实连锁 G2。</li>
-<li>T14–T18/T21：敌人掉落、三波、HUD、胜负与重开，补齐 TC34–TC38 全部适用分支并验收 G3；T20/T23 只整合资源、调整已暴露的参数/表现。</li>
+<li>T14–T18/T21：敌人掉落、三波、HUD、胜负与重开，补齐 TC34–TC38 全部适用分支并验收 G3；T20 按预留时段完成少量原创资产与整合，T23 只调整已暴露的问题。</li>
 </ol>
 <p dir="auto">不增加 GAS 接入任务或候选机关工时；专项测试随相关实现执行，不另叠一套完整测试工程。新增瞄准速度/空中控制仍是未实测起点，不能凭文档宣称手感成立。</p>
 <span id="doc-plan-section-5"></span><h2 id="doc-plan-6-超时后的取舍顺序">6. 超时后的取舍顺序</h2>
 <p dir="auto">每天结束时重算“剩余净时间”和“剩余任务粗估”，包含尚未解决的缺陷。剩余工作下界都超过剩余时间时，当天减范围，不能等到最后两天。</p>
 <ol dir="auto">
 <li>先取消所有 P1、额外敌人行为、额外波次和额外道具；这些本来就未列入首版。</li>
-<li>T20 只保模板角色与几何体统一颜色；删独立定制动画和装饰，T19 保方向/伤害/激活信息即可。</li>
-<li>T22 从 3 人减至 1 人；T26 用清楚的原始实机视频和截图，少做剪辑。不得删除外部操作观察或平台要求的物料。</li>
+<li>T20 先取消额外装饰、复杂材质和精细打磨，保留三种简洁原创外壳、一个掩体模块与符文标记的最小目标；T18 保可读 HUD/教程/结果，T19 保方向/伤害/激活反馈。若工作下界仍超预算，明确记录首版原创场景资产延期，不能暗中挤掉核心或提交测试。</li>
+<li>T22 保留 1 人盲玩，不扩充人数；T26 用清楚的原始实机视频和截图，少做剪辑。不得删除外部操作观察或平台要求的物料。</li>
 <li>主竞技场保三个可辨认区域和可用投掷/弹射空间，用更少掩体降低导航、碰撞和装饰工作；仍是一张主竞技场，不增加关卡。</li>
 <li>降低同时敌人数、同时活跃机关及视觉粒子密度，但须同步修改 <a href="#doc-parameters">玩法参数基线</a>，并回归三波节奏和上限测试；保持三类道具、三波闭环与真实连锁。</li>
-<li>G1 或 G2 延期超过一个开发日时，暂停其他内容，优先修核心。不把未达到核心标准的版本包装为完成；更新时间、未实现项和风险。</li>
+<li>10/9 G1 或 10/11 G2 未通过时，暂停原创模型/装饰、重算后续节点，优先修核心；必要 UI 仍随逻辑接入。不把未达到核心标准的版本包装为完成；更新时间、未实现项和风险。</li>
 </ol>
 <p dir="auto">如果实际每天只有 2–3 小时，须从当前日期重新计算剩余时间，并优先验证 G0–G2；已过去的日期和已关闭任务不能直接折算为仍可使用的工时。根据真实剩余分支和预算重估三波参赛版，保留可运行核心原型与真实连锁，按上述顺序压缩可选表现。</p>
 <span id="doc-plan-section-6"></span><h2 id="doc-plan-7-开发日志与过程证据">7. 开发日志与过程证据</h2>
@@ -2425,19 +2606,19 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 </thead>
 <tbody>
 <tr>
-<td>10/7</td>
+<td>10/9</td>
 <td>为什么空中启动值得做；第一次操作验证</td>
 <td>G1 录屏、成功率、误操作与实际调整</td>
 <td>未撰写；选做</td>
 </tr>
 <tr>
-<td>10/9</td>
+<td>10/11</td>
 <td>三个装置如何产生连锁</td>
 <td>G2 两种连锁、统一规则与失败案例</td>
 <td>未撰写；选做</td>
 </tr>
 <tr>
-<td>10/12</td>
+<td>10/13</td>
 <td>敌人死亡位置如何改变下一波</td>
 <td>G3 三波闭环、场地与掉落布局</td>
 <td>未撰写；选做</td>
@@ -2459,7 +2640,237 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p dir="auto">单篇粗估 0.5–1 小时，避免额外拍摄一套素材。未完成门槛时，日志写真实问题与尝试，不能为了日期写成已成功。本文档只安排日志，不对外发布任何内容。</p>
 <span id="doc-plan-section-7"></span><h2 id="doc-plan-8-每日结束时保存的最小记录">8. 每日结束时保存的最小记录</h2>
 <p dir="auto">每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 <a href="#doc-workflow">文档维护与变更流程</a> 在 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a> 中记录原因、关联任务/测试，并让 <a href="#doc-rules">道具与交互规则</a>、<a href="#doc-technical">技术设计</a>、<a href="#doc-level">关卡、界面与资源规格</a>、<a href="#doc-parameters">玩法参数基线</a> 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。</p>
-<p dir="auto">当前进度快照见本文件开头和任务表。下一步优先补档 T01–T04 的缺失记录，完成 T05 上半身 Montage 与受影响的测试分支，再按依赖推进 T06–T09。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。</p></section><section class="document" id="doc-player-setup" data-source-sha256="6d43caa9f587c32d9f83702fffb367d7d37c412d1139c5fea1f9cb10f42e1051"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Player_Setup.md">05_Development_Guide/Player_Setup.md</a></div><span id="doc-player-setup-moth-effect"></span><h1 id="doc-player-setup-moth-effect飞蛾效应玩家输入与动画接入">Moth Effect（飞蛾效应）：玩家输入与动画接入</h1>
+<p dir="auto">当前进度快照见本文件开头、任务表和 <a href="#doc-audit-20261007">10/7 进度核查</a>。下一步优先补档 T01–T04 的缺失记录，完成 T05 上半身 Montage 与受影响的测试分支，再按依赖推进 T06–T09。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。</p></section><section class="document" id="doc-audit-20261007" data-source-sha256="ca22a7f50e2020e5e0669af0da025bae6ea6f4a7722f8161bbf0279d83a91e65"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Progress_Audit_2026-10-07.md">05_Development_Guide/Progress_Audit_2026-10-07.md</a></div><h1 id="doc-audit-20261007-moth-effect2026-10-07-进度核查">Moth Effect：2026-10-07 进度核查</h1>
+<p dir="auto">版本 v0.1 · 2026-10-07 · 香港时间（UTC+8）</p>
+<p dir="auto">本次核对 GitHub main/develop 的 <code class="notranslate">d589765</code>、本机 develop 的 <code class="notranslate">7f009c9</code>、27 条 Issue 与 Project 状态，并静态检查本机资产和现有编辑器日志。未执行 UE 编译、运行或打包。这里将“源码/资产已有”“任务验收完成”和“可复用模板”分别记录。</p>
+<h2 id="doc-audit-20261007-1-已有实现与待完成分支">1. 已有实现与待完成分支</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>任务</th>
+<th>已有的部分</th>
+<th>还缺什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T01 <a href="https://github.com/YYchainsAw/MothEffect/issues/4" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/4/hovercard">#4</a></td>
+<td>10/17 DDL、单人/UE 5.8/无 GAS 方案；本轮确认每天 4–6 小时和少量原创机关/场景资产/UI</td>
+<td>开发机、最低目标机、工具链与平台前置条件的完整实填记录</td>
+</tr>
+<tr>
+<td>T02 <a href="https://github.com/YYchainsAw/MothEffect/issues/3" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/3/hovercard">#3</a></td>
+<td>项目存在；本机 10/3 日志记录 UE 5.8.0-55116800 与 PIE 启动</td>
+<td>干净编译成功记录、关闭编辑器后独立 Windows 包启动证据；PIE 不能替代这些验收</td>
+</tr>
+<tr>
+<td>T03 <a href="https://github.com/YYchainsAw/MothEffect/issues/5" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/5/hovercard">#5</a></td>
+<td>Git、忽略/LFS 范围已配置；本轮核对 9 个自有资产与远程指针的内容 SHA 一致</td>
+<td>最近备份实际恢复一次；记录本机 ThirdPerson/Characters/Input 依赖及其修改后的恢复版本</td>
+</tr>
+<tr>
+<td>T04 <a href="https://github.com/YYchainsAw/MothEffect/issues/6" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/6/hovercard">#6</a></td>
+<td>越肩相机、镜头 Yaw、瞄准/冲刺互斥与输入绑定有 C++；ABP_MothPlayer/BS_MothRifleLocomotion 存在，资产引用 Rifle/AO/Jump；原验收项均已由 Issue 勾选</td>
+<td>编译/运行版本、TC34/TC35 基础证据与后续外力腾空分支；Issue 已关闭但 Project 仍待验收</td>
+</tr>
+<tr>
+<td>T05 <a href="https://github.com/YYchainsAw/MothEffect/issues/7" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/7/hovercard">#7</a></td>
+<td>RifleComponent/BP_Rifle、双段/枪口安全检测、射速/弹匣、手动 R 换弹、生命/命中去重/一次死亡与 Montage 入口均有 C++；Issue 前三项已勾选</td>
+<td>上半身 Slot/骨骼混合及 Fire/Reload Montage 资产与引用核验；TC01/TC24/TC36/TC38 适用分支的实际记录</td>
+</tr>
+<tr>
+<td>T06 <a href="https://github.com/YYchainsAw/MothEffect/issues/8" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/8/hovercard">#8</a></td>
+<td>FHitContext 已含 HitId、SourceActor、InstigatorPawn、ImpactPoint、ShotDirection、Damage；Rifle 已发出 IBallisticReactive 命中调用，Health 使用命中 ID 去重</td>
+<td>本作机关基类、Dormant/Held/Active/Spent/Destroyed 状态、幂等激活与接入；已有上下文只是前置，不等于“机关接入”验收项完成</td>
+</tr>
+<tr>
+<td>T09 <a href="https://github.com/YYchainsAw/MothEffect/issues/11" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/11/hovercard">#11</a></td>
+<td>射击取消/实际松键门控、Controller Flush/SetPause 清理、换弹任务 ID 与死亡/EndPlay 清理已有</td>
+<td>Carrying/ThrowRecovery 与同按压只投掷一次、暂停恢复、拾取竞争、结算/重开分支及对应实测</td>
+</tr>
+<tr>
+<td>T12 <a href="https://github.com/YYchainsAw/MothEffect/issues/14" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/14/hovercard">#14</a></td>
+<td>已有共用命中契约供 P01 复用</td>
+<td>P01 实际弹丸、生成者过滤/寿命/消耗规则与两种自然连锁；目前未见完整实现</td>
+</tr>
+<tr>
+<td>T18 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a></td>
+<td>Health 的 OnHealthChanged、Rifle 的 OnAmmoChanged/GetReloadProgress 等可供 UI 接入</td>
+<td>本作 UMG HUD/教程/菜单与真实数据绑定、波次/结果数据来源；事件存在不等于界面完成</td>
+</tr>
+<tr>
+<td>T19 <a href="https://github.com/YYchainsAw/MothEffect/issues/21" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/21/hovercard">#21</a></td>
+<td>OnShotFired/OnEmptyMagazine/OnMuzzleBlocked 等武器事件可复用</td>
+<td>实际枪口/命中声音与特效、机关启动/方向/状态/过期/危险提示</td>
+</tr>
+<tr>
+<td>T20 <a href="https://github.com/YYchainsAw/MothEffect/issues/22" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/22/hovercard">#22</a></td>
+<td>Rifle 移动/Jump/AO 动画已有引用，BP_Rifle 和本作动画图已存在</td>
+<td>新确认的三机关外壳、掩体模块、符文/灯光装饰、统一材质、来源与依赖恢复记录及替换后验收</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">可直接继续的顺序：T05 补动画/记录 → T06 复用命中上下文做机关状态 → T07 拾取/投掷 → T08 D03/P01 → T09 完整输入边界。UI 布局与原创资产按 <a href="#doc-plan">修订排期</a> 的独立时段制作，不重新做已经存在的 Rifle/Health 基础。</p>
+<h2 id="doc-audit-20261007-2-27-条任务的管理状态与判断">2. 27 条任务的管理状态与判断</h2>
+<p dir="auto">源码审计不自动修改用户已勾选的验收项，也不代替 UE 测试。原 T01–T04 关闭状态保留；没有新增关闭任务。T06/T09/T12 的前置和 T18/T19/T20 的可复用材料以文字标注，Project Status 仍反映实际管理状态。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>ID / Issue</th>
+<th>Issue / Project</th>
+<th>审计判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T01 <a href="https://github.com/YYchainsAw/MothEffect/issues/4" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/4/hovercard">#4</a></td>
+<td>Closed / Done</td>
+<td>范围已定；每日工时本轮确认，环境与平台明细待补</td>
+</tr>
+<tr>
+<td>T02 <a href="https://github.com/YYchainsAw/MothEffect/issues/3" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/3/hovercard">#3</a></td>
+<td>Closed / Done</td>
+<td>有工程/编辑器运行线索；干净编译/独立包证据不足</td>
+</tr>
+<tr>
+<td>T03 <a href="https://github.com/YYchainsAw/MothEffect/issues/5" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/5/hovercard">#5</a></td>
+<td>Closed / Done</td>
+<td>Git/LFS 已配置；实际备份恢复与模板依赖恢复待证据</td>
+</tr>
+<tr>
+<td>T04 <a href="https://github.com/YYchainsAw/MothEffect/issues/6" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/6/hovercard">#6</a></td>
+<td>Closed / Pending Acceptance</td>
+<td>移动/动画基础已接入且验收项已勾选，证据待补</td>
+</tr>
+<tr>
+<td>T05 <a href="https://github.com/YYchainsAw/MothEffect/issues/7" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/7/hovercard">#7</a></td>
+<td>Open / In Progress</td>
+<td>武器/生命基础已有；上身动画与验收记录待完成</td>
+</tr>
+<tr>
+<td>T06 <a href="https://github.com/YYchainsAw/MothEffect/issues/8" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/8/hovercard">#8</a></td>
+<td>Open / Todo</td>
+<td>共用命中上下文已有，机关状态与接入未见实现</td>
+</tr>
+<tr>
+<td>T07 <a href="https://github.com/YYchainsAw/MothEffect/issues/9" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/9/hovercard">#9</a></td>
+<td>Open / Todo</td>
+<td>未见本作拾取/放下/安全投掷逻辑与资产</td>
+</tr>
+<tr>
+<td>T08 <a href="https://github.com/YYchainsAw/MothEffect/issues/10" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/10/hovercard">#10</a></td>
+<td>Open / Todo</td>
+<td>未见 D03/P01 与空中启动实现</td>
+</tr>
+<tr>
+<td>T09 <a href="https://github.com/YYchainsAw/MothEffect/issues/11" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/11/hovercard">#11</a></td>
+<td>Open / Todo</td>
+<td>射击中断前置已有，投掷/恢复边界待做</td>
+</tr>
+<tr>
+<td>T10 <a href="https://github.com/YYchainsAw/MothEffect/issues/12" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/12/hovercard">#12</a></td>
+<td>Open / Todo</td>
+<td>未见本作 D02 爆炸/去重/遮挡/推力实现</td>
+</tr>
+<tr>
+<td>T11 <a href="https://github.com/YYchainsAw/MothEffect/issues/13" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/13/hovercard">#13</a></td>
+<td>Open / Todo</td>
+<td>未见本作 D01 探地/升柱/净空/单次弹射实现</td>
+</tr>
+<tr>
+<td>T12 <a href="https://github.com/YYchainsAw/MothEffect/issues/14" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/14/hovercard">#14</a></td>
+<td>Open / Todo</td>
+<td>命中契约可复用，P01/真实连锁未实现</td>
+</tr>
+<tr>
+<td>T13 <a href="https://github.com/YYchainsAw/MothEffect/issues/15" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/15/hovercard">#15</a></td>
+<td>Open / Todo</td>
+<td>未见机关总容量/Active 上限/过期/重开清理实现</td>
+</tr>
+<tr>
+<td>T14 <a href="https://github.com/YYchainsAw/MothEffect/issues/16" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/16/hovercard">#16</a></td>
+<td>Open / Todo</td>
+<td>有模板 Combat AI；未接入本作射击预警/P01/三类掉落</td>
+</tr>
+<tr>
+<td>T15 <a href="https://github.com/YYchainsAw/MothEffect/issues/17" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/17/hovercard">#17</a></td>
+<td>Open / Todo</td>
+<td>未见三种本作敌人标记与确定掉落实现</td>
+</tr>
+<tr>
+<td>T16 <a href="https://github.com/YYchainsAw/MothEffect/issues/18" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/18/hovercard">#18</a></td>
+<td>Open / Todo</td>
+<td>GameMode C++ 仍为 stub，未见本作三波/胜负/重开实现</td>
+</tr>
+<tr>
+<td>T17 <a href="https://github.com/YYchainsAw/MothEffect/issues/19" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/19/hovercard">#19</a></td>
+<td>Open / Todo</td>
+<td>仍用 ThirdPerson 默认地图；Content/MothEffect 无本作地图</td>
+</tr>
+<tr>
+<td>T18 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a></td>
+<td>Open / Todo</td>
+<td>血量/弹药接口可复用，未见本作 HUD/菜单；预留 4–6 小时</td>
+</tr>
+<tr>
+<td>T19 <a href="https://github.com/YYchainsAw/MothEffect/issues/21" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/21/hovercard">#21</a></td>
+<td>Open / Todo</td>
+<td>武器事件已有，实际反馈未验收；预留 2–3 小时</td>
+</tr>
+<tr>
+<td>T20 <a href="https://github.com/YYchainsAw/MothEffect/issues/22" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/22/hovercard">#22</a></td>
+<td>Open / Todo</td>
+<td>动画/步枪已有，原创资产与整合待做；预留 6–8 小时</td>
+</tr>
+<tr>
+<td>T21 <a href="https://github.com/YYchainsAw/MothEffect/issues/23" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/23/hovercard">#23</a></td>
+<td>Open / Todo</td>
+<td>三波闭环未实现，独立包内部验收未执行</td>
+</tr>
+<tr>
+<td>T22 <a href="https://github.com/YYchainsAw/MothEffect/issues/24" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/24/hovercard">#24</a></td>
+<td>Open / Todo</td>
+<td>未见一人外部盲玩观察记录</td>
+</tr>
+<tr>
+<td>T23 <a href="https://github.com/YYchainsAw/MothEffect/issues/25" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/25/hovercard">#25</a></td>
+<td>Open / Todo</td>
+<td>已有局部移动代码调参；本任务所需盲玩问题/回归未完成</td>
+</tr>
+<tr>
+<td>T24 <a href="https://github.com/YYchainsAw/MothEffect/issues/26" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/26/hovercard">#26</a></td>
+<td>Open / Todo</td>
+<td>未见最大密度性能/稳定性与边界验收记录</td>
+</tr>
+<tr>
+<td>T25 <a href="https://github.com/YYchainsAw/MothEffect/issues/27" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/27/hovercard">#27</a></td>
+<td>Open / Todo</td>
+<td>未见候选压缩包重新解压与阻断回归记录</td>
+</tr>
+<tr>
+<td>T26 <a href="https://github.com/YYchainsAw/MothEffect/issues/28" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/28/hovercard">#28</a></td>
+<td>Open / Todo</td>
+<td>尚无对应最终实机版本的提交物料与资源说明</td>
+</tr>
+<tr>
+<td>T27 <a href="https://github.com/YYchainsAw/MothEffect/issues/29" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/29/hovercard">#29</a></td>
+<td>Open / Todo</td>
+<td>未见最终包上传/平台自测/提审及实际后台状态</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h2 id="doc-audit-20261007-3-核对证据与边界">3. 核对证据与边界</h2>
+<ul dir="auto">
+<li>对比本机与远程：Source/Config 共 99 个文本文件，规范化换行后内容一致；Content/MothEffect 的 9 个二进制资产分别匹配当前 LFS 指针 SHA-256。本机工作树干净，尚未同步最新仓库配置/Docs；核对时并未替换或切换用户的 UE 工程。</li>
+<li><a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Private/Characters/MothEffectCharacter.cpp#L277">玩家 Character</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Private/Weapons/Rifle.cpp#L101">Rifle</a> 提供移动/射击/行动状态/Montage 入口；<a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Private/Components/HealthComponent.cpp#L27">Health</a> 处理命中去重、生命和死亡。</li>
+<li><a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Public/Types/HitContext.h">命中上下文</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Public/Interfaces/BallisticReactive.h">命中接口</a> 已存在；<a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp#L70">Controller</a> 有 FlushPressedKeys/SetPause 保护。</li>
+<li>本作资产共 9 个：BP_Rifle、BP_ShootingTarget、IMC_MothGameplay、四个输入 Action、ABP_MothPlayer、BS_MothRifleLocomotion。未见自有机关、P01、HUD、关卡或 Fire/Reload Montage 资产。资产存在和二进制中的引用名不能证明图表接线、编译与播放正确。</li>
+<li>默认入口仍是 <a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Config/DefaultEngine.ini#L1">ThirdPerson 地图/游戏模式</a>，<a href="https://github.com/YYchainsAw/MothEffect/blob/d58976514cd57c7b194aef39d3018010d0b7d25d/Source/MothEffect/Private/Framework/MothEffectGameMode.cpp">本作 GameMode</a> 仍为 stub。Variants 中的 AI/LifeBar/JumpPad 是模板示例，缺少本作接入证据，不能当作 T11/T14/T16/T18 完成。</li>
+<li>本机 <code class="notranslate">Saved/Logs/MothEffect.log</code> 记录 10/3 的 UE 5.8.0-55116800 与多次 PIE；早期日志有输入/步枪引用缺失警告，最后一轮 PIE 未出现同类警告。它只能说明曾启动编辑器试玩，不能推断 TC 已通过；日志未上传到公开仓库。</li>
+<li>在工程常用 Builds/Packages/Releases/Dist/Artifacts 目录中未找到包体目录，也未在现有任务记录找到独立包验收证据。外部位置可能另存有包体，不能据此断言从未打包；需要用户把对应版本与结果补入 T02/T21/T25。</li>
+<li>本机 BP_ThirdPersonCharacter 引用本作动画图、输入和 BP_Rifle，但 ThirdPerson 等资产被当前 Git 范围排除。T03 应保留这些修改后依赖的恢复版本，避免新克隆丢失本机接入成果；不擅自改变用户既定提交范围。</li>
+</ul>
+<p dir="auto">本次不补填未执行的测试结果，不依据静态检查关闭游戏任务。后续证据应带构建/commit、实际环境、日期、测试分支、结果和录屏/日志链接，按 <a href="#doc-test">测试计划</a> 与原 Issue 归档。</p></section><section class="document" id="doc-player-setup" data-source-sha256="6d43caa9f587c32d9f83702fffb367d7d37c412d1139c5fea1f9cb10f42e1051"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Player_Setup.md">05_Development_Guide/Player_Setup.md</a></div><span id="doc-player-setup-moth-effect"></span><h1 id="doc-player-setup-moth-effect飞蛾效应玩家输入与动画接入">Moth Effect（飞蛾效应）：玩家输入与动画接入</h1>
 <p dir="auto">版本 v0.4 · 2026-10-06 · T04 Issue 已关闭 / Project 为 Pending Acceptance · 基础项已勾选，完整分支证据待补</p>
 <p dir="auto">协作方式已经用户确认：助手修改 C++，用户在 UE 中配置资产与试玩验收。用户明确要求助手不代为编译，后续编译由用户自行执行。C++ 已写入越肩相机、镜头水平朝向、瞄准/冲刺；本轮复用现有读取接口，继续接入动画图。</p>
 <p dir="auto">用户已报告创建 IA_Aim、IA_Sprint、IMC_MothGameplay，从 ABP_Unarmed 复制 ABP_MothPlayer，制作 Rifle 八方向 BlendSpace，并在 ABP_MothPlayer 创建 IsAiming 变量。已静态核对资产存在并阅读用户粘贴的节点文本；用户随后报告当前移动/瞄准动画测试成功。2026-10-06 的 <a href="https://github.com/YYchainsAw/MothEffect/issues/6" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/6/hovercard">T04 Issue #6</a> 已关闭、四项基础验收已勾选，但 Project 仍为 Pending Acceptance，记录字段待填。助手没有运行 PIE，不把局部报告或勾选扩展为完整 TC34/TC35 通过；下一步见 <a href="#doc-weapon-setup">步枪、换弹与生命接入</a>。</p>
@@ -2898,9 +3309,9 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <h2 id="doc-workflow-5-issueproject-与-docs-同步">5. Issue、Project 与 Docs 同步</h2>
 <p dir="auto">GitHub 的当前用法见 <a href="#doc-github">GitHub 开发流程</a>。排期与任务编号仍在 <a href="#doc-plan">开发计划</a> 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。</p>
 <p dir="auto">同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。</p>
-<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="3513b7195f666057cd7af2bd91bcc11d3661abb3f67a50db34dff47eb1df20d5"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
-<p dir="auto">版本 v0.14 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖 2026-10-06 已完成的远程配置、合并和任务状态。当前文档集为 v0.14，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
+<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="108ed5cfc76e32b7d8aada2afac508a2c4294149f444583b40aada7af3d859dc"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
+<p dir="auto">版本 v0.15 · 2026-10-07 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.15，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
 <span id="doc-changelog-section"></span><h2 id="doc-changelog-1-变更记录">1. 变更记录</h2>
 <markdown-accessiblity-table><table role="table">
 <thead>
@@ -3045,6 +3456,13 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <td>同步 v0.14：入口、六阶段排期、27 条 Issue 对照、当前状态、GitHub 流程及阅读快照，补充快照生成/离线核对脚本</td>
 <td>用户要求 Docs 同步</td>
 <td>保留既有 T/G/TC/DEC/CHG ID 和玩法数值；T04 Closed / Pending Acceptance 与缺失记录如实归档，完整游戏验收状态保持待证据；文档链接、快照源摘要/锚点及静态检查验证见对应 PR</td>
+</tr>
+<tr>
+<td>CHG020</td>
+<td>2026-10-07</td>
+<td>核对本机/远程源码、9 个自有资产、日志与 27 条 Issue；确认每天 4–6 小时；为 UI、少量原创机关/场景资产与必要反馈预留工时；修订剩余阶段目标，保持 10/17 DDL</td>
+<td>用户要求检查已完成部分并在开发计划安排 UI/美术，随后确认时间与制作目标</td>
+<td>新增进度核查，记录 T06/T09 前置及 UI/反馈可复用接口；T18 4–6 小时、T20 6–8 小时，总/剩余预算与 55 小时日程同步；保留原验收勾选和关闭记录，不新增游戏验收通过；同步资源规格/决策/入口/HTML，未编译、运行、打包或修改玩法代码/参数</td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
@@ -3461,9 +3879,9 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li>平台认证、解析、自测、投稿、审核通过：均未核对或未执行，详见 <a href="#doc-release">发布检查清单</a>。</li>
 </ul>
 <p dir="auto">开发完成后，把上述初始状态替换为真实结果与证据链接，并保留历史构建记录。本文档提供执行标准，不构成已实现或已完成测试的声明。</p>
-<p dir="auto">平台官方要求、最终打包、上传与审核顺序已归入 <a href="#doc-release">发布检查清单</a>。TC29/TC30 仍在本文件维护测试标准，发布清单引用这些测试。</p></section><section class="document" id="doc-release" data-source-sha256="31d9d24285321408f7490a4cd4c7e7a3f14191dc7651a0d081d61c5cf40073d7"><div class="source">可编辑源文件：<a href="../07_Release/Release_Checklist.md">07_Release/Release_Checklist.md</a></div><span id="doc-release-moth-effect"></span><h1 id="doc-release-moth-effect飞蛾效应发布检查清单">Moth Effect（飞蛾效应）：发布检查清单</h1>
-<p dir="auto">版本 v0.8 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
-<p dir="auto">适用 Windows 单机投稿，香港时间 UTC+8。用户确定首版提交 DDL 为 <strong>2026-10-17</strong>；M5 在 10/15 冻结候选包，M6 在 10/16 优先首次提交、10/17 处理阻断回归与补提交。当前已有玩家/武器基础源码与 GitHub 开发配置，但候选包和实际平台状态尚无归档证据；T01 已关闭不能代替具体认证/投稿条件记录。发布是否完成需要真实后台状态与包体验收证据。</p>
+<p dir="auto">平台官方要求、最终打包、上传与审核顺序已归入 <a href="#doc-release">发布检查清单</a>。TC29/TC30 仍在本文件维护测试标准，发布清单引用这些测试。</p></section><section class="document" id="doc-release" data-source-sha256="b42dd64c0178c07c8840a8e4d8755a123036f114a42435366d4a31246c24bef5"><div class="source">可编辑源文件：<a href="../07_Release/Release_Checklist.md">07_Release/Release_Checklist.md</a></div><span id="doc-release-moth-effect"></span><h1 id="doc-release-moth-effect飞蛾效应发布检查清单">Moth Effect（飞蛾效应）：发布检查清单</h1>
+<p dir="auto">版本 v0.9 · 2026-10-07 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">适用 Windows 单机投稿，香港时间 UTC+8。用户确定首版提交 DDL 为 <strong>2026-10-17</strong>；按 10/7 修订排期，10/15 完成盲玩与针对问题的调参，M5 在 10/16 通过候选回归并冻结包体，M6 同日优先首次提交、10/17 处理阻断回归与补提交。当前已有玩家/武器基础源码与 GitHub 开发配置，但候选包和实际平台状态尚无归档证据；T01 已关闭不能代替具体认证/投稿条件记录。发布是否完成需要真实后台状态与包体验收证据。</p>
 <p dir="auto">测试唯一来源为 <a href="#doc-test">测试计划与验收</a>。上传前完成核心规则与本地包验收，核对 S0/S1 阻断项、TC29 本地部分和 TC30；上传后完成 TC29 平台自测部分，再提交审核。任务与时间见 <a href="#doc-plan">开发任务与排期</a>。</p>
 <span id="doc-release-section"></span><h2 id="doc-release-1-投稿前需要核实的官方要求">1. 投稿前需要核实的官方要求</h2>
 <p dir="auto">核实日期：2026-10-02。以投稿时实际后台和最新官方说明为准。以下链接都是主办方或 TapTap 官方来源，不依赖第三方攻略。</p>

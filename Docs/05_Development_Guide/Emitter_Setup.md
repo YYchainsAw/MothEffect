@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T08 发射器 D03 与弹丸 P01 接入
 
-版本 v0.1 · 2026-10-08 · 状态：源码已实现，UE 编译、资产接入、Automation 与 PIE 待执行
+版本 v0.2 · 2026-10-08 · 状态：Devices 九项 Automation 通过；World 清理修正后复测、P01 三项与 PIE 待执行
 
 对应 [T08 / Issue #10](https://github.com/YYchainsAw/MothEffect/issues/10)。规则依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，参数依据是 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.10。继续使用当前 `develop`；本轮没有创建分支或 PR。用户已授权按小功能进行本地 Git 提交，助手未编译或运行 UE。
 
@@ -93,7 +93,9 @@ Components 里的 **EmitterDirectionMarker** 是原生橙色箭头：原生已�
 | MothEffect.Projectiles.RejectionAndSourceExclusion | 新增：只忽略生成者、激活玩家无豁免、目标拒绝仍消耗、独立寿命 |
 | MothEffect.Projectiles.SweptThinWall | 新增：配置半径/缩放在构造前后保持一致、零重力、速度基线、单次 Sweep 不穿薄墙 |
 
-合计 **12 项**。原有六项的 T07 通过记录是历史结果，不能代替本轮变更后的重测；新增六项当前未运行。Emitter 测试在隔离 World 中手动推进计时，不运行真实物理或弹丸飞行；暂停测试也只证明隔离时钟/计时边界，真实 PIE 暂停仍须验收。Projectile 的薄墙测试执行一次原生移动组件 Sweep，不替代整局物理、玩家输入或视觉验证。
+合计 **12 项**。2026-10-08 用户 Test Run 3 已运行 `MothEffect.Devices` 九项并全部 Success，含本轮新增 Emitter 三项和原六项重测；`MothEffect.Projectiles` 三项尚未出现在本轮结果中。原始输出见 [T08 验证记录](../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)。Emitter 测试在隔离 World 中手动推进计时，不运行真实物理或弹丸飞行；暂停测试也只证明隔离时钟/计时边界，真实 PIE 暂停仍须验收。Projectile 的薄墙测试执行一次原生移动组件 Sweep，不替代整局物理、玩家输入或视觉验证。
+
+该轮三个 Emitter 案例带 `CleanupWorld ... missing call to EndPlay` 警告：测试只结束各 Actor，没有清除 World 的 BegunPlay 标志。后续提交 `23eb829` 已改为 `UWorld::EndPlay` 后销毁 World，配对 Actor/Subsystem/World 收尾；助手未编译或运行修正。用户重新编译后运行 `MothEffect.Devices.Emitter` 三项，确认仍 Success 且警告不再出现，再运行 `MothEffect.Projectiles` 三项。该轮历史 Success 不表示清理修正已复测通过。
 
 若搜索不到新增项目，核对完整编译成功且编辑器已重开；不要仅刷新旧会话后把缺失项当作通过。保存完整 Test Run 输出和日期，发生失败时保留断言、文件行号及构建日志。
 

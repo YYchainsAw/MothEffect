@@ -1,0 +1,58 @@
+T08 用户局部验证记录 / 2026-10-08 / Asia/Hong_Kong
+执行人：YYchainsAw。助手只读取和归档用户已有日志，未执行 UE。
+任务：T08 / Issue #10；分支 develop；参数文档 v0.10。
+接收结果时 HEAD：c8cb34a；测试日志没有嵌入实际编译 commit SHA。
+本轮 Test Run 3：2026-10-08 16:43:47–16:43:57 香港时间。
+MothEffect.Devices 九项均 Success；三个 Emitter 案例同时有 World 缺少 EndPlay 警告。
+MothEffect.Projectiles 三项未出现在该轮日志；尚无用户 T08 PIE / 独立包结果。
+后续修正：23eb829 改用 UWorld::EndPlay，修正后编译与复测待用户执行。
+本轮成功结果属于修正前，不能当作修正后无警告的证据。
+
+UBT 检查原始摘录（2026-10-08 16:29:16 香港时间；Target is up to date，非干净重建）：
+Log started at 10/08/2026 16:29:16 (2026-10-08T08:29:16Z)
+Command line: "D:\Program Files\Epic\UE_5.8\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" MothEffectEditor Win64 Development -Project=D:\YYchainsaw\Unreal-Projects\MothEffect\MothEffect.uproject -WaitMutex -FromMsBuild -architecture=x64
+Target is up to date
+[  0.950]  +1.071 MothEffectEditor Win64 Development
+Result: Succeeded
+
+Saved/Logs/MothEffect.log 的原始 Test Run 3 事件摘录（仅去除行尾空格）：
+[2026.10.08-08.43.47:134][907]AutomationTestingLog: -----Test Run 3----
+[2026.10.08-08.43.47:348][907]LogAutomationController: Display: Test Started. Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.08-08.43.49:397][ 15]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.08-08.43.49:397][ 15]LogAutomationController: BeginEvents: MothEffect.Devices.Emitter.BlockedBirthAndExpiry
+[2026.10.08-08.43.49:397][ 15]LogAutomationController: Warning: LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled) [log]
+[2026.10.08-08.43.49:397][ 15]LogAutomationController: EndEvents: MothEffect.Devices.Emitter.BlockedBirthAndExpiry
+[2026.10.08-08.43.49:430][ 16]LogAutomationController: Display: Test Started. Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.08-08.43.51:301][125]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.08-08.43.51:301][125]LogAutomationController: BeginEvents: MothEffect.Devices.Emitter.CancellationStopsTimers
+[2026.10.08-08.43.51:301][125]LogAutomationController: Warning: LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled) [log]
+[2026.10.08-08.43.51:301][125]LogAutomationController: EndEvents: MothEffect.Devices.Emitter.CancellationStopsTimers
+[2026.10.08-08.43.51:321][126]LogAutomationController: Display: Test Started. Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.08-08.43.56:796][440]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.08-08.43.56:796][440]LogAutomationController: BeginEvents: MothEffect.Devices.Emitter.WorldDirectionAndLifetime
+[2026.10.08-08.43.56:796][440]LogAutomationController: Warning: LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled) [log]
+[2026.10.08-08.43.56:796][440]LogAutomationController: EndEvents: MothEffect.Devices.Emitter.WorldDirectionAndLifetime
+[2026.10.08-08.43.56:814][441]LogAutomationController: Display: Test Started. Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.08-08.43.56:871][443]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.08-08.43.56:871][443]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.EndpointOccupancy
+[2026.10.08-08.43.56:871][443]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.EndpointOccupancy
+[2026.10.08-08.43.56:894][444]LogAutomationController: Display: Test Started. Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.08-08.43.56:940][446]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.08-08.43.56:940][446]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors
+[2026.10.08-08.43.56:940][446]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors
+[2026.10.08-08.43.56:959][447]LogAutomationController: Display: Test Started. Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.08-08.43.57:003][449]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.08-08.43.57:003][449]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.ThinWall
+[2026.10.08-08.43.57:003][449]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.ThinWall
+[2026.10.08-08.43.57:021][450]LogAutomationController: Display: Test Started. Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.08-08.43.57:065][452]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.08-08.43.57:065][452]LogAutomationController: BeginEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.08-08.43.57:065][452]LogAutomationController: EndEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.08-08.43.57:084][453]LogAutomationController: Display: Test Started. Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.08-08.43.57:125][455]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.08-08.43.57:126][456]LogAutomationController: BeginEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.08-08.43.57:126][456]LogAutomationController: EndEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.08-08.43.57:143][456]LogAutomationController: Display: Test Started. Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.08-08.43.57:183][458]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.08-08.43.57:184][458]LogAutomationController: BeginEvents: MothEffect.Devices.RejectInvalidAndDisabledHits
+[2026.10.08-08.43.57:184][458]LogAutomationController: EndEvents: MothEffect.Devices.RejectInvalidAndDisabledHits

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.19｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+版本：v0.20｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+
+2026-10-08 17:06 T08 复测结果：用户最新 Test Run 3 十二项全为 Success（Devices 九项 + Projectiles 三项），未再出现缺少 World EndPlay 的清理警告，修正已复测；原始证据见 [T08 验证日志](Evidence/T08_Verification_2026-10-08.log)。Automation 范围已完成，PIE TC03/TC04/TC05、真实暂停与完整 G1 尚未提供结果，完整案例表不据此改为通过；助手未执行 UE。
 
 2026-10-08 T08 局部结果：用户 `MothEffect.Devices` Test Run 3 九项 Success，其中三个 Emitter 案例记录 World 缺少 EndPlay 警告。原始结果见 [T08 验证日志](Evidence/T08_Verification_2026-10-08.log)。后续提交 `23eb829` 修正 World 收尾，编译/复测待用户执行；`MothEffect.Projectiles` 三项、T08 PIE TC03/TC04/TC05 仍待结果。完整案例和 G1 不按隔离 Automation 成功自动标记为通过，助手未执行 UE。
 

@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.19 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.20 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器，v0.14 同步 GitHub 开发流程、六阶段排期与任务状态。v0.15 核对本机/远程的实际实现，确认每日 4–6 小时，并预留少量原创机关/场景资产和 UI；v0.16 记录 T05 完成并接入 T06 原生机关状态与命中基础。各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
 
@@ -9,6 +9,8 @@
 v0.18 接入 T08：D03 世界方向锁定/定时发射与 P01 统一弹道源代码已交付，用户需完整编译、创建可见灰盒 BP、运行 12 项 Automation 并记录 TC03–TC05；入口见 [Emitter_Setup](05_Development_Guide/Emitter_Setup.md)，报告见 [T08_Report](06_Test_Doc/T08_Report_2026-10-08.md)。本轮没有 UE 玩法通过结果；T07 仅基础拾取、放下和投掷通过，其余边界继续待验收。用户自本轮授权助手每个小功能完成后本地提交，继续沿用 develop，用户自行推送和操作 PR。
 
 v0.19 归档 T08 局部结果：Devices 九项 Automation Success，含三个 Emitter 案例和既有六项重测；三处 World 收尾警告已在 `23eb829` 修正，修正后复测、P01 三项与 T08 PIE 仍待执行。原始结果见 [T08 验证日志](06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)，历史源码交付记录不覆盖最新通过范围。
+
+v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，包含 Devices 九项和 Projectiles 三项，World 清理警告没有再出现；证据见 [T08 验证记录](06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)。下一步按 [Emitter_Setup 第 6 节](05_Development_Guide/Emitter_Setup.md#6-pie-具体验收) 验证地面/空中方向及十次投掷成功率，G1 未验收。
 
 玩家方案已由用户确认：首版不使用 GAS，复用本地 Rifle 动画，采用 C++ 玩家行动状态机、AnimBP 移动状态机与上半身 Montage。开发入口为 [技术设计第 3 节](02_Design_Doc/TDD/Technical_Design.md#3-越肩射击与输入)，依据见 DEC22–DEC27；操作规则为 R19–R23，验收为 TC34–TC38。此前核对 T01–T03 为 Closed / Done，T04 为 Closed / Pending Acceptance，T05 为 Closed / Done、[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并。2026-10-08 归档 T06 当前三项 Automation 与 PIE 分支通过，记录见 [Device_Setup](05_Development_Guide/Device_Setup.md)，等待用户提交记录并走 PR；GitHub 状态本次未修改。完整案例及 G0–G4 以真实证据验收，详见 [开发计划](05_Development_Guide/Development_Plan.md)；[10/7 进度核查](05_Development_Guide/Progress_Audit_2026-10-07.md) 保留当次历史快照。UI 预留 4–6 小时、少量原创资产预留 6–8 小时，必要反馈另留 2–3 小时；修订节点保持 10/17 DDL。
 

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.19 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.20 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-08 17:06 T08 复测：用户 Devices 九项与 Projectiles 三项全部 Success，`23eb829` 的 UWorld::EndPlay 收尾修正已复测，最新轮次没有再出现缺少 EndPlay 警告。证据见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)；真实物理、方向表现、输入与空中成功率仍待 PIE/G1，助手未运行 UE。
 
 2026-10-08 T08 测试收尾：用户 Devices 九项 Automation 均通过，但三个 Emitter 案例带 World 清理警告。隔离测试 World 已在 `23eb829` 改为调用 UWorld::EndPlay 后 DestroyWorld，让 Actor/Subsystem 收尾并清除 BegunPlay 标志；修正待编译/复测。P01 三项与真实 PIE 仍待结果，原始日志见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)。
 

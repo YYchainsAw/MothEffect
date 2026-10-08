@@ -1,6 +1,6 @@
 {
-  "documentVersion": "0.9",
-  "updatedAt": "2026-10-03",
+  "documentVersion": "0.10",
+  "updatedAt": "2026-10-08",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
@@ -66,6 +66,7 @@
   },
   "projectile": {
     "id": "P01",
+    "collisionRadiusCm": 4,
     "speedCmPerSec": 1400,
     "gravityScale": 0,
     "damage": 10,
@@ -135,6 +136,12 @@
     "stopGameplayOnResult": true
   },
   "tuningLog": [
+    {
+      "date": "2026-10-08",
+      "change": "T08 基础 P01 新增 4cm Sweep 球半径作为未实测灰盒起点；已有速度、伤害、寿命和零重力不变",
+      "evidence": "native_source_only_no_ue_build_or_runtime_validation",
+      "validated": false
+    },
     {
       "date": "2026-10-02",
       "change": "建立初始建议参数",

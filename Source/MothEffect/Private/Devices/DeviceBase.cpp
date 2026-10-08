@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
 #include "MothEffect.h"
+#include "Types/MothCollisionChannels.h"
 
 ADeviceBase::ADeviceBase()
 {
@@ -14,6 +15,7 @@ ADeviceBase::ADeviceBase()
 	PhysicsBody->SetCollisionProfileName(TEXT("PhysicsActor"));
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	PhysicsBody->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Ignore);
 	PhysicsBody->SetGenerateOverlapEvents(false);
 	PhysicsBody->BodyInstance.bUseCCD = true;
 
@@ -23,6 +25,7 @@ ADeviceBase::ADeviceBase()
 	ShotCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	ShotCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotCollider->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	ShotCollider->SetGenerateOverlapEvents(false);
 
 	DeviceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeviceMesh"));
@@ -249,8 +252,10 @@ void ADeviceBase::ApplyStateCollision()
 	DeviceMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	const bool bPhysical = DeviceState == EDeviceState::Dormant || DeviceState == EDeviceState::Active;
 	PhysicsBody->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Ignore);
+	PhysicsBody->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Ignore);
 	ShotCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotCollider->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Block);
+	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	if (bPhysical)
 	{
 		PhysicsBody->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

@@ -4,6 +4,8 @@
 
 对应 [T06 Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8)。复用 T05 的 `FHitContext`、`IBallisticReactive` 与 Rifle 命中入口；用户已执行编译、Automation 和本轮 PIE 验收，助手仅核对及归档日志。接口与碰撞的权威定义见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，规则见 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，默认尺寸与质量对应 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 的 throw 组。
 
+2026-10-08 T07 后续交付已写入实际 Held 拾取/附着/安全释放和玩家恢复源码，尚待用户编译、配置与验收；步骤见 [拾取、放下与安全投掷接入](Device_Interaction_Setup.md)。下文保留 T06 当轮的范围与通过记录，不能作为新增 T07 逻辑通过的证据。
+
 ## 1. 本轮交付范围
 
 - [DeviceTypes.h](../../Source/MothEffect/Public/Types/DeviceTypes.h) 定义机关状态与种类，独立于玩家行动状态。

@@ -7,6 +7,8 @@
 #include "Logging/LogMacros.h"
 #include "Interfaces/BallisticReactive.h"
 #include "Types/PlayerActionState.h"
+#include "Types/DeviceTypes.h"
+#include "TimerManager.h"
 #include "MothEffectCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,6 +18,8 @@ class UHealthComponent;
 class UChildActorComponent;
 class UAnimMontage;
 class ARifle;
+class ADeviceBase;
+class USceneComponent;
 struct FInputActionValue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothPlayerActionChanged,
@@ -24,8 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothPlayerActionChanged,
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 /**
- * Player movement, shoulder camera, rifle input, action state and health.
- * Carrying and throwing transitions are added in the device milestone.
+ * Player movement, shoulder camera, rifle/device input, action state and health.
  */
 UCLASS(abstract)
 class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallisticReactive
@@ -46,6 +49,9 @@ class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallistic
 	/** Complete rifle actor, visible and positionable in the character Blueprint viewport. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	TObjectPtr<UChildActorComponent> RifleComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<USceneComponent> DeviceHoldPoint;
 	
 protected:
 
@@ -77,6 +83,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> ReloadAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> InteractAction;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
 	TSubclassOf<ARifle> RifleClass;
 
@@ -91,6 +100,34 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Animation")
 	TObjectPtr<UAnimMontage> ReloadMontage;
+
+	/** Presentation only; releasing and recovery never depend on Montage/Notify completion. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Animation")
+	TObjectPtr<UAnimMontage> ThrowMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices")
+	FName DeviceAttachSocket = TEXT("hand_r");
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(ClampMin="0.0", Units="cm"))
+	float PickupRangeCm = 200.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(ClampMin="0.0", Units="cm/s"))
+	float ThrowForwardVelocity = 1000.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(ClampMin="0.0", Units="cm/s"))
+	float ThrowUpwardVelocity = 450.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(ClampMin="0.0", Units="cm"))
+	float DeviceReleaseForwardOffset = 90.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(Units="cm"))
+	float DeviceReleaseUpOffset = 20.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Devices", meta=(ClampMin="0.01", Units="s"))
+	float MinGunRecoverySeconds = 0.12f;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Player|Devices")
+	TObjectPtr<ADeviceBase> HeldDevice;
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Player|Weapon")
 	TObjectPtr<ARifle> Rifle;
@@ -161,6 +198,13 @@ protected:
 	void ConfigureRifleComponent();
 	void HandleRifleCreated(AActor* ChildActor);
 	void UnbindRifle();
+	void ConfigureDeviceHoldPoint();
+	void RefreshCarryPresentation();
+	void ClearHeldDevice();
+	void CancelDeviceTasks();
+	void FinishThrowRecovery();
+	void HandleHeldDeviceStateChanged(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState);
+	bool RejectDeviceInteraction(const TCHAR* Reason);
 	void SetActionState(EPlayerActionState NewState);
 	void TryClearPrimaryReleaseGate();
 	bool IsPrimaryButtonPhysicallyDown() const;
@@ -207,6 +251,29 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoReloadStart();
+
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoInteract();
+
+	/** Complete candidate validation before cancelling reload or changing ownership. */
+	UFUNCTION(BlueprintCallable, Category="Player|Devices")
+	bool TryPickupDevice(ADeviceBase* Device);
+
+	UFUNCTION(BlueprintCallable, Category="Player|Devices")
+	bool TryReleaseHeldDevice(bool bThrow);
+
+	UFUNCTION(BlueprintPure, Category="Player|Devices")
+	ADeviceBase* GetHeldDevice() const { return HeldDevice.Get(); }
+
+	UFUNCTION(BlueprintPure, Category="Player|Devices")
+	bool IsCarryingDevice() const;
+
+	/** UI/short visual feedback hooks; Blueprint must not perform a second physical release. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Player|Devices")
+	void OnDeviceReleased(ADeviceBase* Device, bool bThrown);
+
+	UFUNCTION(BlueprintImplementableEvent, Category="Player|Devices")
+	void OnDeviceInteractionRejected(const FText& Reason);
 
 	/** Flush/pause cancels the press and requires a real release; reload remains timed. */
 	UFUNCTION(BlueprintCallable, Category="Player|Weapon")
@@ -291,6 +358,9 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 private:
+	FTimerHandle ThrowRecoveryTimer;
+	FDelegateHandle HeldDeviceStateHandle;
+	bool bDeviceInteractionInProgress = false;
 	bool bRequirePrimaryRelease = false;
 	bool bGameplayEnabled = true;
 	bool bEndingPlay = false;

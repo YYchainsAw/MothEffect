@@ -21,6 +21,7 @@
 #include "InputCoreTypes.h"
 #include "MothEffect.h"
 #include "Weapons/Rifle.h"
+#include "Components/SceneComponent.h"
 
 #if PLATFORM_WINDOWS
 #include "Windows/WindowsHWrapper.h"
@@ -33,6 +34,8 @@ AMothEffectCharacter::AMothEffectCharacter()
 	RifleComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("RifleComponent"));
 	RifleComponent->SetupAttachment(GetMesh(), RifleAttachSocket);
 	RifleComponent->SetChildActorOwnerOnCreation(true);
+	DeviceHoldPoint = CreateDefaultSubobject<USceneComponent>(TEXT("DeviceHoldPoint"));
+	DeviceHoldPoint->SetupAttachment(GetMesh(), DeviceAttachSocket);
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -76,6 +79,7 @@ void AMothEffectCharacter::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 	ConfigureRifleComponent();
+	ConfigureDeviceHoldPoint();
 }
 
 void AMothEffectCharacter::BeginPlay()
@@ -84,6 +88,7 @@ void AMothEffectCharacter::BeginPlay()
 
 	// Apply the new settings after template Blueprint component overrides load.
 	ApplyPlayerSettings();
+	ConfigureDeviceHoldPoint();
 	HealthComponent->OnDied.AddDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
 	RifleComponent->OnChildActorCreated().AddUObject(this, &AMothEffectCharacter::HandleRifleCreated);
 	ConfigureRifleComponent();
@@ -110,6 +115,7 @@ void AMothEffectCharacter::Tick(float DeltaSeconds)
 void AMothEffectCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
+	CancelDeviceTasks();
 	RifleComponent->OnChildActorCreated().RemoveAll(this);
 	CancelCombatInput();
 	HealthComponent->OnDied.RemoveDynamic(this, &AMothEffectCharacter::HandlePlayerDied);
@@ -195,6 +201,14 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		if (ReloadAction)
 		{
 			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoReloadStart);
+		}
+		if (InteractAction)
+		{
+			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoInteract);
+		}
+		else
+		{
+			UE_LOG(LogMothEffect, Warning, TEXT("Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."));
 		}
 		if (!AimAction || !SprintAction)
 		{
@@ -376,6 +390,7 @@ void AMothEffectCharacter::HandleRifleCreated(AActor* ChildActor)
 	Rifle->OnReloadStarted.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
 	Rifle->OnReloadFinished.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
 	Rifle->OnDestroyed.AddUniqueDynamic(this, &AMothEffectCharacter::HandleRifleDestroyed);
+	RefreshCarryPresentation();
 }
 
 void AMothEffectCharacter::UnbindRifle()
@@ -401,12 +416,12 @@ bool AMothEffectCharacter::IsGameplayEnabled() const
 bool AMothEffectCharacter::CanFireRifle() const
 {
 	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready
-		&& PrimaryPressMode == EPrimaryPressMode::Fire && !bRequirePrimaryRelease;
+		&& PrimaryPressMode == EPrimaryPressMode::Fire && !bRequirePrimaryRelease && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::CanReloadRifle() const
 {
-	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready;
+	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::GetRifleView(FVector& ViewLocation, FVector& ViewDirection) const
@@ -436,9 +451,32 @@ FVector AMothEffectCharacter::GetRifleSafetyOrigin() const
 
 void AMothEffectCharacter::DoPrimaryStart()
 {
-	if (bRequirePrimaryRelease || !IsGameplayEnabled() || ActionState != EPlayerActionState::Ready || !IsValid(Rifle))
+	if (PrimaryPressMode != EPrimaryPressMode::None || bRequirePrimaryRelease
+		|| !IsGameplayEnabled() || bDeviceInteractionInProgress)
+	{
+		if (PrimaryPressMode == EPrimaryPressMode::None)
+		{
+			PrimaryPressMode = EPrimaryPressMode::Blocked;
+		}
+		if (IsGameplayEnabled() && !bDeviceInteractionInProgress && ActionState == EPlayerActionState::ThrowRecovery)
+		{
+			RejectDeviceInteraction(TEXT("投掷恢复中；恢复后松开左键，再按下开火。"));
+		}
+		return;
+	}
+	if (ActionState == EPlayerActionState::Carrying)
+	{
+		PrimaryPressMode = EPrimaryPressMode::Throw;
+		TryReleaseHeldDevice(true);
+		return;
+	}
+	if (ActionState != EPlayerActionState::Ready || !IsValid(Rifle))
 	{
 		PrimaryPressMode = EPrimaryPressMode::Blocked;
+		if (ActionState == EPlayerActionState::ThrowRecovery)
+		{
+			RejectDeviceInteraction(TEXT("投掷恢复中；恢复后松开左键，再按下开火。"));
+		}
 		return;
 	}
 	PrimaryPressMode = EPrimaryPressMode::Fire;
@@ -579,6 +617,7 @@ void AMothEffectCharacter::SetGameplayEnabled(bool bEnabled)
 	if (!bEnabled)
 	{
 		CancelCombatInput();
+		CancelDeviceTasks();
 		ResetMovementInput();
 		if (IsValid(Rifle))
 		{

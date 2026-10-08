@@ -67,27 +67,45 @@ bool ADeviceBase::CanBePickedUp() const
 		&& GetWorld() && !GetWorld()->IsPaused() && DeviceState == EDeviceState::Dormant;
 }
 
-bool ADeviceBase::CommitHeld(AMothEffectCharacter* NewHolder)
+bool ADeviceBase::TryPickup(AMothEffectCharacter* NewHolder)
+{
+	return IsValid(NewHolder) && NewHolder->TryPickupDevice(this);
+}
+
+bool ADeviceBase::CommitHeld(AMothEffectCharacter* NewHolder, USceneComponent* HoldPoint)
 {
 	if (!CanBePickedUp() || !IsValid(NewHolder) || !NewHolder->HasActorBegunPlay()
 		|| NewHolder->GetWorld() != GetWorld()
-		|| !NewHolder->IsGameplayEnabled())
+		|| !NewHolder->IsGameplayEnabled() || !IsValid(HoldPoint) || HoldPoint->GetOwner() != NewHolder)
 	{
 		return false;
 	}
 	Holder = NewHolder;
-	return TransitionTo(EDeviceState::Held);
+	TransitionTo(EDeviceState::Held, false);
+	if (!AttachToComponent(HoldPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale))
+	{
+		TransitionTo(EDeviceState::Dormant, false);
+		return false;
+	}
+	// Character commits its reference/action before either object's state events run.
+	return true;
 }
 
-bool ADeviceBase::CommitReleased(AMothEffectCharacter* ReleasingHolder)
+bool ADeviceBase::CommitReleased(AMothEffectCharacter* ReleasingHolder, const FVector& Location, const FVector& Velocity)
 {
 	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Held
 		|| !IsValid(ReleasingHolder) || Holder != ReleasingHolder
-		|| !ReleasingHolder->IsGameplayEnabled() || !GetWorld() || GetWorld()->IsPaused())
+		|| !ReleasingHolder->IsGameplayEnabled() || !GetWorld() || GetWorld()->IsPaused()
+		|| Location.ContainsNaN() || Velocity.ContainsNaN())
 	{
 		return false;
 	}
-	return TransitionTo(EDeviceState::Dormant);
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	SetActorLocation(Location, false, nullptr, ETeleportType::TeleportPhysics);
+	TransitionTo(EDeviceState::Dormant, false);
+	PhysicsBody->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+	PhysicsBody->SetPhysicsLinearVelocity(Velocity);
+	return true;
 }
 
 bool ADeviceBase::TryActivate(const FHitContext& Context)
@@ -162,11 +180,18 @@ void ADeviceBase::SetGameplayEnabled(bool bEnabled)
 	bGameplayEnabled = bEnabled;
 	if (!bEnabled)
 	{
-		FinishActivation();
+		if (DeviceState == EDeviceState::Held)
+		{
+			DestroyDevice();
+		}
+		else
+		{
+			FinishActivation();
+		}
 	}
 }
 
-bool ADeviceBase::TransitionTo(EDeviceState NewState)
+bool ADeviceBase::TransitionTo(EDeviceState NewState, bool bNotify)
 {
 	if (DeviceState == NewState || DeviceState == EDeviceState::Destroyed)
 	{
@@ -199,6 +224,15 @@ bool ADeviceBase::TransitionTo(EDeviceState NewState)
 		Holder = nullptr;
 	}
 	ApplyStateCollision();
+	if (bNotify)
+	{
+		NotifyStateChanged(OldState, NewState);
+	}
+	return true;
+}
+
+void ADeviceBase::NotifyStateChanged(EDeviceState OldState, EDeviceState NewState)
+{
 #if !UE_BUILD_SHIPPING
 	if (bLogDeviceEvents)
 	{
@@ -208,7 +242,6 @@ bool ADeviceBase::TransitionTo(EDeviceState NewState)
 #endif
 	OnDeviceStateChanged.Broadcast(this, OldState, NewState);
 	OnDeviceStateChangedNative.Broadcast(this, OldState, NewState);
-	return true;
 }
 
 void ADeviceBase::ApplyStateCollision()

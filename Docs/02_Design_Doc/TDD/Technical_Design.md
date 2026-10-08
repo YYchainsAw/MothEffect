@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.15 · 2026-10-07 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.16 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-08 T07 实施：Character 接入 E 候选拾取/安全放下、Held 单次投掷、持物挂点/隐藏枪、世界 Timer 投掷恢复、换弹成功拾取取消及生命周期清理。装置拥有者提交先完成附着/释放与角色引用，再通知状态；安全释放按实际物理根球体和响应检查路径及端点。`ARifle::GetAimTarget` 供步枪/投掷共用相机目标。新增三项释放空间 Automation 源码，未编译或运行；用户资产与验收步骤见 [T07 接入](../../05_Development_Guide/Device_Interaction_Setup.md)。D03/P01 与完整输入回归继续属于 T08/T09，T07 尚未验收通过。
 
 2026-10-07 实施更新：用户报告 T05 上半身动画及当前中断/换弹按压/死亡/暂停/失焦分支 PIE 通过；[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并，T05 为 Closed / Done。T06 新增 `DeviceTypes` 与 `ADeviceBase`，复用已有命中契约，提供物理根/射击球、先提交 Active 再执行效果、状态事件与 Spent/Destroyed 清理；Held 提供拥有者提交/释放的内部入口，实际拾取输入、附着与安全释放属于 T07。D01/D02/D03 原生效果及容量/过期尚未实现。T06 为 Open / In Progress，助手未编译或运行，用户接入步骤见 [Device_Setup](../../05_Development_Guide/Device_Setup.md)。
 
@@ -161,7 +163,7 @@ G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生�
 
 ## 4. 物理与三种机关
 
-机关用一个 USphereComponent 作物理和射击判定根，视觉挂件不另模拟物理或接收命中。Dormant/投掷/Active 发射器由 Chaos 物理移动，重力始终开启；不同时用 ProjectileMovement 移动机关。P01 则用 Sphere 根 + ProjectileMovement，不启用根的 Simulate Physics，以 Sweep 检测命中，按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 设置 gravityScale=0，保持直线飞行。[Epic：ProjectileMovement 与物理模拟关系](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent)
+机关使用 USphereComponent 物理根 PhysicsBody，另挂 QueryOnly 的 ShotCollider 球用于射击判定；视觉挂件不另模拟物理或接收命中。Held 关闭两球碰撞与物理；安全释放按物理根实际半径及响应检查空间，不使用较大的射击球替代。Dormant/投掷/Active 发射器由 Chaos 物理移动，重力始终开启；不同时用 ProjectileMovement 移动机关。P01 则用 Sphere 根 + ProjectileMovement，不启用根的 Simulate Physics，以 Sweep 检测命中，按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 设置 gravityScale=0，保持直线飞行。[Epic：ProjectileMovement 与物理模拟关系](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent)
 
 角色保持 CharacterMovement，不给胶囊开启物理。`ReceiveImpulse` 在角色/机关实现内缓存事件，按逻辑帧统一结算：当前速度加本帧全部爆炸增量 → 如有柱子事件，将 Z 替换为角色/道具的 launcher 对应目标速度 → 对角色和机关都按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 统一上限 Clamp。同帧多柱目标相同，不重复叠加；回调先后不影响结果。结算得到最终速度后，角色只调用一次 `LaunchCharacter(FinalVelocity, true, true)`；物理机关只对根调用一次 `AddImpulse(FinalVelocity-CurrentVelocity, NAME_None, true)`。角色 Launch 在下一移动 Tick 生效，不能在每个命中回调里分别 Launch 覆盖待处理速度。没有柱子时保留爆炸叠加结果；没有爆炸时柱子保留原 XY 并替换 Z。[Epic：LaunchCharacter](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/ACharacter/LaunchCharacter)；[Epic：Add Impulse](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Physics/AddImpulse)
 

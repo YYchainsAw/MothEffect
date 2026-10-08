@@ -12,6 +12,8 @@ T05 武器分支的配置与手动步骤见 [步枪、换弹与生命接入](../
 
 ## 1. 验收依据与执行方式
 
+2026-10-08 T07 已写入交互、投掷恢复与安全释放检查，以及 `MothEffect.Devices.ReleaseSafety` 三项 Automation 源码；助手未编译或运行。本轮 TC02/TC06/TC17/TC36/TC37/TC31/TC38 的适用分支、用户操作顺序及记录要求见 [T07 接入第 6 节](../05_Development_Guide/Device_Interaction_Setup.md#6-pie-顺序与记录)。当前结果均为未执行，不以源码或静态检查替代 UE 验收。
+
 规则唯一依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，实现职责见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，AI、三波与场地见 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)，数值唯一依据是 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json)。测试里的时长、距离、伤害、速度和数量均从该 JSON 当次基线读取，不在本文件再维护一份数值表。
 
 先在验证房用固定位置、可显示状态/命中方向/伤害的调试对象执行规则测试，再在主竞技场执行流程和压力测试。PIE 可帮助定位问题；G0、G3、G4 的关键结果必须在独立 Windows 包体复现。调试生成、强制状态和计数工具仅供开发测试，最终公开包不得依赖它们才能玩。

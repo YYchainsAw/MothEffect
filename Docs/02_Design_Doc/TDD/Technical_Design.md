@@ -1,6 +1,14 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.17 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.21 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 [Emitter_Setup 第 4 节](../../05_Development_Guide/Emitter_Setup.md#4-创建-bp_deviceemitter-与方向提示)，用户配置后的 PIE 表现待确认；本轮不改玩法源码。
+
+2026-10-08 17:06 T08 复测：用户 Devices 九项与 Projectiles 三项全部 Success，`23eb829` 的 UWorld::EndPlay 收尾修正已复测，最新轮次没有再出现缺少 EndPlay 警告。证据见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)；真实物理、方向表现、输入与空中成功率仍待 PIE/G1，助手未运行 UE。
+
+2026-10-08 T08 测试收尾：用户 Devices 九项 Automation 均通过，但三个 Emitter 案例带 World 清理警告。隔离测试 World 已在 `23eb829` 改为调用 UWorld::EndPlay 后 DestroyWorld，让 Actor/Subsystem 收尾并清除 BegunPlay 标志；修正待编译/复测。P01 三项与真实 PIE 仍待结果，原始日志见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)。
+
+2026-10-08 T08 源码交付：`ARuleProjectile` 接入 Sphere Sweep、零重力直线移动、唯一 HitId、首次阻挡先关闭碰撞再调用 Ballistic 接口与独立寿命；仅忽略生成者，不给激活来源角色免伤。`ADeviceBase` 按 Emitter 分派 D03，首次命中锁定世界方向；方向箭头采用绝对世界旋转，出生点随物理机身平移；世界 Timer 控制启动延迟、固定发射时刻与到期，出生静态受阻消耗该发，Spent 停止任务并短暂残留后销毁。新增三项 P01、三项 D03 Automation 源码，尚未编译或运行；接入与 TC03/TC04/TC05 待执行步骤见 [Emitter_Setup](../../05_Development_Guide/Emitter_Setup.md)。T07 边界、T09 完整输入、T12 三机关连锁、T13 容量/闲置过期与 T16 全局清理继续按原任务验收。
 
 2026-10-08 T07 实施：Character 接入 E 候选拾取/安全放下、Held 单次投掷、持物挂点/隐藏枪、世界 Timer 投掷恢复、换弹成功拾取取消及生命周期清理。装置拥有者提交先完成附着/释放与角色引用，再通知状态；安全释放按实际物理根球体和响应检查路径及端点。`ARifle::GetAimTarget` 供步枪/投掷共用相机目标。用户增量编译成功，新增三项释放空间 Automation 与既有三项状态测试均通过；PIE 仅基础拾取/放下/投掷确认通过，其余边界与表现待实测，见 [T07 接入](../../05_Development_Guide/Device_Interaction_Setup.md#8-2026-10-08-已验证范围)。D03/P01 与完整输入回归继续属于 T08/T09，T07 尚未全项验收。
 
@@ -67,6 +75,9 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `OnReloadFinished(bool bCompleted)`；`OnShotFired(ARifle* Rifle)` | Character 协调行动状态，蓝图更新动画/HUD；旧任务回调不得结束新任务，开火事件只在实际消耗一发时广播 |
 | `OnPlayerActionStateChanged(EPlayerActionState OldState, EPlayerActionState NewState)` | C++ 完成行动转换后广播；AnimBP/HUD 读取，不回写状态 |
 | `UHealthComponent::bool ApplyHit(const FHitContext& Context)` | HitId 去重；死者不再扣血；返回是否接受伤害 |
+| `ARuleProjectile::bool InitializeProjectile(const FVector& WorldDirection, AActor* SourceActor, APawn* InstigatorPawn)` | deferred 出生到 FinishSpawning 之间初始化一次；归一化世界方向与出生 HitId，生成者避让，Pawn 只用于归因 |
+| `ARuleProjectile::bool ProcessBlockingHit(const FHitResult& Hit)` | 首次真实阻挡先提交消耗并关闭碰撞/移动，再调用 Ballistic 接口；接受与拒绝都消耗；出生短段命中同样走该入口 |
+| `ADeviceBase::int32 GetEmitterShotAttempts() const` / `int32 GetEmitterProjectilesSpawned() const` | D03 调试计数；受阻或配置/出生失败仍消耗当前时刻，但不增加出生计数；不代替 T13 全局容量登记 |
 | `OnDeviceStateChanged(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState)` | C++ 修改状态后广播，蓝图只更新表现 |
 | `OnDeviceStateChangedNative(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState)` | C++ 观察相同状态提交；回调可能继续结束/销毁，以 GetDeviceState 查询当前状态 |
 | `OnHealthChanged(float CurrentHealth, float MaxHealth)`；`OnDied(AActor* Victim, AActor* SourceActor)` | 动态多播委托；每个角色 OnDied 最多一次 |
@@ -164,6 +175,10 @@ G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生�
 ## 4. 物理与三种机关
 
 机关使用 USphereComponent 物理根 PhysicsBody，另挂 QueryOnly 的 ShotCollider 球用于射击判定；视觉挂件不另模拟物理或接收命中。Held 关闭两球碰撞与物理；安全释放按物理根实际半径及响应检查空间，不使用较大的射击球替代。Dormant/投掷/Active 发射器由 Chaos 物理移动，重力始终开启；不同时用 ProjectileMovement 移动机关。P01 则用 Sphere 根 + ProjectileMovement，不启用根的 Simulate Physics，以 Sweep 检测命中，按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 设置 gravityScale=0，保持直线飞行。[Epic：ProjectileMovement 与物理模拟关系](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent)
+
+T08 当前碰撞接入：`Config/DefaultEngine.ini` 新增 `JamProjectile` 对象通道（`ECC_GameTraceChannel1`，默认 Block），映射统一维护在 `MothCollisionChannels.h`。P01 QueryOnly 球忽略同类弹丸、Visibility、Camera，并通过 MoveIgnoreActors 忽略自己的生成者；装置物理根忽略 P01，由较大的 ShotCollider 阻挡 P01。Held/Spent/Destroyed 仍关闭两球。步枪继续使用既有 Visibility；完整 JamDevice/JamWeaponTrace/JamGroundTrace 矩阵后续任务逐步接入，不能只改一端通道。蓝图若覆盖响应，接入时应按当前矩阵核对。
+
+T08 发射调度：从激活时间计算 `firstShotDelay + n * shotInterval`，只允许严格早于 `duration` 的时刻；默认无遮挡且正常帧率最多 12 发。迟到回调在当前帧最多生成一发，跳过错过的时刻，到期后不补发、不延长寿命。出生前用配置后的 P01 球半径及组件缩放检查物理根中心到枪口的静态 Sweep 与端点静态重叠，阻挡则消耗该发；其余目标的出生短段阻挡交给同一个 P01 命中入口。方向提示与机身共享位置但使用绝对旋转；`FinishActivation`、禁用玩法、Destroy/EndPlay 清理发射和到期 Timer。已飞出的 P01 继续自己的寿命；容量和本局统一结算清理仍待 T13/T16，当前不得据此宣称全局限制已实现。
 
 角色保持 CharacterMovement，不给胶囊开启物理。`ReceiveImpulse` 在角色/机关实现内缓存事件，按逻辑帧统一结算：当前速度加本帧全部爆炸增量 → 如有柱子事件，将 Z 替换为角色/道具的 launcher 对应目标速度 → 对角色和机关都按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 统一上限 Clamp。同帧多柱目标相同，不重复叠加；回调先后不影响结果。结算得到最终速度后，角色只调用一次 `LaunchCharacter(FinalVelocity, true, true)`；物理机关只对根调用一次 `AddImpulse(FinalVelocity-CurrentVelocity, NAME_None, true)`。角色 Launch 在下一移动 Tick 生效，不能在每个命中回调里分别 Launch 覆盖待处理速度。没有柱子时保留爆炸叠加结果；没有爆炸时柱子保留原 XY 并替换 Z。[Epic：LaunchCharacter](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/ACharacter/LaunchCharacter)；[Epic：Add Impulse](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Physics/AddImpulse)
 

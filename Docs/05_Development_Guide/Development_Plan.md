@@ -1,6 +1,12 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.19｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+版本：v0.22｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+
+2026-10-08 17:06 T08 复测：用户最新 Test Run 3 的 Devices 九项与 Projectiles 三项全为 Success，日志未再出现 World 缺少 EndPlay 警告，`23eb829` 收尾修正已复测。证据见 [T08 验证日志的修正后复测段](../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)。下一步为 PIE TC03/TC04/TC05 与适用边界；G1 仍未验收，T07 边界仍按原范围保留。
+
+2026-10-08 T08 局部验证：用户 Test Run 3 的 Devices 九项全部 Success（Emitter 三项 + 既有六项）；三个 Emitter 案例带 World 缺少 EndPlay 的清理警告。已在 `23eb829` 改为调用 UWorld::EndPlay，修正后编译/复测待用户执行；P01 三项与 PIE TC03–TC05 仍无结果，G1 未验收。原始记录见 [T08 验证日志](../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)，报告已按真实范围更新。本轮仅提交测试修正和文档，用户资产改动保留。
+
+2026-10-08 T08 开发更新：用户要求继续 T08 并授权每完成一个小功能由助手本地提交。P01 已提交 `35643dc`；D03 世界方向、定时发射、出生净空、结束清理与六项新增 Automation 源码已接入，步骤见 [Emitter_Setup](Emitter_Setup.md)，[模板报告](../06_Test_Doc/T08_Report_2026-10-08.md) 保留未编译/未执行结果。继续使用当前 develop，未创建分支、PR 或推送，未修改 GitHub 状态。T08 编译、资产配置、Automation、TC03/TC04/TC05 与 G1 待用户执行；T07 未测边界不因继续 T08 而标记通过。
 
 2026-10-08 T07 开发更新：用户增量编译成功，Automation Test Run 3 六项全部通过；用户明确确认仅 PIE 基础拾取、放下和投掷通过，输入/安全释放/表现与生命边界仍待完整实测。范围见 [Device_Interaction_Setup](Device_Interaction_Setup.md#8-2026-10-08-已验证范围)，原始摘录见 [T07 验证日志](../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log)，[模板报告](../06_Test_Doc/T07_Report_2026-10-08.md) 已整理。助手未执行 UE，未创建分支或 PR，未修改 GitHub 状态；T08–T27 尚未在本轮推进。
 
@@ -98,11 +104,11 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T05 | [#7](https://github.com/YYchainsAw/MothEffect/issues/7) | 核心 | W01、玩家行动状态、换弹与生命伤害/上身动画 | T04 | 3–4 | 静止/移动射击、双段枪口检测、手动换弹、血量与一次死亡成立；ARifle 统一射速/弹匣/任务；上身 Montage 不锁腿部；TC24/TC36/TC38 武器分支有证据 | Done / Closed；用户确认动画与边界 PIE 通过，PR #34 已合并 |
 | T06 | [#8](https://github.com/YYchainsAw/MothEffect/issues/8) | 核心 | 装置基类、状态与命中上下文 | T02 | 1.5–2.5 | Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果 | 当前范围验收通过；Automation Run 4 三项 Success，PIE 激活/重复命中/Spent 通过；待用户提交记录并走 PR，GitHub 状态本次未修改；Held 操作随 T07 接入 |
 | T07 | [#9](https://github.com/YYchainsAw/MothEffect/issues/9) | 核心 | 拾取、放下、投掷与最低持物表现 | T04、T06 | 3–4 | E 拾取/放下、Held 左键只投掷；安全检测失败保留 Held；成功释放到 Dormant，玩家进入投掷恢复；持物挂点/短释放可读；TC06/TC17/TC37 有证据 | 部分验证通过；增量构建成功，六项 Automation 与 PIE 基础拾取/放下/投掷通过；其余适用边界与表现待验收，未改 GitHub 状态 |
-| T08 | [#10](https://github.com/YYchainsAw/MothEffect/issues/10) | 核心 | D03 与基础 P01：空中启动方向锁定 | T05–T07 | 3–5 | 投掷中射击启动，沿命中方向持续发射；装置继续落下；达到 G1 可用性指标 | Todo |
+| T08 | [#10](https://github.com/YYchainsAw/MothEffect/issues/10) | 核心 | D03 与基础 P01：空中启动方向锁定 | T05–T07 | 3–5 | 投掷中射击启动，沿命中方向持续发射；装置继续落下；达到 G1 可用性指标 | 最新 Run 3 十二项 Automation 全通过，World 收尾无警告；PIE TC03–TC05 与 G1 待验收，GitHub 状态未改 |
 | T09 | [#11](https://github.com/YYchainsAw/MothEffect/issues/11) | 核心 | 输入切换、恢复、中断与单次激活边界 | T08 | 2–3 | 投掷松键与恢复后的新按压才射击，提前按下不缓存；失焦/暂停/动画中断/取消不留锁或任务；Held 免启动但玩家受伤；Active 不拾取/重启；TC06/TC12/TC17/TC31/TC37/TC38 适用分支通过 | Todo；武器保护已有，T07 加入投掷门控/恢复与清理源码，待资产接入及 T08 后完整边界回归 |
 | T10 | [#12](https://github.com/YYchainsAw/MothEffect/issues/12) | 核心 | D02 爆炸、伤害与推力 | T05、T06 | 2–3 | 地面/空中在激活位置爆炸；敌我受到伤害；可移动道具受推力；爆炸不直接启动其他机关 | Todo |
 | T11 | [#13](https://github.com/YYchainsAw/MothEffect/issues/13) | 核心 | D01 探地、升柱与弹射 | T06、T07 | 3–5 | 向世界竖直下方探地，检查最终柱体静态净空；伸出阶段逐对象单次弹射；停留期间净空后开实体支撑/阻挡，收回前关闭，不夹住角色或道具；TC09、TC10、TC33 通过 | Todo |
-| T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | Todo；可复用命中契约，P01/连锁未实现 |
+| T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | Todo；T08 已提供 P01 统一命中源码，待 UE 验证；三机关完整自然连锁与敌人接入未完成 |
 | T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Todo |
 | T14 | [#16](https://github.com/YYchainsAw/MothEffect/issues/16) | 核心 | 一套射击 AI：移动、视线、预警、P01 | T05、T12 | 3–5 | 敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置 | Todo |
 | T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | Todo |

@@ -1,0 +1,90 @@
+T08 source delivery / static verification
+Date: 2026-10-08 (Asia/Hong_Kong)
+Branch: develop
+P01 source commit: 35643dc
+D03 source commit: e969ac3
+Radius/default-scale fix commit: 8ee90e6
+Parameters: Gameplay_Parameters.json v0.10 (new geometry/presentation defaults untested)
+
+Source/API review: local UE 5.8 source only. No UE process launched; no build,
+Automation, PIE, standalone package or gameplay acceptance executed by the assistant.
+Six new Automation cases are test source, not successful test results.
+
+Include path review: 52 quoted includes resolved in 8 T08 files against project/local UE 5.8 headers.
+This does not compile C++ or run UHT.
+
+> py scripts/validate_repo.py
+Static checks passed for 167 tracked files and 13 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Exit code: 0
+
+> py scripts/build_reading_view.py --check
+Reading view verified: 24 source sections; anchors and local links valid.
+Exit code: 0
+
+> git diff --cached --check
+Exit code: 0
+
+> git diff --check
+Exit code: 0
+
+Follow-up static verification / 2026-10-08 / source fix 23eb829
+User Devices Test Run 3 is archived separately; fix compilation and runtime retesting are pending.
+Archive lines were normalized only for trailing spaces before these final checks.
+
+> py scripts/validate_repo.py
+Static checks passed for 168 tracked files and 13 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Exit code: 0
+
+> py scripts/build_reading_view.py --check
+Reading view verified: 24 source sections; anchors and local links valid.
+Exit code: 0
+
+> git diff --cached --check
+Exit code: 0
+
+> git diff HEAD^ --check
+Exit code: 0
+
+> git diff --check
+Exit code: 0
+
+Automation results archive / 2026-10-08 / gameplay source unchanged at 23eb829
+User twelve-case Test Run 3 passed; raw evidence is in T08_Verification_2026-10-08.log.
+Only evidence and documents changed in this follow-up. No assistant UE execution.
+
+> py scripts/validate_repo.py
+Static checks passed for 168 tracked files and 13 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Exit code: 0
+
+> py scripts/build_reading_view.py --check
+Reading view verified: 24 source sections; anchors and local links valid.
+Exit code: 0
+
+> git diff --cached --check
+Exit code: 0
+
+> git diff --check
+Exit code: 0
+
+Direction visual setup correction / 2026-10-08
+Only documentation changed. User Blueprint configuration and PIE display are pending.
+Local UE source confirmed Arrow draw-view dependency and cone Pitch=-90 orientation.
+No UE build or test execution by assistant. Existing twelve Automation results retained.
+
+> py scripts/validate_repo.py
+Static checks passed for 168 tracked files and 13 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Exit code: 0
+
+> py scripts/build_reading_view.py --check
+Reading view verified: 24 source sections; anchors and local links valid.
+Exit code: 0
+
+> git diff --cached --check
+Exit code: 0
+
+> git diff --check
+Exit code: 0

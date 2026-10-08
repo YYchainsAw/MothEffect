@@ -1,6 +1,6 @@
 {
-  "documentVersion": "0.9",
-  "updatedAt": "2026-10-03",
+  "documentVersion": "0.10",
+  "updatedAt": "2026-10-08",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
@@ -66,6 +66,7 @@
   },
   "projectile": {
     "id": "P01",
+    "collisionRadiusCm": 4,
     "speedCmPerSec": 1400,
     "gravityScale": 0,
     "damage": 10,
@@ -113,6 +114,8 @@
     "durationSeconds": 3,
     "firstShotDelaySeconds": 0.1,
     "shotIntervalSeconds": 0.25,
+    "muzzleClearanceCm": 2,
+    "spentVisualSeconds": 0.25,
     "directionPolicy": "incoming_ballistic_world_direction",
     "directionLockedAfterActivation": true,
     "physicsContinuesWhileActive": true
@@ -135,6 +138,12 @@
     "stopGameplayOnResult": true
   },
   "tuningLog": [
+    {
+      "date": "2026-10-08",
+      "change": "T08 新增 P01 4cm Sweep 球半径、D03 出生净距 2cm 与 Spent 视觉残留 0.25s 作为未实测灰盒起点；已有速度、伤害、寿命、零重力和发射节奏不变",
+      "evidence": "native_source_only_no_ue_build_or_runtime_validation",
+      "validated": false
+    },
     {
       "date": "2026-10-02",
       "change": "建立初始建议参数",

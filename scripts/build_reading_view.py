@@ -36,6 +36,8 @@ DOCS = [
     ('doc-player-setup', '玩家输入与动画接入', 'Docs/05_Development_Guide/Player_Setup.md'),
     ('doc-weapon-setup', '步枪、换弹与生命接入', 'Docs/05_Development_Guide/Weapon_Setup.md'),
     ('doc-device-setup', '机关状态与命中接入', 'Docs/05_Development_Guide/Device_Setup.md'),
+    ('doc-device-interaction', '拾取、放下与安全投掷接入', 'Docs/05_Development_Guide/Device_Interaction_Setup.md'),
+    ('doc-emitter-setup', 'D03 发射器与 P01 接入', 'Docs/05_Development_Guide/Emitter_Setup.md'),
     ('doc-github', 'GitHub 开发流程', 'Docs/05_Development_Guide/GitHub_Workflow.md'),
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),
     ('doc-changelog', '变更日志', 'Docs/05_Development_Guide/Changelog.md'),

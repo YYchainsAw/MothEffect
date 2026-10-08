@@ -6,6 +6,8 @@
 
 2026-10-08 T07 后续交付已写入实际 Held 拾取/附着/安全释放和玩家恢复源码，尚待用户编译、配置与验收；步骤见 [拾取、放下与安全投掷接入](Device_Interaction_Setup.md)。下文保留 T06 当轮的范围与通过记录，不能作为新增 T07 逻辑通过的证据。
 
+2026-10-08 T08 行为更新：Emitter 种类现在会在命中后自动启动 D03，工作到期进入 Spent 并短暂残留后销毁；已有 `BP_DeviceBase` 若使用默认 Emitter 种类也会采用新行为。手动 J 结束请在 Active 工作期间调用；原 T06 的历史两次 J 结果不是新增寿命功能的验收。当前配置与重跑步骤见 [D03 与 P01 接入](Emitter_Setup.md)。
+
 ## 1. 本轮交付范围
 
 - [DeviceTypes.h](../../Source/MothEffect/Public/Types/DeviceTypes.h) 定义机关状态与种类，独立于玩家行动状态。

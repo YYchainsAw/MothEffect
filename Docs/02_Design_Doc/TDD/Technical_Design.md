@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.20 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.21 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 [Emitter_Setup 第 4 节](../../05_Development_Guide/Emitter_Setup.md#4-创建-bp_deviceemitter-与方向提示)，用户配置后的 PIE 表现待确认；本轮不改玩法源码。
 
 2026-10-08 17:06 T08 复测：用户 Devices 九项与 Projectiles 三项全部 Success，`23eb829` 的 UWorld::EndPlay 收尾修正已复测，最新轮次没有再出现缺少 EndPlay 警告。证据见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)；真实物理、方向表现、输入与空中成功率仍待 PIE/G1，助手未运行 UE。
 

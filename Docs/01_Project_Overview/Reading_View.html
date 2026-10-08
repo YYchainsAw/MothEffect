@@ -1222,8 +1222,9 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
   &quot;pathBase&quot;: &quot;this_json_file_directory&quot;
 }
 </code></pre>
-</section><section class="document" id="doc-technical" data-source-sha256="8d80ebc079817d3e21d57d7cddd1a8ad62504a91fef367b2ddbef2dd24a60951"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><span id="doc-technical-moth-effect"></span><h1 id="doc-technical-moth-effect飞蛾效应技术设计">Moth Effect（飞蛾效应）：技术设计</h1>
-<p dir="auto">版本 v0.20 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）</p>
+</section><section class="document" id="doc-technical" data-source-sha256="591cafd64eb91dbbea56fc3cc2f741628b7ebcf26af4bd7b49a2c0e594ca5679"><div class="source">可编辑源文件：<a href="../02_Design_Doc/TDD/Technical_Design.md">02_Design_Doc/TDD/Technical_Design.md</a></div><span id="doc-technical-moth-effect"></span><h1 id="doc-technical-moth-effect飞蛾效应技术设计">Moth Effect（飞蛾效应）：技术设计</h1>
+<p dir="auto">版本 v0.21 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）</p>
+<p dir="auto">2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 <a href="#doc-emitter-setup-4-创建-bp_deviceemitter-与方向提示">Emitter_Setup 第 4 节</a>，用户配置后的 PIE 表现待确认；本轮不改玩法源码。</p>
 <p dir="auto">2026-10-08 17:06 T08 复测：用户 Devices 九项与 Projectiles 三项全部 Success，<code class="notranslate">23eb829</code> 的 UWorld::EndPlay 收尾修正已复测，最新轮次没有再出现缺少 EndPlay 警告。证据见 <a href="../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log">T08 验证记录</a>；真实物理、方向表现、输入与空中成功率仍待 PIE/G1，助手未运行 UE。</p>
 <p dir="auto">2026-10-08 T08 测试收尾：用户 Devices 九项 Automation 均通过，但三个 Emitter 案例带 World 清理警告。隔离测试 World 已在 <code class="notranslate">23eb829</code> 改为调用 UWorld::EndPlay 后 DestroyWorld，让 Actor/Subsystem 收尾并清除 BegunPlay 标志；修正待编译/复测。P01 三项与真实 PIE 仍待结果，原始日志见 <a href="../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log">T08 验证记录</a>。</p>
 <p dir="auto">2026-10-08 T08 源码交付：<code class="notranslate">ARuleProjectile</code> 接入 Sphere Sweep、零重力直线移动、唯一 HitId、首次阻挡先关闭碰撞再调用 Ballistic 接口与独立寿命；仅忽略生成者，不给激活来源角色免伤。<code class="notranslate">ADeviceBase</code> 按 Emitter 分派 D03，首次命中锁定世界方向；方向箭头采用绝对世界旋转，出生点随物理机身平移；世界 Timer 控制启动延迟、固定发射时刻与到期，出生静态受阻消耗该发，Spent 停止任务并短暂残留后销毁。新增三项 P01、三项 D03 Automation 源码，尚未编译或运行；接入与 TC03/TC04/TC05 待执行步骤见 <a href="#doc-emitter-setup">Emitter_Setup</a>。T07 边界、T09 完整输入、T12 三机关连锁、T13 容量/闲置过期与 T16 全局清理继续按原任务验收。</p>
@@ -3606,8 +3607,8 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p dir="auto">原始摘录见 <a href="../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log">T07_Verification_2026-10-08.log</a>，按仓库模板整理的报告见 <a href="../06_Test_Doc/T07_Report_2026-10-08.md">T07 报告</a>。本次仅归档和同步本地文档，GitHub Issue/Project 状态未修改，未创建 PR。</p></section><section class="document" id="doc-emitter-setup" data-source-sha256="79ca5271ec75b64c50ba80896564c1d43f8268c32d3f6dfd2f2b1256e3cebf6d"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Emitter_Setup.md">05_Development_Guide/Emitter_Setup.md</a></div><h1 id="doc-emitter-setup-moth-effect飞蛾效应t08-发射器-d03-与弹丸-p01-接入">Moth Effect（飞蛾效应）：T08 发射器 D03 与弹丸 P01 接入</h1>
-<p dir="auto">版本 v0.3 · 2026-10-08 · 状态：十二项 Automation 全部通过，World 清理警告消失；PIE 与 G1 待验收</p>
+<p dir="auto">原始摘录见 <a href="../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log">T07_Verification_2026-10-08.log</a>，按仓库模板整理的报告见 <a href="../06_Test_Doc/T07_Report_2026-10-08.md">T07 报告</a>。本次仅归档和同步本地文档，GitHub Issue/Project 状态未修改，未创建 PR。</p></section><section class="document" id="doc-emitter-setup" data-source-sha256="a6494e1868c0448b367d1af06200aadfc265f92d0b23727439662a0d3521097a"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Emitter_Setup.md">05_Development_Guide/Emitter_Setup.md</a></div><h1 id="doc-emitter-setup-moth-effect飞蛾效应t08-发射器-d03-与弹丸-p01-接入">Moth Effect（飞蛾效应）：T08 发射器 D03 与弹丸 P01 接入</h1>
+<p dir="auto">版本 v0.4 · 2026-10-08 · 状态：十二项 Automation 全部通过；补齐游戏内方向网格，PIE 与 G1 待验收</p>
 <p dir="auto">对应 <a href="https://github.com/YYchainsAw/MothEffect/issues/10" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/10/hovercard">T08 / Issue #10</a>。规则依据是 <a href="#doc-rules">道具与交互规则</a>，参数依据是 <a href="#doc-parameters">Gameplay_Parameters.json</a> v0.10。继续使用当前 <code class="notranslate">develop</code>；本轮没有创建分支或 PR。用户已授权按小功能进行本地 Git 提交，助手未编译或运行 UE。</p>
 <h2 id="doc-emitter-setup-1-当前行为与范围">1. 当前行为与范围</h2>
 <ul dir="auto">
@@ -3710,8 +3711,47 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p dir="auto">Components 里的 <strong>EmitterDirectionMarker</strong> 是原生橙色箭头：原生已设置 <strong>Absolute Rotation</strong>，Active 时朝锁定世界方向，Dormant/Spent 时隐藏。不要让它继承机身旋转，也不要用 BP Tick 每帧朝玩家转向。</p>
-<p dir="auto">需要更醒目的灰盒提示时，可在 EmitterDirectionMarker 下添加一个 Static Mesh 子组件，使用 <strong>Engine → BasicShapes → Cone</strong>，给亮色材质、NoCollision、Simulate Physics=false。将它缩小并移到球体外，例如 Relative Location X=35 cm，再调整相对旋转，让尖端沿父组件的 <strong>+X</strong>。引擎 Cone 默认尖端沿 <strong>+Z</strong>，必须先旋转再核对；球体前后翻滚时提示仍应保持同一世界方向。子组件由原生状态切换传播显隐，蓝图只配置外观。</p>
+<p dir="auto">Components 里的 <strong>EmitterDirectionMarker</strong> 已设置 <strong>Absolute Rotation</strong>，Active 时朝锁定世界方向，Dormant/Spent 时隐藏。原生 ArrowComponent 的绘制受 <code class="notranslate">BillboardSprites</code> 等视图设置影响，不能仅凭关闭 Hidden in Game 保证游戏中可见；此前把游戏方向网格写成可选不足以保证 PIE 提示。游戏内提示使用以下 Static Mesh 子组件。</p>
+<ol dir="auto">
+<li>打开 <code class="notranslate">BP_DeviceEmitter</code>，在 Components 选 <strong>EmitterDirectionMarker</strong>，点击 <strong>Add → Static Mesh</strong>，命名 <strong>DirectionVisual</strong>。确认它是 EmitterDirectionMarker 的子组件；若挂到 PhysicsBody/DeviceMesh，拖动到正确父组件下。</li>
+<li>DirectionVisual 的 <strong>Static Mesh</strong> 选择 <code class="notranslate">/Engine/BasicShapes/Cone</code>；找不到资源时开启 <strong>Show Engine Content</strong>。</li>
+<li>设置下面的相对 Transform。Cone 默认尖端沿 +Z，UE 的 Y/Pitch=-90° 将其转向父组件 +X；这与锁定方向一致。子组件保持相对旋转，不另开启 Absolute Rotation。</li>
+</ol>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>DirectionVisual 字段</th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location</td>
+<td>40</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Rotation</td>
+<td>0</td>
+<td>-90</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>0.12</td>
+<td>0.12</td>
+<td>0.30</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<ol start="4" dir="auto">
+<li><strong>Mobility = Movable</strong>、<strong>Collision Presets = NoCollision</strong>、<strong>Simulate Physics = false</strong>、<strong>Visible = true</strong>、<strong>Hidden in Game = false</strong>。可给已有亮色材质，暂时没有时先用默认材质；父 EmitterDirectionMarker 的 Hidden in Game 也应关闭。</li>
+<li>Compile、Save 蓝图，进入 PIE 射击一件 Dormant 发射器。提示只在激活后显示，持续当前 3 秒工作期，进入 Spent 后隐藏；未激活时看不到提示是正常行为。检查尖端与 P01 同向，机身翻滚后方向保持不变。</li>
+</ol>
+<p dir="auto">原生状态切换已经传播子组件显隐，不需要添加 Tick、旋转或 Set Visibility 脚本。这是蓝图外观接入，玩法源码与十二项 Automation 不变；用户尚未确认本节配置后的 PIE 显示结果。</p>
 <p dir="auto">已有 T06 的 BP_DeviceBase 默认也是 Emitter。本轮新增效果后，它被击中会自动发射并在 3 秒结束；T06 的 J 手动结束检查应在这 3 秒内执行。本轮 PIE 优先使用明确配置了可见弹丸的 BP_DeviceEmitter。</p>
 <h2 id="doc-emitter-setup-5-运行-automation">5. 运行 Automation</h2>
 <p dir="auto">关闭 PIE，打开 <strong>Tools → Session Frontend → Automation</strong>；选择本地编辑器会话，搜索并勾选下面两组，再点击 <strong>Start Tests / Run</strong>。本机菜单入口已在 T07 由用户截图核对。</p>
@@ -3966,8 +4006,8 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <h2 id="doc-workflow-5-issueproject-与-docs-同步">5. Issue、Project 与 Docs 同步</h2>
 <p dir="auto">GitHub 的当前用法见 <a href="#doc-github">GitHub 开发流程</a>。排期与任务编号仍在 <a href="#doc-plan">开发计划</a> 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。</p>
 <p dir="auto">同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。</p>
-<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="242758921bfa3ae662fa79c2c4beb44275ce4bcac8b7c4549e5c0ad0f768b675"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
-<p dir="auto">版本 v0.22 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="87f0d1a7662a837301e239662691e79fbb3b59f078afd1eaf95256e05ca4f8e2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
+<p dir="auto">版本 v0.23 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
 <p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.20，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
 <span id="doc-changelog-section"></span><h2 id="doc-changelog-1-变更记录">1. 变更记录</h2>
 <markdown-accessiblity-table><table role="table">
@@ -4180,7 +4220,8 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <p dir="auto">CHG027（2026-10-08）：用户提供 T08 Devices Test Run 3，九项 Success，三个 Emitter 案例带缺少 World EndPlay 警告；读取并归档本机原始日志与 UBT 的 up-to-date 成功检查。提交 <code class="notranslate">23eb829</code> 用 UWorld::EndPlay 配对世界/Actor/Subsystem 收尾，修正后编译与复测待用户执行；同步 <a href="#doc-emitter-setup">接入步骤</a>、<a href="../06_Test_Doc/T08_Report_2026-10-08.md">报告</a> 与 <a href="../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log">验证日志</a>。P01 三项、PIE 和 G1 仍待验证；助手没有运行 UE，用户资产改动保留。</p>
 <p dir="auto">阅读指南归入项目概览；游戏策划、道具规则、关卡/界面/资源和参数归入 GDD；UE 实现设计归入 TDD，并拆出代码规范、版本管理和工程配置；测试与提交拆为测试计划、发布清单；决策与变更拆为设计决策、维护流程和本变更日志。根目录 README 提供有效文件索引，阅读版同步为新结构。</p>
 <p dir="auto">CHG028（2026-10-08）：归档用户 17:06 最新 Test Run 3，Devices 九项与 Projectiles 三项全部 Success，World 清理警告不再出现。保留 16:43 的旧警告历史与两轮 UBT up-to-date 检查，更新 T08 报告、接入和任务/测试状态；本轮仅记录实际结果与同步阅读版，未更改玩法源码或用户资产。PIE TC03–TC05、真实暂停和 G1 仍待验收；助手未运行 UE。</p>
-<p dir="auto">早期 v0.1/v0.2 文件包是历史快照；当前有效基线以项目 Docs 为准。</p></section><section class="document" id="doc-test" data-source-sha256="6d917330b1588f0dc34c6852908340da959c10c4b0283c851d8418fd0bed84f5"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><span id="doc-test-moth-effect"></span><h1 id="doc-test-moth-effect飞蛾效应测试计划与验收">Moth Effect（飞蛾效应）：测试计划与验收</h1>
+<p dir="auto">早期 v0.1/v0.2 文件包是历史快照；当前有效基线以项目 Docs 为准。</p>
+<p dir="auto">CHG029（2026-10-08）：用户报告 PIE 中没有发射方向提示；核对 UE 5.8 Arrow 视图相关渲染条件和旋转矩阵，修订接入为 EmitterDirectionMarker 下的 DirectionVisual 锥体网格，明确局部 Pitch=-90°、相对挂接、材质/显隐和激活后显示。原生方向/显隐及玩法源码未改，十二项 Automation 通过记录保留；配置后的 PIE 效果待用户确认。助手未修改资产或运行 UE。</p></section><section class="document" id="doc-test" data-source-sha256="6d917330b1588f0dc34c6852908340da959c10c4b0283c851d8418fd0bed84f5"><div class="source">可编辑源文件：<a href="../06_Test_Doc/Test_Plan.md">06_Test_Doc/Test_Plan.md</a></div><span id="doc-test-moth-effect"></span><h1 id="doc-test-moth-effect飞蛾效应测试计划与验收">Moth Effect（飞蛾效应）：测试计划与验收</h1>
 <p dir="auto">版本：v0.20｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）</p>
 <p dir="auto">2026-10-08 17:06 T08 复测结果：用户最新 Test Run 3 十二项全为 Success（Devices 九项 + Projectiles 三项），未再出现缺少 World EndPlay 的清理警告，修正已复测；原始证据见 <a href="../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log">T08 验证日志</a>。Automation 范围已完成，PIE TC03/TC04/TC05、真实暂停与完整 G1 尚未提供结果，完整案例表不据此改为通过；助手未执行 UE。</p>
 <p dir="auto">2026-10-08 T08 局部结果：用户 <code class="notranslate">MothEffect.Devices</code> Test Run 3 九项 Success，其中三个 Emitter 案例记录 World 缺少 EndPlay 警告。原始结果见 <a href="../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log">T08 验证日志</a>。后续提交 <code class="notranslate">23eb829</code> 修正 World 收尾，编译/复测待用户执行；<code class="notranslate">MothEffect.Projectiles</code> 三项、T08 PIE TC03/TC04/TC05 仍待结果。完整案例和 G1 不按隔离 Automation 成功自动标记为通过，助手未执行 UE。</p>

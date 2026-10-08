@@ -68,3 +68,23 @@ Exit code: 0
 
 > git diff --check
 Exit code: 0
+
+Direction visual setup correction / 2026-10-08
+Only documentation changed. User Blueprint configuration and PIE display are pending.
+Local UE source confirmed Arrow draw-view dependency and cone Pitch=-90 orientation.
+No UE build or test execution by assistant. Existing twelve Automation results retained.
+
+> py scripts/validate_repo.py
+Static checks passed for 168 tracked files and 13 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Exit code: 0
+
+> py scripts/build_reading_view.py --check
+Reading view verified: 24 source sections; anchors and local links valid.
+Exit code: 0
+
+> git diff --cached --check
+Exit code: 0
+
+> git diff --check
+Exit code: 0

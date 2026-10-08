@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T08 发射器 D03 与弹丸 P01 接入
 
-版本 v0.3 · 2026-10-08 · 状态：十二项 Automation 全部通过，World 清理警告消失；PIE 与 G1 待验收
+版本 v0.4 · 2026-10-08 · 状态：十二项 Automation 全部通过；补齐游戏内方向网格，PIE 与 G1 待验收
 
 对应 [T08 / Issue #10](https://github.com/YYchainsAw/MothEffect/issues/10)。规则依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，参数依据是 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.10。继续使用当前 `develop`；本轮没有创建分支或 PR。用户已授权按小功能进行本地 Git 提交，助手未编译或运行 UE。
 
@@ -61,9 +61,22 @@
 | Emitter Muzzle Clearance Cm | 2 |
 | Emitter Spent Visual Seconds | 0.25 |
 
-Components 里的 **EmitterDirectionMarker** 是原生橙色箭头：原生已设置 **Absolute Rotation**，Active 时朝锁定世界方向，Dormant/Spent 时隐藏。不要让它继承机身旋转，也不要用 BP Tick 每帧朝玩家转向。
+Components 里的 **EmitterDirectionMarker** 已设置 **Absolute Rotation**，Active 时朝锁定世界方向，Dormant/Spent 时隐藏。原生 ArrowComponent 的绘制受 `BillboardSprites` 等视图设置影响，不能仅凭关闭 Hidden in Game 保证游戏中可见；此前把游戏方向网格写成可选不足以保证 PIE 提示。游戏内提示使用以下 Static Mesh 子组件。
 
-需要更醒目的灰盒提示时，可在 EmitterDirectionMarker 下添加一个 Static Mesh 子组件，使用 **Engine → BasicShapes → Cone**，给亮色材质、NoCollision、Simulate Physics=false。将它缩小并移到球体外，例如 Relative Location X=35 cm，再调整相对旋转，让尖端沿父组件的 **+X**。引擎 Cone 默认尖端沿 **+Z**，必须先旋转再核对；球体前后翻滚时提示仍应保持同一世界方向。子组件由原生状态切换传播显隐，蓝图只配置外观。
+1. 打开 `BP_DeviceEmitter`，在 Components 选 **EmitterDirectionMarker**，点击 **Add → Static Mesh**，命名 **DirectionVisual**。确认它是 EmitterDirectionMarker 的子组件；若挂到 PhysicsBody/DeviceMesh，拖动到正确父组件下。
+2. DirectionVisual 的 **Static Mesh** 选择 `/Engine/BasicShapes/Cone`；找不到资源时开启 **Show Engine Content**。
+3. 设置下面的相对 Transform。Cone 默认尖端沿 +Z，UE 的 Y/Pitch=-90° 将其转向父组件 +X；这与锁定方向一致。子组件保持相对旋转，不另开启 Absolute Rotation。
+
+| DirectionVisual 字段 | X | Y | Z |
+|---|---|---|---|
+| Location | 40 | 0 | 0 |
+| Rotation | 0 | -90 | 0 |
+| Scale | 0.12 | 0.12 | 0.30 |
+
+4. **Mobility = Movable**、**Collision Presets = NoCollision**、**Simulate Physics = false**、**Visible = true**、**Hidden in Game = false**。可给已有亮色材质，暂时没有时先用默认材质；父 EmitterDirectionMarker 的 Hidden in Game 也应关闭。
+5. Compile、Save 蓝图，进入 PIE 射击一件 Dormant 发射器。提示只在激活后显示，持续当前 3 秒工作期，进入 Spent 后隐藏；未激活时看不到提示是正常行为。检查尖端与 P01 同向，机身翻滚后方向保持不变。
+
+原生状态切换已经传播子组件显隐，不需要添加 Tick、旋转或 Set Visibility 脚本。这是蓝图外观接入，玩法源码与十二项 Automation 不变；用户尚未确认本节配置后的 PIE 显示结果。
 
 已有 T06 的 BP_DeviceBase 默认也是 Emitter。本轮新增效果后，它被击中会自动发射并在 3 秒结束；T06 的 J 手动结束检查应在这 3 秒内执行。本轮 PIE 优先使用明确配置了可见弹丸的 BP_DeviceEmitter。
 

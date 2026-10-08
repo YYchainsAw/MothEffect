@@ -1,0 +1,77 @@
+T07 验收记录 · 2026-10-08 · 香港时间 UTC+8
+执行人：YYchainsAw；助手只读取和归档用户已有日志，未执行 UE 编译或测试。
+任务：T07 / GitHub Issue #9；工作分支：develop。
+归档时源码 HEAD：47892cf4ffef25de3c947ea3fd7103e146fe96aa；测试日志本身没有嵌入 commit SHA。
+玩法参数文档：v0.9；既有玩家速度差异见 Docs/05_Development_Guide/Player_Setup.md。
+环境：Windows / UE Editor Automation 与 PIE；本次没有独立 Windows 包体标识。
+
+构建：2026-10-08 15:06:12 香港时间开始，MothEffectEditor Win64 Development，Result: Succeeded。
+本轮编译交互 CPP 并链接带后缀的 Editor 模块；这是增量构建结果，不表示干净重建或独立打包。
+原始来源：本机 UnrealBuildTool/Log.txt；以下是相关原文摘录。
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+Log started at 10/08/2026 15:06:12 (2026-10-08T07:06:12Z)
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/4] Compile [x64] MothEffectCharacterDevices.cpp
+[2/4] Link [x64] UnrealEditor-MothEffect-3059.lib
+[3/4] Link [x64] UnrealEditor-MothEffect-3059.dll
+Result: Succeeded
+
+Automation：2026-10-08 15:28:41-15:28:42 香港时间，Test Run 3 六项全部 Success。
+原始来源：Saved/Logs/MothEffect.log；保留该轮测试开始、完成与事件信息。
+[2026.10.08-07.28.41:803][991]AutomationTestingLog: -----Test Run 3----
+[2026.10.08-07.28.41:979][991]LogAutomationController: Display: Test Started. Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.08-07.28.42:192][992]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.08-07.28.42:192][992]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.EndpointOccupancy
+[2026.10.08-07.28.42:192][992]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.EndpointOccupancy
+[2026.10.08-07.28.42:229][993]LogAutomationController: Display: Test Started. Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.08-07.28.42:271][996]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.08-07.28.42:271][996]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors
+[2026.10.08-07.28.42:271][996]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors
+[2026.10.08-07.28.42:287][996]LogAutomationController: Display: Test Started. Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.08-07.28.42:344][998]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.08-07.28.42:344][998]LogAutomationController: BeginEvents: MothEffect.Devices.ReleaseSafety.ThinWall
+[2026.10.08-07.28.42:344][998]LogAutomationController: EndEvents: MothEffect.Devices.ReleaseSafety.ThinWall
+[2026.10.08-07.28.42:370][999]LogAutomationController: Display: Test Started. Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.08-07.28.42:453][  1]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.08-07.28.42:453][  1]LogAutomationController: BeginEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.08-07.28.42:454][  1]LogAutomationController: EndEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.08-07.28.42:470][  2]LogAutomationController: Display: Test Started. Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.08-07.28.42:520][  5]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.08-07.28.42:520][  5]LogAutomationController: BeginEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.08-07.28.42:520][  5]LogAutomationController: EndEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.08-07.28.42:534][  5]LogAutomationController: Display: Test Started. Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.08-07.28.42:572][  7]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.08-07.28.42:572][  7]LogAutomationController: BeginEvents: MothEffect.Devices.RejectInvalidAndDisabledHits
+[2026.10.08-07.28.42:572][  7]LogAutomationController: EndEvents: MothEffect.Devices.RejectInvalidAndDisabledHits
+
+用户在当前对话提供的结果原文：
+-----Test Run 3----
+Test 'MothEffect.Devices.ReleaseSafety.EndpointOccupancy' completed with result 'Success'
+Test 'MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors' completed with result 'Success'
+Test 'MothEffect.Devices.ReleaseSafety.ThinWall' completed with result 'Success'
+Test 'MothEffect.Devices.ActivationIsSingleUse' completed with result 'Success'
+Test 'MothEffect.Devices.CancelDuringActivationCallback' completed with result 'Success'
+Test 'MothEffect.Devices.RejectInvalidAndDisabledHits' completed with result 'Success'
+pie测试通过
+
+PIE：以下摘录仅证明实际拾取/投掷/放下、超距拒绝和反馈日志；视觉、长按时序、无护盾及生命周期需结合用户覆盖说明。
+07:29 UTC 对应 15:29 香港时间。
+[2026.10.08-07.29.03:209][938]LogMothEffect: Player BP_ThirdPersonCharacter_C_0 pickup trace actor=BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 component=ShotCollider state=EDeviceState::Dormant point=X=-109.909 Y=100.262 Z=231.226
+[2026.10.08-07.29.03:209][938]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Dormant -> EDeviceState::Held
+[2026.10.08-07.29.05:043][ 48]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Held -> EDeviceState::Dormant
+[2026.10.08-07.29.05:043][ 48]LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] 已放下
+[2026.10.08-07.29.09:660][325]LogMothEffect: Player BP_ThirdPersonCharacter_C_0 pickup trace actor=BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 component=ShotCollider state=EDeviceState::Dormant point=X=104.397 Y=455.856 Z=229.572
+[2026.10.08-07.29.09:660][325]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Dormant -> EDeviceState::Held
+[2026.10.08-07.29.19:811][934]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Held -> EDeviceState::Dormant
+[2026.10.08-07.29.19:811][934]LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] 已投掷
+[2026.10.08-07.29.33:377][748]LogMothEffect: Player BP_ThirdPersonCharacter_C_0 pickup trace actor=BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 component=ShotCollider state=EDeviceState::Dormant point=X=-1493.258 Y=776.957 Z=27.757
+[2026.10.08-07.29.33:377][748]LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] 道具超出拾取距离。
+[2026.10.08-07.29.33:612][762]LogMothEffect: Player BP_ThirdPersonCharacter_C_0 pickup trace actor=BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 component=ShotCollider state=EDeviceState::Dormant point=X=-1485.401 Y=813.622 Z=32.419
+[2026.10.08-07.29.33:612][762]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Dormant -> EDeviceState::Held
+[2026.10.08-07.29.36:295][923]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Held -> EDeviceState::Dormant
+[2026.10.08-07.29.36:295][923]LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] 已放下
+
+用户覆盖说明原文：仅基础拾取、放下和投掷通过。
+本轮边界覆盖：长按/恢复、遮挡/单持有、受阻保持 Held、持物表现、Held 无护盾及换弹/生命周期未获通过记录，保留待验收；不以 Automation 成功替代手动边界结果。
+后续：独立包验收、T08 D03/P01 和 T09 完整输入回归未在本轮执行。
+本次没有创建分支、提交、推送、PR 或修改 GitHub Issue/Project。

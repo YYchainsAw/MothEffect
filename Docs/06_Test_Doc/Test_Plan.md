@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.16｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+版本：v0.17｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
 
 2026-10-08 结果归档：T05 已为 Closed / Done、PR #34 已合并，用户报告的动画及边界 PIE 结果见 [Weapon_Setup 第 7 节](../05_Development_Guide/Weapon_Setup.md#7-2026-10-07-用户报告的局部结果)。T06 修正测试 World 和 FURL 头文件后，2026-10-07 的 Automation Test Run 4 三项均通过；用户同时确认首次步枪命中激活、重复命中不重启、J 结束到 Spent 和再次 J 返回 false 的 PIE 分支通过。结果见 [Device_Setup 第 7 节](../05_Development_Guide/Device_Setup.md#7-通过结果与证据)，原始摘录见 [T06 验收日志](Evidence/T06_Verification_2026-10-07.log)。完整 TC12 的 Held 实际操作、D03 寿命与计数分支随后续任务补测；助手未编译或运行 UE。
 
@@ -12,7 +12,7 @@ T05 武器分支的配置与手动步骤见 [步枪、换弹与生命接入](../
 
 ## 1. 验收依据与执行方式
 
-2026-10-08 T07 已写入交互、投掷恢复与安全释放检查，以及 `MothEffect.Devices.ReleaseSafety` 三项 Automation 源码；助手未编译或运行。本轮 TC02/TC06/TC17/TC36/TC37/TC31/TC38 的适用分支、用户操作顺序及记录要求见 [T07 接入第 6 节](../05_Development_Guide/Device_Interaction_Setup.md#6-pie-顺序与记录)。当前结果均为未执行，不以源码或静态检查替代 UE 验收。
+2026-10-08 T07 结果：用户增量构建成功，`MothEffect.Devices` Test Run 3 六项 Automation 均 Success；用户明确确认仅 PIE 基础拾取、放下和投掷通过。证据见 [T07 验证日志](Evidence/T07_Verification_2026-10-08.log)，分支状态见 [T07 接入第 6/8 节](../05_Development_Guide/Device_Interaction_Setup.md#6-pie-顺序与记录)。完整 TC02/TC06/TC17/TC36/TC37/TC31/TC38 仍待适用边界记录；以下完整案例不据此改为通过。助手未编译或运行 UE，静态检查不作为玩法证据。
 
 规则唯一依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，实现职责见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，AI、三波与场地见 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)，数值唯一依据是 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json)。测试里的时长、距离、伤害、速度和数量均从该 JSON 当次基线读取，不在本文件再维护一份数值表。
 

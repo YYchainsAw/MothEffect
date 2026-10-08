@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.16 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.17 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
 
-2026-10-08 T07 实施：Character 接入 E 候选拾取/安全放下、Held 单次投掷、持物挂点/隐藏枪、世界 Timer 投掷恢复、换弹成功拾取取消及生命周期清理。装置拥有者提交先完成附着/释放与角色引用，再通知状态；安全释放按实际物理根球体和响应检查路径及端点。`ARifle::GetAimTarget` 供步枪/投掷共用相机目标。新增三项释放空间 Automation 源码，未编译或运行；用户资产与验收步骤见 [T07 接入](../../05_Development_Guide/Device_Interaction_Setup.md)。D03/P01 与完整输入回归继续属于 T08/T09，T07 尚未验收通过。
+2026-10-08 T07 实施：Character 接入 E 候选拾取/安全放下、Held 单次投掷、持物挂点/隐藏枪、世界 Timer 投掷恢复、换弹成功拾取取消及生命周期清理。装置拥有者提交先完成附着/释放与角色引用，再通知状态；安全释放按实际物理根球体和响应检查路径及端点。`ARifle::GetAimTarget` 供步枪/投掷共用相机目标。用户增量编译成功，新增三项释放空间 Automation 与既有三项状态测试均通过；PIE 仅基础拾取/放下/投掷确认通过，其余边界与表现待实测，见 [T07 接入](../../05_Development_Guide/Device_Interaction_Setup.md#8-2026-10-08-已验证范围)。D03/P01 与完整输入回归继续属于 T08/T09，T07 尚未全项验收。
 
 2026-10-07 实施更新：用户报告 T05 上半身动画及当前中断/换弹按压/死亡/暂停/失焦分支 PIE 通过；[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并，T05 为 Closed / Done。T06 新增 `DeviceTypes` 与 `ADeviceBase`，复用已有命中契约，提供物理根/射击球、先提交 Active 再执行效果、状态事件与 Spent/Destroyed 清理；Held 提供拥有者提交/释放的内部入口，实际拾取输入、附着与安全释放属于 T07。D01/D02/D03 原生效果及容量/过期尚未实现。T06 为 Open / In Progress，助手未编译或运行，用户接入步骤见 [Device_Setup](../../05_Development_Guide/Device_Setup.md)。
 
@@ -42,7 +42,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 
 ## 2. 数据与调用契约
 
-以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，T05 当前 PIE 分支由用户报告通过。T06 的 EDeviceState/EDeviceKind、ADeviceBase::TryActivate 与 OnDeviceStateChanged 已写入，待用户编译/验收；TryPickup、TryReleaseHeldDevice、效果、容量、推力与波次等其余入口仍为计划接口。
+以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，T05 当前 PIE 分支由用户报告通过。T06 的 EDeviceState/EDeviceKind、ADeviceBase::TryActivate 与 OnDeviceStateChanged 已实现，用户当前状态壳测试通过；T07 的 TryPickup、TryReleaseHeldDevice 已实现，Automation 与基础 PIE 通过，适用边界待验收。机关效果、容量、推力与波次等后续入口仍为计划接口。
 
 - `EDeviceState`：`Dormant, Held, Active, Spent, Destroyed`；`Destroyed` 是清理末态，可不留存于已销毁对象。
 - `EDeviceKind`：`Launcher, Bomb, Emitter`。

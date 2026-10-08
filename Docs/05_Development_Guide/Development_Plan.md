@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.18｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+版本：v0.19｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
 
-2026-10-08 T07 开发更新：在已有 develop 写入拾取、放下、安全投掷、持物表现入口、恢复与清理，以及三项碰撞测试源码；待用户编译、E 映射/挂点/动画配置和 PIE。接入与本轮测试范围见 [Device_Interaction_Setup](Device_Interaction_Setup.md)。助手未执行 UE，未创建分支或 PR，未修改 GitHub 状态；T08–T27 尚未在本轮推进。
+2026-10-08 T07 开发更新：用户增量编译成功，Automation Test Run 3 六项全部通过；用户明确确认仅 PIE 基础拾取、放下和投掷通过，输入/安全释放/表现与生命边界仍待完整实测。范围见 [Device_Interaction_Setup](Device_Interaction_Setup.md#8-2026-10-08-已验证范围)，原始摘录见 [T07 验证日志](../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log)，[模板报告](../06_Test_Doc/T07_Report_2026-10-08.md) 已整理。助手未执行 UE，未创建分支或 PR，未修改 GitHub 状态；T08–T27 尚未在本轮推进。
 
 当前记录（2026-10-08）：已建立六个 Milestone 和 27 条 T01–T27 Issue，首版提交 DDL 为 **2026-10-17**。此前核对 T01–T03 为 Closed / Done；T04 为 Closed / Pending Acceptance；T05 为 Closed / Done，[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并。T06 当前三项 Automation 与 PIE 状态/命中壳验收通过，待用户提交记录并走 PR 流程；本次未修改 GitHub 状态。T07 当前开发中，T08–T27 按此前 Todo 排期推进。每日 4–6 小时与少量原创机关、场景资产和 UI 已由用户确认；T01–T04 的环境、构建与证据尚未完整填写，G0–G4 仍待完整验收记录。操作见 [GitHub 开发流程](GitHub_Workflow.md)。
 
@@ -97,7 +97,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T04 | [#6](https://github.com/YYchainsAw/MothEffect/issues/6) | 核心 | 测试房、越肩相机、移动/转向与基础动画 | T02 | 3–4 | 镜头 Yaw 转向与八方向移动、跳跃/跑步/瞄准；最低 AnimBP/BlendSpace 可用，瞄准与冲刺互斥；墙边相机可用；TC34/TC35 基础分支有证据 | Pending Acceptance；已关闭，基础项已勾选，证据待补 |
 | T05 | [#7](https://github.com/YYchainsAw/MothEffect/issues/7) | 核心 | W01、玩家行动状态、换弹与生命伤害/上身动画 | T04 | 3–4 | 静止/移动射击、双段枪口检测、手动换弹、血量与一次死亡成立；ARifle 统一射速/弹匣/任务；上身 Montage 不锁腿部；TC24/TC36/TC38 武器分支有证据 | Done / Closed；用户确认动画与边界 PIE 通过，PR #34 已合并 |
 | T06 | [#8](https://github.com/YYchainsAw/MothEffect/issues/8) | 核心 | 装置基类、状态与命中上下文 | T02 | 1.5–2.5 | Dormant、Held、Active、Spent、Destroyed 转换可记录；激活幂等；重复命中不会重复创建效果 | 当前范围验收通过；Automation Run 4 三项 Success，PIE 激活/重复命中/Spent 通过；待用户提交记录并走 PR，GitHub 状态本次未修改；Held 操作随 T07 接入 |
-| T07 | [#9](https://github.com/YYchainsAw/MothEffect/issues/9) | 核心 | 拾取、放下、投掷与最低持物表现 | T04、T06 | 3–4 | E 拾取/放下、Held 左键只投掷；安全检测失败保留 Held；成功释放到 Dormant，玩家进入投掷恢复；持物挂点/短释放可读；TC06/TC17/TC37 有证据 | 开发中；C++ 与三项安全释放测试源码已写入，待用户编译、资产配置及适用 PIE 验收 |
+| T07 | [#9](https://github.com/YYchainsAw/MothEffect/issues/9) | 核心 | 拾取、放下、投掷与最低持物表现 | T04、T06 | 3–4 | E 拾取/放下、Held 左键只投掷；安全检测失败保留 Held；成功释放到 Dormant，玩家进入投掷恢复；持物挂点/短释放可读；TC06/TC17/TC37 有证据 | 部分验证通过；增量构建成功，六项 Automation 与 PIE 基础拾取/放下/投掷通过；其余适用边界与表现待验收，未改 GitHub 状态 |
 | T08 | [#10](https://github.com/YYchainsAw/MothEffect/issues/10) | 核心 | D03 与基础 P01：空中启动方向锁定 | T05–T07 | 3–5 | 投掷中射击启动，沿命中方向持续发射；装置继续落下；达到 G1 可用性指标 | Todo |
 | T09 | [#11](https://github.com/YYchainsAw/MothEffect/issues/11) | 核心 | 输入切换、恢复、中断与单次激活边界 | T08 | 2–3 | 投掷松键与恢复后的新按压才射击，提前按下不缓存；失焦/暂停/动画中断/取消不留锁或任务；Held 免启动但玩家受伤；Active 不拾取/重启；TC06/TC12/TC17/TC31/TC37/TC38 适用分支通过 | Todo；武器保护已有，T07 加入投掷门控/恢复与清理源码，待资产接入及 T08 后完整边界回归 |
 | T10 | [#12](https://github.com/YYchainsAw/MothEffect/issues/12) | 核心 | D02 爆炸、伤害与推力 | T05、T06 | 2–3 | 地面/空中在激活位置爆炸；敌我受到伤害；可移动道具受推力；爆炸不直接启动其他机关 | Todo |

@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T07 拾取、放下与安全投掷接入
 
-版本 v0.1 · 2026-10-08 · 状态：C++ 与测试源码已写入，待用户编译、配置资产和验收
+版本 v0.2 · 2026-10-08 · 状态：用户增量编译成功，六项 Automation 与 PIE 基础操作通过，边界待验收
 
 对应 [T07 / Issue #9](https://github.com/YYchainsAw/MothEffect/issues/9)，依赖 T04 玩家与 T06 装置壳。继续在已有 `develop` 开发。助手未编译、未启动 UE、未运行 Automation/PIE；本轮未创建分支或 PR。规则依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) R04/R13/R14/R18/R21，数值依据是 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.9 的 throw 组。
 
@@ -60,13 +60,13 @@
 
 ## 5. Automation
 
-打开 **Tools → Test Automation**（或 Session Frontend → Automation），搜索 `MothEffect.Devices`。保留 T06 三项测试，并运行新增三项：
+本机菜单入口已由用户截图核对为 **Tools → Session Frontend → Automation**，搜索 `MothEffect.Devices`。保留 T06 三项测试，并运行新增三项：
 
 - `MothEffect.Devices.ReleaseSafety.ThinWall`：空路径可释放、两端空旷但中间薄墙阻挡、关闭墙碰撞后可释放。
 - `MothEffect.Devices.ReleaseSafety.EndpointOccupancy`：物理球实际缩放改变净空结果、终点/起点占用被拒绝，包含零长度查询。
 - `MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors`：即使 Visibility 忽略 Pawn，物理释放仍受阻；显式忽略自己和无碰撞对象才放行。
 
-这些测试使用隔离 World 和原生碰撞组件，不依赖玩家 BP/动画资产；它们不验证 E 映射、真实 Held 状态、松键时序、换弹竞争或动画，以下 PIE 仍需执行。当前六项的本轮结果均为未执行。
+这些测试使用隔离 World 和原生碰撞组件，不依赖玩家 BP/动画资产；它们不验证 E 映射、真实 Held 状态、松键时序、换弹竞争或动画。2026-10-08 15:28:41–15:28:42 香港时间，用户 Test Run 3 六项全部 Success，结果已与本机日志核对，见 [本轮验证记录](../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log)。
 
 ## 6. PIE 顺序与记录
 
@@ -74,7 +74,7 @@
 
 | 测试分支 | 操作与应观察结果 | 当前结果 |
 |---|---|---|
-| TC02 范围/遮挡/单持有 | 准星对近处球按 E：Dormant → Held，玩家 Carrying，球跟手且枪隐藏；超距/墙后失败。持有时对第二件按 E 只放下当前件；再次 E 才拾取下一件，无复制/丢失。放下回 Dormant/Ready | 未执行 |
+| TC02 范围/遮挡/单持有 | 准星对近处球按 E：Dormant → Held，玩家 Carrying，球跟手且枪隐藏；超距/墙后失败。持有时对第二件按 E 只放下当前件；再次 E 才拾取下一件，无复制/丢失。放下回 Dormant/Ready | 基础拾取/放下通过（用户报告，日志支持装置状态转换）；超距/遮挡/单持有及持物表现完整验收未执行 |
 | TC06、TC37 按压与恢复 | Held 左键成功投掷后长按超过恢复时间，不扣弹/不续射；松键再按才开火。恢复中提前再按并长按跨过结束，同样必须再松键/新按下。恢复时 R/E 不成功 | 未执行 |
 | TC17、TC37 安全释放 | 正对近墙、薄墙、掩体边、其他角色/物理物件，分别 E 放下和左键投掷；受阻仍 Held/Carrying，有提示且无恢复。背贴墙、抬头/低头重测，释放体积不进墙，不从相机位置穿墙。再验步枪枪口遮挡分支 | 未执行 |
 | TC36 换弹竞争 | 半匣开始 R，成功 E 拾取只取消未完成任务且不补弹；等到旧完成时刻仍不补弹/不覆盖 Carrying。超距、遮挡、失效候选 E 失败，原换弹按时补满 | 未执行 |
@@ -83,16 +83,31 @@
 
 人工难以在短恢复时间内按键时，可临时调大 BP 的 Min Gun Recovery Seconds，记录它为测试覆盖值，测完恢复账本值并再验正常时序，不把扩大时间写成玩法调参结论。用于死亡的测试命中须使用新 HitId、非零方向及足够伤害；受伤/持物始终复用已有 HealthComponent，不另写扣血。
 
-保存实际构建标识/commit、日期/执行人、UE 版本、PIE/独立包、参数版本与覆盖值、测试结果、日志/录屏。T07 当前验收和独立 Windows 包尚未执行；完整 TC06 的未来敌弹分支及 G1 空中发射随后续任务补测。
+保存实际构建标识/commit、日期/执行人、UE 版本、PIE/独立包、参数版本与覆盖值、测试结果、日志/录屏。当前用户确认范围仅为基础拾取、放下和投掷，不扩大为完整 TC02/TC06/TC17/TC37 已通过；其他边界及独立 Windows 包尚未执行。完整 TC06 的未来敌弹分支及 G1 空中发射随后续任务补测。
 
 ## 7. 拾取失败与“启动即激活”的排查
 
 2026-10-08 用户报告 PIE 启动后似乎已激活。核对当时本机日志：14:59:34 启动的那轮 PIE 在 15:00:27 退出时记录 `Dormant -> Destroyed`，没有 Active 转换；上一轮 14:58:53 的 `Dormant -> Active` 伴随 `source=BP_Rifle_C_0`、`accepted=1`，是一次步枪命中。此记录只说明这两轮，不替代后续重现的实例状态检查。
 
-旧代码把非道具命中/无效候选/交互未开放都显示为“只能拾取尚未启动的道具”，该提示不能证明 Active。本次拆开拒绝原因，并在 Development 的 E 命中日志中记录 `pickup trace actor=... component=... state=... point=...`；尚未编译或重测。
+旧代码把非道具命中/无效候选/交互未开放都显示为“只能拾取尚未启动的道具”，该提示不能证明 Active。本次拆开拒绝原因，并在 Development 的 E 命中日志中记录 `pickup trace actor=... component=... state=... point=...`。用户随后增量编译成功；15:29 的 PIE 日志可区分 NotDevice、Dormant、超距拒绝与成功拾取，错误状态提示修正已有实际日志支持。
 
 - `state=NotDevice`：射线命中地面、掩体等对象，没有选中道具。靠近后用屏幕中心准星对准球，距离仍按 throw.pickupRangeCm 限制。
 - `state=EDeviceState::Dormant`：候选未激活，继续根据超距、遮挡、挂点或交互未开放的具体提示排查。
 - `state=EDeviceState::Active`：检查此前的 `Dormant -> Active` 和 `accepted=1` 命中日志，确认 source/instigator。在输入/蓝图排查前，先区分开始时已是 Active 与开始后被命中。
 
 运行状态用 PIE 的实际 BP_DeviceBase 实例 → Get Device State → 枚举转字符串 → Print String 核对。初次核对可以在装置 BeginPlay 仅打印状态，运行中暂停后在实例 Details 查 Device State。打印不得调用 Try Activate；测试输入先不按左键，使用键盘启动 PIE 并用 E 拾取。只有能重现初始 Active 时，再检查装置/关卡蓝图的测试激活调用和保存的实例状态。
+
+## 8. 2026-10-08 已验证范围
+
+执行人 YYchainsAw；UE 5.8.0-55116800；Windows 编辑器 Automation/PIE；玩法参数文档 v0.9，既有玩家速度差异见 Player_Setup。归档时源码基线为 `47892cf4ffef25de3c947ea3fd7103e146fe96aa`，测试日志本身没有嵌入 SHA。
+
+| 检查 | 实际结果与证据 |
+|---|---|
+| MothEffectEditor Win64 Development | 15:06:12 开始的用户增量编译成功，交互 CPP 编译并链接 Editor 模块；不表示干净重建或独立打包 |
+| MothEffect.Devices 六项 Automation | Test Run 3 六项全部 Success，用户提供结果与本机日志一致 |
+| PIE 基础拾取、放下、投掷 | 用户明确确认仅这三项通过；15:29 日志有 Dormant → Held → Dormant 及“已投掷/已放下”反馈 |
+| 拾取候选与提示修正 | 实际日志区分非道具与 Dormant；超距提示后走近可拾取。日志不替代完整距离/遮挡/单持有验收 |
+| 长按/提前按压、受阻保持 Held、持物表现、无护盾、换弹/生命周期 | 未执行或尚无逐项通过记录，保留待验收 |
+| 独立 Windows 包、完整 G1、T08/T09 | 本轮未执行 |
+
+原始摘录见 [T07_Verification_2026-10-08.log](../06_Test_Doc/Evidence/T07_Verification_2026-10-08.log)，按仓库模板整理的报告见 [T07 报告](../06_Test_Doc/T07_Report_2026-10-08.md)。本次仅归档和同步本地文档，GitHub Issue/Project 状态未修改，未创建 PR。

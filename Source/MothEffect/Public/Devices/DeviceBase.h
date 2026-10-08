@@ -10,6 +10,7 @@ class AMothEffectCharacter;
 class USphereComponent;
 class UStaticMeshComponent;
 class ADeviceBase;
+class USceneComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
@@ -56,6 +57,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="Device")
 	bool CanBePickedUp() const;
 
+	/** Uses the character's complete distance/visibility/action validation. */
+	UFUNCTION(BlueprintCallable, Category="Device")
+	bool TryPickup(AMothEffectCharacter* NewHolder);
+
 	UFUNCTION(BlueprintPure, Category="Device")
 	AMothEffectCharacter* GetHolder() const { return Holder.Get(); }
 
@@ -78,7 +83,7 @@ protected:
 	/** Native hooks keep gameplay effects out of Blueprint presentation callbacks. */
 	virtual void ActivateEffect(const FHitContext& Context);
 	virtual void StopEffect();
-	bool TransitionTo(EDeviceState NewState);
+	bool TransitionTo(EDeviceState NewState, bool bNotify = true);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USphereComponent> PhysicsBody;
@@ -133,8 +138,9 @@ private:
 
 	void ApplyStateCollision();
 	/** Called by the character only after T07's pickup/release safety checks pass. */
-	bool CommitHeld(AMothEffectCharacter* NewHolder);
-	bool CommitReleased(AMothEffectCharacter* ReleasingHolder);
+	bool CommitHeld(AMothEffectCharacter* NewHolder, USceneComponent* HoldPoint);
+	bool CommitReleased(AMothEffectCharacter* ReleasingHolder, const FVector& Location, const FVector& Velocity);
+	void NotifyStateChanged(EDeviceState OldState, EDeviceState NewState);
 	void StopActiveEffect();
 	void LogHit(const FHitContext& Context, bool bAccepted) const;
 };

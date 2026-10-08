@@ -98,6 +98,26 @@ void ARifle::ScheduleNextShot()
 	GetWorld()->GetTimerManager().SetTimer(FireTimer, this, &ARifle::HandleFireTimer, Delay, false);
 }
 
+bool ARifle::GetAimTarget(FVector& AimPoint, FVector& ViewLocation, FVector& ViewDirection) const
+{
+	AMothEffectCharacter* Player = GetPlayerOwner();
+	UWorld* World = GetWorld();
+	if (bEndingPlay || !World || !Player || !Player->GetRifleView(ViewLocation, ViewDirection))
+	{
+		return false;
+	}
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(MothRifleAim), true, Player);
+	Params.AddIgnoredActor(this);
+	TArray<AActor*> AttachedActors;
+	Player->GetAttachedActors(AttachedActors, true, true);
+	Params.AddIgnoredActors(AttachedActors);
+	FHitResult CameraHit;
+	const FVector ViewEnd = ViewLocation + ViewDirection * RangeCm;
+	AimPoint = World->LineTraceSingleByChannel(CameraHit, ViewLocation, ViewEnd, WeaponTraceChannel, Params)
+		? CameraHit.ImpactPoint : ViewEnd;
+	return !AimPoint.ContainsNaN();
+}
+
 void ARifle::TryFireOneShot()
 {
 	AMothEffectCharacter* Player = GetPlayerOwner();
@@ -119,7 +139,8 @@ void ARifle::TryFireOneShot()
 
 	FVector ViewLocation;
 	FVector ViewDirection;
-	if (!Player->GetRifleView(ViewLocation, ViewDirection))
+	FVector AimPoint;
+	if (!GetAimTarget(AimPoint, ViewLocation, ViewDirection))
 	{
 		StopFire();
 		return;
@@ -130,10 +151,6 @@ void ARifle::TryFireOneShot()
 	TArray<AActor*> AttachedActors;
 	Player->GetAttachedActors(AttachedActors, true, true);
 	Params.AddIgnoredActors(AttachedActors);
-	FHitResult CameraHit;
-	const FVector ViewEnd = ViewLocation + ViewDirection * RangeCm;
-	const bool bCameraHit = World->LineTraceSingleByChannel(CameraHit, ViewLocation, ViewEnd, WeaponTraceChannel, Params);
-	const FVector AimPoint = bCameraHit ? CameraHit.ImpactPoint : ViewEnd;
 	const FVector MuzzleLocation = Muzzle->GetComponentLocation();
 	const FVector ShotDirection = (AimPoint - MuzzleLocation).GetSafeNormal();
 	FHitResult SafetyHit;

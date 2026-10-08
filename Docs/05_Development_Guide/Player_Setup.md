@@ -133,4 +133,4 @@ AO 节点已经把 Additive 应用于 Base Pose，其输出按普通最终姿态
 - 跳跃和走落边缘都进入 InAir，落地恢复 Grounded；无持续 Accessed None 或线程安全调用警告。
 - 用户已报告当前移动/瞄准动画测试成功；仍需记录实际执行的 TC34/TC35 分支，助手未运行 PIE，完整案例测试表不因此改为通过。
 
-移动与瞄准已有 C++ 数据来源，T05 已加入 Ready/Reloading/Dead；Carrying/ThrowRecovery 随 T06–T09 实现。G0/G1 仍需各自的完整验收，进度与证据归入 [开发计划](Development_Plan.md) 和 [测试计划](../06_Test_Doc/Test_Plan.md)。
+移动与瞄准已有 C++ 数据来源，T05 已加入 Ready/Reloading/Dead；2026-10-08 T07 写入 Carrying/ThrowRecovery，待用户编译及持物动画接入，见 [拾取与投掷接入](Device_Interaction_Setup.md)。G0/G1 仍需各自的完整验收，进度与证据归入 [开发计划](Development_Plan.md) 和 [测试计划](../06_Test_Doc/Test_Plan.md)。

@@ -67,6 +67,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="Weapon")
 	float GetReloadProgress() const;
 
+	/** Shared camera target for the rifle and device throw; each uses its own origin. */
+	bool GetAimTarget(FVector& AimPoint, FVector& ViewLocation, FVector& ViewDirection) const;
+	ECollisionChannel GetWeaponTraceChannel() const { return WeaponTraceChannel; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

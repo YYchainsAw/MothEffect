@@ -6,7 +6,7 @@
 #include "EngineUtils.h"
 #include "GameFramework/WorldSettings.h"
 
-/** No game mode, engine tick or asset dependencies. Tests dispatch BeginPlay explicitly. */
+/** No game mode, engine tick or asset dependencies. World-level BeginPlay/EndPlay are paired. */
 struct FMothCombatTestWorld
 {
 	UWorld* World = nullptr;
@@ -30,11 +30,9 @@ struct FMothCombatTestWorld
 	{
 		if (World)
 		{
-			World->BeginTearingDown();
-			for (FActorIterator It(World); It; ++It)
-			{
-				It->RouteEndPlay(EEndPlayReason::Quit);
-			}
+			// UE 5.8 also ends subsystems and clears the world's BegunPlay flag here.
+			// Ending actors individually leaves CleanupWorld reporting a missing EndPlay.
+			World->EndPlay(EEndPlayReason::Quit);
 			World->DestroyWorld(false);
 			if (GEngine)
 			{

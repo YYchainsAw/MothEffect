@@ -76,7 +76,21 @@ void AMothEffectCharacter::DoInteract()
 		RejectDeviceInteraction(TEXT("准星处没有可拾取道具。"));
 		return;
 	}
-	TryPickupDevice(Cast<ADeviceBase>(Hit.GetActor()));
+	ADeviceBase* Device = Cast<ADeviceBase>(Hit.GetActor());
+#if !UE_BUILD_SHIPPING
+	const FString StateName = IsValid(Device)
+		? UEnum::GetValueAsString(Device->GetDeviceState()) : TEXT("NotDevice");
+	UE_LOG(LogMothEffect, Log,
+		TEXT("Player %s pickup trace actor=%s component=%s state=%s point=%s"),
+		*GetName(), *GetNameSafe(Hit.GetActor()), *GetNameSafe(Hit.GetComponent()),
+		*StateName, *Hit.ImpactPoint.ToString());
+#endif
+	if (!IsValid(Device))
+	{
+		RejectDeviceInteraction(TEXT("准星命中的物体不是道具，请对准道具后重试。"));
+		return;
+	}
+	TryPickupDevice(Device);
 }
 
 bool AMothEffectCharacter::TryPickupDevice(ADeviceBase* Device)
@@ -87,9 +101,17 @@ bool AMothEffectCharacter::TryPickupDevice(ADeviceBase* Device)
 	{
 		return RejectDeviceInteraction(TEXT("当前不能拾取；只能携带一件道具。"));
 	}
-	if (!IsValid(Device) || Device->GetWorld() != GetWorld() || !Device->CanBePickedUp())
+	if (!IsValid(Device) || Device->GetWorld() != GetWorld())
+	{
+		return RejectDeviceInteraction(TEXT("道具目标无效，请重新对准。"));
+	}
+	if (Device->GetDeviceState() != EDeviceState::Dormant)
 	{
 		return RejectDeviceInteraction(TEXT("只能拾取尚未启动的道具。"));
+	}
+	if (!Device->CanBePickedUp())
+	{
+		return RejectDeviceInteraction(TEXT("道具当前未开放交互，暂时无法拾取。"));
 	}
 	if (!FMath::IsFinite(PickupRangeCm) || PickupRangeCm <= 0.0f
 		|| FVector::DistSquared(GetActorLocation(), Device->GetActorLocation()) > FMath::Square(PickupRangeCm))

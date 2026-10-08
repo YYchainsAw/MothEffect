@@ -84,3 +84,15 @@
 人工难以在短恢复时间内按键时，可临时调大 BP 的 Min Gun Recovery Seconds，记录它为测试覆盖值，测完恢复账本值并再验正常时序，不把扩大时间写成玩法调参结论。用于死亡的测试命中须使用新 HitId、非零方向及足够伤害；受伤/持物始终复用已有 HealthComponent，不另写扣血。
 
 保存实际构建标识/commit、日期/执行人、UE 版本、PIE/独立包、参数版本与覆盖值、测试结果、日志/录屏。T07 当前验收和独立 Windows 包尚未执行；完整 TC06 的未来敌弹分支及 G1 空中发射随后续任务补测。
+
+## 7. 拾取失败与“启动即激活”的排查
+
+2026-10-08 用户报告 PIE 启动后似乎已激活。核对当时本机日志：14:59:34 启动的那轮 PIE 在 15:00:27 退出时记录 `Dormant -> Destroyed`，没有 Active 转换；上一轮 14:58:53 的 `Dormant -> Active` 伴随 `source=BP_Rifle_C_0`、`accepted=1`，是一次步枪命中。此记录只说明这两轮，不替代后续重现的实例状态检查。
+
+旧代码把非道具命中/无效候选/交互未开放都显示为“只能拾取尚未启动的道具”，该提示不能证明 Active。本次拆开拒绝原因，并在 Development 的 E 命中日志中记录 `pickup trace actor=... component=... state=... point=...`；尚未编译或重测。
+
+- `state=NotDevice`：射线命中地面、掩体等对象，没有选中道具。靠近后用屏幕中心准星对准球，距离仍按 throw.pickupRangeCm 限制。
+- `state=EDeviceState::Dormant`：候选未激活，继续根据超距、遮挡、挂点或交互未开放的具体提示排查。
+- `state=EDeviceState::Active`：检查此前的 `Dormant -> Active` 和 `accepted=1` 命中日志，确认 source/instigator。在输入/蓝图排查前，先区分开始时已是 Active 与开始后被命中。
+
+运行状态用 PIE 的实际 BP_DeviceBase 实例 → Get Device State → 枚举转字符串 → Print String 核对。初次核对可以在装置 BeginPlay 仅打印状态，运行中暂停后在实例 Details 查 Device State。打印不得调用 Try Activate；测试输入先不按左键，使用键盘启动 PIE 并用 E 拾取。只有能重现初始 Active 时，再检查装置/关卡蓝图的测试激活调用和保存的实例状态。

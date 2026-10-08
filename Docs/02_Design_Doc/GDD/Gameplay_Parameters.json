@@ -1,10 +1,10 @@
 {
-  "documentVersion": "0.10",
+  "documentVersion": "0.11",
   "updatedAt": "2026-10-08",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "英文名 Moth Effect、中文名飞蛾效应、魔法朋克风格与 v0.9 玩家方案已由用户确认，工程及 Rifle 动画文件存在已静态核对。数值仍未实测；aimMoveSpeedCmPerSec 起步沿用走路速度，airControl 沿用本地 Character 源码默认值。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "2026-10-08 用户确认玩家改用 Murdock，一体人物/枪械模型；移动只保留 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec，取消走路/冲刺速度切换。该参数与 C++ 默认值同步，尚未编译或 PIE 验收；airControl 沿用本地 Character 默认值。其他数值与规则保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
@@ -26,9 +26,7 @@
   },
   "player": {
     "maxHealth": 100,
-    "walkSpeedCmPerSec": 450,
-    "aimMoveSpeedCmPerSec": 450,
-    "sprintSpeedCmPerSec": 650,
+    "jogSpeedCmPerSec": 600,
     "jumpVelocityCmPerSec": 600,
     "airControl": 0.35,
     "fallDamageEnabled": false

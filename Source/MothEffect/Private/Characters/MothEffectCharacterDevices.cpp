@@ -28,7 +28,7 @@ void AMothEffectCharacter::RefreshCarryPresentation()
 {
 	if (IsValid(Rifle))
 	{
-		Rifle->SetActorHiddenInGame(IsCarryingDevice());
+		Rifle->SetActorHiddenInGame(bUseIntegratedWeaponMesh || IsCarryingDevice());
 	}
 }
 

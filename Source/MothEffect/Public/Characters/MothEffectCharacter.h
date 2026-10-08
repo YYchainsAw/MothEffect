@@ -74,7 +74,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> AimAction;
 
-	UPROPERTY(EditAnywhere, Category="Input")
+	/** Kept for existing Blueprint defaults; sprint input is no longer bound. */
+	UPROPERTY(EditAnywhere, Category="Input", meta=(DeprecatedProperty, DeprecationMessage="Use the single Jog movement mode."))
 	TObjectPtr<UInputAction> SprintAction;
 
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -91,6 +92,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
 	FName RifleAttachSocket = TEXT("WeaponSocket");
+
+	/** The gun is part of the character mesh; the rifle actor supplies gameplay only. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
+	bool bUseIntegratedWeaponMesh = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon", meta=(EditCondition="bUseIntegratedWeaponMesh"))
+	FName IntegratedMuzzleSocket = TEXT("Muzzle");
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Weapon")
 	FVector RifleSafetyOriginOffset = FVector(0.0f, 0.0f, 30.0f);
@@ -139,13 +147,7 @@ protected:
 	EPrimaryPressMode PrimaryPressMode = EPrimaryPressMode::None;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float WalkSpeed = 300.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float AimMoveSpeed = 300.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
-	float SprintSpeed = 625.0f;
+	float JogSpeed = 600.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Player|Movement", meta=(ClampMin="0.0", Units="cm/s"))
 	float JumpVelocity = 600.0f;
@@ -176,9 +178,6 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Player|State")
 	float AimBlendAlpha = 0.0f;
-
-	bool bSprintRequested = false;
-	bool bSprintRequiresRelease = false;
 
 public:
 
@@ -326,17 +325,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoAimEnd();
 
-	UFUNCTION(BlueprintCallable, Category="Input")
+	UFUNCTION(BlueprintCallable, Category="Input", meta=(DeprecatedFunction, DeprecationMessage="Sprint is disabled; movement uses JogSpeed."))
 	void DoSprintStart();
 
-	UFUNCTION(BlueprintCallable, Category="Input")
+	UFUNCTION(BlueprintCallable, Category="Input", meta=(DeprecatedFunction, DeprecationMessage="Sprint is disabled; movement uses JogSpeed."))
 	void DoSprintEnd();
 
-	/** Used by aiming now and by accepted gunfire in the weapon milestone. */
-	UFUNCTION(BlueprintCallable, Category="Player|Movement")
+	/** Compatibility entry point for old Blueprint graphs; no sprint state remains. */
+	UFUNCTION(BlueprintCallable, Category="Player|Movement", meta=(DeprecatedFunction, DeprecationMessage="Sprint is disabled; movement uses JogSpeed."))
 	void CancelSprintUntilRelease();
 
-	/** Clears aiming/sprinting when input is flushed or this pawn ends play. */
+	/** Clears aiming/jump intent when input is flushed or this pawn ends play. */
 	UFUNCTION(BlueprintCallable, Category="Player|Movement")
 	void ResetMovementInput();
 
@@ -364,4 +363,5 @@ private:
 	bool bRequirePrimaryRelease = false;
 	bool bGameplayEnabled = true;
 	bool bEndingPlay = false;
+	bool bFireMontageWarningLogged = false;
 };

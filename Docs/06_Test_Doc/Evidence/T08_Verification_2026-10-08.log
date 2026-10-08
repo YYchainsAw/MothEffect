@@ -1,5 +1,5 @@
 T08 用户验证记录 / 2026-10-08 / Asia/Hong_Kong
-最新状态：17:06 修正后复测十二项 Success、未再出现缺少 EndPlay 警告；详见下方复测段。
+最新状态：十二项 Automation Success、未再出现缺少 EndPlay 警告；用户随后确认 PIE 发射方向显示通过，完整 TC03–TC05/G1 与方向配置最终存盘仍待核对。
 以下首段为 16:43 修正前的历史记录。
 执行人：YYchainsAw。助手只读取和归档用户已有日志，未执行 UE。
 任务：T08 / Issue #10；分支 develop；参数文档 v0.10。
@@ -124,3 +124,13 @@ Saved/Logs/MothEffect.log 原始复测事件摘录（仅去除行尾空白）：
 [2026.10.08-09.06.39:267][238]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
 [2026.10.08-09.06.39:267][238]LogAutomationController: BeginEvents: MothEffect.Projectiles.SweptThinWall
 [2026.10.08-09.06.39:267][238]LogAutomationController: EndEvents: MothEffect.Projectiles.SweptThinWall
+
+方向显示的用户确认 / 2026-10-08 / Asia/Hong_Kong
+执行人：YYchainsAw；环境：用户 PIE，UE 5.8 Windows；分支 develop。
+来源：本次对话。用户询问“没有显示发射方向 怎么显示”，收到蓝图方向网格配置步骤后回复：
+“通过 可以pr了吗”
+归档范围：PIE 发射方向显示通过。未将该确认扩展为四向地面、三个空中阶段或十次成功率全部通过。
+实际测试构建 SHA、详细时间、蓝图参数覆盖值及录屏未提供。
+核对时资源提交为 e44a44a，四项蓝图/重定向器均使用 LFS，旧 BP_DeviceBase 重定向到 Devices/BP_DeviceBase。
+磁盘上 BP_DeviceEmitter 的静态名称仅检出 BasicShapes/Sphere，未检出 Cone/DirectionVisual；最终方向提示存盘状态需核对。
+助手没有修改蓝图、编译或运行 UE；只归档用户结果与核对保存后的资产名称/LFS。

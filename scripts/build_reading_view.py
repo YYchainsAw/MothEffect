@@ -34,6 +34,7 @@ DOCS = [
     ('doc-plan', '开发任务与排期', 'Docs/05_Development_Guide/Development_Plan.md'),
     ('doc-audit-20261007', '10/7 进度核查', 'Docs/05_Development_Guide/Progress_Audit_2026-10-07.md'),
     ('doc-player-setup', '玩家输入与动画接入', 'Docs/05_Development_Guide/Player_Setup.md'),
+    ('doc-murdock-setup', 'Murdock 与一体枪械接入', 'Docs/05_Development_Guide/Murdock_Setup.md'),
     ('doc-weapon-setup', '步枪、换弹与生命接入', 'Docs/05_Development_Guide/Weapon_Setup.md'),
     ('doc-device-setup', '机关状态与命中接入', 'Docs/05_Development_Guide/Device_Setup.md'),
     ('doc-device-interaction', '拾取、放下与安全投掷接入', 'Docs/05_Development_Guide/Device_Interaction_Setup.md'),

@@ -1,0 +1,73 @@
+T06 验收记录 · 2026-10-07 · 香港时间 UTC+8
+执行人：YYchainsAw；助手只读取和归档既有日志，未执行 UE 编译或测试。
+任务：T06 / GitHub Issue #8。
+源码基线：808580188159c23e7360031636103aaf4199090a，含尚未提交的
+DeviceActivationTests.cpp 头文件路径修正 Engine/URL.h -> Engine/EngineBaseTypes.h。
+玩法参数文档：v0.9；玩家既有参数差异见 Player_Setup.md。
+环境：Windows 编辑器 Automation Test Run 4，以及 PIE。
+
+构建：最新 UBT 日志为构建检查成功、目标已是最新；该日志不表示干净重建。
+原日志：本机 UnrealBuildTool/Log.txt；下面只摘录构建状态。
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+Log started at 10/07/2026 15:32:10 (2026-10-07T07:32:10Z)
+Target is up to date
+Result: Succeeded
+
+Automation：2026-10-07 15:38:37 香港时间，三项均 Success。
+原日志：Saved/Logs/MothEffect.log；以下保留该轮原始测试事件段。
+[2026.10.07-07.38.37:150][751]AutomationTestingLog: -----Test Run 4----
+[2026.10.07-07.38.37:166][751]LogAutomationController: Sending RunTest ActivationIsSingleUse to BBE176A64E41235B2285B98E378EE7BD
+[2026.10.07-07.38.37:166][751]LogAutomationController: Display: Test Started. Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.07-07.38.37:166][751]LogAutomationWorker: Received StartTestSession from 518D53A0469964628AA8A6BC24936D17
+[2026.10.07-07.38.37:166][751]LogAutomationWorker: Received RunTests ActivationIsSingleUse from 518D53A0469964628AA8A6BC24936D17
+[2026.10.07-07.38.37:170][751]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.10.07-07.38.37:176][751]LogWorld: Bringing World /Temp/Untitled_1.Untitled up for play (max tick rate 60) at 2026.10.07-15.38.37
+[2026.10.07-07.38.37:176][751]LogWorld: Bringing up level for play took: 0.000600
+[2026.10.07-07.38.37:179][751]LogWorld: BeginTearingDown for /Temp/Untitled_1
+[2026.10.07-07.38.37:179][751]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.10.07-07.38.37:179][751]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.10.07-07.38.37:400][752]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.07-07.38.37:401][752]LogAutomationController: BeginEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.07-07.38.37:401][752]LogAutomationController: EndEvents: MothEffect.Devices.ActivationIsSingleUse
+[2026.10.07-07.38.37:436][753]LogAutomationController: Sending RunTest CancelDuringActivationCallback to BBE176A64E41235B2285B98E378EE7BD
+[2026.10.07-07.38.37:436][753]LogAutomationController: Display: Test Started. Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.07-07.38.37:457][754]LogAutomationWorker: Received RunTests CancelDuringActivationCallback from 518D53A0469964628AA8A6BC24936D17
+[2026.10.07-07.38.37:457][754]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.10.07-07.38.37:469][754]LogWorld: Bringing World /Temp/Untitled_2.Untitled up for play (max tick rate 60) at 2026.10.07-15.38.37
+[2026.10.07-07.38.37:470][754]LogWorld: Bringing up level for play took: 0.002162
+[2026.10.07-07.38.37:471][754]LogWorld: BeginTearingDown for /Temp/Untitled_2
+[2026.10.07-07.38.37:471][754]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.10.07-07.38.37:472][754]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.10.07-07.38.37:496][755]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.07-07.38.37:496][755]LogAutomationController: BeginEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.07-07.38.37:496][755]LogAutomationController: EndEvents: MothEffect.Devices.CancelDuringActivationCallback
+[2026.10.07-07.38.37:518][756]LogAutomationController: Sending RunTest RejectInvalidAndDisabledHits to BBE176A64E41235B2285B98E378EE7BD
+[2026.10.07-07.38.37:518][756]LogAutomationController: Display: Test Started. Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.07-07.38.37:537][757]LogAutomationWorker: Received RunTests RejectInvalidAndDisabledHits from 518D53A0469964628AA8A6BC24936D17
+[2026.10.07-07.38.37:537][757]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.10.07-07.38.37:542][757]LogWorld: Bringing World /Temp/Untitled_3.Untitled up for play (max tick rate 60) at 2026.10.07-15.38.37
+[2026.10.07-07.38.37:542][757]LogWorld: Bringing up level for play took: 0.000549
+[2026.10.07-07.38.37:542][757]LogWorld: BeginTearingDown for /Temp/Untitled_3
+[2026.10.07-07.38.37:542][757]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.10.07-07.38.37:542][757]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.10.07-07.38.37:569][758]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.07-07.38.37:569][758]LogAutomationController: BeginEvents: MothEffect.Devices.RejectInvalidAndDisabledHits
+[2026.10.07-07.38.37:569][758]LogAutomationController: EndEvents: MothEffect.Devices.RejectInvalidAndDisabledHits
+[2026.10.07-07.38.37:594][759]LogAutomationController: Sending StopTestSession to BBE176A64E41235B2285B98E378EE7BD
+[2026.10.07-07.38.37:596][759]LogAutomationWorker: Received StopTestSession from 518D53A0469964628AA8A6BC24936D17
+
+PIE：用户明确确认首次激活、重复命中不重启、J 结束到 Spent、再按 J 返回 false 均通过。
+原日志：Saved/Logs/MothEffect-backup-2026.10.07-07.29.20.log。
+首次激活与后续命中拒绝的摘录：
+[2026.10.07-07.12.28:482][158]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.07-07.12.28:484][158]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 hit=08F651CE46B58B4DE7888EA792951152 source=BP_Rifle_C_0 instigator=BP_ThirdPersonCharacter_C_0 point=X=-95.783 Y=96.128 Z=232.516 direction=X=-0.494 Y=0.789 Z=-0.365 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.07-07.12.29:000][189]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 hit=6DA59B714A625BC3D19820B5F127B078 source=BP_Rifle_C_0 instigator=BP_ThirdPersonCharacter_C_0 point=X=-86.669 Y=99.399 Z=238.444 direction=X=-0.450 Y=0.820 Z=-0.355 damage=20.00 accepted=0 state=EDeviceState::Active
+
+另一轮 PIE 中的激活、结束与 J 返回值摘录：
+[2026.10.07-07.18.53:386][551]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.07-07.18.53:386][551]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231 hit=8CE10C36497709BFA7D89EB6CCAE7F27 source=BP_Rifle_C_0 instigator=BP_ThirdPersonCharacter_C_0 point=X=-74.834 Y=111.997 Z=239.796 direction=X=-0.738 Y=0.562 Z=-0.373 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.07-07.18.56:236][722]LogMothEffect: Device BP_DeviceBase_C_UAID_B025AA7DC8C0E30803_1207823231: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.07-07.18.56:236][722]LogBlueprintUserMessages: [Lvl_ThirdPerson_C_0] true
+[2026.10.07-07.18.59:386][911]LogBlueprintUserMessages: [Lvl_ThirdPerson_C_0] false
+
+范围：T06 当前状态/命中壳验收；Held 实际操作随 T07，D03 工作寿命随 T08，完整计数/过期随 T13 验证。

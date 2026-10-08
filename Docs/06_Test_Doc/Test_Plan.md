@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.15｜制定日期：2026-10-02｜更新日期：2026-10-07｜时间：香港时间（UTC+8）
+版本：v0.16｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
 
-2026-10-07 局部更新：用户明确报告 T05 动画及中断、长按换弹不续射、死亡取消、暂停和失焦的 PIE 分支通过，T05 已为 Closed / Done、PR #34 已合并，记录见 [Weapon_Setup 第 7 节](../05_Development_Guide/Weapon_Setup.md#7-2026-10-07-用户报告的局部结果)。实际编译标识和录屏/日志仍待归档；保留完整案例原始状态，待拾取/投掷等适用分支联调后再完成整案。T06 Automation Test Run 3 为两项通过、一项失败；已修正测试 World 初始化与 Context，待用户重新编译并复测，详见 [Device_Setup 第 6 节](../05_Development_Guide/Device_Setup.md#6-2026-10-07-automation-test-run-3-与修正)。本次助手未编译或运行 UE。
+2026-10-08 结果归档：T05 已为 Closed / Done、PR #34 已合并，用户报告的动画及边界 PIE 结果见 [Weapon_Setup 第 7 节](../05_Development_Guide/Weapon_Setup.md#7-2026-10-07-用户报告的局部结果)。T06 修正测试 World 和 FURL 头文件后，2026-10-07 的 Automation Test Run 4 三项均通过；用户同时确认首次步枪命中激活、重复命中不重启、J 结束到 Spent 和再次 J 返回 false 的 PIE 分支通过。结果见 [Device_Setup 第 7 节](../05_Development_Guide/Device_Setup.md#7-通过结果与证据)，原始摘录见 [T06 验收日志](Evidence/T06_Verification_2026-10-07.log)。完整 TC12 的 Held 实际操作、D03 寿命与计数分支随后续任务补测；助手未编译或运行 UE。
 
 当前状态（2026-10-06）：T04 Issue 已关闭、基础移动/瞄准项已勾选，Project 仍为 Pending Acceptance；T05 的接入/射击/换弹生命三项已勾选，Montage 和适用测试记录待补。Issue 中尚未填写对应构建、实际测试分支与证据，因此本表保留完整案例的原始“未执行”状态，表示没有归档可核对的完整结果，不否定已报告的局部操作。补齐真实记录后再更新对应分支和完整案例；本次未执行 UE 测试。
 

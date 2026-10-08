@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.18 · 2026-10-07 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.19 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.16，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.17，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -31,6 +31,7 @@
 | CHG021 | 2026-10-07 | 记录 T05 动画/当前边界 PIE 由用户确认通过、PR #34 已合并和 Issue #7 Closed / Done；新增 T06 DeviceBase/状态枚举、统一命中激活、拥有者状态提交、碰撞与结束清理、三项自动化测试及 Device_Setup；同步任务/测试/入口/阅读快照，记录当前直接在 develop 开发 | 用户确认 T05 完成后要求继续完成 T06，并明确禁止助手自行增加分支 | 复用 FHitContext/IBallisticReactive，先 Active 后回调/效果，重复命中不覆盖首次证据；参数未改；T06 #8 保持 Open / In Progress。助手核对本机 UE 5.8 源码并执行静态检查，未编译/运行 UE、修改二进制资产或提交/推送；用户完整编译、Automation 和 PIE 待执行，Held 实际操作及效果/容量随后续任务补测 |
 | CHG022 | 2026-10-07 | 记录用户 T06 Automation Run 3 两项通过、一项失败；修正 DeviceActivationTests 的 World Context、InitializeActorsForPlay 与 EndPlay 清理，增加初始化检查和首次接口失败时停止后续断言；同步接入/测试/进度记录与阅读快照 | 用户提供首次接口激活失败及 World has no context 日志；本机 UE 5.8 Actor::ProcessEvent 与 UHT 代码核对确认测试环境缺失初始化 | 保留 Execute 接口验证，玩法状态与激活源码未改；用户已提交基础版本 3b0e93f，本轮修正待用户重新编译、运行三项 Automation 与 PIE；助手仅静态核对，不新增通过结果，不提交/推送或创建分支 |
 | CHG023 | 2026-10-07 | 将 DeviceActivationTests 中误写的 Engine/URL.h 修正为 Engine/EngineBaseTypes.h，更新接入记录与阅读快照 | 用户报告 MSB3073 / code 6；本机 UBT 日志确认 C1083，UE 5.8 的 FURL 定义实际位于 EngineBaseTypes.h | 核对测试文件 9 个引号 include 均存在，静态差异检查通过；用户已提交前次修正 8085801，本次一行头文件修正待用户重新编译和 Automation 复测；助手未执行 UE 编译 |
+| CHG024 | 2026-10-08 | 归档 T06 构建检查成功、Automation Run 4 三项 Success 及用户明确确认的 PIE 激活/重复命中/结束状态分支；保存可提交的原始日志摘录，更新接入/测试/进度和阅读快照，按模板准备报告 | 用户确认三项 Automation 与上述 PIE 项均通过，并要求本人操作 PR、助手仅提供报告 | 日志执行日期为 2026-10-07，归档日期为 10/8；当前实现源码为 c0a7589，保留此前失败历史；当前 T06 范围通过，完整 TC12 随 T07/T08/T13 补测；本轮仅本地归档与静态检查，未代为编译、提交/推送、创建 PR 或修改 GitHub 状态 |
 
 ## 2. 本轮归档说明
 

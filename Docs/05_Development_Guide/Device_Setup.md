@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：机关状态与命中接入
 
-版本 v0.3 · 2026-10-07 · 测试 World 及 FURL 头文件路径已修正，待重新编译和复测
+版本 v0.4 · 2026-10-08 · T06 当前三项 Automation 与 PIE 分支通过，待用户提交验收记录并走 PR 流程
 
-对应 [T06 Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8)。复用 T05 的 `FHitContext`、`IBallisticReactive` 与 Rifle 命中入口；本轮未编译或运行 UE。接口与碰撞的权威定义见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，规则见 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，默认尺寸与质量对应 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 的 throw 组。
+对应 [T06 Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8)。复用 T05 的 `FHitContext`、`IBallisticReactive` 与 Rifle 命中入口；用户已执行编译、Automation 和本轮 PIE 验收，助手仅核对及归档日志。接口与碰撞的权威定义见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)，规则见 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，默认尺寸与质量对应 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 的 throw 组。
 
 ## 1. 本轮交付范围
 
@@ -46,14 +46,15 @@
 | `RejectInvalidAndDisabledHits` | 无效 HitId、零方向、非有限点/方向/伤害被拒绝；暂停与玩法禁用拒绝命中；被拒绝的 Dormant 之后仍可合法激活；Spent 不复活 |
 | `CancelDuringActivationCallback` | Active 通知期间取消玩法立即进入 Spent；返回后不重新开启物理，也不能恢复激活资格 |
 
-用户完成编译后，可在 Automation 面板搜索 `MothEffect.Devices` 运行。用户已执行修正前的三项测试，结果见第 6 节；本轮修正后的测试待重新编译和复测。助手未代为编译或执行 UE。
+在 Automation 面板搜索 `MothEffect.Devices` 运行。用户的修正后 Test Run 4 三项均通过；修正前的失败记录见第 6 节，成功证据见第 7 节。助手未代为编译或执行 UE。
 
 ## 5. 当前验证记录
 
-- 工作分支：`develop`；用户已提交 T06 基础及测试 World 修正，当前源码基线 HEAD 为 `808580188159c23e7360031636103aaf4199090a`。本轮 FURL 头文件路径修正尚未提交；复测记录还需注明包含该工作区修改及实际编译标识。
+- 工作分支：`develop`；用户已提交 T06 基础和修正，当前源码 HEAD 为 `c0a7589ccc78003069d247037c4b7fa2daca5971`。测试执行时为 `8085801` 加头文件路径修正，该修正现已包含于 `c0a7589`；验收日志摘录和本轮文档同步仍待用户提交。
 - 玩法参数文档：v0.9；机关默认物理尺寸、命中球半径和质量对应 throw 组。本轮未调整参数；玩家移动速度的既有差异见 Player_Setup。
-- 助手验证范围：UE 5.8 本机接口/生命周期源码核对及仓库静态检查。本轮修正后的编译、三项 Automation 复测、PIE 步枪命中和状态日志仍待用户执行。
-- [Issue #8](https://github.com/YYchainsAw/MothEffect/issues/8) 仍为 Open / In Progress。完成编译与本轮 PIE 分支并留下记录后，再按实际验收推进；完整 TC12 随 T07/T08/T13 补测。
+- 用户实际结果：构建检查成功；三项 Automation 全部通过；PIE 首次命中激活、重复命中不重启、J 键结束到 Spent、再按 J 返回 false 均通过。依据与时间见第 7 节。
+- 助手验证范围：UE 5.8 本机接口/生命周期源码、既有构建/测试日志和仓库静态检查。本轮未代为编译、执行测试或创建 PR。
+- T06 当前状态/命中壳验收通过，等待用户提交记录并完成 PR 流程；GitHub Issue/Project 不由本次文档同步自动修改。完整 TC12 随 T07/T08/T13 补测。
 
 ## 6. 2026-10-07 Automation Test Run 3 与修正
 
@@ -69,6 +70,21 @@
 
 本轮仅修正测试环境：创建 World 后注册对应 Context，并调用 `InitializeActorsForPlay`；清理时先给已开始运行的 Actor 发送 EndPlay，再销毁 World 并注销 Context。保留接口 Execute 调用，并增加 World 初始化前置断言；首次接口激活失败即停止后续依赖断言，避免连带报错。
 
-待用户保存并关闭编辑器、重新编译后，再运行全部三项 `MothEffect.Devices`。修正后的结果目前为待执行；既有两个通过结果不自动替代修改后的复测。
+当次修正交付后等待用户重新编译、运行全部三项 `MothEffect.Devices`；后续复测已完成，结果见第 7 节。
 
-同日 15:29（香港时间）用户重新编译失败，MSB3073 / code 6 的底层原因已由 UBT 日志确认：`DeviceActivationTests.cpp` 报 C1083，无法找到本轮误写的 `Engine/URL.h`。已改为本机 UE 5.8 中定义 FURL 的 `Engine/EngineBaseTypes.h`，并核对测试文件全部 9 个引号 include 都能解析到项目/引擎头文件；该路径核对不代表 C++ 编译通过。等待用户再次编译及 Automation 复测。
+同日 15:29（香港时间）用户重新编译失败，MSB3073 / code 6 的底层原因已由 UBT 日志确认：`DeviceActivationTests.cpp` 报 C1083，无法找到本轮误写的 `Engine/URL.h`。已改为本机 UE 5.8 中定义 FURL 的 `Engine/EngineBaseTypes.h`，并核对测试文件全部 9 个引号 include 都能解析到项目/引擎头文件；之后用户构建检查与 Automation 复测成功，见第 7 节。
+
+## 7. 通过结果与证据
+
+执行人：YYchainsAw；引擎：UE 5.8.0-55116800；环境：Windows 编辑器 Automation 与 PIE；玩法参数文档 v0.9，玩家既有参数差异见 Player_Setup。本轮验收记录于 2026-10-08 同步。
+
+| 检查 | 实际结果与来源 |
+|---|---|
+| `MothEffectEditor Win64 Development` 构建检查 | 2026-10-07 15:32 香港时间，UBT 显示 Target is up to date / Result: Succeeded；该日志不表示干净重建 |
+| `MothEffect.Devices` 三项 Automation | 2026-10-07 15:38:37 香港时间，Test Run 4 三项 Result={Success}；该轮未再出现 World has no context |
+| PIE 首次与重复步枪命中 | 用户明确确认通过；日志可见一次 Dormant -> Active、首次 accepted=1、后续 accepted=0 |
+| PIE J 键结束 | 用户明确确认通过；日志记录 Active -> Spent，第一次打印 true，第二次打印 false |
+
+可提交的原始日志摘录及构建/源码标识见 [T06_Verification_2026-10-07.log](../06_Test_Doc/Evidence/T06_Verification_2026-10-07.log)。原 Saved/Logs 与 UBT 日志仍保留在用户本机；摘录移入 Docs 后可随提交共享。
+
+待后续任务验收：T07 的 Held 拾取/释放实际操作、T08 的 D03 发射次数和工作寿命、T13 的完整容量/过期/计数及独立包回归。本轮结果不将完整 TC12 自动标记为通过。

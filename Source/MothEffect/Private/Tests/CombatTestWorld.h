@@ -4,6 +4,7 @@
 #include "Engine/EngineBaseTypes.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/WorldSettings.h"
 
 /** No game mode, engine tick or asset dependencies. Tests dispatch BeginPlay explicitly. */
 struct FMothCombatTestWorld
@@ -20,6 +21,7 @@ struct FMothCombatTestWorld
 				GEngine->CreateNewWorldContext(World->WorldType).SetCurrentWorld(World);
 				World->SetShouldTick(false);
 				World->InitializeActorsForPlay(FURL());
+				World->GetWorldSettings()->NotifyBeginPlay();
 			}
 		}
 	}
@@ -49,7 +51,10 @@ struct FMothCombatTestWorld
 		T* Actor = World ? World->SpawnActor<T>(Location, FRotator::ZeroRotator, Params) : nullptr;
 		if (Actor)
 		{
-			Actor->DispatchBeginPlay();
+			if (!Actor->HasActorBegunPlay())
+			{
+				Actor->DispatchBeginPlay();
+			}
 		}
 		return Actor;
 	}

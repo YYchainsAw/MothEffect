@@ -96,7 +96,9 @@ void ARuleProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 float ARuleProjectile::GetCollisionRadiusCm() const
 {
-	return CollisionSphere->GetScaledSphereRadius();
+	// Blueprint class defaults do not run OnConstruction. Read the configured radius
+	// instead of the sphere's possibly stale native 4cm value when planning a birth.
+	return FMath::Max(0.1f, CollisionRadiusCm) * CollisionSphere->GetShapeScale();
 }
 
 void ARuleProjectile::HandleComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,

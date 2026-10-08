@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/BallisticReactive.h"
+#include "TimerManager.h"
 #include "Types/DeviceTypes.h"
 #include "DeviceBase.generated.h"
 
@@ -11,13 +12,15 @@ class USphereComponent;
 class UStaticMeshComponent;
 class ADeviceBase;
 class USceneComponent;
+class UArrowComponent;
+class ARuleProjectile;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChangedNative,
 	ADeviceBase*, EDeviceState, EDeviceState);
 
-/** Shared device state and ballistic entry point. Effects are added in T08/T10/T11. */
+/** Shared device state and ballistic entry point; D03 is native, D01/D02 follow later. */
 UCLASS(Blueprintable)
 class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive
 {
@@ -76,6 +79,15 @@ public:
 	UFUNCTION(BlueprintPure, Category="Device")
 	USphereComponent* GetPhysicsBody() const { return PhysicsBody.Get(); }
 
+	UFUNCTION(BlueprintPure, Category="Device|Emitter")
+	UArrowComponent* GetEmitterDirectionMarker() const { return EmitterDirectionMarker.Get(); }
+
+	UFUNCTION(BlueprintPure, Category="Device|Emitter")
+	int32 GetEmitterShotAttempts() const { return EmitterShotAttempts; }
+
+	UFUNCTION(BlueprintPure, Category="Device|Emitter")
+	int32 GetEmitterProjectilesSpawned() const { return EmitterProjectilesSpawned; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -94,8 +106,31 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> DeviceMesh;
 
+	/** Absolute world rotation; follows body translation while ignoring its spin. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UArrowComponent> EmitterDirectionMarker;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device")
 	EDeviceKind DeviceKind = EDeviceKind::Emitter;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter")
+	TSubclassOf<ARuleProjectile> EmitterProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
+	float EmitterDurationSeconds = 3.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.0", Units="s"))
+	float EmitterFirstShotDelaySeconds = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
+	float EmitterShotIntervalSeconds = 0.25f;
+
+	/** Muzzle distance = actual body radius + projectile radius + this clearance. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.0", Units="cm"))
+	float EmitterMuzzleClearanceCm = 2.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
+	float EmitterSpentVisualSeconds = 0.25f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Physics", meta=(ClampMin="1.0", Units="cm"))
 	float BodyRadiusCm = 20.0f;
@@ -135,6 +170,19 @@ private:
 	bool bGameplayEnabled = true;
 	bool bEndingPlay = false;
 	bool bEffectRunning = false;
+	FTimerHandle EmitterShotTimer;
+	FTimerHandle EmitterExpiryTimer;
+	TWeakObjectPtr<APawn> EmitterInstigator;
+	double EmitterStartedAt = 0.0;
+	double EmitterExpiresAt = 0.0;
+	int32 EmitterNextShotIndex = 0;
+	int32 EmitterShotAttempts = 0;
+	int32 EmitterProjectilesSpawned = 0;
+
+	void ScheduleEmitterShot();
+	void FireEmitterShot();
+	void ExpireEmitter();
+	void SpawnEmitterProjectile();
 
 	void ApplyStateCollision();
 	/** Called by the character only after T07's pickup/release safety checks pass. */

@@ -9,6 +9,7 @@
 #include "Misc/AutomationTest.h"
 #include "Tests/CombatTestWorld.h"
 #include "Types/MothCollisionChannels.h"
+#include "UObject/UnrealType.h"
 
 namespace
 {
@@ -27,7 +28,10 @@ namespace
 		{
 			Projectile->InitializeProjectile(Direction, Source, Instigator);
 			Projectile->FinishSpawning(Transform);
-			Projectile->DispatchBeginPlay();
+			if (!Projectile->HasActorBegunPlay())
+			{
+				Projectile->DispatchBeginPlay();
+			}
 		}
 		return Projectile;
 	}
@@ -129,6 +133,29 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothProjectileSweptWallTest,
 bool FMothProjectileSweptWallTest::RunTest(const FString& Parameters)
 {
 	FMothCombatTestWorld Fixture;
+	if (!TestNotNull(TEXT("Create world"), Fixture.World))
+	{
+		return false;
+	}
+	// Mirror a Blueprint property override before its construction script syncs the sphere.
+	const FTransform ProbeTransform(FQuat::Identity, FVector::ZeroVector, FVector(2.0));
+	ARuleProjectile* RadiusProbe = Fixture.World->SpawnActorDeferred<ARuleProjectile>(
+		ARuleProjectile::StaticClass(), ProbeTransform, nullptr, nullptr,
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	FFloatProperty* RadiusProperty = FindFProperty<FFloatProperty>(
+		ARuleProjectile::StaticClass(), TEXT("CollisionRadiusCm"));
+	if (!TestNotNull(TEXT("Spawn radius probe"), RadiusProbe)
+		|| !TestNotNull(TEXT("Find configured radius"), RadiusProperty))
+	{
+		return false;
+	}
+	RadiusProperty->SetPropertyValue_InContainer(RadiusProbe, 12.0f);
+	TestEqual(TEXT("Birth safety reads configured radius and root scale before construction"),
+		RadiusProbe->GetCollisionRadiusCm(), 24.0f);
+	RadiusProbe->FinishSpawning(ProbeTransform);
+	TestEqual(TEXT("Constructed collision matches the planned birth radius"),
+		RadiusProbe->FindComponentByClass<USphereComponent>()->GetScaledSphereRadius(), 24.0f);
+	RadiusProbe->Destroy();
 	AActor* Wall = Fixture.Spawn<AActor>(FVector(70.0, 0.0, 0.0));
 	if (!TestNotNull(TEXT("Spawn a thin wall"), Wall))
 	{

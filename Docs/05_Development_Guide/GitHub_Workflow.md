@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：GitHub 开发流程
 
-版本 v0.2 · 2026-10-07 · 香港时间（UTC+8）
+版本 v0.3 · 2026-10-08 · 香港时间（UTC+8）
 
 仓库：[YYchainsAw/MothEffect](https://github.com/YYchainsAw/MothEffect)；看板：[MothEffect · 首版开发](https://github.com/users/YYchainsAw/projects/1)（Private，需要项目权限）。阶段截止和任务进度见 [开发任务与排期](Development_Plan.md)，游戏实测标准见 [测试计划](../06_Test_Doc/Test_Plan.md)。
 
@@ -8,7 +8,7 @@
 
 1. 从看板中选择依赖已成立的任务，设为 `In Progress`，按 Issue 的范围开发。计划任务沿用 T01–T27；新增工作使用具体标题，需要正式纳入计划时再维护任务编号。
 2. 当前按用户选择直接在已有 `develop` 开发，助手不自行创建工作分支。用户明确选择独立分支时再创建；在 PR 中写改动目的、验证结果及 `Refs #实际编号`，一个 PR 可关联多个 Issue。
-3. 用户提交、推送后创建 PR，确认 `Repository checks` 通过，再合并。`develop` 为日常开发分支，阶段交付可选择 `develop` → `main`；PR 的 head/base 以用户实际选择为准。T05 的 PR #34 已合入 main。
+3. 自 2026-10-08 起按用户授权，助手每完成一个可独立核对的小功能，完成静态检查后直接在当前 `develop` 本地提交；提交注明 `Refs #实际编号` 与真实验证范围。UE 编译、资产配置和玩法验证继续由用户执行。用户自行推送并创建 PR，确认 `Repository checks` 通过，再合并；助手仅准备模板报告。`develop` 为日常开发分支，阶段交付可选择 `develop` → `main`；PR 的 head/base 以用户实际选择为准。T05 的 PR #34 已合入 main。
 4. 游戏任务合并后进入 `Pending Acceptance`，补齐受影响的 UE 测试分支及证据。符合 Issue 验收条件后设为 `Done` 并关闭 Issue；文档或仓库任务记录相应检查结果即可。
 
 需要合并后验收的任务使用 `Refs`，避免自动关闭关键词跳过验收。GitHub 的 Issue 开关状态与 Project 的 Status 分别记录；若出现差异，先核对证据，再同步状态。2026-10-06 核对到 T04 为 Closed / Pending Acceptance，详见开发计划。

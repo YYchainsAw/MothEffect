@@ -98,7 +98,11 @@ float ARuleProjectile::GetCollisionRadiusCm() const
 {
 	// Blueprint class defaults do not run OnConstruction. Read the configured radius
 	// instead of the sphere's possibly stale native 4cm value when planning a birth.
-	return FMath::Max(0.1f, CollisionRadiusCm) * CollisionSphere->GetShapeScale();
+	// Their world-transform cache also need not reflect serialized root scale yet.
+	const float Scale = HasAnyFlags(RF_ClassDefaultObject)
+		? CollisionSphere->GetRelativeScale3D().GetAbsMin()
+		: CollisionSphere->GetShapeScale();
+	return FMath::Max(0.1f, CollisionRadiusCm) * Scale;
 }
 
 void ARuleProjectile::HandleComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,

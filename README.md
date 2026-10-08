@@ -46,6 +46,7 @@
 - [开发计划](Docs/05_Development_Guide/Development_Plan.md)
 - [10/7 进度核查：已有实现、待验收与 UI/美术安排](Docs/05_Development_Guide/Progress_Audit_2026-10-07.md)
 - [GitHub 开发流程：任务、看板、PR 与 Actions](Docs/05_Development_Guide/GitHub_Workflow.md)
+- [T06 机关状态与命中接入](Docs/05_Development_Guide/Device_Setup.md)
 
 工程入口为 [MothEffect.uproject](MothEffect.uproject)。当前仓库仅纳入 `Content/MothEffect/` 下的自有内容；模板资源保留在开发者本机，现有默认地图与游戏模式仍引用 `ThirdPerson`。克隆后需要补齐这些依赖，才能复现本地模板工程，详见 [版本管理说明](Docs/03_Code_Standard/Version_Control.md)。
 

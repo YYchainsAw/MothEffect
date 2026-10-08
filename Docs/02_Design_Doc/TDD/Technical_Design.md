@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.14 · 2026-10-06 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.15 · 2026-10-07 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-07 实施更新：用户报告 T05 上半身动画及当前中断/换弹按压/死亡/暂停/失焦分支 PIE 通过；[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并，T05 为 Closed / Done。T06 新增 `DeviceTypes` 与 `ADeviceBase`，复用已有命中契约，提供物理根/射击球、先提交 Active 再执行效果、状态事件与 Spent/Destroyed 清理；Held 提供拥有者提交/释放的内部入口，实际拾取输入、附着与安全释放属于 T07。D01/D02/D03 原生效果及容量/过期尚未实现。T06 为 Open / In Progress，助手未编译或运行，用户接入步骤见 [Device_Setup](../../05_Development_Guide/Device_Setup.md)。
 
 用户已确认 UE 5.8、蓝图与 C++ 混合开发、正式显示名 Moth Effect（飞蛾效应）、魔法朋克风格，以及 v0.9 的玩家方案：C++ 玩法状态机、AnimBP 移动状态机、上半身 Montage、复用本地模板 Rifle 动画，首版不使用 GAS。当前工程文件为 [MothEffect.uproject](../../../MothEffect.uproject)。v0.10 已写入 T04 相机/转向/瞄准冲刺的 C++ 基础，见 [玩家第一步接入](../../05_Development_Guide/Player_Setup.md)；用户负责 UE 资产配置与试玩，并明确要求助手不代为编译。2026-10-06 的任务状态和记录情况见 [开发计划](../../05_Development_Guide/Development_Plan.md)；完整玩家系统与包体仍须对应测试证据。玩法以 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 为准，数值只维护在 [玩法参数基线](../GDD/Gameplay_Parameters.json)。
 
@@ -38,7 +40,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 
 ## 2. 数据与调用契约
 
-以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，但编译与运行尚待用户验证；机关、投掷、推力、波次等其余入口仍为计划接口，实现时补反射宏、导出宏和头文件。
+以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，T05 当前 PIE 分支由用户报告通过。T06 的 EDeviceState/EDeviceKind、ADeviceBase::TryActivate 与 OnDeviceStateChanged 已写入，待用户编译/验收；TryPickup、TryReleaseHeldDevice、效果、容量、推力与波次等其余入口仍为计划接口。
 
 - `EDeviceState`：`Dormant, Held, Active, Spent, Destroyed`；`Destroyed` 是清理末态，可不留存于已销毁对象。
 - `EDeviceKind`：`Launcher, Bomb, Emitter`。
@@ -53,6 +55,9 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `UImpulseReceiver / IImpulseReceiver`：`void ReceiveImpulse(FVector Velocity, bool bOverrideZ, FGuid EventId)` | 当帧缓存，EventId 去重；帧末先合并爆炸增量、再用柱子目标替换 Z、最后统一限速 |
 | `ADeviceBase::bool TryActivate(const FHitContext& Context)` | 仅 Dormant 且容量许可可成功；需释放旧同类时先按 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 结束，获准后置 Active，再执行效果 |
 | `ADeviceBase::bool TryPickup(AMothEffectCharacter* Picker)` | 距离、遮挡、状态均满足才置 Held |
+| `ADeviceBase::bool CanBePickedUp() const` | 已实现机关端资格查询；只允许未暂停、玩法许可的 Dormant，不代替 T07 的完整拾取检查 |
+| `ADeviceBase::bool CommitHeld(AMothEffectCharacter* NewHolder)` / `bool CommitReleased(AMothEffectCharacter* ReleasingHolder)` | 已实现的私有入口，仅 Character 在安全检查成功后调用；Held 必须有有效拥有者，只有该拥有者可释放；不对蓝图暴露任意状态写入 |
+| `ADeviceBase::bool FinishActivation()` / `void DestroyDevice()` / `void SetGameplayEnabled(bool bEnabled)` | 已实现一次 Spent、最终销毁与玩法取消；终态不复活，取消不重复执行 StopEffect |
 | `AMothEffectCharacter::bool TryReleaseHeldDevice(bool bThrow)` | 统一放下/投掷安全检查；失败保持 Held |
 | `AMothEffectCharacter::bool TryPickupDevice()` | 验证候选；成功时统一提交 Held 引用/Carrying，并取消未完成换弹；失败不改变原行动 |
 | `ARifle::bool TryStartFire()`；`void StopFire()` | Character 授权后请求首次射击与定时连射；每发重新检查许可、射速和弹药；停止操作幂等 |
@@ -61,6 +66,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `OnPlayerActionStateChanged(EPlayerActionState OldState, EPlayerActionState NewState)` | C++ 完成行动转换后广播；AnimBP/HUD 读取，不回写状态 |
 | `UHealthComponent::bool ApplyHit(const FHitContext& Context)` | HitId 去重；死者不再扣血；返回是否接受伤害 |
 | `OnDeviceStateChanged(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState)` | C++ 修改状态后广播，蓝图只更新表现 |
+| `OnDeviceStateChangedNative(ADeviceBase* Device, EDeviceState OldState, EDeviceState NewState)` | C++ 观察相同状态提交；回调可能继续结束/销毁，以 GetDeviceState 查询当前状态 |
 | `OnHealthChanged(float CurrentHealth, float MaxHealth)`；`OnDied(AActor* Victim, AActor* SourceActor)` | 动态多播委托；每个角色 OnDied 最多一次 |
 | `AWaveDirector::bool TryRegisterDevice(ADeviceBase* Device)`；`void UnregisterDevice(ADeviceBase* Device)` | 登记/注销均幂等，不能在 UI 中另行计数 |
 

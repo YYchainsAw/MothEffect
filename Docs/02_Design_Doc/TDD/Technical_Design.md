@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.31 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.32 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-11 T13 接入：UDeviceLifecycleSubsystem 按 Game/PIE World 统一容量，SpawnDevice 先预占总额，BeginPlay 兜底登记，Active 按启动序安全替换，P01 在初始化/首次消耗/销毁登记释放；状态提交与名额预占早于外部回调，重置通过世代与禁入防止遗留。Dormant 按游戏时间分段累计，Held/暂停/玩法禁用冻结，放下/投掷继续，末5s文字警告，Spent立即出数后残留0.25s；显式安全盒或开启的世界边界执行清理。配置副本见 DefaultGame.ini，设计边界 DEC32，接入见 [Lifecycle_Setup](../../05_Development_Guide/Lifecycle_Setup.md)。独立同源码 Editor 构建通过，全量66项Automation通过；原工程DLL因旧编辑器占用尚未完成正式链接，当前角色PIE与完整整局流程仍待验收。
 
 2026-10-11 T12 验证：复用 P01 和现有 D01–D03，十项新增集成通过真实 World::Tick / Chaos / ProjectileMovement Sweep / Timer / 帧末推力完成直接激活、两类外力移入弹道及布局阴性对照；最终 Editor 构建与全量 53 项 Automation 通过。P01 可选日志关联 spawn/impact/expired 的 HitId、来源、目标和接受结果，D03 按实例日志开关传递。保存 L_T12Chains 普通装置测试房、核对重载配置，保存 Blueprint 另行实际飞行命中；参数不变，DEC31 不允许直接激活后续目标或在连锁中传送对象。接入见 [Natural_Chain_Setup](../../05_Development_Guide/Natural_Chain_Setup.md)，完整范围见 [T12 报告](../../06_Test_Doc/T12_Report_2026-10-11.md)；用户已确认五站连锁/布局对照及暂停/清理的当前角色 PIE 通过，#14 为 Closed / Done；正式敌人和完整 G2 随后续任务验收。
 
@@ -49,7 +51,8 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `ALaunchColumn : AActor` | `BP_LaunchColumn` | 升柱表现、上升路径检测、一次弹射、净空后实体支撑 |
 | `ARuleProjectile : AActor` | `BP_RuleProjectile` | 敌人与机关共用 P01，移动、命中、寿命 |
 | `AEnemyBase : ACharacter` | `BP_EnemyBase` | 射击 AI、死亡、固定类型掉落；用内建 AIController |
-| `AWaveDirector : AActor` | `BP_WaveDirector` | 波次、生成点、存活敌人和机关容量登记 |
+| `UDeviceLifecycleSubsystem : UTickableWorldSubsystem` | 自动创建，无场景 Actor | 总道具/同类 Active/P01 容量、累计闲置、界外与重置；SpawnDevice/ResetManagedObjects 供掉落/整局接入 |
+| `AWaveDirector : AActor` | `BP_WaveDirector` | 波次、生成点、存活敌人；机关容量交给WorldSubsystem |
 | `UHealthComponent : UActorComponent` | 角色上的组件 | HP、一次死亡事件 |
 | `UAnimInstance`（UE 内建父类，先不新增 C++ 动画类） | `ABP_MothPlayer`（用户已创建） | 读取玩家与移动组件快照，执行移动状态机、AimOffset、上半身分层；不修改玩法状态 |
 | `UDeviceDefinition : UDataAsset` | `DA_Device_D01 / D02 / D03` | `FDeviceConfig` 与对应 BP 类/资源引用 |
@@ -58,7 +61,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 
 ## 2. 数据与调用契约
 
-以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，T05 当前 PIE 分支由用户报告通过。T06 的 EDeviceState/EDeviceKind、ADeviceBase::TryActivate 与 OnDeviceStateChanged 已实现，用户当前状态壳测试通过；T07 的 TryPickup、TryReleaseHeldDevice 已实现，Automation 与基础 PIE 通过，适用边界待验收。机关效果、容量、推力与波次等后续入口仍为计划接口。
+以下名称、签名为**本项目自定义 API 契约**，不是 UE 内建功能。玩家行动/左键枚举、FHitContext、BallisticReactive、ARifle、HealthComponent 及相关事件已写入原生源码，T05 当前 PIE 分支由用户报告通过。T06 的 EDeviceState/EDeviceKind、ADeviceBase::TryActivate 与 OnDeviceStateChanged 已实现，用户当前状态壳测试通过；T07 的 TryPickup、TryReleaseHeldDevice 已实现，Automation 与基础 PIE 通过，适用边界待验收。D01/D02/D03 效果、推力、P01和T13容量/闲置/清理已有原生验证，当前角色PIE按对应任务记录；波次/正式整局等后续入口仍为计划接口。
 
 - `EDeviceState`：`Dormant, Held, Active, Spent, Destroyed`；`Destroyed` 是清理末态，可不留存于已销毁对象。
 - `EDeviceKind`：`Launcher, Bomb, Emitter`。

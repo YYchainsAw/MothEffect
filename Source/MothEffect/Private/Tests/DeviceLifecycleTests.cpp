@@ -54,7 +54,7 @@ namespace
 		P->FinishSpawning(T);
 		return P;
 	}
-	void Floor(FMothCombatTestWorld& F)
+	void LifecycleFloor(FMothCombatTestWorld& F)
 	{
 		AActor* A = F.Spawn<AActor>();
 		auto* B = NewObject<UBoxComponent>(A);
@@ -335,7 +335,7 @@ namespace
 			if (!T->TestNotNull(TEXT("Lifecycle subsystem"), M)) return true;
 			if (Case == ECase::Column)
 			{
-				Floor(*F);
+				LifecycleFloor(*F);
 				for (int32 I = 0; I < 7; ++I)
 				{
 					Seeds.Add(NewDevice(*F, FVector(I * 700, 0, 20), EDeviceKind::Launcher));

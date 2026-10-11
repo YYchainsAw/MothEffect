@@ -206,3 +206,51 @@ Existing DeviceReleaseSafetyTests ClearIgnoredActors compiler warning and Parago
 [2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
 [2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
 [2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+
+=== User PIE acceptance and runtime log review ===
+Archive date: 2026-10-11 (Hong Kong, UTC+8).
+Original user text: 通过 提交并pr
+Source: this Codex conversation, following T11 checklist and ground collision diagnosis.
+Evidence type: user-reported current PIE acceptance plus Codex read-only inspection of the user's editor log; not a new Codex graphical PIE run.
+Implementation/asset baseline: a5903f6ad852d13486ccece6b1b41b2dd3353555; prior delivery documentation: 2a627ef.
+The user's reported ground preset was BlockAllDynamic with an existing MothColumnSurface tag.
+UE 5.8 BaseEngine.ini defines BlockAllDynamic as WorldDynamic and BlockAll as WorldStatic. T11 accepts WorldStatic only.
+Launcher_Setup now explicitly recommends BlockAll or equivalent Custom settings with WorldStatic and JamGroundTrace/WorldDynamic Block.
+Earlier log failures NoGround/UnsupportedSurface are retained in Saved/Logs/MothEffect.log; successful runtime records follow below.
+Runtime timestamps below are UTC; 07:19 UTC is 15:19 Hong Kong.
+Observed: three successful column spawns, including one air activation; fixed XY, approximately 1.98s to Spent, then approximately 1s to Destroyed.
+The log does not record per-target impulse velocities or column collision phases. Current graphical/checklist behavior is accepted from the user's confirmation.
+No per-case video, execution checklist or new asset SHA was supplied. Formal enemy/drop/natural-chain/capacity/round tests remain T12-T16; independent Windows package and complete G2 are not accepted here.
+ABP_MothMurdock Divide_DoubleDouble warning remains; exact graph/node is not identified by the log and no fix is claimed.
+The configured local Unreal MCP endpoint refused the connection during diagnosis; no live MCP actor/component inspection is claimed.
+This acceptance archive changes documentation/status only and retains the prior 43-success native run without repeating UE.
+[2026.10.11-07.19.01:626][296]LogScript: Warning: Script Msg: Divide by zero: Divide_DoubleDouble
+[2026.10.11-07.19.01:626][296]LogScript: Warning: Script Msg called by: ABP_MothMurdock_C /Game/ThirdPerson/UEDPIE_0_Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+[2026.10.11-07.19.04:499][466]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.04:499][466]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551 hit=482A0F0345E4ADA511F29B9CD24119C1 source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=-863.103 Y=-439.482 Z=43.522 direction=X=-0.876 Y=-0.183 Z=-0.447 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.04:510][466]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551 hit=482A0F0345E4ADA511F29B9CD24119C1 origin=X=-867.000 Y=-447.000 Z=20.000 base=X=-867.000 Y=-447.000 Z=0.000 column=BP_LaunchColumn_C_0
+[2026.10.11-07.19.06:484][585]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.07:451][643]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.07:451][643]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553 hit=D9511A874DFF26F55CB441B15CDE9985 source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=-578.581 Y=-444.216 Z=30.850 direction=X=-0.258 Y=-0.784 Z=-0.564 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.07:452][643]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553 hit=D9511A874DFF26F55CB441B15CDE9985 origin=X=-599.547 Y=-452.444 Z=20.000 base=X=-599.547 Y=-452.444 Z=0.000 column=BP_LaunchColumn_C_1
+[2026.10.11-07.19.07:485][645]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Spent -> EDeviceState::Destroyed
+[2026.10.11-07.19.09:434][762]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.10:434][822]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Spent -> EDeviceState::Destroyed
+[2026.10.11-07.19.10:518][827]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Dormant -> EDeviceState::Held
+[2026.10.11-07.19.11:184][867]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Held -> EDeviceState::Dormant
+[2026.10.11-07.19.13:184][987]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.13:184][987]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552 hit=B4B2CB3D45496C22EF6D6DB3D51C221F source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=50.566 Y=-321.066 Z=789.033 direction=X=0.810 Y=0.120 Z=0.574 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.13:185][987]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552 hit=B4B2CB3D45496C22EF6D6DB3D51C221F origin=X=73.966 Y=-325.476 Z=796.664 base=X=73.966 Y=-325.476 Z=210.000 column=BP_LaunchColumn_C_2
+[2026.10.11-07.19.15:168][106]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.16:168][166]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Spent -> EDeviceState::Destroyed
+
+=== GitHub status verification after acceptance ===
+Issue URL: https://github.com/YYchainsAw/MothEffect/issues/13
+gh issue view: state=CLOSED; closedAt=2026-10-11T07:25:28Z; four acceptance checkboxes checked with the explicit current-scope note in the issue body.
+gh project item-edit/item verification: item=PVTI_lAHODAW-Us4Blq_ozg-4nAs; status=Done.
+
+=== Acceptance documentation checks ===
+py scripts/validate_repo.py: passed for 200 tracked files and 23 UE assets.
+py scripts/build_reading_view.py --check: passed for 30 source sections, anchors and local links.
+git diff --check: passed.
+git lfs fsck: OK.

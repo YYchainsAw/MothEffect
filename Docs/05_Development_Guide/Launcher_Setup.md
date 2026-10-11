@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T11 探地、升柱与弹射接入
 
-版本 v0.1 · 2026-10-11 · 状态：源码、灰盒、Editor 构建及 11 项新增 Automation 通过；当前 PIE 待验收
+版本 v0.2 · 2026-10-11 · 状态：源码、灰盒、构建与全量 43 项 Automation 通过；用户确认当前 PIE 通过，T11 完成
 
 交付提交：`a5903f6ad852d13486ccece6b1b41b2dd3353555`，Refs #13。全量 43 项 Automation 已通过，结果与边界见 [T11 报告](../06_Test_Doc/T11_Report_2026-10-11.md) 和 [验证摘录](../06_Test_Doc/Evidence/T11_Verification_2026-10-11.log)。
 
@@ -8,7 +8,7 @@
 
 关闭旧编辑器会话，再打开工程，使用现有 BP_MothGameMode / Murdock 测试房。把 `/Game/MothEffect/Devices/BP_DeviceLauncher` 拖入房间；它已经引用 `/Game/MothEffect/Devices/BP_LaunchColumn`，柱子由种子启动后生成，无需手动放柱子。
 
-选择允许起柱的地面，在 Details 的 **Actor → Tags** 添加 `MothColumnSurface`（不是 Gameplay Tags）；也可在具体承托组件的 Component Tags 添加同名标签。承托组件必须是 WorldStatic，Block `JamGroundTrace` 和 WorldDynamic。动态箱子、玩家、其他装置和生成柱子不会成为承托面。墙和天花板须保留对 WorldDynamic 的 Block，才能作为实体净空障碍。
+选择允许起柱的地面，在 Details 的 **Actor → Tags** 添加 `MothColumnSurface`（不是 Gameplay Tags）；也可在具体承托组件的 Component Tags 添加同名标签。承托组件必须是 WorldStatic，Block `JamGroundTrace` 和 WorldDynamic。可选 **BlockAll**；不要选 **BlockAllDynamic**，后者会把 Object Type 设为 WorldDynamic，即使已有标签和全部 Block，也会被本次静态探地过滤。使用 Custom 时确认 Query 碰撞开启、Object Type=WorldStatic，并核对上述通道响应。动态箱子、玩家、其他装置和生成柱子不会成为承托面。墙和天花板须保留对 WorldDynamic 的 Block，才能作为实体净空障碍。
 
 已有 BP_MothPlayer 工作区改动保留给用户。本轮没有修改现有地图、地面标签或角色资产，因此第一次测试前必须设置地面标签。
 
@@ -40,4 +40,4 @@
 4. **动态占用与支撑（TC33）**：用动态阻挡箱占据柱体区域至停留结束，始终不应出现 `SOLID`；另一次在停留期间移开箱子，净空后才变绿。就绪时落在柱顶可站立，普通弹丸/步枪被柱身挡住；伸出和收回时无实体阻挡，不夹住玩家或道具。
 5. **暂停/收回/可操作性（TC33/TC35）**：伸出或停留中暂停再恢复，阶段不跳过；柱顶静止时等待收回，应恢复下落。弹射后可转镜头、瞄准/射击，落地后可操作；贴墙重测，无穿墙或悬空支撑。对比 D01/D02 同时作用时的手感；精确同帧顺序已有原生记录。
 
-Output Log 搜索 `Launcher` 查看 hit/origin/base/column 和失败原因。记录测试构建、资产版本、参数覆盖、日志或录屏。正式敌人/掉落随 T14/T15、两种完整自然连锁随 T12、整局清理/重开随 T16；上述未来分支不包含在当前验收确认中。Issue #13 保持 Open / In Progress，完整 G2 未通过，图形 PIE 和独立 Windows 包尚未执行。
+Output Log 搜索 `Launcher` 查看 hit/origin/base/column 和失败原因。记录测试构建、资产版本、参数覆盖、日志或录屏。正式敌人/掉落随 T14/T15、两种完整自然连锁随 T12、整局清理/重开随 T16；上述未来分支不包含在当前验收确认中。用户于 2026-10-11 在碰撞排查后确认“通过 提交并pr”，按当前清单记录验收，Issue #13 为 Closed / Done；助手读取到 15:19 三次成功生成与正常结束日志，未代为执行图形 PIE。完整 G2、独立 Windows 包及未来集成尚未验收。

@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.26 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.27 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-2026-10-11 T11 交付：`a5903f6` 接入 D01 静态承托探测、最终体积净空、单次弹射、净空后实体支撑和安全收回，已保存 BP_DeviceLauncher / BP_LaunchColumn。Editor 构建与全量 43 项 Automation 通过，11 项新增；参数 v0.13 补地面标签、接触容差和反馈残留。Issue #13 为 Open / In Progress，当前真实角色 PIE 待验收；入口见 [Launcher_Setup](05_Development_Guide/Launcher_Setup.md)，证据与模板报告见 [T11_Report](06_Test_Doc/T11_Report_2026-10-11.md)。正式敌人、完整连锁和 G2 继续按各自任务验收，以下 T10 记录为上一交付快照。
+2026-10-11 T11 完成：`a5903f6` 已交付 D01 静态承托探测、最终体积净空、单次弹射、净空后实体支撑和安全收回；BP_DeviceLauncher / BP_LaunchColumn 已保存，Editor 构建与全量 43 项 Automation 通过。用户在地面碰撞排查后确认“通过 提交并pr”，据此归档当前 PIE 验收，Issue #13 为 Closed / Done。15:19 最新 PIE 日志另有三次成功起柱与种子正常结束，其中一次从 Z=796.664cm 空中启动；阶段、逐目标弹射及站立手感按用户确认记录，不由生成日志单独推断。参数 v0.13；入口见 [Launcher_Setup](05_Development_Guide/Launcher_Setup.md)，证据与报告见 [T11_Report](06_Test_Doc/T11_Report_2026-10-11.md)。本轮按用户授权提交、推送并从 develop 向 main 创建包含 T10/T11 的 PR；正式敌人、完整连锁和 G2 继续随对应任务验收。
 
 2026-10-11 T10 完成：D02 单次爆炸、固定爆心、Actor 去重、静态遮挡伤害/推力与统一帧末外力结算已接入，BP_DeviceBomb 灰盒已生成并通过重新加载验证。Editor 构建和全量 32 项 Automation 通过，新增九项；参数 v0.12 新增 Spent 清理 0.25s。用户在接入清单后确认“测试通过”，当前 PIE 验收已归档，Issue #12 为 Closed / Done。正式敌人、D01 组合、完整连锁与 G2 随后续任务验收；下一项为 T11。入口见 [Bomb_Setup](05_Development_Guide/Bomb_Setup.md)，证据与 PR 报告见 [T10_Report](06_Test_Doc/T10_Report_2026-10-11.md)。
 

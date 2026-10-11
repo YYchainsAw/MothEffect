@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.28 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.29 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
 
-2026-10-11 T11 实施：DeviceBase 的 Launcher 分派与 ALaunchColumn 已落地，配置 JamGroundTrace；WorldStatic 承托标签/法线和最终方形体积净空后生成世界竖直柱。种子隐藏并停物理/碰撞；伸出只查询逐 Actor 单次弹射，复用帧末 Impulse 合并。完全伸出后等待动态占用净空再开实体，收回先关查询/阻挡并解绑实际站立角色、恢复 Falling，种子/柱子 EndPlay 双向清理。保存的两项灰盒、Editor 构建与 43 项 Automation 已通过；当前真实角色 PIE 待验收，入口见 [Launcher_Setup](../../05_Development_Guide/Launcher_Setup.md) 与 [T11 报告](../../06_Test_Doc/T11_Report_2026-10-11.md)。碰撞、几何与来源细化见 DEC30，以下旧实现快照保留为历史。
+2026-10-11 T11 完成：DeviceBase 的 Launcher 分派和 ALaunchColumn 已落地；通过 JamGroundTrace / WorldStatic 查询承托标签、法线及最终方形体积净空后生成世界竖直柱。伸出时种子和实体关闭碰撞，升柱查询逐 Actor 单次弹射，复用帧末 Impulse 合并；完全伸出后等待动态占用净空再开实体，收回先关查询/阻挡并解绑实际站立角色、恢复 Falling；禁用/种子 EndPlay 双向清理。两项灰盒、Editor 构建与 43 项 Automation 已通过，用户在碰撞排查后确认当前 PIE 通过，#13 为 Closed / Done。15:19 日志记录三次成功生成及正常结束，包含空中启动。测试地面须为 WorldStatic（BlockAll 或等效自定义响应），BlockAllDynamic 的 WorldDynamic 类型会被探地过滤；标签不能代替对象类型。入口见 [Launcher_Setup](../../05_Development_Guide/Launcher_Setup.md) 和 [T11 报告](../../06_Test_Doc/T11_Report_2026-10-11.md)，完整自然连锁和敌人接入仍随后续任务验收。以下旧实现快照保留为历史。
 
 2026-10-11 T10 完成：DeviceBase 的 Bomb 分派与 IImpulseReceiver / ExternalImpulseComponent 已落地。爆心在 Active 通知前固定；球查询按 Actor 去重、以胶囊/物理根中心判半径，伤害与推力共享 WorldStatic 实体遮挡结果；不调用其他装置的弹道接口。外力在所属 World 的 OnWorldPostActorTick 合并、替换柱子 Z 并统一限速，暂停保留，死亡/禁用/EndPlay 清理。已保存 BP_DeviceBomb，Editor 构建及 32 项 Automation 通过；用户随后确认当前 PIE“测试通过”，#12 为 Closed / Done。正式敌人/D01 组合及完整连锁随对应阶段接入，详情见 [Bomb_Setup](../../05_Development_Guide/Bomb_Setup.md) 与 [T10 报告](../../06_Test_Doc/T10_Report_2026-10-11.md)。以下旧实现快照保留为历史。
 

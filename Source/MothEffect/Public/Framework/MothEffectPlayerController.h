@@ -22,6 +22,13 @@ public:
 
 	virtual void FlushPressedKeys() override;
 	virtual bool SetPause(bool bPause, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+	/** Development-only console helpers; do not form part of the shipping player flow. */
+	UFUNCTION(Exec)
+	void MothLifecycleStats();
+	UFUNCTION(Exec)
+	void MothSpawnDevice(int32 Kind = 2, int32 Count = 1);
+	UFUNCTION(Exec)
+	void MothResetDevices();
 	
 protected:
 

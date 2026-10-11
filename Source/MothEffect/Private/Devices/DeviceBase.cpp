@@ -1,10 +1,12 @@
 #include "Devices/DeviceBase.h"
+#include "Devices/LaunchColumn.h"
 #include "Combat/RuleProjectile.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
 #include "Components/ExternalImpulseComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
 #include "MothEffect.h"
 #include "TimerManager.h"
@@ -45,6 +47,15 @@ ADeviceBase::ADeviceBase()
 	EmitterDirectionMarker->SetHiddenInGame(false);
 	EmitterDirectionMarker->SetVisibility(false, true);
 	EmitterProjectileClass = ARuleProjectile::StaticClass();
+	LauncherColumnClass = ALaunchColumn::StaticClass();
+	LauncherFeedback = CreateDefaultSubobject<UTextRenderComponent>(TEXT("LauncherFeedback"));
+	LauncherFeedback->SetupAttachment(PhysicsBody);
+	LauncherFeedback->SetAbsolute(false, true, true);
+	LauncherFeedback->SetRelativeLocation(FVector(0.0, 0.0, 65.0));
+	LauncherFeedback->SetHorizontalAlignment(EHTA_Center);
+	LauncherFeedback->SetWorldSize(24.0f);
+	LauncherFeedback->SetTextRenderColor(FColor::Red);
+	LauncherFeedback->SetVisibility(false);
 }
 
 void ADeviceBase::OnConstruction(const FTransform& Transform)
@@ -161,6 +172,7 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	ActivationDirection = Direction;
 	ActivationImpactPoint = Context.ImpactPoint;
 	if (DeviceKind == EDeviceKind::Bomb) ExplosionCenter = GetActorLocation();
+	if (DeviceKind == EDeviceKind::Launcher) LauncherOrigin = GetActorLocation();
 	FHitContext ActivationContext = Context;
 	ActivationContext.ShotDirection = Direction;
 
@@ -187,10 +199,13 @@ bool ADeviceBase::FinishActivation()
 	}
 	TransitionTo(EDeviceState::Spent);
 	StopActiveEffect();
-	if ((DeviceKind == EDeviceKind::Emitter || DeviceKind == EDeviceKind::Bomb) && DeviceState == EDeviceState::Spent
+	if (DeviceState == EDeviceState::Spent
 		&& !bEndingPlay && !IsActorBeingDestroyed())
 	{
-		SetLifeSpan(FMath::Max(0.01f, DeviceKind == EDeviceKind::Bomb ? BombSpentVisualSeconds : EmitterSpentVisualSeconds));
+		const float SpentSeconds = DeviceKind == EDeviceKind::Bomb ? BombSpentVisualSeconds
+			: DeviceKind == EDeviceKind::Emitter ? EmitterSpentVisualSeconds
+			: FMath::Max(LauncherSpentVisualSeconds, IsValid(LaunchColumn) ? LaunchColumn->GetRetractSeconds() + 0.05f : 0.0f);
+		SetLifeSpan(FMath::Max(0.01f, SpentSeconds));
 	}
 	return true;
 }
@@ -286,7 +301,11 @@ void ADeviceBase::NotifyStateChanged(EDeviceState OldState, EDeviceState NewStat
 void ADeviceBase::ApplyStateCollision()
 {
 	DeviceMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	const bool bPhysical = DeviceState == EDeviceState::Dormant || DeviceState == EDeviceState::Active;
+	const bool bPhysical = DeviceState == EDeviceState::Dormant
+		|| (DeviceState == EDeviceState::Active && DeviceKind != EDeviceKind::Launcher);
+	if (DeviceKind == EDeviceKind::Launcher)
+		DeviceMesh->SetVisibility(DeviceState == EDeviceState::Dormant || DeviceState == EDeviceState::Held
+			|| (DeviceState == EDeviceState::Spent && LauncherFailureReason != ELauncherFailureReason::None));
 	PhysicsBody->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Ignore);
 	ShotCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -323,9 +342,9 @@ void ADeviceBase::ActivateEffect(const FHitContext& Context)
 		ExplodeBomb(Context);
 		return;
 	}
-	if (DeviceKind != EDeviceKind::Emitter)
+	if (DeviceKind == EDeviceKind::Launcher)
 	{
-		// D01 retains its T06 state shell until T11.
+		StartLauncher();
 		return;
 	}
 	EmitterInstigator = Context.InstigatorPawn.Get();
@@ -343,6 +362,11 @@ void ADeviceBase::ActivateEffect(const FHitContext& Context)
 
 void ADeviceBase::StopEffect()
 {
+	if (IsValid(LaunchColumn))
+	{
+		if (bEndingPlay || IsActorBeingDestroyed() || DeviceState == EDeviceState::Destroyed) LaunchColumn->Destroy();
+		else LaunchColumn->BeginRetraction();
+	}
 	GetWorldTimerManager().ClearTimer(EmitterShotTimer);
 	GetWorldTimerManager().ClearTimer(EmitterExpiryTimer);
 	EmitterInstigator.Reset();

@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.33 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.34 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
 
-2026-10-11 T13 接入：UDeviceLifecycleSubsystem 按 Game/PIE World 统一容量，SpawnDevice 先预占总额，BeginPlay 兜底登记，Active 按启动序安全替换，P01 在初始化/首次消耗/销毁登记释放；状态提交与名额预占早于外部回调，重置通过世代与禁入防止遗留。Dormant 按游戏时间分段累计，Held/暂停/玩法禁用冻结，放下/投掷继续，末5s文字警告，Spent立即出数后残留0.25s；显式安全盒或开启的世界边界执行清理。配置副本见 DefaultGame.ini，设计边界 DEC32，接入见 [Lifecycle_Setup](../../05_Development_Guide/Lifecycle_Setup.md)。用户关闭编辑器后修正Unity测试函数重名，原工程Editor正式构建/链接与新DLL的全量66项Automation通过；当前角色PIE与完整整局流程仍待验收。
+2026-10-11 T13 接入：UDeviceLifecycleSubsystem 按 Game/PIE World 统一容量，SpawnDevice 先预占总额，BeginPlay 兜底登记，Active 按启动序安全替换，P01 在初始化/首次消耗/销毁登记释放；状态提交与名额预占早于外部回调，重置通过世代与禁入防止遗留。Dormant 按游戏时间分段累计，Held/暂停/玩法禁用冻结，放下/投掷继续，末5s文字警告，Spent立即出数后残留0.25s；显式安全盒或开启的世界边界执行清理。配置副本见 DefaultGame.ini，设计边界 DEC32，接入见 [Lifecycle_Setup](../../05_Development_Guide/Lifecycle_Setup.md)。用户关闭编辑器后修正Unity测试函数重名，原工程Editor正式构建/链接与新DLL的全量66项Automation通过；用户在五项清单后确认“测试通过 创建pr”，当前角色PIE按用户报告通过；完整整局和正式敌人流程继续随后续任务验收。
 
 2026-10-11 T12 验证：复用 P01 和现有 D01–D03，十项新增集成通过真实 World::Tick / Chaos / ProjectileMovement Sweep / Timer / 帧末推力完成直接激活、两类外力移入弹道及布局阴性对照；最终 Editor 构建与全量 53 项 Automation 通过。P01 可选日志关联 spawn/impact/expired 的 HitId、来源、目标和接受结果，D03 按实例日志开关传递。保存 L_T12Chains 普通装置测试房、核对重载配置，保存 Blueprint 另行实际飞行命中；参数不变，DEC31 不允许直接激活后续目标或在连锁中传送对象。接入见 [Natural_Chain_Setup](../../05_Development_Guide/Natural_Chain_Setup.md)，完整范围见 [T12 报告](../../06_Test_Doc/T12_Report_2026-10-11.md)；用户已确认五站连锁/布局对照及暂停/清理的当前角色 PIE 通过，#14 为 Closed / Done；正式敌人和完整 G2 随后续任务验收。
 

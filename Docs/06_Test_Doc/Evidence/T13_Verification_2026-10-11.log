@@ -355,3 +355,11 @@ MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed: Success; errors=0; warnings=
 Primary startup warnings=8 (existing Rig=1, input mappings=7); separate from exported test warnings=0.
 BP_MothPlayer SHA256 after shutdown/testing: A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8; original user change preserved and excluded.
 Primary DLL build/link blocker is resolved. Current graphical Murdock PIE and previously listed later-task boundaries remain pending.
+
+=== User current graphical PIE acceptance, 2026-10-11 ===
+User original reply after the five-item checklist: 测试通过 创建pr
+Evidence type: user-reported current Murdock PIE acceptance; no new assistant graphical execution or recording.
+Scope: expiry warning and cumulative Held/drop/throw time; pause freeze; total admission/recycling and protection; visible effect/projectile cleanup; repeated reset and new PIE.
+Fast seventh Active replacement, 64-projectile saturation/recovery and explicit safety-box cleanup retain native test evidence; no claim of new manual measurements.
+Build source remains 62e6156; primary 66 Success and existing startup warnings remain as recorded above.
+T13 current implementation accepted; issue #15 Closed / Project Done. Full round/waves/formal enemies/final arena/independent package and complete G2 remain later-task scope.

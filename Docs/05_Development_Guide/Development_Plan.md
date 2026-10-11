@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.33｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+版本：v0.34｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
 
-2026-10-11 T13 验收完成：用户在五项清单后确认“测试通过 创建pr”，#15为Closed / Done，统一 WorldSubsystem 负责总道具/P01 登记、同类 Active 安全替换、累计闲置/警告与界外/重置清理。参数 v0.14 沿用上限与寿命，新增 Dormant Spent 反馈 0.25s；用户关闭编辑器后，修正Unity测试辅助函数重名；原工程Editor正式编译/链接成功，全量66项Automation Success（新增13/既有53），当前Murdock PIE按用户确认通过。接入和范围见 [Lifecycle_Setup](Lifecycle_Setup.md)、[T13 报告](../06_Test_Doc/T13_Report_2026-10-11.md)。T01–T13已Done，下一项T14；正式敌人容量、整局重开/跨波、最终场地安全盒、独立包与完整G2继续随后续任务验收。本次授权独立推送远程codex/t13-lifecycle → main并创建T13 PR，本地继续develop。以下段落保留历史。
+2026-10-11 T13 验收完成：用户在五项清单后确认“测试通过 创建pr”，#15为Closed / Done，统一 WorldSubsystem 负责总道具/P01 登记、同类 Active 安全替换、累计闲置/警告与界外/重置清理。参数 v0.14 沿用上限与寿命，新增 Dormant Spent 反馈 0.25s；用户关闭编辑器后，修正Unity测试辅助函数重名；原工程Editor正式编译/链接成功，全量66项Automation Success（新增13/既有53），当前Murdock PIE按用户确认通过。接入和范围见 [Lifecycle_Setup](Lifecycle_Setup.md)、[T13 报告](../06_Test_Doc/T13_Report_2026-10-11.md)。T01–T13已Done，下一项T14；正式敌人容量、整局重开/跨波、最终场地安全盒、独立包与完整G2继续随后续任务验收。本次授权已独立推送远程codex/t13-lifecycle → main并创建[T13 PR #41](https://github.com/YYchainsAw/MothEffect/pull/41)，当前Open，本地继续develop。以下段落保留历史。
 
 2026-10-11 T12 完成：用户确认“全部通过，可以记录验收”，五站自然连锁/布局对照及暂停恢复、结束清理的当前 Murdock PIE 已按用户确认归档，#14 为 Closed / Done。`bc3ce46` 交付源码、十项连锁测试和五站十四件普通装置的 L_T12Chains，Editor 构建与全量 53 项 Automation Success；证据和范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)、[场景接入](Natural_Chain_Setup.md)。参数 v0.13 不变，T01–T12 已 Closed / Done，T13–T27 仍 Todo，下一项 T13；正式敌人/掉落、容量、整局重开、独立包与完整 G2 继续随对应任务验证。本次按用户授权独立提交 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)：远程 codex/t12-natural-chains → main，本地不切换 develop；依赖的 T10/T11 PR #39 已合入 main。以下段落保留历史。
 

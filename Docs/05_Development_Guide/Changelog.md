@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.36 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.37 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.32，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.33，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -75,3 +75,5 @@ CHG038（2026-10-11）：用户要求继续推进完成 T13 / #15。新增 World
 CHG039（2026-10-11）：用户确认已保存并关闭编辑器，继续完成T13原工程验证。首次重编译发现Unity合并测试的Floor辅助函数重名，62e6156改名LifecycleFloor；保留失败15.25s及旧DLL锁定历史。原工程Development Editor / Win64正式Unity编译/链接Succeeded（13.33s），新DLL在原工程UnrealEditor-Cmd / NullRHI进程中加载，于19:04:46香港时间完成全量66项Automation Success，新增13/既有53均通过，每项errors/warnings与失败/未运行计数为零。八项既有启动warning与构建弃用warning分别记录；玩法参数和用户玩家资产哈希未变。当前PIE尚未确认，#15仍Open / In Progress；同步接入、报告、设计/参数证据、进度和阅读快照，只本地提交，未推送或创建PR。
 
 CHG040（2026-10-11）：用户在T13五项验收清单后确认“测试通过 创建pr”。按用户报告归档当前Murdock PIE的过期/累计持有放下投掷、暂停冻结、总容量回收保护、效果/弹丸结束与重复清理/重新PIE，结合原工程Editor正式构建及全量66项Automation，补齐#15验收并关闭、Project Done。快速七件Active、64发饱和/恢复与显式界外保留原生证据，不新增助手图形PIE或录屏。本轮只更新验收/参数证据/任务/设计/报告和阅读快照，不改玩法数值或重复运行UE。按本次授权向远程codex/t13-lifecycle推送并以main为base创建独立T13 PR，本地继续develop，用户BP_MothPlayer改动不纳入；正式敌人、完整整局/跨波、最终场地、独立包与完整G2继续随后续任务验收。
+
+CHG041（2026-10-11）：已按用户授权推送T13已提交内容至远程codex/t13-lifecycle，向main创建[T13 PR #41](https://github.com/YYchainsAw/MothEffect/pull/41)，当前Open；PR按仓库模板记录原工程构建、66项Automation与用户当前PIE验收，#15为Closed / Project Done。首个PR head为d486fbc，后续仅同步实际PR链接和交付记录，UE验证源码仍为62e6156；Repository checks按GitHub实际head结果核对。PR差异21件代码/配置/文档文件，无UE二进制资产，本地develop未切换且已有BP_MothPlayer改动保留。本轮没有授权合并PR，合并状态按GitHub后续结果记录。

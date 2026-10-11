@@ -53,7 +53,7 @@ AMothEffectCharacter::AMothEffectCharacter()
 	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = JumpVelocity;
 	GetCharacterMovement()->AirControl = PlayerAirControl;
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = JogSpeed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -78,6 +78,7 @@ AMothEffectCharacter::AMothEffectCharacter()
 void AMothEffectCharacter::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	RefreshMovementSpeed();
 	ConfigureRifleComponent();
 	ConfigureDeviceHoldPoint();
 }
@@ -96,20 +97,42 @@ void AMothEffectCharacter::BeginPlay()
 	HandleRifleCreated(RifleComponent->GetChildActor());
 	if (!IsValid(Rifle))
 	{
-		UE_LOG(LogMothEffect, Warning, TEXT("Assign RifleClass=BP_Rifle and a valid RifleAttachSocket in the player Blueprint."));
+		UE_LOG(LogMothEffect, Warning, TEXT("Assign RifleClass and a valid RifleAttachSocket, or enable Use Integrated Weapon Mesh for a character with a built-in gun."));
 	}
 }
 
 void AMothEffectCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	TryClearPrimaryReleaseGate();
+	if (!IsCombatInputFocused())
+	{
+		// A viewport's automatic key flush can be disabled; losing focus still ends this press.
+		CancelCombatInput();
+		ResetMovementInput();
+	}
+	else
+	{
+		TryClearPrimaryReleaseGate();
+	}
 
 	const float TargetAlpha = bIsAiming ? 1.0f : 0.0f;
 	AimBlendAlpha = AimBlendSeconds > UE_SMALL_NUMBER
 		? FMath::FInterpConstantTo(AimBlendAlpha, TargetAlpha, DeltaSeconds, 1.0f / AimBlendSeconds)
 		: TargetAlpha;
 	FollowCamera->SetFieldOfView(FMath::Lerp(HipFieldOfView, AimFieldOfView, AimBlendAlpha));
+}
+
+void AMothEffectCharacter::UnPossessed()
+{
+	// Controller/pawn replacement must not leave the old pawn's timed actions running.
+	CancelCombatInput();
+	CancelDeviceTasks();
+	ResetMovementInput();
+	if (IsValid(Rifle))
+	{
+		Rifle->CancelReload();
+	}
+	Super::UnPossessed();
 }
 
 void AMothEffectCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -134,6 +157,11 @@ void AMothEffectCharacter::ApplyPlayerSettings()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->JumpZVelocity = FMath::Max(0.0f, JumpVelocity);
 	GetCharacterMovement()->AirControl = FMath::Clamp(PlayerAirControl, 0.0f, 1.0f);
+	if (bUseIntegratedWeaponMesh)
+	{
+		// Gameplay reads the animated muzzle even while the body is outside the camera view.
+		GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	}
 	CameraBoom->TargetArmLength = FMath::Max(0.0f, ShoulderArmLength);
 	CameraBoom->SocketOffset = ShoulderSocketOffset;
 	CameraBoom->bUsePawnControlRotation = true;
@@ -146,9 +174,9 @@ void AMothEffectCharacter::ApplyPlayerSettings()
 
 void AMothEffectCharacter::RefreshMovementSpeed()
 {
-	bIsSprinting = bSprintRequested && !bIsAiming;
-	const float DesiredSpeed = bIsAiming ? AimMoveSpeed : (bIsSprinting ? SprintSpeed : WalkSpeed);
-	GetCharacterMovement()->MaxWalkSpeed = FMath::Max(0.0f, DesiredSpeed);
+	// One gait for normal movement, aiming and carrying. Ignore legacy speed overrides.
+	bIsSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = FMath::Max(0.0f, JogSpeed);
 }
 
 void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -186,12 +214,6 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &AMothEffectCharacter::DoAimEnd);
 			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Canceled, this, &AMothEffectCharacter::DoAimEnd);
 		}
-		if (SprintAction)
-		{
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoSprintStart);
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMothEffectCharacter::DoSprintEnd);
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AMothEffectCharacter::DoSprintEnd);
-		}
 		if (PrimaryAction)
 		{
 			EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &AMothEffectCharacter::DoPrimaryStart);
@@ -210,9 +232,9 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		{
 			UE_LOG(LogMothEffect, Warning, TEXT("Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."));
 		}
-		if (!AimAction || !SprintAction)
+		if (!AimAction)
 		{
-			UE_LOG(LogMothEffect, Warning, TEXT("Assign AimAction and SprintAction in the player Blueprint and map them in IMC_MothGameplay."));
+			UE_LOG(LogMothEffect, Warning, TEXT("Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."));
 		}
 		if (!PrimaryAction || !ReloadAction)
 		{
@@ -295,7 +317,7 @@ void AMothEffectCharacter::DoAimStart()
 		return;
 	}
 	bIsAiming = true;
-	CancelSprintUntilRelease();
+	RefreshMovementSpeed();
 }
 
 void AMothEffectCharacter::DoAimEnd()
@@ -306,35 +328,23 @@ void AMothEffectCharacter::DoAimEnd()
 
 void AMothEffectCharacter::DoSprintStart()
 {
-	if (!IsGameplayEnabled() || bIsAiming || bSprintRequiresRelease)
-	{
-		bSprintRequiresRelease = true;
-		return;
-	}
-
-	bSprintRequested = true;
+	// Existing Blueprint calls remain valid, but do not introduce a second gait.
 	RefreshMovementSpeed();
 }
 
 void AMothEffectCharacter::DoSprintEnd()
 {
-	bSprintRequested = false;
-	bSprintRequiresRelease = false;
 	RefreshMovementSpeed();
 }
 
 void AMothEffectCharacter::CancelSprintUntilRelease()
 {
-	bSprintRequiresRelease |= bSprintRequested;
-	bSprintRequested = false;
 	RefreshMovementSpeed();
 }
 
 void AMothEffectCharacter::ResetMovementInput()
 {
 	bIsAiming = false;
-	bSprintRequested = false;
-	bSprintRequiresRelease = false;
 	StopJumping();
 	RefreshMovementSpeed();
 }
@@ -346,15 +356,36 @@ void AMothEffectCharacter::ConfigureRifleComponent()
 		return;
 	}
 	RifleComponent->SetChildActorOwnerOnCreation(true);
-	if (RifleComponent->GetAttachParent() != GetMesh() || RifleComponent->GetAttachSocketName() != RifleAttachSocket)
+	USceneComponent* AttachParent = bUseIntegratedWeaponMesh ? GetRootComponent() : GetMesh();
+	const FName AttachSocket = bUseIntegratedWeaponMesh ? NAME_None : RifleAttachSocket;
+	if (RifleComponent->GetAttachParent() != AttachParent || RifleComponent->GetAttachSocketName() != AttachSocket)
 	{
-		RifleComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, RifleAttachSocket);
+		RifleComponent->AttachToComponent(AttachParent, FAttachmentTransformRules::KeepRelativeTransform, AttachSocket);
+	}
+	// Integrated meshes do not require a separate visual weapon Blueprint.
+	TSubclassOf<ARifle> EffectiveRifleClass = RifleClass;
+	if (!EffectiveRifleClass && bUseIntegratedWeaponMesh)
+	{
+		EffectiveRifleClass = ARifle::StaticClass();
 	}
 	// Same-class SetChildActorClass recreates registered children; do not call it on viewport drags.
-	if (RifleComponent->GetChildActorClass().Get() != RifleClass.Get())
+	if (RifleComponent->GetChildActorClass().Get() != EffectiveRifleClass.Get())
 	{
-		RifleComponent->SetChildActorClass(RifleClass.Get());
+		RifleComponent->SetChildActorClass(EffectiveRifleClass.Get());
 	}
+	if (ARifle* ConfiguredRifle = Cast<ARifle>(RifleComponent->GetChildActor()))
+	{
+		if (bUseIntegratedWeaponMesh)
+		{
+			ConfiguredRifle->SetMuzzleSource(IntegratedMuzzleSocket.IsNone() ? nullptr : GetMesh(), IntegratedMuzzleSocket);
+		}
+		else
+		{
+			ConfiguredRifle->ClearMuzzleSource();
+		}
+		ConfiguredRifle->SetActorHiddenInGame(bUseIntegratedWeaponMesh || IsCarryingDevice());
+	}
+	RifleComponent->SetVisibility(!bUseIntegratedWeaponMesh, true);
 	// The component transform is the editable offset. Never overwrite it during construction.
 }
 
@@ -365,7 +396,7 @@ void AMothEffectCharacter::HandleRifleCreated(AActor* ChildActor)
 	{
 		return;
 	}
-	if (!GetMesh()->DoesSocketExist(RifleAttachSocket))
+	if (!bUseIntegratedWeaponMesh && !GetMesh()->DoesSocketExist(RifleAttachSocket))
 	{
 		UE_LOG(LogMothEffect, Warning, TEXT("RifleAttachSocket '%s' does not exist on the player Mesh."), *RifleAttachSocket.ToString());
 		return;
@@ -386,6 +417,15 @@ void AMothEffectCharacter::HandleRifleCreated(AActor* ChildActor)
 	Rifle = CreatedRifle;
 	Rifle->SetOwner(this);
 	Rifle->SetInstigator(this);
+	if (bUseIntegratedWeaponMesh)
+	{
+		Rifle->SetMuzzleSource(IntegratedMuzzleSocket.IsNone() ? nullptr : GetMesh(), IntegratedMuzzleSocket);
+		if (IntegratedMuzzleSocket.IsNone() || !GetMesh()->DoesSocketExist(IntegratedMuzzleSocket))
+		{
+			UE_LOG(LogMothEffect, Warning, TEXT("IntegratedMuzzleSocket '%s' is missing on %s; configure a socket at the built-in gun muzzle before firing."),
+				*IntegratedMuzzleSocket.ToString(), *GetName());
+		}
+	}
 	Rifle->OnShotFired.AddUniqueDynamic(this, &AMothEffectCharacter::HandleShotFired);
 	Rifle->OnReloadStarted.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadStarted);
 	Rifle->OnReloadFinished.AddUniqueDynamic(this, &AMothEffectCharacter::HandleReloadFinished);
@@ -415,13 +455,14 @@ bool AMothEffectCharacter::IsGameplayEnabled() const
 
 bool AMothEffectCharacter::CanFireRifle() const
 {
-	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready
+	return IsGameplayEnabled() && IsCombatInputFocused() && ActionState == EPlayerActionState::Ready
 		&& PrimaryPressMode == EPrimaryPressMode::Fire && !bRequirePrimaryRelease && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::CanReloadRifle() const
 {
-	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready && !bDeviceInteractionInProgress;
+	return IsGameplayEnabled() && IsCombatInputFocused()
+		&& ActionState == EPlayerActionState::Ready && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::GetRifleView(FVector& ViewLocation, FVector& ViewDirection) const
@@ -451,6 +492,11 @@ FVector AMothEffectCharacter::GetRifleSafetyOrigin() const
 
 void AMothEffectCharacter::DoPrimaryStart()
 {
+	if (!IsCombatInputFocused())
+	{
+		CancelCombatInput();
+		return;
+	}
 	if (PrimaryPressMode != EPrimaryPressMode::None || bRequirePrimaryRelease
 		|| !IsGameplayEnabled() || bDeviceInteractionInProgress)
 	{
@@ -473,6 +519,10 @@ void AMothEffectCharacter::DoPrimaryStart()
 	if (ActionState != EPlayerActionState::Ready || !IsValid(Rifle))
 	{
 		PrimaryPressMode = EPrimaryPressMode::Blocked;
+		if (ActionState == EPlayerActionState::Ready && !IsValid(Rifle))
+		{
+			UE_LOG(LogMothEffect, Warning, TEXT("Player %s cannot fire because the rifle is unavailable. Check Rifle Class and the integrated weapon/socket settings."), *GetName());
+		}
 		if (ActionState == EPlayerActionState::ThrowRecovery)
 		{
 			RejectDeviceInteraction(TEXT("投掷恢复中；恢复后松开左键，再按下开火。"));
@@ -538,7 +588,7 @@ void AMothEffectCharacter::TryClearPrimaryReleaseGate()
 	{
 		return;
 	}
-	if (FSlateApplication::IsInitialized() && !FSlateApplication::Get().IsActive())
+	if (!IsCombatInputFocused())
 	{
 		return;
 	}
@@ -547,6 +597,11 @@ void AMothEffectCharacter::TryClearPrimaryReleaseGate()
 		bRequirePrimaryRelease = false;
 		PrimaryPressMode = EPrimaryPressMode::None;
 	}
+}
+
+bool AMothEffectCharacter::IsCombatInputFocused() const
+{
+	return !FSlateApplication::IsInitialized() || FSlateApplication::Get().IsActive();
 }
 
 void AMothEffectCharacter::DoReloadStart()
@@ -576,7 +631,12 @@ void AMothEffectCharacter::HandleShotFired(ARifle* FiredRifle)
 	}
 	if (FireMontage)
 	{
-		PlayAnimMontage(FireMontage);
+		if (PlayAnimMontage(FireMontage) <= 0.0f && !bFireMontageWarningLogged)
+		{
+			bFireMontageWarningLogged = true;
+			UE_LOG(LogMothEffect, Warning, TEXT("FireMontage '%s' could not play on %s. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."),
+				*GetNameSafe(FireMontage), *GetName());
+		}
 	}
 }
 

@@ -28,7 +28,7 @@ void AMothEffectCharacter::RefreshCarryPresentation()
 {
 	if (IsValid(Rifle))
 	{
-		Rifle->SetActorHiddenInGame(IsCarryingDevice());
+		Rifle->SetActorHiddenInGame(bUseIntegratedWeaponMesh || IsCarryingDevice());
 	}
 }
 
@@ -176,7 +176,9 @@ bool AMothEffectCharacter::TryReleaseHeldDevice(bool bThrow)
 	}
 	TGuardValue<bool> InteractionGuard(bDeviceInteractionInProgress, true);
 	ADeviceBase* Device = HeldDevice.Get();
-	FVector AimPoint, ViewLocation, ViewDirection;
+	FVector AimPoint = FVector::ZeroVector;
+	FVector ViewLocation = FVector::ZeroVector;
+	FVector ViewDirection = FVector::ZeroVector;
 	if (bThrow && (!IsValid(Rifle) || !Rifle->GetAimTarget(AimPoint, ViewLocation, ViewDirection)))
 	{
 		return RejectDeviceInteraction(TEXT("无法确定投掷方向。"));

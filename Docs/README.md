@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.20 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.23 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-11 T09 完成：本机 UE 5.8 Editor 增量构建成功；九项玩家边界测试复现并修正无 Flush 应用失焦续射、UnPossessed 后旧角色续射，修正后 MothEffect 共 23 项 Automation 全部 Success，未预期 errors/warnings 为零。用户随后确认当前真实角色 PIE“测试通过”，确认原文与通过范围已归档；Issue #11 验收和验证记录已补齐，状态为 Closed / Done。实际胜负/整局重开随 T16 补测，G1/G3 继续按完整证据验收。验证范围和 PR 报告见 [T09 报告](06_Test_Doc/T09_Report_2026-10-11.md)。源码和文档仅本地提交，用户自行推送和创建 PR。
+
+2026-10-08 玩家迁移：Murdock 模型和配套动画、一体枪口、单 Jog 移动的现行接入见 [Murdock_Setup](05_Development_Guide/Murdock_Setup.md)。参数 v0.11 与新 JogSpeed 默认值同步，助手未编译/运行 UE；旧模板动画与独立枪步骤保留为历史或可选模式。
 
 本目录按用户建立的开发阶段结构归档。文件使用稳定的英文语义名称，正文为中文；v0.3 整理结构，v0.4 配置版本管理，v0.5 清理个人路径与发布配置，v0.6 将 Content 的 Git 范围收敛为 MothEffect 子目录，v0.7 统一英文名 Moth Effect 与中文名飞蛾效应，v0.8 新增五种待选机关，v0.9 确认玩家方案，v0.10 开始 T04 C++，v0.11 补充动画接线，v0.12 开始 T05，v0.13 改为角色组件内预览和调整武器，v0.14 同步 GitHub 开发流程、六阶段排期与任务状态。v0.15 核对本机/远程的实际实现，确认每日 4–6 小时，并预留少量原创机关/场景资产和 UI；v0.16 记录 T05 完成并接入 T06 原生机关状态与命中基础。各文件保留自身最近更新版本；文档源文件是 Markdown/JSON，[浏览器阅读版](01_Project_Overview/Reading_View.html) 是汇总快照。
 
@@ -35,6 +39,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Development_Plan.md](05_Development_Guide/Development_Plan.md) | 开发任务与排期 |
 | 05_Development_Guide/ | [Progress_Audit_2026-10-07.md](05_Development_Guide/Progress_Audit_2026-10-07.md) | 27 条任务的静态实现/资产审计、可复用前置与缺失证据 |
 | 05_Development_Guide/ | [Player_Setup.md](05_Development_Guide/Player_Setup.md) | 玩家 C++ 交付范围、输入引用、ABP 数据/移动/瞄准接线与手动验收 |
+| 05_Development_Guide/ | [Murdock_Setup.md](05_Development_Guide/Murdock_Setup.md) | Murdock 官方 ABP 复用、单 Jog、一体枪口、开火/换弹及交互迁移与待执行验证 |
 | 05_Development_Guide/ | [Weapon_Setup.md](05_Development_Guide/Weapon_Setup.md) | T05 步枪/输入/测试靶/上半身动画配置与分支验收 |
 | 05_Development_Guide/ | [Device_Setup.md](05_Development_Guide/Device_Setup.md) | T06 原生机关状态、灰盒资产、重复命中与当前验收步骤 |
 | 05_Development_Guide/ | [Device_Interaction_Setup.md](05_Development_Guide/Device_Interaction_Setup.md) | T07 挂点、持物表现、安全释放、输入与已通过范围 |
@@ -43,6 +48,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
 | 06_Test_Doc/ | [Test_Plan.md](06_Test_Doc/Test_Plan.md) | 测试计划与验收 |
+| 06_Test_Doc/ | [T09_Report_2026-10-11.md](06_Test_Doc/T09_Report_2026-10-11.md) | T09 修复、原生验证证据、PIE 收尾步骤与 PR 报告 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 
@@ -60,6 +66,6 @@ GDD = 游戏设计文档，TDD = 技术设计文档。玩法数值归属 GDD，U
 
 目录阶段编号保持现状；文件名用英文语义名称和下划线，不重复加另一套顺序编号。REQ/R/D/T/G/TC/DEC/CHG/RISK 等 ID 不随文件迁移改变。
 
-交互、接口、内容、数值各保留唯一来源，具体分工见 [文档维护与变更流程](05_Development_Guide/Documentation_Workflow.md)。参数账本不是可直接导入 UE 的 DataTable；此前只改代码的移动速度差异仍按 Player_Setup 记录。T08 新增弹丸几何半径、出生净距和 Spent 视觉残留默认值，在参数 v0.10 中标记为未实测，既有速度/伤害/发射节奏不变。当前任务开关状态、Project Status 与验收证据分别记录，进度快照和 Issue 对照在开发计划维护。
+交互、接口、内容、数值各保留唯一来源，具体分工见 [文档维护与变更流程](05_Development_Guide/Documentation_Workflow.md)。参数账本不是可直接导入 UE 的 DataTable；此前只改代码的移动速度差异仍按 Player_Setup 记录。T08 新增弹丸几何半径、出生净距和 Spent 视觉残留默认值，在参数 v0.11 中标记为未实测，既有速度/伤害/发射节奏不变。当前任务开关状态、Project Status 与验收证据分别记录，进度快照和 Issue 对照在开发计划维护。
 
 修改源文件后同步更新版本、相对链接和阅读快照；不要只改 HTML。原始平铺文件已在工程外备份，避免在 Docs 中并存两套有效文件。

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：步枪、换弹与生命接入
 
-版本 v0.5 · 2026-10-07 · T05 动画与当前边界由用户报告 PIE 通过，构建和证据归档待补
+版本 v0.6 · 2026-10-08 · Murdock 迁移待编译/验收；旧模板 T05 结果按原范围保留
+
+2026-10-08 现行 Murdock 玩家使用一体人物/枪械模型，C++ 新增 Use Integrated Weapon Mesh 与角色枪口来源，操作见 [Murdock_Setup](Murdock_Setup.md)。该模式保留 Rifle 玩法 Actor、隐藏独立枪，不要求旧 WeaponSocket；开火/换弹 Montage 需改为 Murdock 骨架与实际 Slot。下文独立枪与 Mannequin 动画步骤保留作为旧模式和验收历史；本次迁移未编译/PIE。
 
 2026-10-07 用户在本次会话报告 PIE 通过，并明确覆盖：射击/换弹动画与移动跳跃共存、动画中断、长按换弹不续射、死亡取消、暂停与失焦。[T05 Issue #7](https://github.com/YYchainsAw/MothEffect/issues/7) 已关闭、Project 为 Done，[PR #34](https://github.com/YYchainsAw/MothEffect/pull/34) 已合并。结果按用户报告归档，具体工具链、参数差异和录屏/日志继续补档；后续未实现分支随对应任务验证。T06 原生基础继续按 [机关状态与命中接入](Device_Setup.md) 配置和验收。
 

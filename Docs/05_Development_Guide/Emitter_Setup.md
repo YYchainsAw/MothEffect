@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T08 发射器 D03 与弹丸 P01 接入
 
-版本 v0.4 · 2026-10-08 · 状态：十二项 Automation 全部通过；补齐游戏内方向网格，PIE 与 G1 待验收
+版本 v0.5 · 2026-10-08 · 状态：十二项 Automation 与 PIE 方向显示通过；完整 TC03–TC05 与 G1 待验收
 
 对应 [T08 / Issue #10](https://github.com/YYchainsAw/MothEffect/issues/10)。规则依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，参数依据是 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.10。继续使用当前 `develop`；本轮没有创建分支或 PR。用户已授权按小功能进行本地 Git 提交，助手未编译或运行 UE。
 
@@ -76,7 +76,7 @@ Components 里的 **EmitterDirectionMarker** 已设置 **Absolute Rotation**，A
 4. **Mobility = Movable**、**Collision Presets = NoCollision**、**Simulate Physics = false**、**Visible = true**、**Hidden in Game = false**。可给已有亮色材质，暂时没有时先用默认材质；父 EmitterDirectionMarker 的 Hidden in Game 也应关闭。
 5. Compile、Save 蓝图，进入 PIE 射击一件 Dormant 发射器。提示只在激活后显示，持续当前 3 秒工作期，进入 Spent 后隐藏；未激活时看不到提示是正常行为。检查尖端与 P01 同向，机身翻滚后方向保持不变。
 
-原生状态切换已经传播子组件显隐，不需要添加 Tick、旋转或 Set Visibility 脚本。这是蓝图外观接入，玩法源码与十二项 Automation 不变；用户尚未确认本节配置后的 PIE 显示结果。
+原生状态切换已经传播子组件显隐，不需要添加 Tick、旋转或 Set Visibility 脚本。这是蓝图外观接入，玩法源码与十二项 Automation 不变。2026-10-08 用户在本节配置步骤后确认“通过”，按 PIE 发射方向显示通过归档；未扩大为完整 TC03/TC04/TC05。随后核对已保存资产只检出 Sphere，未检出 Cone/DirectionVisual；请 Compile、Save All 并提交最终方向配置，保证 PR 包含实际测试的资源版本。
 
 已有 T06 的 BP_DeviceBase 默认也是 Emitter。本轮新增效果后，它被击中会自动发射并在 3 秒结束；T06 的 J 手动结束检查应在这 3 秒内执行。本轮 PIE 优先使用明确配置了可见弹丸的 BP_DeviceEmitter。
 

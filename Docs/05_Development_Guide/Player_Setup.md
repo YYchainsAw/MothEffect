@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：玩家输入与动画接入
 
-版本 v0.4 · 2026-10-06 · T04 Issue 已关闭 / Project 为 Pending Acceptance · 基础项已勾选，完整分支证据待补
+版本 v0.5 · 2026-10-08 · Murdock 迁移待编译/验收；下文 T04 基础项为旧模板历史
+
+2026-10-08 当前玩家已转向 Murdock，用户要求只保留单 Jog，取消走路/冲刺速度切换。新 `JogSpeed` 与参数基线同步，旧 WalkSpeed/AimMoveSpeed/SprintSpeed 已移除；下文 T04 与模板 ABP 是历史接入记录。现行角色、官方 ABP 复用和一体枪口配置见 [Murdock_Setup](Murdock_Setup.md)，本次代码尚未编译/PIE。
 
 协作方式已经用户确认：助手修改 C++，用户在 UE 中配置资产与试玩验收。用户明确要求助手不代为编译，后续编译由用户自行执行。C++ 已写入越肩相机、镜头水平朝向、瞄准/冲刺；本轮复用现有读取接口，继续接入动画图。
 

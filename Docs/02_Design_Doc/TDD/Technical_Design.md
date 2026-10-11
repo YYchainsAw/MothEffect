@@ -1,8 +1,10 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.21 · 2026-10-08 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.25 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
 
-2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 [Emitter_Setup 第 4 节](../../05_Development_Guide/Emitter_Setup.md#4-创建-bp_deviceemitter-与方向提示)，用户配置后的 PIE 表现待确认；本轮不改玩法源码。
+2026-10-11 T09 收尾：失焦取消不再只依赖 Controller Flush，角色 Tick 与射击许可共同检查应用焦点；释放门控仍读取真实左键，不因 Canceled/Flush 自动放行。UnPossessed 停连射并取消换弹/恢复和 Held，旧角色不留下延迟任务。原生测试分别替代硬件按键与焦点状态，使用真实隔离 World::Tick 验证暂停；Fire/Reload/Throw 的不可播放 Montage 不参与玩法结算。Editor 构建与 23 项 Automation 已通过，用户随后确认当前真实角色 PIE 通过，T09 已关闭；正式胜负/重开联调随 T16 补测，见 [T09 报告](../../06_Test_Doc/T09_Report_2026-10-11.md)。
+
+2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 [Emitter_Setup 第 4 节](../../05_Development_Guide/Emitter_Setup.md#4-创建-bp_deviceemitter-与方向提示)，用户随后确认 PIE 方向显示通过；最终蓝图配置存盘、完整 TC03–TC05 和 G1 仍待核对。本轮不改玩法源码。
 
 2026-10-08 17:06 T08 复测：用户 Devices 九项与 Projectiles 三项全部 Success，`23eb829` 的 UWorld::EndPlay 收尾修正已复测，最新轮次没有再出现缺少 EndPlay 警告。证据见 [T08 验证记录](../../06_Test_Doc/Evidence/T08_Verification_2026-10-08.log)；真实物理、方向表现、输入与空中成功率仍待 PIE/G1，助手未运行 UE。
 
@@ -91,7 +93,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 
 W01：①从相机沿准星射线找第一阻挡点；无命中则取射程终点。②从枪口向该点再检测，只有第二段实际命中才造成伤害/启动机关，`ShotDirection` 使用第二段方向。两段忽略玩家、枪及 Held 道具。先检测角色胸前到枪口的短段，枪口已被墙体阻挡或嵌入时取消射击伤害，提示“枪口受阻”，避免镜头看到目标却从墙另一侧开枪。SpringArm 防碰撞负责镜头，不能代替枪口检测。[Epic：单次射线返回首个阻挡命中](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Collision/LineTraceByChannel)
 
-复用已有 /Game/Input 的 IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump，在现有控制器与角色输入绑定上扩展。新增 IMC_MothGameplay 只映射 IA_Primary/Interact/Aim/Reload/Sprint，不重复建立第二套移动与跳跃输入；新增输入资产沿用户实际目录，Action 放 /Game/MothEffect/Input/Actions，Mapping Context 放 /Game/MothEffect/Input/Mapping。`IA_Primary` 用简单 Boolean，不叠加 Hold/Release 触发器；单次交互与换弹绑定 Started，移动/视角轴使用 Triggered。左键一次按压流程与取消语义见第 3.3 节。[Epic：Enhanced Input 事件](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
+复用已有 /Game/Input 的 IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump，在现有控制器与角色输入绑定上扩展。新增 IMC_MothGameplay 只映射 IA_Primary/Interact/Aim/Reload；旧 IA_Sprint 不再由 C++ 绑定，不重复建立第二套移动与跳跃输入；新增输入资产沿用户实际目录，Action 放 /Game/MothEffect/Input/Actions，Mapping Context 放 /Game/MothEffect/Input/Mapping。`IA_Primary` 用简单 Boolean，不叠加 Hold/Release 触发器；单次交互与换弹绑定 Started，移动/视角轴使用 Triggered。左键一次按压流程与取消语义见第 3.3 节。[Epic：Enhanced Input 事件](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
 
 E 在空手时拾取准星附近的最近合格 Dormant，道具到角色需无遮挡；Held 时安全放下，Held 时 R 换弹不生效。拾取关物理、关碰撞并附着手部挂点；投掷先从角色外侧到释放点做与道具体积一致的 Sweep，再检查终点重叠，不能把释放点直接放到摄像机位置。路径阻挡或终点不合法则保持 Held 并提示。Detach 后切回 Dormant、开启重力与物理，设置 [玩法参数基线](../GDD/Gameplay_Parameters.json) 的初速度；可对物理根启用 CCD 并验证薄墙。放下同样检查空位，反复拾取放下不刷新累计闲置寿命。
 
@@ -101,10 +103,10 @@ E 在空手时拾取准星附近的最近合格 Dormant，道具到角色需无�
 
 | 行动状态 | 进入条件与权威数据 | 可执行行为 | 退出与失败处理 |
 |---|---|---|---|
-| Ready | 存活、无持物、无换弹或投掷恢复任务 | 移动/跳跃、瞄准、冲刺；左键申请射击，E 拾取，R 手动换弹 | 拾取成功到 Carrying；有效换弹到 Reloading；请求失败保持 Ready |
-| Carrying | 有一个有效 Held 引用，所属机关也为 Held | 移动/跳跃、瞄准投掷方向、非瞄准冲刺；E 放下，左键单次投掷 | 安全放下到 Ready；投掷成功到 ThrowRecovery；阻挡保持 Carrying；不响应 R 或枪械射击 |
-| ThrowRecovery | 物理释放已提交，Held 引用已清空，恢复计时进行中 | 移动/跳跃、瞄准、非瞄准冲刺；不接受新的射击/拾取/换弹请求 | 恢复计时到期到 Ready；提前左键为 Blocked，不缓存开火；放下不经过本状态 |
-| Reloading | ARifle 已接受有效换弹请求 | 移动/跳跃、瞄准、非瞄准冲刺；E 尝试拾取；不接受射击或重复换弹 | 计时完成到 Ready 并补弹；拾取成功取消任务到 Carrying；拾取失败继续；普通受伤不取消 |
+| Ready | 存活、无持物、无换弹或投掷恢复任务 | 移动/跳跃、瞄准；左键申请射击，E 拾取，R 手动换弹 | 拾取成功到 Carrying；有效换弹到 Reloading；请求失败保持 Ready |
+| Carrying | 有一个有效 Held 引用，所属机关也为 Held | 移动/跳跃、瞄准投掷方向；E 放下，左键单次投掷 | 安全放下到 Ready；投掷成功到 ThrowRecovery；阻挡保持 Carrying；不响应 R 或枪械射击 |
+| ThrowRecovery | 物理释放已提交，Held 引用已清空，恢复计时进行中 | 移动/跳跃、瞄准；不接受新的射击/拾取/换弹请求 | 恢复计时到期到 Ready；提前左键为 Blocked，不缓存开火；放下不经过本状态 |
+| Reloading | ARifle 已接受有效换弹请求 | 移动/跳跃、瞄准；E 尝试拾取；不接受射击或重复换弹 | 计时完成到 Ready 并补弹；拾取成功取消任务到 Carrying；拾取失败继续；普通受伤不取消 |
 | Dead | HealthComponent 的一次死亡事件 | 禁止玩法输入；播放死亡/显示结果 | 停止开火、取消换弹与恢复任务，Held 随本局清理；重开创建新局，不原地返回 Ready |
 
 ~~~text
@@ -121,7 +123,7 @@ Reloading --拾取成功，取消未完成换弹--> Carrying
 
 玩家持枪与携带时沿控制器/镜头的水平 Yaw 转向，WASD 按镜头水平轴移动；角色本体不跟随镜头 Pitch/Roll 倾斜。起步使用 `bUseControllerRotationYaw=true`、`bOrientRotationToMovement=false`，替换模板的沿移动方向转身方式；AnimBP 使用角色局部水平速度组成八方向移动。镜头俯仰交给 AimOffset 与枪械瞄准方向。
 
-速度从 `player.walkSpeedCmPerSec / aimMoveSpeedCmPerSec / sprintSpeedCmPerSec` 读取；瞄准优先于冲刺，瞄准与有效开火会取消当前冲刺，需松开再按 Shift 才重新请求冲刺，避免松开瞄准就意外恢复跑步。携带不禁用跳跃或非瞄准冲刺；瞄准移动速度首个原型沿用走路速度，按 TC34 实测后再调整。
+2026-10-08 用户将移动改为单 Jog。`JogSpeed` 是正常、瞄准、携带的唯一最大水平速度，原生默认值与 `player.jogSpeedCmPerSec` 同步；移除 WalkSpeed/AimMoveSpeed/SprintSpeed 分支，旧蓝图保存的三个速度不能覆盖新字段。C++ 不再绑定 SprintAction，旧 DoSprintStart/End/CancelSprintUntilRelease 只作兼容入口，IsSprinting 始终为 false。跳跃仍由 CharacterMovement 控制，按新 TC34 验收。
 
 空中控制使用 `player.airControl`，起步复用本地源码默认值；受柱子/爆炸推动后不进入眩晕状态，仍能转镜头、瞄准和在行动许可下射击。跳跃只在 CharacterMovement 允许时接受，不增加二段跳；落地不强制锁输入，首版无坠落伤害。相机臂长、越肩偏移、FOV/混合时间读取 camera 组，投掷与射击共用准星视线目标；相机碰撞不代替释放体积或枪口检测。
 
@@ -131,9 +133,11 @@ Reloading --拾取成功，取消未完成换弹--> Carrying
 2. ARifle 每发检查玩家仍为 Ready、本次归属仍为 Fire、局内许可、射速和弹药。Completed 停止连射并在确认物理松键后清本次归属；Canceled 停连射、置 Blocked 并设置 `bRequirePrimaryRelease`，实际松键后才清门控，不能把输入上下文移除造成的取消当作玩家已松键。
 3. 成功投掷清 Held、恢复持枪表现、进入 ThrowRecovery，计时长度只读取 `throw.minGunRecoverySeconds`。同次长按始终不能开枪；松键与恢复计时两个条件顺序不限，但都完成后再出现新的 Started 才能射击。恢复期间再次按下只显示恢复提示，不在计时到期时自动开枪，必须再松键重新按；失败投掷不启动恢复计时。
 4. 换弹时先停止连射；空匣不开枪且不自动换弹，R 才请求换弹，满匣拒绝无效请求。换弹计时只由 ARifle 持有；完成一次补弹，取消不补弹。拾取候选完整验证成功后统一取消未完成换弹并提交 Carrying，不能先取消再发现拾取失败。取消/死亡使任务标识失效，迟到回调不补弹或覆盖新行动。
-5. 暂停冻结玩法与动画计时，保留合法换弹/恢复剩余时间，同时停连射、清瞄准/冲刺输入意图并设置松键门控。失焦也停连射并设置门控；Canceled 或输入 Flush 本身不能解除门控，重新获得焦点后检查实际按键已松开，之后才允许新 Started。死亡/胜负/EndPlay 取消玩法任务、停止攻击并解除无效引用/绑定；结算后的回调不得继续伤害或补弹。
+5. 暂停冻结玩法与动画计时，保留合法换弹/恢复剩余时间，同时停连射、清瞄准/跳跃输入意图并设置松键门控。失焦也停连射并设置门控；Canceled 或输入 Flush 本身不能解除门控，重新获得焦点后检查实际按键已松开，之后才允许新 Started。死亡/胜负/EndPlay 取消玩法任务、停止攻击并解除无效引用/绑定；结算后的回调不得继续伤害或补弹。
 
 ### 3.4 动画资产与图结构
+
+2026-10-08 当前玩家为用户创建的 BP_MothPlayer / ABP_MothMurdock，使用 ParagonMurdock 模型和配套动画。人物和枪一体时启用 bUseIntegratedWeaponMesh：RifleComponent 挂角色根组件，隐藏独立枪 Actor，RifleClass 留空可使用原生 ARifle；每发从角色 Mesh 的 IntegratedMuzzleSocket 获取世界枪口位置，不要求旧 WeaponSocket。缺失/销毁的枪口来源拒绝射击且不扣弹，不回退到独立枪或组件中心；相机目标、枪口遮挡与弹药/换弹规则保留。角色骨骼在一体模式始终刷新，隐藏逻辑枪不影响真实枪口读取。迁移及 Montage Slot 配置见 [Murdock_Setup](../../05_Development_Guide/Murdock_Setup.md)。下面模板资源与旧玩家记录属于迁移前方案，不能代替 Murdock 验收。
 
 本地 `/Game/Characters/Mannequins/Anims/Rifle` 已静态核对存在 `MM_Rifle_Fire / Reload / Equip / DryFire`、`MF_Rifle_Idle_ADS`、八方向 Walk/Jog、Rifle 跳跃系列、HitReact 与 `AIM/AO_Rifle`。文件存在不等于骨架、Additive、Root Motion 或 Notify 已验收；在编辑器逐项核对后引用。先复用本地资产，不把模板 Combat 近战示例当作本作射击实现。
 
@@ -149,7 +153,7 @@ Character / CharacterMovement / Rifle 的只读快照
 
 | 动画部分 | 选择与转换依据 | 必须保证 |
 |---|---|---|
-| Grounded | 局部水平速度的二维 BlendSpace；现有资产以等价的 Direction / GroundSpeed 表达，复用八方向 Walk/Jog 和待机 | 侧移/倒退姿态与真实移动方向一致 |
+| Grounded | 局部水平速度的二维 BlendSpace；现有资产以等价的 Direction / GroundSpeed 表达，复用八方向 Jog 和待机 | 侧移/倒退姿态与真实移动方向一致 |
 | JumpStart / InAir / Land | 主动跳跃可进 JumpStart；被弹射、爆炸推动或走落边缘直接进 InAir；竖直速度选择上升/顶点/下落，落地回 Grounded | 任意地面状态都可直接转 InAir；新外力可中断 Land；落地动画不锁玩法 |
 | AimOffset | 存活持枪时根据镜头相对角色的瞄准方向混合，范围按 AO 资产能力核验 | 携带仍能调整镜头/投掷方向，但不用步枪 AO 强行扭曲携带姿态；换弹时按姿态需要降低 AO 权重 |
 | Fire / Reload Montage | OnShotFired 与有效换弹事件请求上半身动画；UpperBody Slot 必须配合 Layered Blend per Bone/骨骼遮罩 | 不覆盖腿部移动；Reload 优先于 Fire，动作许可在 C++ 处理，同组 Montage 不互相误抢 |

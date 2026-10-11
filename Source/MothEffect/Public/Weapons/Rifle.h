@@ -67,6 +67,17 @@ public:
 	UFUNCTION(BlueprintPure, Category="Weapon")
 	float GetReloadProgress() const;
 
+	/** Follow an animated socket or component belonging to an integrated character weapon. */
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	void SetMuzzleSource(USceneComponent* Source, FName SocketName);
+
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	void ClearMuzzleSource();
+
+	/** Missing/destroyed external sources fail instead of falling back to the old gun origin. */
+	UFUNCTION(BlueprintPure, Category="Weapon")
+	bool GetMuzzleLocation(FVector& Location) const;
+
 	/** Shared camera target for the rifle and device throw; each uses its own origin. */
 	bool GetAimTarget(FVector& AimPoint, FVector& ViewLocation, FVector& ViewDirection) const;
 	ECollisionChannel GetWeaponTraceChannel() const { return WeaponTraceChannel; }
@@ -127,4 +138,7 @@ private:
 	bool bFireRequested = false;
 	bool bReloading = false;
 	bool bEndingPlay = false;
+	bool bUseExternalMuzzle = false;
+	TWeakObjectPtr<USceneComponent> ExternalMuzzleSource;
+	FName ExternalMuzzleSocket = NAME_None;
 };

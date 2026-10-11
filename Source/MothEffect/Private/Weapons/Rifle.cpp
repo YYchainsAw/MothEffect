@@ -45,10 +45,48 @@ AMothEffectCharacter* ARifle::GetPlayerOwner() const
 	return Cast<AMothEffectCharacter>(GetOwner());
 }
 
+void ARifle::SetMuzzleSource(USceneComponent* Source, FName SocketName)
+{
+	bUseExternalMuzzle = true;
+	ExternalMuzzleSource = Source;
+	ExternalMuzzleSocket = SocketName;
+}
+
+void ARifle::ClearMuzzleSource()
+{
+	bUseExternalMuzzle = false;
+	ExternalMuzzleSource.Reset();
+	ExternalMuzzleSocket = NAME_None;
+}
+
+bool ARifle::GetMuzzleLocation(FVector& Location) const
+{
+	Location = FVector::ZeroVector;
+	USceneComponent* Source = bUseExternalMuzzle ? ExternalMuzzleSource.Get() : Muzzle.Get();
+	if (!IsValid(Source))
+	{
+		return false;
+	}
+	if (bUseExternalMuzzle && (!Source->IsRegistered() || !IsValid(Source->GetOwner())
+		|| Source->GetOwner()->IsActorBeingDestroyed()
+		|| (!ExternalMuzzleSocket.IsNone() && !Source->DoesSocketExist(ExternalMuzzleSocket))))
+	{
+		return false;
+	}
+	Location = bUseExternalMuzzle && !ExternalMuzzleSocket.IsNone()
+		? Source->GetSocketLocation(ExternalMuzzleSocket) : Source->GetComponentLocation();
+	return !Location.ContainsNaN();
+}
+
 bool ARifle::TryStartFire()
 {
 	AMothEffectCharacter* Player = GetPlayerOwner();
 	if (bEndingPlay || !Player || !Player->CanFireRifle() || bReloading || !GetWorld())
+	{
+		return false;
+	}
+	FVector MuzzleLocation;
+	if (!GetMuzzleLocation(MuzzleLocation))
 	{
 		return false;
 	}
@@ -140,7 +178,8 @@ void ARifle::TryFireOneShot()
 	FVector ViewLocation;
 	FVector ViewDirection;
 	FVector AimPoint;
-	if (!GetAimTarget(AimPoint, ViewLocation, ViewDirection))
+	FVector MuzzleLocation;
+	if (!GetMuzzleLocation(MuzzleLocation) || !GetAimTarget(AimPoint, ViewLocation, ViewDirection))
 	{
 		StopFire();
 		return;
@@ -151,7 +190,6 @@ void ARifle::TryFireOneShot()
 	TArray<AActor*> AttachedActors;
 	Player->GetAttachedActors(AttachedActors, true, true);
 	Params.AddIgnoredActors(AttachedActors);
-	const FVector MuzzleLocation = Muzzle->GetComponentLocation();
 	const FVector ShotDirection = (AimPoint - MuzzleLocation).GetSafeNormal();
 	FHitResult SafetyHit;
 	FCollisionQueryParams SafetyParams = Params;
@@ -189,7 +227,6 @@ void ARifle::TryFireOneShot()
 	}
 #endif
 
-	Player->CancelSprintUntilRelease();
 	AActor* HitActor = ShotHit.GetActor();
 	if (bHit && IsValid(HitActor) && HitActor->GetClass()->ImplementsInterface(UBallisticReactive::StaticClass()))
 	{

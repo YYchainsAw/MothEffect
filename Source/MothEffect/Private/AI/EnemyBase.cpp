@@ -130,7 +130,8 @@ void AEnemyBase::SetTelegraph(bool bVisible)
 	if (bTelegraphVisible == bVisible) return;
 	bTelegraphVisible = bVisible;
 	LogEvent(bVisible ? TEXT("telegraph") : TEXT("telegraph_end"));
-	OnTelegraphChanged.Broadcast(this, bVisible);
+	OnTelegraphChangedNative.Broadcast(this, bVisible);
+	if (!bEndingPlay && !IsActorBeingDestroyed() && bTelegraphVisible == bVisible) OnTelegraphChanged.Broadcast(this, bVisible);
 }
 
 void AEnemyBase::StopNavigation()

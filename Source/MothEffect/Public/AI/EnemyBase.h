@@ -20,6 +20,7 @@ enum class EEnemyCombatPhase : uint8 { Idle, Pursuing, Telegraphing, Cooldown, D
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothEnemyDied, AEnemyBase*, Enemy, AActor*, Source);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothEnemyTelegraph, AEnemyBase*, Enemy, bool, bVisible);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FMothEnemyDiedNative, AEnemyBase*, AActor*);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FMothEnemyTelegraphNative, AEnemyBase*, bool);
 
 /** One shooting archetype. T15 binds deterministic drops; T16 owns spawning/wave counts. */
 UCLASS(Blueprintable, Config=Game, DefaultConfig)
@@ -51,6 +52,7 @@ public:
 	int32 GetNavigationRequests() const { return NavigationRequests; }
 	int32 GetStallRecoveries() const { return StallRecoveries; }
 	FMothEnemyDiedNative OnEnemyDiedNative;
+	FMothEnemyTelegraphNative OnTelegraphChangedNative;
 	UPROPERTY(BlueprintAssignable, Category="Enemy")
 	FMothEnemyDied OnEnemyDied;
 	UPROPERTY(BlueprintAssignable, Category="Enemy")

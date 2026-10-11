@@ -12,6 +12,9 @@
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
+#include "AI/EnemyBase.h"
+#include "EngineUtils.h"
+#include "Components/HealthComponent.h"
 #include "Engine/World.h"
 
 void AMothEffectPlayerController::BeginPlay()
@@ -138,5 +141,43 @@ void AMothEffectPlayerController::MothResetDevices()
 #if !UE_BUILD_SHIPPING
 	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->ResetManagedObjects();
 	MothLifecycleStats();
+#endif
+}
+
+void AMothEffectPlayerController::MothSpawnEnemy()
+{
+#if !UE_BUILD_SHIPPING
+	if (!GetPawn()) return;
+	UClass* Class = LoadClass<AEnemyBase>(nullptr, TEXT("/Game/MothEffect/Enemies/BP_EnemyBase.BP_EnemyBase_C"));
+	if (!Class) return;
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	GetWorld()->SpawnActor<AEnemyBase>(Class, GetPawn()->GetActorLocation() + GetPawn()->GetActorForwardVector() * 900.0f, FRotator::ZeroRotator, Params);
+	MothEnemyStats();
+#endif
+}
+
+void AMothEffectPlayerController::MothResetEnemies()
+{
+#if !UE_BUILD_SHIPPING
+	TArray<TWeakObjectPtr<AEnemyBase>> Enemies;
+	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It) Enemies.Add(*It);
+	for (const auto& Enemy : Enemies) if (Enemy.IsValid()) Enemy->Destroy();
+	MothEnemyStats();
+#endif
+}
+
+void AMothEffectPlayerController::MothEnemyStats()
+{
+#if !UE_BUILD_SHIPPING
+	int32 Alive = 0;
+	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It)
+	{
+		if (!It->IsActorBeingDestroyed() && It->GetHealthComponent()->IsAlive()) ++Alive;
+		UE_LOG(LogMothEffect, Log, TEXT("Enemy stats %s phase=%s health=%.1f target=%s sight=%d attempts=%d spawned=%d paths=%d stalls=%d"),
+			*It->GetName(), *UEnum::GetValueAsString(It->GetCombatPhase()), It->GetHealthComponent()->GetCurrentHealth(),
+			*GetNameSafe(It->GetCombatTarget()), It->HasTargetSight(), It->GetShotAttempts(), It->GetProjectilesSpawned(), It->GetNavigationRequests(), It->GetStallRecoveries());
+	}
+	if (GEngine) GEngine->AddOnScreenDebugMessage(7111, 6.0f, FColor::Cyan, FString::Printf(TEXT("Enemies alive=%d (T14 debug, wave limit belongs to T16)"), Alive));
 #endif
 }

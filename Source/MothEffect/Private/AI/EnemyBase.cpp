@@ -101,6 +101,7 @@ bool AEnemyBase::SetCombatTarget(APawn* Target)
 	CombatTarget = Target;
 	LastSeenAt = -1.0e9;
 	NextRepathAt = 0;
+	bRecovering = false;
 	ProgressLocation = GetActorLocation();
 	LastProgressAt = GetWorld() ? GetWorld()->GetTimeSeconds() : 0;
 	StopNavigation();
@@ -151,6 +152,7 @@ void AEnemyBase::SetGameplayEnabled(bool bEnabled)
 	NextFireAt = GetWorld()->GetTimeSeconds() + FMath::Max(0.01f, TelegraphSeconds);
 	LastSeenAt = -1.0e9;
 	NextRepathAt = 0;
+	bRecovering = false;
 	LastProgressAt = GetWorld()->GetTimeSeconds();
 	ProgressLocation = GetActorLocation();
 	SetTelegraph(false);
@@ -178,6 +180,7 @@ void AEnemyBase::Tick(float DeltaSeconds)
 		if (IsCombatEnabled()) Pursue(Now);
 		return;
 	}
+	bRecovering = false;
 	StopNavigation();
 	const FVector Direction = (AimPoint() - GetPawnViewLocation()).GetSafeNormal();
 	if (!Direction.IsNearlyZero()) SetActorRotation(FRotator(0, Direction.Rotation().Yaw, 0));
@@ -206,22 +209,28 @@ void AEnemyBase::Tick(float DeltaSeconds)
 
 void AEnemyBase::Pursue(double Now)
 {
-	if (Now - LastSeenAt > FMath::Max(0.0f, SightMemorySeconds)) { StopNavigation(); return; }
+	if (Now - LastSeenAt > FMath::Max(0.0f, SightMemorySeconds)) { bRecovering = false; StopNavigation(); return; }
 	AAIController* AI = Cast<AAIController>(GetController());
 	UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (!AI || !Nav || Now < NextRepathAt) return;
 	NextRepathAt = Now + FMath::Max(0.1f, RepathIntervalSeconds);
 	if (FVector::DistSquared2D(GetActorLocation(), ProgressLocation) >= FMath::Square(StallProgressCm))
 	{
-		ProgressLocation = GetActorLocation(); LastProgressAt = Now; RecoveryIndex = 0;
+		ProgressLocation = GetActorLocation(); LastProgressAt = Now;
 	}
-	FVector Goal = LastSeenLocation;
+	if (bRecovering && (Now >= RecoveryExpiresAt || FVector::DistSquared2D(GetActorLocation(), RecoveryGoal) <= FMath::Square(80.0f))) bRecovering = false;
+	FVector Goal = bRecovering ? RecoveryGoal : LastSeenLocation;
 	if (Now - LastProgressAt >= FMath::Max(0.1f, StallTimeoutSeconds))
 	{
 		const FVector Forward = (Goal - GetActorLocation()).GetSafeNormal2D();
 		const FVector Side(-Forward.Y, Forward.X, 0);
 		const float Sign = (++RecoveryIndex % 2) ? 1.0f : -1.0f;
 		Goal = GetActorLocation() + Side * Sign * RecoveryOffsetCm + Forward * RecoveryOffsetCm * 0.5f;
+		// Keep a detour across ordinary repaths; progress must not immediately send
+		// the pawn back into the same temporary collider it is trying to bypass.
+		RecoveryGoal = Goal;
+		bRecovering = true;
+		RecoveryExpiresAt = Now + FMath::Max(0.5f, StallTimeoutSeconds * 2.0f);
 		LastProgressAt = Now;
 		++StallRecoveries;
 		LogEvent(TEXT("stall_repath"));

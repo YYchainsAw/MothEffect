@@ -118,11 +118,13 @@ private:
 	EEnemyCombatPhase CombatPhase = EEnemyCombatPhase::Idle;
 	FVector LastSeenLocation = FVector::ZeroVector;
 	FVector ProgressLocation = FVector::ZeroVector;
+	FVector RecoveryGoal = FVector::ZeroVector;
 	double LastSeenAt = -1.0e9;
 	double NextFireAt = 0.0;
 	double TelegraphEndsAt = 0.0;
 	double NextRepathAt = 0.0;
 	double LastProgressAt = 0.0;
+	double RecoveryExpiresAt = 0.0;
 	uint64 CombatGeneration = 0;
 	int32 ShotAttempts = 0;
 	int32 ProjectilesSpawned = 0;
@@ -130,6 +132,7 @@ private:
 	int32 StallRecoveries = 0;
 	int32 RecoveryIndex = 0;
 	bool bTelegraphVisible = false;
+	bool bRecovering = false;
 	bool bGameplayEnabled = true;
 	bool bDeathProcessed = false;
 	bool bEndingPlay = false;

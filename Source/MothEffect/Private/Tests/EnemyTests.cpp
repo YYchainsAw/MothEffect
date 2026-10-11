@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Devices/DeviceBase.h"
 #include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -121,7 +122,11 @@ namespace MothEnemyTest
 			}
 			if (Case == ECase::Device)
 			{
+				// A normal device enters the already-fired projectile's path. While in front
+				// of the target it also blocks sight, so it must not be present before firing.
+				if (!D && E->GetProjectilesSpawned() > 0) { D = F->Spawn<ADeviceBase>(FVector(450, 0, 151)); D->GetPhysicsBody()->SetEnableGravity(false); }
 				if (Now < 1.0) return false;
+				if (!T->TestNotNull(TEXT("Normal AI shot permits a device to enter its path"), D)) return true;
 				T->TestTrue(TEXT("Real enemy P01 activates ordinary Dormant D03"), D->GetDeviceState() == EDeviceState::Active);
 				T->TestTrue(TEXT("Activation carries a real projectile hit ID and flight direction"), D->GetActivationHitId().IsValid() && D->GetActivationDirection().X > 0.99); return true;
 			}
@@ -148,10 +153,6 @@ namespace MothEnemyTest
 			E->SetCombatTarget(P);
 			if (Case == ECase::Cancel) E->OnTelegraphChangedNative.AddLambda([](AEnemyBase* Enemy, bool bVisible) { if (bVisible) Enemy->SetGameplayEnabled(false); });
 			if (Case == ECase::Muzzle) Cover(*F, FVector(20, 6, 150), FVector(5, 3, 40));
-			if (Case == ECase::Device)
-			{
-				D = F->Spawn<ADeviceBase>(FVector(450, 0, 151)); D->GetPhysicsBody()->SetEnableGravity(false);
-			}
 			if (Case == ECase::Saturation)
 			{
 				for (int32 I = 0; I < 64; ++I)
@@ -175,7 +176,8 @@ namespace MothEnemyTest
 				E->OnEnemyDiedNative.AddLambda([this](AEnemyBase*, AActor*) { ++Deaths; });
 				auto* Source = NewObject<USceneComponent>(P); P->AddInstanceComponent(Source); Source->RegisterComponent(); Source->SetWorldLocation(FVector(60, 0, 150));
 				P->GetRifle()->SetMuzzleSource(Source, NAME_None);
-				T->TestTrue(TEXT("Normal W01 fire starts through integrated weapon"), P->GetRifle()->TryStartFire());
+				P->SetPrimaryDown(true); P->DoPrimaryStart();
+				T->TestEqual(TEXT("Normal player press fires integrated W01"), P->GetRifle()->GetAmmoInMagazine(), 23);
 			}
 			return false;
 		}
@@ -230,6 +232,24 @@ bool FMothEnemyDeathAndDefaults::RunTest(const FString&)
 	TestTrue(TEXT("Actual D02 effect can kill the enemy through shared health"), Bomb->TryActivate(MothEnemyTest::Damage(0)));
 	TestEqual(TEXT("Bomb causes one death"), Deaths, 1);
 	E->OnEnemyDiedNative.Clear();
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothEnemySavedBlueprint, "MothEffect.Enemies.SavedBlueprintAndRange", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FMothEnemySavedBlueprint::RunTest(const FString&)
+{
+	UClass* Class = LoadClass<AEnemyBase>(nullptr, TEXT("/Game/MothEffect/Enemies/BP_EnemyBase.BP_EnemyBase_C"));
+	if (!TestNotNull(TEXT("Reload saved enemy Blueprint"), Class)) return false;
+	FMothCombatTestWorld F;
+	FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	auto* E = F.World->SpawnActor<AEnemyBase>(Class, FVector(0, 0, 90), FRotator::ZeroRotator, Params);
+	if (!TestNotNull(TEXT("Spawn actual saved enemy class"), E)) return false;
+	TestEqual(TEXT("Saved blueprint still initializes 60HP"), E->GetHealthComponent()->GetMaxHealth(), 60.0f);
+	auto* Property = FindFProperty<FObjectPropertyBase>(AEnemyBase::StaticClass(), TEXT("ProjectileClass"));
+	TestEqual(TEXT("Saved enemy references formal visible P01 Blueprint"), Property->GetObjectPropertyValue_InContainer(E),
+		static_cast<UObject*>(LoadClass<ARuleProjectile>(nullptr, TEXT("/Game/MothEffect/Combat/BP_RuleProjectile.BP_RuleProjectile_C"))));
+	TestNotNull(TEXT("Saved enemy inherits telegraph component"), E->FindComponentByClass<UTextRenderComponent>());
+	TestNotNull(TEXT("Saved T14 test map reloads"), LoadObject<UWorld>(nullptr, TEXT("/Game/MothEffect/Tests/L_T14AI.L_T14AI")));
 	return true;
 }
 #endif

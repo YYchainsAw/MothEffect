@@ -203,5 +203,8 @@ User reply: 全部通过，可以记录验收
 Recorded scope: Direct, BombHit, BombMiss, ColumnHit, ColumnMiss; pause/resume and projectile/device end cleanup/current PIE reset.
 Source: user confirmation. No additional assistant graphical PIE or recording is claimed.
 The prior no-push and pending-PIE entries above are historical; the user now authorizes a T12 PR.
-Existing PR #39 remains open on develop -> main. Keep local develop; publish only T12 commits on remote codex/t12-natural-chains -> develop.
+At preparation start, PR #39 was observed open on develop -> main; it subsequently merged at 2026-10-11T08:33:19Z.
+Final T12 PR #40 targets main from codex/t12-natural-chains; local develop is retained.
+PR URL: https://github.com/YYchainsAw/MothEffect/pull/40
+Its main-base diff contains only T12 changes; the prior uncommitted BP_MothPlayer hash is unchanged.
 Formal enemy AI/drops, capacity, complete round restart, independent package, frame-rate/long-run checks and complete G2 remain pending.

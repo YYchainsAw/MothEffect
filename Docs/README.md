@@ -2,7 +2,7 @@
 
 版本 v0.29 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-2026-10-11 T12 完成：`bc3ce46` 已交付十项真实 World Tick 连锁测试、P01 可选开发日志与五组布局的 L_T12Chains；最终 Editor 构建与全量 53 项 Automation Success，参数 v0.13 不变。用户明确回复“全部通过，可以记录验收”，据此归档 Direct / BombHit / BombMiss / ColumnHit / ColumnMiss 五站及暂停恢复、结束清理的当前角色 PIE 确认，#14 为 Closed / Done。入口见 [Natural_Chain_Setup](05_Development_Guide/Natural_Chain_Setup.md)，证据和边界见 [T12_Report](06_Test_Doc/T12_Report_2026-10-11.md)。正式敌人/掉落、容量、完整整局重开、独立包与完整 G2 继续随后续任务验收。用户授权创建 T12 PR；本地继续 develop，单独推送远程 codex/t12-natural-chains 并向 develop 提交，现有 T10/T11 PR #39 保持原范围。以下 T11 段落保留历史。
+2026-10-11 T12 完成：`bc3ce46` 已交付十项真实 World Tick 连锁测试、P01 可选开发日志与五组布局的 L_T12Chains；最终 Editor 构建与全量 53 项 Automation Success，参数 v0.13 不变。用户明确回复“全部通过，可以记录验收”，据此归档 Direct / BombHit / BombMiss / ColumnHit / ColumnMiss 五站及暂停恢复、结束清理的当前角色 PIE 确认，#14 为 Closed / Done。入口见 [Natural_Chain_Setup](05_Development_Guide/Natural_Chain_Setup.md)，证据和边界见 [T12_Report](06_Test_Doc/T12_Report_2026-10-11.md)。正式敌人/掉落、容量、完整整局重开、独立包与完整 G2 继续随后续任务验收。用户授权后已创建 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)，codex/t12-natural-chains → main；依赖的 T10/T11 PR #39 已合入 main，本地继续 develop。以下 T11 段落保留历史。
 
 2026-10-11 T11 完成：`a5903f6` 已交付 D01 静态承托探测、最终体积净空、单次弹射、净空后实体支撑和安全收回；BP_DeviceLauncher / BP_LaunchColumn 已保存，Editor 构建与全量 43 项 Automation 通过。用户在地面碰撞排查后确认“通过 提交并pr”，据此归档当前 PIE 验收，Issue #13 为 Closed / Done。15:19 最新 PIE 日志另有三次成功起柱与种子正常结束，其中一次从 Z=796.664cm 空中启动；阶段、逐目标弹射及站立手感按用户确认记录，不由生成日志单独推断。参数 v0.13；入口见 [Launcher_Setup](05_Development_Guide/Launcher_Setup.md)，证据与报告见 [T11_Report](06_Test_Doc/T11_Report_2026-10-11.md)。本轮按用户授权提交、推送并从 develop 向 main 创建包含 T10/T11 的 PR；正式敌人、完整连锁和 G2 继续随对应任务验收。
 

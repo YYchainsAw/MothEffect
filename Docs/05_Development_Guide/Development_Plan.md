@@ -2,7 +2,7 @@
 
 版本：v0.30｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
 
-2026-10-11 T12 完成：用户确认“全部通过，可以记录验收”，五站自然连锁/布局对照及暂停恢复、结束清理的当前 Murdock PIE 已按用户确认归档，#14 为 Closed / Done。`bc3ce46` 交付源码、十项连锁测试和五站十四件普通装置的 L_T12Chains，Editor 构建与全量 53 项 Automation Success；证据和范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)、[场景接入](Natural_Chain_Setup.md)。参数 v0.13 不变，T01–T12 已 Closed / Done，T13–T27 仍 Todo，下一项 T13；正式敌人/掉落、容量、整局重开、独立包与完整 G2 继续随对应任务验证。本次按用户授权独立提交 T12 PR：远程 codex/t12-natural-chains → develop，本地不切换 develop，既有 PR #39 保持 T10/T11 范围。以下段落保留历史。
+2026-10-11 T12 完成：用户确认“全部通过，可以记录验收”，五站自然连锁/布局对照及暂停恢复、结束清理的当前 Murdock PIE 已按用户确认归档，#14 为 Closed / Done。`bc3ce46` 交付源码、十项连锁测试和五站十四件普通装置的 L_T12Chains，Editor 构建与全量 53 项 Automation Success；证据和范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)、[场景接入](Natural_Chain_Setup.md)。参数 v0.13 不变，T01–T12 已 Closed / Done，T13–T27 仍 Todo，下一项 T13；正式敌人/掉落、容量、整局重开、独立包与完整 G2 继续随对应任务验证。本次按用户授权独立提交 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)：远程 codex/t12-natural-chains → main，本地不切换 develop；依赖的 T10/T11 PR #39 已合入 main。以下段落保留历史。
 
 2026-10-11 T11 完成：用户在探地碰撞排查后确认“通过 提交并pr”，#13 当前实现验收已补齐并同步为 Closed / Done。D01 在 `a5903f6` 交付，两项灰盒已保存；Editor 构建与全量 43 项 Automation 通过。最新 15:19 PIE 日志有三次成功起柱及正常结束，包含空中启动；图形表现、单次弹射和支撑按用户确认归档，见 [接入清单](Launcher_Setup.md)、[T11 报告](../06_Test_Doc/T11_Report_2026-10-11.md)。地面应为 WorldStatic，使用 BlockAll 或等效自定义配置，不能以 BlockAllDynamic 替代；保留 MothColumnSurface 标签。参数 v0.13，T01–T11 为 Closed / Done，T12–T27 仍 Todo，下一项为 T12。本轮用户授权推送 develop 并向 main 创建包含尚未合入的 T10/T11 的 PR；独立包、正式敌人/掉落、完整自然连锁和 G2 仍待后续验证。以下段落保留历史。
 

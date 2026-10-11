@@ -1,0 +1,256 @@
+T11 verification excerpts — 2026-10-11
+Executor: Codex; branch: develop; implementation/asset/parameter commit: a5903f6ad852d13486ccece6b1b41b2dd3353555
+Environment: Windows / UE 5.8.0-55116800 / Editor Win64 Development / MSVC 14.50.35728 / Windows SDK 10.0.26100.0.
+Automation: UnrealEditor-Cmd / NullRHI; log timestamps are UTC (Hong Kong UTC+8).
+Parameter ledger: v0.13; existing D01 values unchanged; MothColumnSurface tag, bottom contact tolerance 1cm, spent feedback 1s added.
+Queries and support use the same square column; columnRadiusCm is the half-width.
+Probe/phase fixtures manually invoke column Tick. Pause test sets the actual world pauser and invokes column Tick to check its guard.
+PhysicalMovementAndStandingSupport and BombColumnOrderIndependent advance isolated worlds with real World::Tick, CharacterMovement and Chaos roots.
+Exact-velocity fixtures use the engine SkeletalCube, no controller, zero gravity/braking; standing test restores character gravity.
+Graphical Murdock PIE, formal enemy AI/death drops, complete natural chains/G2, long-duration/frame-rate sweeps and an independent Windows package were not run.
+Full local logs/JSON and asset-generation script remain in Saved/Automation/T11/. Personal paths below are redacted.
+
+=== Documentation and task status checks ===
+py scripts/validate_repo.py: passed for 200 tracked files and 23 UE assets.
+py scripts/build_reading_view.py --check: passed for 30 source sections, anchors and local links.
+git diff --cached --check: passed.
+gh issue view #13: OPEN; verification body updated, acceptance checkboxes await current graphical PIE.
+gh project item-list: PVTI_lAHODAW-Us4Blq_ozg-4nAs status=In Progress.
+No Git push or PR creation was performed by Codex; existing user BP_MothPlayer modification excluded.
+
+=== InitialBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/10] Compile [x64] DeviceLauncher.cpp
+[2/10] Compile [x64] DeviceBomb.cpp
+[3/10] Compile [x64] LaunchColumn.cpp
+[4/10] Compile [x64] DeviceReleaseSafetyTests.cpp
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[5/10] Compile [x64] DeviceActivationTests.cpp
+[6/10] Compile [x64] DeviceBase.cpp
+[7/10] Compile [x64] Module.MothEffect.cpp
+Result: Succeeded
+Total execution time: 23.90 seconds
+
+=== TestsBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/4] Compile [x64] LauncherTests.cpp
+Result: Succeeded
+Total execution time: 6.67 seconds
+
+=== FinalBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/8] Compile [x64] LaunchColumn.cpp
+{PROJECT_ROOT}\Source\MothEffect\Private\Devices\LaunchColumn.cpp(265,14): error C2668: “ACharacter::SetBase”: 对重载函数的调用不明确
+{PROJECT_ROOT}\Source\MothEffect\Private\Devices\LaunchColumn.cpp(264,18): warning C4996: 'ACharacter::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[2/8] Compile [x64] DeviceLauncher.cpp
+[3/8] Compile [x64] DeviceBase.cpp
+[4/8] Compile [x64] LauncherTests.cpp
+[5/8] Compile [x64] Module.MothEffect.cpp
+Result: Failed (OtherCompilationError)
+Total execution time: 16.48 seconds
+
+=== CorrectedBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/4] Compile [x64] LaunchColumn.cpp
+{PROJECT_ROOT}\Source\MothEffect\Private\Devices\LaunchColumn.cpp(265,14): warning C4996: 'ACharacter::SetBase': Movement base functions using UPrimitiveComponents have been deprecated. Use functions using the FMovementBaseInterfaceData struct instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 6.03 seconds
+
+=== VerifiedBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/4] Compile [x64] LaunchColumn.cpp
+Result: Succeeded
+Total execution time: 5.56 seconds
+
+=== CreateLauncherAssets.log ===
+[2026.10.11-06.26.22:024][  0]LogPython: T11_ASSETS_SAVED {"seed": "/Game/MothEffect/Devices/BP_DeviceLauncher.BP_DeviceLauncher", "column": "/Game/MothEffect/Devices/BP_LaunchColumn.BP_LaunchColumn", "kind": "<DeviceKind.LAUNCHER: 0>", "column_class": "/Game/MothEffect/Devices/BP_LaunchColumn.BP_LaunchColumn_C", "height": 350.0, "radius": 70.0, "material": "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial", "vector_parameters": ["Color"]}
+[2026.10.11-06.26.22:024][  0]LogPythonScriptCommandlet: Display: Python script executed successfully
+[2026.10.11-06.26.22:024][  0]LogInit: Display: Success - 0 error(s), 0 warning(s)
+
+=== First/Automation.log ===
+[2026.10.11-06.27.05:234][307]LogAutomationController: Display: Test Completed. Result={Success} Name={FrameMergeAndClamp} Path={MothEffect.Combat.Impulse.FrameMergeAndClamp}
+[2026.10.11-06.27.05:268][309]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidAndDuplicateEvents} Path={MothEffect.Combat.Impulse.InvalidAndDuplicateEvents}
+[2026.10.11-06.27.05:431][319]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseAndCancellation} Path={MothEffect.Combat.Impulse.PauseAndCancellation}
+[2026.10.11-06.27.05:468][321]LogAutomationController: Display: Test Completed. Result={Success} Name={BlueprintDefaultsAndActivation} Path={MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation}
+[2026.10.11-06.27.05:500][323]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelBeforeEffect} Path={MothEffect.Devices.Bomb.CancelBeforeEffect}
+[2026.10.11-06.27.05:537][325]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldAndNonBallisticStates} Path={MothEffect.Devices.Bomb.HeldAndNonBallisticStates}
+[2026.10.11-06.27.05:631][331]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovement} Path={MothEffect.Devices.Bomb.PhysicalMovement}
+[2026.10.11-06.27.05:670][333]LogAutomationController: Display: Test Completed. Result={Success} Name={SingleUseAndFrozenCenter} Path={MothEffect.Devices.Bomb.SingleUseAndFrozenCenter}
+[2026.10.11-06.27.05:704][335]LogAutomationController: Display: Test Completed. Result={Success} Name={StaticCoverAndRadius} Path={MothEffect.Devices.Bomb.StaticCoverAndRadius}
+[2026.10.11-06.27.07:514][444]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.11-06.27.09:331][553]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.11-06.27.14:589][869]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.11-06.27.14:785][876]LogAutomationController: Error: Test Completed. Result={Fail} Name={BombColumnOrderIndependent} Path={MothEffect.Devices.Launcher.BombColumnOrderIndependent}
+[2026.10.11-06.27.14:785][876]LogAutomationController: Error: Expected 'Actual CharacterMovement preserves XY and overrides Z after blast merge' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(362)]
+[2026.10.11-06.27.14:785][876]LogAutomationController: Error: Expected 'Actual physical root uses device Z and the shared final clamp' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(363)]
+[2026.10.11-06.27.14:785][876]LogAutomationController: Error: Expected 'Actual CharacterMovement preserves XY and overrides Z after blast merge' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(362)]
+[2026.10.11-06.27.14:785][876]LogAutomationController: Error: Expected 'Actual physical root uses device Z and the shared final clamp' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(363)]
+[2026.10.11-06.27.14:830][878]LogAutomationController: Display: Test Completed. Result={Success} Name={FullStaticVolumeAndContact} Path={MothEffect.Devices.Launcher.FullStaticVolumeAndContact}
+[2026.10.11-06.27.14:870][881]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidGroundConsumesSeed} Path={MothEffect.Devices.Launcher.InvalidGroundConsumesSeed}
+[2026.10.11-06.27.14:920][884]LogAutomationController: Display: Test Completed. Result={Success} Name={OccupiedUntilExpiry} Path={MothEffect.Devices.Launcher.OccupiedUntilExpiry}
+[2026.10.11-06.27.14:970][887]LogAutomationController: Display: Test Completed. Result={Success} Name={OncePerTargetAndLateEntrants} Path={MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants}
+[2026.10.11-06.27.15:018][889]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseCancellationAndEndPlay} Path={MothEffect.Devices.Launcher.PauseCancellationAndEndPlay}
+[2026.10.11-06.27.16:557][982]LogAutomationController: Error: Test Completed. Result={Fail} Name={PhysicalMovementAndStandingSupport} Path={MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport}
+[2026.10.11-06.27.16:557][982]LogAutomationController: Error: Expected 'Actual physical root uses device Z and the shared final clamp' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(363)]
+[2026.10.11-06.27.16:557][982]LogAutomationController: Error: Expected 'Losing support returns movement to falling' to be true. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\LauncherTests.cpp(376)]
+[2026.10.11-06.27.16:607][985]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintIntegration} Path={MothEffect.Devices.Launcher.SavedBlueprintIntegration}
+[2026.10.11-06.27.16:654][987]LogAutomationController: Display: Test Completed. Result={Success} Name={SlopeAndPlatformEdge} Path={MothEffect.Devices.Launcher.SlopeAndPlatformEdge}
+[2026.10.11-06.27.16:680][989]LogAutomationController: Display: Test Completed. Result={Success} Name={WaitForClearanceAndBlockProjectiles} Path={MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles}
+[2026.10.11-06.27.16:715][991]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDownAndFrozenAnchor} Path={MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor}
+[2026.10.11-06.27.16:745][993]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.11-06.27.16:792][996]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.11-06.27.16:829][998]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.11-06.27.16:862][  0]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.11-06.27.16:895][  2]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.11-06.27.16:929][  4]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.11-06.27.17:160][ 18]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.11-06.27.17:709][ 51]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.11-06.27.18:093][ 74]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.11-06.27.18:310][ 87]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.11-06.27.19:376][151]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.11-06.27.19:960][186]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.11-06.27.20:525][220]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.11-06.27.20:910][243]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.11-06.27.21:593][284]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.11-06.27.21:642][287]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.11-06.27.21:679][289]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.11-06.27.21:725][292]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.11-06.27.21:763][294]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.11-06.27.21:795][296]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.11-06.27.21:799][297]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 43 tests performed.
+JSON: {"succeeded": 41, "succeededWithWarnings": 0, "failed": 2, "notRun": 0}
+MothEffect.Devices.Launcher.BombColumnOrderIndependent: Fail; errors=4; warnings=0
+MothEffect.Devices.Launcher.FullStaticVolumeAndContact: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.InvalidGroundConsumesSeed: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.OccupiedUntilExpiry: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.PauseCancellationAndEndPlay: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport: Fail; errors=2; warnings=0
+MothEffect.Devices.Launcher.SavedBlueprintIntegration: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.SlopeAndPlatformEdge: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor: Success; errors=0; warnings=0
+
+=== Final/Automation.log ===
+[2026.10.11-06.30.14:569][307]LogAutomationController: Display: Test Completed. Result={Success} Name={FrameMergeAndClamp} Path={MothEffect.Combat.Impulse.FrameMergeAndClamp}
+[2026.10.11-06.30.14:599][309]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidAndDuplicateEvents} Path={MothEffect.Combat.Impulse.InvalidAndDuplicateEvents}
+[2026.10.11-06.30.14:763][319]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseAndCancellation} Path={MothEffect.Combat.Impulse.PauseAndCancellation}
+[2026.10.11-06.30.14:800][321]LogAutomationController: Display: Test Completed. Result={Success} Name={BlueprintDefaultsAndActivation} Path={MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation}
+[2026.10.11-06.30.14:849][324]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelBeforeEffect} Path={MothEffect.Devices.Bomb.CancelBeforeEffect}
+[2026.10.11-06.30.14:884][326]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldAndNonBallisticStates} Path={MothEffect.Devices.Bomb.HeldAndNonBallisticStates}
+[2026.10.11-06.30.14:963][331]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovement} Path={MothEffect.Devices.Bomb.PhysicalMovement}
+[2026.10.11-06.30.15:002][333]LogAutomationController: Display: Test Completed. Result={Success} Name={SingleUseAndFrozenCenter} Path={MothEffect.Devices.Bomb.SingleUseAndFrozenCenter}
+[2026.10.11-06.30.15:036][335]LogAutomationController: Display: Test Completed. Result={Success} Name={StaticCoverAndRadius} Path={MothEffect.Devices.Bomb.StaticCoverAndRadius}
+[2026.10.11-06.30.16:846][444]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.11-06.30.18:679][554]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.11-06.30.23:913][868]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.11-06.30.24:047][876]LogAutomationController: Display: Test Completed. Result={Success} Name={BombColumnOrderIndependent} Path={MothEffect.Devices.Launcher.BombColumnOrderIndependent}
+[2026.10.11-06.30.24:047][876]LogAutomationController: Order=0 pawn=X=-550.000 Y=200.000 Z=1000.000 expected=X=-550.000 Y=200.000 Z=1000.000 device=X=-926.680 Y=200.000 Z=1200.000 expected=X=-926.680 Y=200.000 Z=1200.000 affected=2
+[2026.10.11-06.30.24:047][876]LogAutomationController: Order=1 pawn=X=-550.000 Y=200.000 Z=1000.000 expected=X=-550.000 Y=200.000 Z=1000.000 device=X=-926.680 Y=200.000 Z=1200.000 expected=X=-926.680 Y=200.000 Z=1200.000 affected=2
+[2026.10.11-06.30.24:091][878]LogAutomationController: Display: Test Completed. Result={Success} Name={FullStaticVolumeAndContact} Path={MothEffect.Devices.Launcher.FullStaticVolumeAndContact}
+[2026.10.11-06.30.24:129][880]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidGroundConsumesSeed} Path={MothEffect.Devices.Launcher.InvalidGroundConsumesSeed}
+[2026.10.11-06.30.24:156][882]LogAutomationController: Display: Test Completed. Result={Success} Name={OccupiedUntilExpiry} Path={MothEffect.Devices.Launcher.OccupiedUntilExpiry}
+[2026.10.11-06.30.24:190][884]LogAutomationController: Display: Test Completed. Result={Success} Name={OncePerTargetAndLateEntrants} Path={MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants}
+[2026.10.11-06.30.24:232][886]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseCancellationAndEndPlay} Path={MothEffect.Devices.Launcher.PauseCancellationAndEndPlay}
+[2026.10.11-06.30.25:772][979]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovementAndStandingSupport} Path={MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport}
+[2026.10.11-06.30.25:772][979]LogAutomationController: Order=0 pawn=X=100.000 Y=200.000 Z=1000.000 expected=X=100.000 Y=200.000 Z=1000.000 device=X=100.000 Y=200.000 Z=1200.000 expected=X=100.000 Y=200.000 Z=1200.000 affected=2
+[2026.10.11-06.30.25:810][981]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintIntegration} Path={MothEffect.Devices.Launcher.SavedBlueprintIntegration}
+[2026.10.11-06.30.25:855][983]LogAutomationController: Display: Test Completed. Result={Success} Name={SlopeAndPlatformEdge} Path={MothEffect.Devices.Launcher.SlopeAndPlatformEdge}
+[2026.10.11-06.30.25:881][985]LogAutomationController: Display: Test Completed. Result={Success} Name={WaitForClearanceAndBlockProjectiles} Path={MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles}
+[2026.10.11-06.30.25:926][988]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDownAndFrozenAnchor} Path={MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor}
+[2026.10.11-06.30.25:964][990]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.11-06.30.26:010][993]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.11-06.30.26:060][996]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.11-06.30.26:099][998]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.11-06.30.26:130][  0]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.11-06.30.26:163][  2]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.11-06.30.26:377][ 15]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.11-06.30.26:928][ 48]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.11-06.30.27:310][ 71]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.11-06.30.27:527][ 84]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.11-06.30.28:611][149]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.11-06.30.29:211][185]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.11-06.30.29:778][219]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.11-06.30.30:161][242]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.11-06.30.30:844][283]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.11-06.30.30:881][285]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.11-06.30.30:914][287]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.11-06.30.30:948][289]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.11-06.30.30:981][291]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.11-06.30.31:015][293]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.11-06.30.31:018][294]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 43 tests performed.
+JSON: {"succeeded": 43, "succeededWithWarnings": 0, "failed": 0, "notRun": 0}
+MothEffect.Devices.Launcher.BombColumnOrderIndependent: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.FullStaticVolumeAndContact: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.InvalidGroundConsumesSeed: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.OccupiedUntilExpiry: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.PauseCancellationAndEndPlay: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.SavedBlueprintIntegration: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.SlopeAndPlatformEdge: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles: Success; errors=0; warnings=0
+MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor: Success; errors=0; warnings=0
+
+=== Corrections and remaining warnings ===
+First run: 41 successes / 2 failures. Exact-motion fixtures moved the bomb off the ground boundary and disable emitter gravity after activation (activation correctly restores gravity).
+Retraction now explicitly detaches actual standing character bases and changes walking to falling; the final standing/release test passed.
+SetBase(nullptr) was ambiguous in UE 5.8; intermediate primitive overload was deprecated. Final code uses GetMovementBaseObject and the movement-base-interface overload; VerifiedBuild.log contains no new compiler warning.
+The first PowerShell asset invocation had an unquoted comma in EnablePlugins and did not start UE; the quoted invocation succeeded.
+Existing DeviceReleaseSafetyTests ClearIgnoredActors compiler warning and Paragon/input startup warnings are retained below; zero test-export warnings does not imply zero engine startup warnings.
+[2026.10.11-06.30.06:988][  0]LogLinker: Warning: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+[2026.10.11-06.30.07:114][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+[2026.10.11-06.30.07:114][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+[2026.10.11-06.30.07:114][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+[2026.10.11-06.30.07:114][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+[2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+[2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+[2026.10.11-06.30.07:115][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+
+=== User PIE acceptance and runtime log review ===
+Archive date: 2026-10-11 (Hong Kong, UTC+8).
+Original user text: 通过 提交并pr
+Source: this Codex conversation, following T11 checklist and ground collision diagnosis.
+Evidence type: user-reported current PIE acceptance plus Codex read-only inspection of the user's editor log; not a new Codex graphical PIE run.
+Implementation/asset baseline: a5903f6ad852d13486ccece6b1b41b2dd3353555; prior delivery documentation: 2a627ef.
+The user's reported ground preset was BlockAllDynamic with an existing MothColumnSurface tag.
+UE 5.8 BaseEngine.ini defines BlockAllDynamic as WorldDynamic and BlockAll as WorldStatic. T11 accepts WorldStatic only.
+Launcher_Setup now explicitly recommends BlockAll or equivalent Custom settings with WorldStatic and JamGroundTrace/WorldDynamic Block.
+Earlier log failures NoGround/UnsupportedSurface are retained in Saved/Logs/MothEffect.log; successful runtime records follow below.
+Runtime timestamps below are UTC; 07:19 UTC is 15:19 Hong Kong.
+Observed: three successful column spawns, including one air activation; fixed XY, approximately 1.98s to Spent, then approximately 1s to Destroyed.
+The log does not record per-target impulse velocities or column collision phases. Current graphical/checklist behavior is accepted from the user's confirmation.
+No per-case video, execution checklist or new asset SHA was supplied. Formal enemy/drop/natural-chain/capacity/round tests remain T12-T16; independent Windows package and complete G2 are not accepted here.
+ABP_MothMurdock Divide_DoubleDouble warning remains; exact graph/node is not identified by the log and no fix is claimed.
+The configured local Unreal MCP endpoint refused the connection during diagnosis; no live MCP actor/component inspection is claimed.
+This acceptance archive changes documentation/status only and retains the prior 43-success native run without repeating UE.
+[2026.10.11-07.19.01:626][296]LogScript: Warning: Script Msg: Divide by zero: Divide_DoubleDouble
+[2026.10.11-07.19.01:626][296]LogScript: Warning: Script Msg called by: ABP_MothMurdock_C /Game/ThirdPerson/UEDPIE_0_Lvl_ThirdPerson.Lvl_ThirdPerson:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+[2026.10.11-07.19.04:499][466]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.04:499][466]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551 hit=482A0F0345E4ADA511F29B9CD24119C1 source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=-863.103 Y=-439.482 Z=43.522 direction=X=-0.876 Y=-0.183 Z=-0.447 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.04:510][466]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551 hit=482A0F0345E4ADA511F29B9CD24119C1 origin=X=-867.000 Y=-447.000 Z=20.000 base=X=-867.000 Y=-447.000 Z=0.000 column=BP_LaunchColumn_C_0
+[2026.10.11-07.19.06:484][585]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.07:451][643]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.07:451][643]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553 hit=D9511A874DFF26F55CB441B15CDE9985 source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=-578.581 Y=-444.216 Z=30.850 direction=X=-0.258 Y=-0.784 Z=-0.564 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.07:452][643]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553 hit=D9511A874DFF26F55CB441B15CDE9985 origin=X=-599.547 Y=-452.444 Z=20.000 base=X=-599.547 Y=-452.444 Z=0.000 column=BP_LaunchColumn_C_1
+[2026.10.11-07.19.07:485][645]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1596084551: EDeviceState::Spent -> EDeviceState::Destroyed
+[2026.10.11-07.19.09:434][762]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.10:434][822]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1652573553: EDeviceState::Spent -> EDeviceState::Destroyed
+[2026.10.11-07.19.10:518][827]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Dormant -> EDeviceState::Held
+[2026.10.11-07.19.11:184][867]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Held -> EDeviceState::Dormant
+[2026.10.11-07.19.13:184][987]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Dormant -> EDeviceState::Active
+[2026.10.11-07.19.13:184][987]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552 hit=B4B2CB3D45496C22EF6D6DB3D51C221F source=BP_Rifle_C_0 instigator=BP_MothPlayer_C_0 point=X=50.566 Y=-321.066 Z=789.033 direction=X=0.810 Y=0.120 Z=0.574 damage=20.00 accepted=1 state=EDeviceState::Active
+[2026.10.11-07.19.13:185][987]LogMothEffect: Launcher BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552 hit=B4B2CB3D45496C22EF6D6DB3D51C221F origin=X=73.966 Y=-325.476 Z=796.664 base=X=73.966 Y=-325.476 Z=210.000 column=BP_LaunchColumn_C_2
+[2026.10.11-07.19.15:168][106]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Active -> EDeviceState::Spent
+[2026.10.11-07.19.16:168][166]LogMothEffect: Device BP_DeviceLauncher_C_UAID_B025AA7DC8C0230A03_1651350552: EDeviceState::Spent -> EDeviceState::Destroyed
+
+=== GitHub status verification after acceptance ===
+Issue URL: https://github.com/YYchainsAw/MothEffect/issues/13
+gh issue view: state=CLOSED; closedAt=2026-10-11T07:25:28Z; four acceptance checkboxes checked with the explicit current-scope note in the issue body.
+gh project item-edit/item verification: item=PVTI_lAHODAW-Us4Blq_ozg-4nAs; status=Done.
+
+=== Acceptance documentation checks ===
+py scripts/validate_repo.py: passed for 200 tracked files and 23 UE assets.
+py scripts/build_reading_view.py --check: passed for 30 source sections, anchors and local links.
+git diff --check: passed.
+git lfs fsck: OK.

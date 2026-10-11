@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/ChildActorComponent.h"
 #include "Components/HealthComponent.h"
+#include "Components/ExternalImpulseComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
@@ -31,6 +32,7 @@ AMothEffectCharacter::AMothEffectCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	RifleComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("RifleComponent"));
 	RifleComponent->SetupAttachment(GetMesh(), RifleAttachSocket);
 	RifleComponent->SetChildActorOwnerOnCreation(true);
@@ -124,6 +126,8 @@ void AMothEffectCharacter::Tick(float DeltaSeconds)
 
 void AMothEffectCharacter::UnPossessed()
 {
+	ExternalImpulseComponent->ClearPending();
+	GetCharacterMovement()->ClearAccumulatedForces();
 	// Controller/pawn replacement must not leave the old pawn's timed actions running.
 	CancelCombatInput();
 	CancelDeviceTasks();
@@ -674,6 +678,7 @@ void AMothEffectCharacter::HandleReloadFinished(bool bCompleted)
 void AMothEffectCharacter::SetGameplayEnabled(bool bEnabled)
 {
 	bGameplayEnabled = bEnabled;
+	ExternalImpulseComponent->SetGameplayEnabled(bEnabled);
 	if (!bEnabled)
 	{
 		CancelCombatInput();
@@ -689,6 +694,11 @@ void AMothEffectCharacter::SetGameplayEnabled(bool bEnabled)
 bool AMothEffectCharacter::ReceiveBallisticHit_Implementation(const FHitContext& Context)
 {
 	return IsGameplayEnabled() && HealthComponent->ApplyHit(Context);
+}
+
+void AMothEffectCharacter::ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId)
+{
+	if (IsGameplayEnabled()) ExternalImpulseComponent->QueueImpulse(Velocity, bOverrideZ, EventId);
 }
 
 void AMothEffectCharacter::HandlePlayerDied(AActor* Victim, AActor* SourceActor)

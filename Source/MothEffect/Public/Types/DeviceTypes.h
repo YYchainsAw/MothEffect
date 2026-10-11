@@ -20,3 +20,13 @@ enum class EDeviceKind : uint8
 	Bomb,
 	Emitter
 };
+
+UENUM(BlueprintType)
+enum class ELauncherFailureReason : uint8
+{
+	None,
+	NoGround,
+	UnsupportedSurface,
+	StaticObstruction,
+	SpawnFailed
+};

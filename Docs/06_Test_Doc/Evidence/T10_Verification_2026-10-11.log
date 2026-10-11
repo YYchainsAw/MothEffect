@@ -1,0 +1,143 @@
+T10 verification excerpts — 2026-10-11
+Executor: Codex; branch: develop; implementation/asset commit: 5692d76f84e815b3cfb6a6070dd73455bb464bed
+Environment: Windows / UE 5.8.0-55116800 / Editor Win64 Development / MSVC 14.50.35728 / Windows SDK 10.0.26100.0.
+Native Automation: UnrealEditor-Cmd / NullRHI; log timestamps are UTC (Hong Kong UTC+8).
+Parameter ledger v0.12 matches tested defaults, adding bomb Spent cleanup 0.25s; existing blast values unchanged.
+Test-only exact-motion settings: engine SkeletalCube; gravity and falling braking disabled; no controller required.
+Codex did not run graphical PIE, formal enemy AI, real D01 combinations, complete G2 or an independent Windows package. Subsequent user PIE confirmation is appended separately below.
+Personal paths below are redacted. Full local logs and JSON remain in Saved/Automation/T10/.
+
+=== InitialBuild.log ===
+{PROJECT_ROOT}\Source\MothEffect\Private\Devices\DeviceBomb.cpp(34,20): error C2027: 使用了未定义类型“FOverlapResult”
+Result: Failed (OtherCompilationError)
+
+=== AssetTestInitialBuild.log ===
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\BombTests.cpp(209,2): error C2672: “FAutomationTestBase::TestNotNull”: 未找到匹配的重载函数
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\BombTests.cpp(209,2): note: “bool FAutomationTestBase::TestNotNull(const FString &,const ValueType *)”: 无法从“TObjectPtr<UStaticMesh>”推导出“const ValueType *”的 模板 参数
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\BombTests.cpp(209,2): note: “bool FAutomationTestBase::TestNotNull(const TCHAR *,const ValueType *)”: 无法从“TObjectPtr<UStaticMesh>”推导出“const ValueType *”的 模板 参数
+Result: Failed (OtherCompilationError)
+
+=== CreateBombAssetInitial.log ===
+[2026.10.11-05.35.06:833][  0]LogPython: Error: Exception: DeviceBase: Failed to find property 'b_log_device_events' for attribute 'b_log_device_events' on 'BP_DeviceBomb_C'
+[2026.10.11-05.35.06:833][  0]LogPythonScriptCommandlet: Error: Python script executed with errors
+[2026.10.11-05.35.06:833][  0]LogInit: Display: LogPython: Error: Exception: DeviceBase: Failed to find property 'b_log_device_events' for attribute 'b_log_device_events' on 'BP_DeviceBomb_C'
+[2026.10.11-05.35.06:833][  0]LogInit: Display: LogPythonScriptCommandlet: Error: Python script executed with errors
+
+=== FinalBuild.log ===
+Using Visual Studio 14.50.35728 toolchain ({VS_ROOT}\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK ({WINDOWS_SDK_ROOT}).
+Result: Succeeded
+Total execution time: 5.14 seconds
+
+=== CreateBombAsset.log ===
+[2026.10.11-05.36.37:518][  0]LogPython: T10_ASSET_SAVED {"asset": "/Game/MothEffect/Devices/BP_DeviceBomb", "class": "/Game/MothEffect/Devices/BP_DeviceBomb.BP_DeviceBomb_C", "kind": "<DeviceKind.BOMB: 1>", "radius": 400.0, "damage": 60.0, "mesh": "/Engine/BasicShapes/Sphere.Sphere", "scale": "<Struct 'Vector' (0x000002040EFC01B0) {x: 0.400000, y: 0.400000, z: 0.400000}>"}
+[2026.10.11-05.36.37:518][  0]LogPythonScriptCommandlet: Display: Python script executed successfully
+[2026.10.11-05.36.37:518][  0]LogInit: Display: Success - 0 error(s), 0 warning(s)
+
+=== Final/Automation.log ===
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+[2026.10.11-05.37.48:829][300]LogAutomationCommandLine: Display: Found 32 automation tests based on 'MothEffect'
+[2026.10.11-05.37.48:945][307]LogAutomationController: Display: Test Completed. Result={Success} Name={FrameMergeAndClamp} Path={MothEffect.Combat.Impulse.FrameMergeAndClamp}
+[2026.10.11-05.37.48:980][309]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidAndDuplicateEvents} Path={MothEffect.Combat.Impulse.InvalidAndDuplicateEvents}
+[2026.10.11-05.37.49:142][319]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseAndCancellation} Path={MothEffect.Combat.Impulse.PauseAndCancellation}
+[2026.10.11-05.37.49:179][321]LogAutomationController: Display: Test Completed. Result={Success} Name={BlueprintDefaultsAndActivation} Path={MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation}
+[2026.10.11-05.37.49:211][323]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelBeforeEffect} Path={MothEffect.Devices.Bomb.CancelBeforeEffect}
+[2026.10.11-05.37.49:248][325]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldAndNonBallisticStates} Path={MothEffect.Devices.Bomb.HeldAndNonBallisticStates}
+[2026.10.11-05.37.49:326][330]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovement} Path={MothEffect.Devices.Bomb.PhysicalMovement}
+[2026.10.11-05.37.49:365][332]LogAutomationController: Display: Test Completed. Result={Success} Name={SingleUseAndFrozenCenter} Path={MothEffect.Devices.Bomb.SingleUseAndFrozenCenter}
+[2026.10.11-05.37.49:397][334]LogAutomationController: Display: Test Completed. Result={Success} Name={StaticCoverAndRadius} Path={MothEffect.Devices.Bomb.StaticCoverAndRadius}
+[2026.10.11-05.37.51:209][443]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.11-05.37.53:026][552]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.11-05.37.58:260][866]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.11-05.37.58:296][868]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.11-05.37.58:329][870]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.11-05.37.58:362][872]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.11-05.37.58:395][874]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.11-05.37.58:428][876]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.11-05.37.58:462][878]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.11-05.37.58:693][892]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.11-05.37.59:244][925]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.11-05.37.59:626][948]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.11-05.37.59:843][961]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.11-05.38.00:909][ 25]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.11-05.38.01:492][ 60]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.11-05.38.02:043][ 93]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.11-05.38.02:426][116]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.11-05.38.03:110][157]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.11-05.38.03:164][160]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.11-05.38.03:197][162]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.11-05.38.03:230][164]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.11-05.38.03:262][166]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.11-05.38.03:297][168]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.11-05.38.03:300][169]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 32 tests performed.
+
+=== Final exported report summary ===
+succeeded=32; succeededWithWarnings=0; failed=0; notRun=0
+MothEffect.Combat.Impulse.FrameMergeAndClamp: Success; errors=0; warnings=0
+MothEffect.Combat.Impulse.InvalidAndDuplicateEvents: Success; errors=0; warnings=0
+MothEffect.Combat.Impulse.PauseAndCancellation: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.CancelBeforeEffect: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.HeldAndNonBallisticStates: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.PhysicalMovement: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.SingleUseAndFrozenCenter: Success; errors=0; warnings=0
+MothEffect.Devices.Bomb.StaticCoverAndRadius: Success; errors=0; warnings=0
+MothEffect.Devices.Emitter.BlockedBirthAndExpiry: Success; errors=0; warnings=0
+MothEffect.Devices.Emitter.CancellationStopsTimers: Success; errors=0; warnings=0
+MothEffect.Devices.Emitter.WorldDirectionAndLifetime: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.EndpointOccupancy: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.ThinWall: Success; errors=0; warnings=0
+MothEffect.Devices.ActivationIsSingleUse: Success; errors=0; warnings=0
+MothEffect.Devices.CancelDuringActivationCallback: Success; errors=0; warnings=0
+MothEffect.Devices.RejectInvalidAndDisabledHits: Success; errors=0; warnings=0
+MothEffect.Player.T09.BlockedReleaseRetainsHeld: Success; errors=0; warnings=0
+MothEffect.Player.T09.DeathAndEndPlayCleanup: Success; errors=0; warnings=0
+MothEffect.Player.T09.FocusAndPhysicalRelease: Success; errors=0; warnings=0
+MothEffect.Player.T09.HeldInvalidationAndDamage: Success; errors=0; warnings=0
+MothEffect.Player.T09.PausePreservesTimers: Success; errors=0; warnings=0
+MothEffect.Player.T09.PickupReloadCompetition: Success; errors=0; warnings=0
+MothEffect.Player.T09.RoundCancellationRejectsOldTasks: Success; errors=0; warnings=0
+MothEffect.Player.T09.SinglePressAndRecovery: Success; errors=0; warnings=0
+MothEffect.Player.T09.UnpossessedStopsFire: Success; errors=0; warnings=0
+MothEffect.Projectiles.FirstImpactIsSingleUse: Success; errors=0; warnings=0
+MothEffect.Projectiles.RejectionAndSourceExclusion: Success; errors=0; warnings=0
+MothEffect.Projectiles.SweptThinWall: Success; errors=0; warnings=0
+MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement: Success; errors=0; warnings=0
+MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed: Success; errors=0; warnings=0
+Per-test errors/warnings=0. Process exit code alone is not used to assert success.
+Existing warnings outside test exports are recorded below, not described as zero engine warnings.
+
+=== InitialBuild.log ===
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+
+=== Final/Automation.log ===
+[2026.10.11-05.37.41:165][  0]LogLinker: Warning: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+[2026.10.11-05.37.41:291][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+[2026.10.11-05.37.41:291][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+[2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+[2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+[2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+[2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+[2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+
+=== User PIE acceptance confirmation — 2026-10-11 (Hong Kong date) ===
+Source: user reply in this Codex conversation after the T10 delivery and current Bomb_Setup PIE checklist.
+Original user text: 测试通过
+Evidence type: user-reported acceptance; not a new Codex graphical PIE run.
+Implementation/asset baseline: 5692d76f84e815b3cfb6a6070dd73455bb464bed; preceding delivery documentation: d76c1e5.
+Current checklist scope: ground/air activation, single-use/radius/friendly damage, movable-device impulse, static cover, no direct device activation, current player controls/pause.
+The reply is treated as acceptance of the currently implemented checklist; no per-case observations, PIE log/recording, asset SHA or execution timestamp were supplied.
+Shared damage/impulse rules have prior native two-character coverage. Formal enemy AI/death drops remain T14/T15 work.
+Real D01 combinations/natural chains remain T11/T12 work; complete round/restart remains T16 work.
+Complete G2 and an independent Windows package are not accepted by this confirmation.
+This archive changes documentation/status only; prior Editor build and 32-success Automation results are retained without rerunning UE.
+
+=== GitHub status verification after acceptance ===
+Issue URL: https://github.com/YYchainsAw/MothEffect/issues/12
+gh issue view: state=CLOSED; closedAt=2026-10-11T06:06:17Z; four acceptance checkboxes checked with the explicit current-scope note in the issue body.
+gh project item-list: item=PVTI_lAHODAW-Us4Blq_ozg-4m9o; status=Done.
+No PR was created and no Git push was performed by Codex.
+
+=== Documentation checks ===
+py scripts/validate_repo.py: passed for 191 tracked files and 21 UE assets.
+py scripts/build_reading_view.py --check: passed for 28 source sections, anchors and local links.

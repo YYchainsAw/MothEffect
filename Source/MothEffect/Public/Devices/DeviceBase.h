@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/BallisticReactive.h"
+#include "Interfaces/ImpulseReceiver.h"
 #include "TimerManager.h"
 #include "Types/DeviceTypes.h"
 #include "DeviceBase.generated.h"
@@ -14,15 +15,18 @@ class ADeviceBase;
 class USceneComponent;
 class UArrowComponent;
 class ARuleProjectile;
+class UExternalImpulseComponent;
+class ALaunchColumn;
+class UTextRenderComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChangedNative,
 	ADeviceBase*, EDeviceState, EDeviceState);
 
-/** Shared device state and ballistic entry point; D03 is native, D01/D02 follow later. */
+/** Shared device state and ballistic entry point for D01/D02/D03. */
 UCLASS(Blueprintable)
-class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive
+class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, public IImpulseReceiver
 {
 	GENERATED_BODY()
 
@@ -30,6 +34,25 @@ public:
 	ADeviceBase();
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
+	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;
+	bool CanReceiveExternalImpulse() const;
+
+	UFUNCTION(BlueprintPure, Category="Device|Bomb")
+	FVector GetExplosionCenter() const { return ExplosionCenter; }
+
+	/** Presentation only; native damage and impulse settlement already completed. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Device|Bomb")
+	void OnBombExploded(FVector Center, float RadiusCm);
+
+	UFUNCTION(BlueprintPure, Category="Device|Launcher")
+	ALaunchColumn* GetLaunchColumn() const { return LaunchColumn.Get(); }
+	UFUNCTION(BlueprintPure, Category="Device|Launcher")
+	ELauncherFailureReason GetLauncherFailureReason() const { return LauncherFailureReason; }
+	UFUNCTION(BlueprintPure, Category="Device|Launcher")
+	FVector GetLauncherOrigin() const { return LauncherOrigin; }
+	/** Presentation only; the invalid seed is already consumed. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Device|Launcher")
+	void OnLauncherFailed(ELauncherFailureReason Reason);
 
 	UPROPERTY(BlueprintAssignable, Category="Device")
 	FMothDeviceStateChanged OnDeviceStateChanged;
@@ -110,8 +133,43 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UArrowComponent> EmitterDirectionMarker;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UTextRenderComponent> LauncherFeedback;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher")
+	TSubclassOf<ALaunchColumn> LauncherColumnClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher", meta=(ClampMin="1.0", Units="cm"))
+	float LauncherGroundProbeDistanceCm = 1500.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher", meta=(ClampMin="0.0", ClampMax="1.0"))
+	float LauncherGroundUpNormalMin = 0.65f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher")
+	FName LauncherSurfaceTag = TEXT("MothColumnSurface");
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher")
+	bool bLauncherRequiresSurfaceTag = true;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher", meta=(ClampMin="0.01", Units="s"))
+	float LauncherSpentVisualSeconds = 1.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device")
 	EDeviceKind DeviceKind = EDeviceKind::Emitter;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="1.0", Units="cm"))
+	float BombRadiusCm = 400.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0"))
+	float BombDamage = 60.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombCharacterHorizontalVelocityAdd = 650.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombCharacterUpVelocityAdd = 450.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombDeviceRadialVelocityAdd = 1100.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.01", Units="s"))
+	float BombSpentVisualSeconds = 0.25f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter")
 	TSubclassOf<ARuleProjectile> EmitterProjectileClass;
@@ -151,6 +209,7 @@ protected:
 private:
 	// T07 commits ownership only after pickup/release safety checks succeed.
 	friend class AMothEffectCharacter;
+	friend class ALaunchColumn;
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Device", meta=(AllowPrivateAccess="true"))
 	EDeviceState DeviceState = EDeviceState::Dormant;
@@ -178,6 +237,16 @@ private:
 	int32 EmitterNextShotIndex = 0;
 	int32 EmitterShotAttempts = 0;
 	int32 EmitterProjectilesSpawned = 0;
+	FVector ExplosionCenter = FVector::ZeroVector;
+	FVector LauncherOrigin = FVector::ZeroVector;
+	ELauncherFailureReason LauncherFailureReason = ELauncherFailureReason::None;
+	UPROPERTY(Transient)
+	TObjectPtr<ALaunchColumn> LaunchColumn;
+	void StartLauncher();
+	void FailLauncher(ELauncherFailureReason Reason);
+	void OnLaunchColumnEnded(ALaunchColumn* Column);
+
+	void ExplodeBomb(const FHitContext& Context);
 
 	void ScheduleEmitterShot();
 	void FireEmitterShot();

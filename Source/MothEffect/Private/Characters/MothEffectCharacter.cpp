@@ -104,13 +104,35 @@ void AMothEffectCharacter::BeginPlay()
 void AMothEffectCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	TryClearPrimaryReleaseGate();
+	if (!IsCombatInputFocused())
+	{
+		// A viewport's automatic key flush can be disabled; losing focus still ends this press.
+		CancelCombatInput();
+		ResetMovementInput();
+	}
+	else
+	{
+		TryClearPrimaryReleaseGate();
+	}
 
 	const float TargetAlpha = bIsAiming ? 1.0f : 0.0f;
 	AimBlendAlpha = AimBlendSeconds > UE_SMALL_NUMBER
 		? FMath::FInterpConstantTo(AimBlendAlpha, TargetAlpha, DeltaSeconds, 1.0f / AimBlendSeconds)
 		: TargetAlpha;
 	FollowCamera->SetFieldOfView(FMath::Lerp(HipFieldOfView, AimFieldOfView, AimBlendAlpha));
+}
+
+void AMothEffectCharacter::UnPossessed()
+{
+	// Controller/pawn replacement must not leave the old pawn's timed actions running.
+	CancelCombatInput();
+	CancelDeviceTasks();
+	ResetMovementInput();
+	if (IsValid(Rifle))
+	{
+		Rifle->CancelReload();
+	}
+	Super::UnPossessed();
 }
 
 void AMothEffectCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -433,13 +455,14 @@ bool AMothEffectCharacter::IsGameplayEnabled() const
 
 bool AMothEffectCharacter::CanFireRifle() const
 {
-	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready
+	return IsGameplayEnabled() && IsCombatInputFocused() && ActionState == EPlayerActionState::Ready
 		&& PrimaryPressMode == EPrimaryPressMode::Fire && !bRequirePrimaryRelease && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::CanReloadRifle() const
 {
-	return IsGameplayEnabled() && ActionState == EPlayerActionState::Ready && !bDeviceInteractionInProgress;
+	return IsGameplayEnabled() && IsCombatInputFocused()
+		&& ActionState == EPlayerActionState::Ready && !bDeviceInteractionInProgress;
 }
 
 bool AMothEffectCharacter::GetRifleView(FVector& ViewLocation, FVector& ViewDirection) const
@@ -469,6 +492,11 @@ FVector AMothEffectCharacter::GetRifleSafetyOrigin() const
 
 void AMothEffectCharacter::DoPrimaryStart()
 {
+	if (!IsCombatInputFocused())
+	{
+		CancelCombatInput();
+		return;
+	}
 	if (PrimaryPressMode != EPrimaryPressMode::None || bRequirePrimaryRelease
 		|| !IsGameplayEnabled() || bDeviceInteractionInProgress)
 	{
@@ -560,7 +588,7 @@ void AMothEffectCharacter::TryClearPrimaryReleaseGate()
 	{
 		return;
 	}
-	if (FSlateApplication::IsInitialized() && !FSlateApplication::Get().IsActive())
+	if (!IsCombatInputFocused())
 	{
 		return;
 	}
@@ -569,6 +597,11 @@ void AMothEffectCharacter::TryClearPrimaryReleaseGate()
 		bRequirePrimaryRelease = false;
 		PrimaryPressMode = EPrimaryPressMode::None;
 	}
+}
+
+bool AMothEffectCharacter::IsCombatInputFocused() const
+{
+	return !FSlateApplication::IsInitialized() || FSlateApplication::Get().IsActive();
 }
 
 void AMothEffectCharacter::DoReloadStart()

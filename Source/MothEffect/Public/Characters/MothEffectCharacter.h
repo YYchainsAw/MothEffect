@@ -186,6 +186,7 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void UnPossessed() override;
 
 protected:
 
@@ -206,7 +207,8 @@ protected:
 	bool RejectDeviceInteraction(const TCHAR* Reason);
 	void SetActionState(EPlayerActionState NewState);
 	void TryClearPrimaryReleaseGate();
-	bool IsPrimaryButtonPhysicallyDown() const;
+	virtual bool IsPrimaryButtonPhysicallyDown() const;
+	virtual bool IsCombatInputFocused() const;
 
 	UFUNCTION()
 	void HandleShotFired(ARifle* FiredRifle);

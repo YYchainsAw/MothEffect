@@ -7,6 +7,7 @@
 #include "Interfaces/BallisticReactive.h"
 #include "MothEffect.h"
 #include "Types/MothCollisionChannels.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
 
 ARuleProjectile::ARuleProjectile()
 {
@@ -53,6 +54,8 @@ bool ARuleProjectile::InitializeProjectile(const FVector& WorldDirection, AActor
 	{
 		return false;
 	}
+	UDeviceLifecycleSubsystem* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	if (!Lifecycle || !Lifecycle->RegisterProjectile(this)) return false;
 	bInitialized = true;
 	HitId = FGuid::NewGuid();
 	FlightDirection = Direction;
@@ -104,6 +107,7 @@ void ARuleProjectile::LifeSpanExpired()
 void ARuleProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
+	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);
 	ProjectileMovement->Deactivate();
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CollisionSphere->OnComponentHit.RemoveDynamic(this, &ARuleProjectile::HandleComponentHit);
@@ -152,6 +156,7 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 	Context.Damage = FMath::Max(0.0f, Damage);
 	// Commit before calling any interface/delegate: rejection still consumes the projectile.
 	bImpactProcessed = true;
+	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ProjectileMovement->StopMovementImmediately();
 	ProjectileMovement->Deactivate();

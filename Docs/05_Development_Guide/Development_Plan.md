@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.30｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+版本：v0.34｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+
+2026-10-11 T13 验收完成：用户在五项清单后确认“测试通过 创建pr”，#15为Closed / Done，统一 WorldSubsystem 负责总道具/P01 登记、同类 Active 安全替换、累计闲置/警告与界外/重置清理。参数 v0.14 沿用上限与寿命，新增 Dormant Spent 反馈 0.25s；用户关闭编辑器后，修正Unity测试辅助函数重名；原工程Editor正式编译/链接成功，全量66项Automation Success（新增13/既有53），当前Murdock PIE按用户确认通过。接入和范围见 [Lifecycle_Setup](Lifecycle_Setup.md)、[T13 报告](../06_Test_Doc/T13_Report_2026-10-11.md)。T01–T13已Done，下一项T14；正式敌人容量、整局重开/跨波、最终场地安全盒、独立包与完整G2继续随后续任务验收。本次授权已独立推送远程codex/t13-lifecycle → main并创建[T13 PR #41](https://github.com/YYchainsAw/MothEffect/pull/41)，当前Open，本地继续develop。以下段落保留历史。
 
 2026-10-11 T12 完成：用户确认“全部通过，可以记录验收”，五站自然连锁/布局对照及暂停恢复、结束清理的当前 Murdock PIE 已按用户确认归档，#14 为 Closed / Done。`bc3ce46` 交付源码、十项连锁测试和五站十四件普通装置的 L_T12Chains，Editor 构建与全量 53 项 Automation Success；证据和范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)、[场景接入](Natural_Chain_Setup.md)。参数 v0.13 不变，T01–T12 已 Closed / Done，T13–T27 仍 Todo，下一项 T13；正式敌人/掉落、容量、整局重开、独立包与完整 G2 继续随对应任务验证。本次按用户授权独立提交 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)：远程 codex/t12-natural-chains → main，本地不切换 develop；依赖的 T10/T11 PR #39 已合入 main。以下段落保留历史。
 
@@ -117,7 +119,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T10 | [#12](https://github.com/YYchainsAw/MothEffect/issues/12) | 核心 | D02 爆炸、伤害与推力 | T05、T06 | 2–3 | 地面/空中在激活位置爆炸；敌我受到伤害；可移动道具受推力；爆炸不直接启动其他机关 | Done / Closed；源码、灰盒与参数已交付，九项新增及全量 32 项 Automation 通过；用户确认[当前 PIE](Bomb_Setup.md)通过，正式敌人/D01 联调随后续任务补测 |
 | T11 | [#13](https://github.com/YYchainsAw/MothEffect/issues/13) | 核心 | D01 探地、升柱与弹射 | T06、T07 | 3–5 | 向世界竖直下方探地，检查最终柱体静态净空；伸出阶段逐对象单次弹射；停留期间净空后开实体支撑/阻挡，收回前关闭，不夹住角色或道具；TC09、TC10、TC33 通过 | Done / Closed；源码、两项灰盒和全量 43 项 Automation 通过，用户确认[当前 PIE](Launcher_Setup.md)通过，另有三次成功起柱日志；正式敌人/完整连锁随对应任务补测 |
 | T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | Done / Closed；全量 53 项 Automation、真实 P01 与两类运动连锁及阴性对照通过；用户确认五站与暂停/清理[当前 PIE](Natural_Chain_Setup.md)通过，正式敌人及完整 G2 随对应任务补测 |
-| T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Todo |
+| T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Done / Closed；原工程Editor正式构建/链接与全量66项Automation通过，用户确认[当前PIE](Lifecycle_Setup.md)五项清单通过；完整整局/正式敌人分支随后续任务验收 |
 | T14 | [#16](https://github.com/YYchainsAw/MothEffect/issues/16) | 核心 | 一套射击 AI：移动、视线、预警、P01 | T05、T12 | 3–5 | 敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置 | Todo |
 | T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | Todo |
 | T16 | [#18](https://github.com/YYchainsAw/MothEffect/issues/18) | 核心 | 三波导演、胜负与重开 | T13、T15 | 2–3 | 出怪和波次内容符合 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态 | Todo |
@@ -185,4 +187,4 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 
 每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 [文档维护与变更流程](Documentation_Workflow.md) 在 [设计决策](../02_Design_Doc/TDD/Decisions/Design_Decisions.md) 与 [变更日志](Changelog.md) 中记录原因、关联任务/测试，并让 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)、[技术设计](../02_Design_Doc/TDD/Technical_Design.md)、[关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)、[玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。
 
-当前进度快照见本文件开头和任务表；[10/7 进度核查](Progress_Audit_2026-10-07.md) 为历史。T12 原生连锁、保存测试房及用户确认的当前 PIE 已验收，下一项按依赖推进 T13；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。
+当前进度快照见本文件开头和任务表；[10/7 进度核查](Progress_Audit_2026-10-07.md) 为历史。T13容量/闲置/清理的原生与用户当前PIE证据已归档，#15为Closed / Done；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。

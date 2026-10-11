@@ -18,11 +18,13 @@ class ARuleProjectile;
 class UExternalImpulseComponent;
 class ALaunchColumn;
 class UTextRenderComponent;
+class UDeviceLifecycleSubsystem;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChangedNative,
 	ADeviceBase*, EDeviceState, EDeviceState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothDormantExpiryWarning, ADeviceBase*, Device, float, RemainingSeconds);
 
 /** Shared device state and ballistic entry point for D01/D02/D03. */
 UCLASS(Blueprintable)
@@ -59,6 +61,14 @@ public:
 
 	/** Native gameplay observers use the same committed transitions as Blueprint presentation. */
 	FMothDeviceStateChangedNative OnDeviceStateChangedNative;
+	UPROPERTY(BlueprintAssignable, Category="Device|Lifecycle")
+	FMothDormantExpiryWarning OnDormantExpiryWarning;
+	UFUNCTION(BlueprintPure, Category="Device|Lifecycle")
+	float GetDormantIdleSeconds() const;
+	UFUNCTION(BlueprintPure, Category="Device|Lifecycle")
+	float GetRemainingIdleSeconds() const;
+	UFUNCTION(BlueprintPure, Category="Device|Lifecycle")
+	bool IsExpiryWarningActive() const { return bExpiryWarningActive; }
 
 	UFUNCTION(BlueprintCallable, Category="Device")
 	bool TryActivate(const FHitContext& Context);
@@ -137,6 +147,8 @@ protected:
 	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UTextRenderComponent> LauncherFeedback;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UTextRenderComponent> LifecycleFeedback;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher")
 	TSubclassOf<ALaunchColumn> LauncherColumnClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Launcher", meta=(ClampMin="1.0", Units="cm"))
@@ -210,6 +222,12 @@ private:
 	// T07 commits ownership only after pickup/release safety checks succeed.
 	friend class AMothEffectCharacter;
 	friend class ALaunchColumn;
+	friend class UDeviceLifecycleSubsystem;
+	double DormantIdleElapsed = 0.0;
+	double IdleSegmentStartedAt = 0.0;
+	bool bExpiryWarningActive = false;
+	void AccumulateIdleTime();
+	void UpdateIdleLifecycle(float Lifetime, float WarningSeconds, float SpentSeconds);
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Device", meta=(AllowPrivateAccess="true"))
 	EDeviceState DeviceState = EDeviceState::Dormant;

@@ -11,6 +11,8 @@
 #include "MothEffect.h"
 #include "TimerManager.h"
 #include "Types/MothCollisionChannels.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "GameFramework/PlayerController.h"
 
 ADeviceBase::ADeviceBase()
 {
@@ -56,6 +58,14 @@ ADeviceBase::ADeviceBase()
 	LauncherFeedback->SetWorldSize(24.0f);
 	LauncherFeedback->SetTextRenderColor(FColor::Red);
 	LauncherFeedback->SetVisibility(false);
+	LifecycleFeedback = CreateDefaultSubobject<UTextRenderComponent>(TEXT("LifecycleFeedback"));
+	LifecycleFeedback->SetupAttachment(PhysicsBody);
+	LifecycleFeedback->SetAbsolute(false, true, true);
+	LifecycleFeedback->SetRelativeLocation(FVector(0.0, 0.0, 90.0));
+	LifecycleFeedback->SetHorizontalAlignment(EHTA_Center);
+	LifecycleFeedback->SetWorldSize(22.0f);
+	LifecycleFeedback->SetTextRenderColor(FColor::Yellow);
+	LifecycleFeedback->SetVisibility(false);
 }
 
 void ADeviceBase::OnConstruction(const FTransform& Transform)
@@ -70,7 +80,13 @@ void ADeviceBase::OnConstruction(const FTransform& Transform)
 
 void ADeviceBase::BeginPlay()
 {
+	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	const bool bAdmitted = Lifecycle && Lifecycle->RegisterDevice(this);
+	if (!bAdmitted) bGameplayEnabled = false;
+	IdleSegmentStartedAt = GetWorld()->GetTimeSeconds();
 	Super::BeginPlay();
+	if (!bAdmitted) { DestroyDevice(); return; }
+	if (bEndingPlay || IsActorBeingDestroyed()) return;
 	PhysicsBody->SetMassOverrideInKg(NAME_None, FMath::Max(0.01f, PhysicsMassKg));
 	EmitterDirectionMarker->SetVisibility(false, true);
 	ApplyStateCollision();
@@ -81,6 +97,9 @@ void ADeviceBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	bEndingPlay = true;
 	bGameplayEnabled = false;
 	StopActiveEffect();
+	if (IsValid(LaunchColumn)) LaunchColumn->Destroy();
+	LaunchColumn = nullptr;
+	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterDevice(this);
 	Holder = nullptr;
 	TransitionTo(EDeviceState::Destroyed);
 	Super::EndPlay(EndPlayReason);
@@ -106,7 +125,7 @@ void ADeviceBase::ReceiveImpulse_Implementation(FVector Velocity, bool bOverride
 bool ADeviceBase::CanBePickedUp() const
 {
 	return !bEndingPlay && !IsActorBeingDestroyed() && HasActorBegunPlay() && bGameplayEnabled
-		&& GetWorld() && !GetWorld()->IsPaused() && DeviceState == EDeviceState::Dormant;
+		&& GetWorld() && !GetWorld()->IsPaused() && DeviceState == EDeviceState::Dormant && GetRemainingIdleSeconds() > 0.0f;
 }
 
 bool ADeviceBase::TryPickup(AMothEffectCharacter* NewHolder)
@@ -166,6 +185,17 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 		LogHit(Context, false);
 		return false;
 	}
+	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (GetRemainingIdleSeconds() <= 0.0f || !Lifecycle || !Lifecycle->ReserveActivation(this))
+	{
+		LogHit(Context, false);
+		return false;
+	}
+	if (bEndingPlay || IsActorBeingDestroyed() || !bGameplayEnabled || DeviceState != EDeviceState::Dormant)
+	{
+		Lifecycle->CommitDeviceState(this);
+		return false;
+	}
 
 	// Save scalar/vector evidence, not references to the source actor or instigator.
 	ActivationHitId = Context.HitId;
@@ -179,6 +209,7 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	// Commit before delegates or effects can re-enter the ballistic interface.
 	if (!TransitionTo(EDeviceState::Active))
 	{
+		Lifecycle->CommitDeviceState(this);
 		LogHit(ActivationContext, false);
 		return false;
 	}
@@ -220,6 +251,8 @@ void ADeviceBase::DestroyDevice()
 	Holder = nullptr;
 	TransitionTo(EDeviceState::Destroyed);
 	StopActiveEffect();
+	if (IsValid(LaunchColumn)) LaunchColumn->Destroy();
+	LaunchColumn = nullptr;
 	Destroy();
 }
 
@@ -229,6 +262,7 @@ void ADeviceBase::SetGameplayEnabled(bool bEnabled)
 	{
 		return;
 	}
+	AccumulateIdleTime();
 	bGameplayEnabled = bEnabled;
 	ExternalImpulseComponent->SetGameplayEnabled(bEnabled);
 	if (!bEnabled)
@@ -271,7 +305,14 @@ bool ADeviceBase::TransitionTo(EDeviceState NewState, bool bNotify)
 		return false;
 	}
 	const EDeviceState OldState = DeviceState;
+	AccumulateIdleTime();
 	DeviceState = NewState;
+	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->CommitDeviceState(this);
+	if (NewState != EDeviceState::Dormant)
+	{
+		bExpiryWarningActive = false;
+		LifecycleFeedback->SetVisibility(false);
+	}
 	if (!CanReceiveExternalImpulse()) ExternalImpulseComponent->ClearPending();
 	if (NewState != EDeviceState::Held)
 	{
@@ -436,6 +477,8 @@ void ADeviceBase::SpawnEmitterProjectile()
 	{
 		return;
 	}
+	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!Lifecycle || !Lifecycle->CanSpawnProjectile()) return;
 	const ARuleProjectile* Defaults = EmitterProjectileClass.GetDefaultObject();
 	const float Radius = Defaults->GetCollisionRadiusCm();
 	const FVector Origin = PhysicsBody->GetComponentLocation();
@@ -502,6 +545,56 @@ void ADeviceBase::SpawnEmitterProjectile()
 			*Origin.ToString(), *Muzzle.ToString(), bBirthHit);
 	}
 #endif
+}
+
+float ADeviceBase::GetDormantIdleSeconds() const
+{
+	const double CurrentSegment = DeviceState == EDeviceState::Dormant && bGameplayEnabled && HasActorBegunPlay() && GetWorld()
+		? FMath::Max(0.0, static_cast<double>(GetWorld()->GetTimeSeconds()) - IdleSegmentStartedAt) : 0.0;
+	return static_cast<float>(DormantIdleElapsed + CurrentSegment);
+}
+
+float ADeviceBase::GetRemainingIdleSeconds() const
+{
+	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	return FMath::Max(0.0f, (Lifecycle ? Lifecycle->GetIdleLifetimeSeconds() : 30.0f) - GetDormantIdleSeconds());
+}
+
+void ADeviceBase::AccumulateIdleTime()
+{
+	DormantIdleElapsed = GetDormantIdleSeconds();
+	IdleSegmentStartedAt = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+}
+
+void ADeviceBase::UpdateIdleLifecycle(float Lifetime, float WarningSeconds, float SpentSeconds)
+{
+	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Dormant) return;
+	const float Remaining = FMath::Max(0.0f, Lifetime - GetDormantIdleSeconds());
+	if (Remaining <= 0.0f)
+	{
+		TransitionTo(EDeviceState::Spent);
+		if (bEndingPlay || IsActorBeingDestroyed() || DeviceState != EDeviceState::Spent) return;
+		LifecycleFeedback->SetText(FText::FromString(TEXT("EXPIRED")));
+		LifecycleFeedback->SetTextRenderColor(FColor::Red);
+		LifecycleFeedback->SetVisibility(true);
+		SetLifeSpan(SpentSeconds);
+		return;
+	}
+	if (WarningSeconds > 0.0f && Remaining <= WarningSeconds)
+	{
+		LifecycleFeedback->SetText(FText::FromString(FString::Printf(TEXT("EXPIRES %ds"), FMath::CeilToInt(Remaining))));
+		LifecycleFeedback->SetVisibility(true);
+		if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+			if (PC->GetPawn()) LifecycleFeedback->SetWorldRotation((PC->GetPawn()->GetActorLocation() - LifecycleFeedback->GetComponentLocation()).Rotation());
+		if (!bExpiryWarningActive)
+		{
+			bExpiryWarningActive = true;
+#if !UE_BUILD_SHIPPING
+			if (bLogDeviceEvents) UE_LOG(LogMothEffect, Log, TEXT("Device %s expiryWarning remaining=%.3f idle=%.3f"), *GetName(), Remaining, GetDormantIdleSeconds());
+#endif
+			OnDormantExpiryWarning.Broadcast(this, Remaining);
+		}
+	}
 }
 
 void ADeviceBase::LogHit(const FHitContext& Context, bool bAccepted) const

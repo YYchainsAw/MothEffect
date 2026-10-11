@@ -5,6 +5,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Interfaces/BallisticReactive.h"
+#include "MothEffect.h"
 #include "Types/MothCollisionChannels.h"
 
 ARuleProjectile::ARuleProjectile()
@@ -82,6 +83,22 @@ void ARuleProjectile::BeginPlay()
 	ProjectileMovement->Velocity = FlightDirection * ProjectileMovement->InitialSpeed;
 	ProjectileMovement->Activate(true);
 	SetLifeSpan(FMath::Max(0.01f, LifetimeSeconds));
+#if !UE_BUILD_SHIPPING
+	if (bLogProjectileEvents)
+		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=spawn hit=%s source=%s instigator=%s position=%s direction=%s speed=%.1f lifetime=%.2f"),
+			*GetName(), *HitId.ToString(), *GetNameSafe(FiringSource.Get()), *GetNameSafe(FiringInstigator.Get()),
+			*GetActorLocation().ToString(), *FlightDirection.ToString(), ProjectileMovement->InitialSpeed, GetLifeSpan());
+#endif
+}
+
+void ARuleProjectile::LifeSpanExpired()
+{
+#if !UE_BUILD_SHIPPING
+	if (bLogProjectileEvents && !bImpactProcessed)
+		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=expired hit=%s source=%s position=%s"),
+			*GetName(), *HitId.ToString(), *GetNameSafe(FiringSource.Get()), *GetActorLocation().ToString());
+#endif
+	Super::LifeSpanExpired();
 }
 
 void ARuleProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -140,6 +157,12 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 	ProjectileMovement->Deactivate();
 	const bool bAccepted = IsValid(HitActor) && HitActor->Implements<UBallisticReactive>()
 		&& IBallisticReactive::Execute_ReceiveBallisticHit(HitActor, Context);
+#if !UE_BUILD_SHIPPING
+	if (bLogProjectileEvents)
+		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=impact hit=%s source=%s instigator=%s target=%s point=%s direction=%s accepted=%d"),
+			*GetName(), *HitId.ToString(), *GetNameSafe(Context.SourceActor.Get()), *GetNameSafe(Context.InstigatorPawn.Get()),
+			*GetNameSafe(HitActor), *Context.ImpactPoint.ToString(), *FlightDirection.ToString(), bAccepted);
+#endif
 	if (!bEndingPlay && !IsActorBeingDestroyed())
 	{
 		OnImpactNative.Broadcast(this, HitActor, Context);

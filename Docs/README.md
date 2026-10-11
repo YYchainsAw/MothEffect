@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.27 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.29 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-11 T12 完成：`bc3ce46` 已交付十项真实 World Tick 连锁测试、P01 可选开发日志与五组布局的 L_T12Chains；最终 Editor 构建与全量 53 项 Automation Success，参数 v0.13 不变。用户明确回复“全部通过，可以记录验收”，据此归档 Direct / BombHit / BombMiss / ColumnHit / ColumnMiss 五站及暂停恢复、结束清理的当前角色 PIE 确认，#14 为 Closed / Done。入口见 [Natural_Chain_Setup](05_Development_Guide/Natural_Chain_Setup.md)，证据和边界见 [T12_Report](06_Test_Doc/T12_Report_2026-10-11.md)。正式敌人/掉落、容量、完整整局重开、独立包与完整 G2 继续随后续任务验收。用户授权后已创建 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)，codex/t12-natural-chains → main；依赖的 T10/T11 PR #39 已合入 main，本地继续 develop。以下 T11 段落保留历史。
 
 2026-10-11 T11 完成：`a5903f6` 已交付 D01 静态承托探测、最终体积净空、单次弹射、净空后实体支撑和安全收回；BP_DeviceLauncher / BP_LaunchColumn 已保存，Editor 构建与全量 43 项 Automation 通过。用户在地面碰撞排查后确认“通过 提交并pr”，据此归档当前 PIE 验收，Issue #13 为 Closed / Done。15:19 最新 PIE 日志另有三次成功起柱与种子正常结束，其中一次从 Z=796.664cm 空中启动；阶段、逐目标弹射及站立手感按用户确认记录，不由生成日志单独推断。参数 v0.13；入口见 [Launcher_Setup](05_Development_Guide/Launcher_Setup.md)，证据与报告见 [T11_Report](06_Test_Doc/T11_Report_2026-10-11.md)。本轮按用户授权提交、推送并从 develop 向 main 创建包含 T10/T11 的 PR；正式敌人、完整连锁和 G2 继续随对应任务验收。
 
@@ -50,6 +52,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Emitter_Setup.md](05_Development_Guide/Emitter_Setup.md) | T08 D03/P01 灰盒 BP、方向提示、Automation 和空中启动验收 |
 | 05_Development_Guide/ | [Bomb_Setup.md](05_Development_Guide/Bomb_Setup.md) | T10 爆炸灰盒、统一推力与当前 PIE 验收 |
 | 05_Development_Guide/ | [Launcher_Setup.md](05_Development_Guide/Launcher_Setup.md) | T11 探地标签、升柱灰盒、安全支撑与当前 PIE 验收 |
+| 05_Development_Guide/ | [Natural_Chain_Setup.md](05_Development_Guide/Natural_Chain_Setup.md) | T12 普通机关测试房、真实连锁与布局对照 PIE 清单 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
@@ -57,6 +60,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 06_Test_Doc/ | [T09_Report_2026-10-11.md](06_Test_Doc/T09_Report_2026-10-11.md) | T09 修复、原生验证证据、PIE 收尾步骤与 PR 报告 |
 | 06_Test_Doc/ | [T10_Report_2026-10-11.md](06_Test_Doc/T10_Report_2026-10-11.md) | T10 爆炸/推力交付、资产及原生验证范围与 PR 报告 |
 | 06_Test_Doc/ | [T11_Report_2026-10-11.md](06_Test_Doc/T11_Report_2026-10-11.md) | T11 升柱/弹射交付、原生与资产验证范围及 PR 报告 |
+| 06_Test_Doc/ | [T12_Report_2026-10-11.md](06_Test_Doc/T12_Report_2026-10-11.md) | T12 真实连锁、保存场景/资产验证范围与首次失败记录 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

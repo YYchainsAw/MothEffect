@@ -43,11 +43,15 @@ public:
 	UFUNCTION(BlueprintPure, Category="Projectile")
 	float GetCollisionRadiusCm() const;
 
+	/** Development evidence follows the firing actor's logging setting. */
+	void SetEventLoggingEnabled(bool bEnabled) { bLogProjectileEvents = bEnabled; }
+
 	FMothProjectileImpactNative OnImpactNative;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void LifeSpanExpired() override;
 
 	/** Presentation only; collision and the one-hit guard are committed before this event. */
 	UFUNCTION(BlueprintImplementableEvent, Category="Projectile")
@@ -73,6 +77,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile", meta=(ClampMin="0.01", Units="s"))
 	float LifetimeSeconds = 3.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Projectile|Debug")
+	bool bLogProjectileEvents = false;
 
 private:
 	UFUNCTION()

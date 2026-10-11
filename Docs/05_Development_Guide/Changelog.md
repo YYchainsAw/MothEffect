@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.31 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.33 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.27，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.29，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -65,3 +65,7 @@ CHG033（2026-10-11）：用户在 T10 当前 PIE 清单后确认“测试通过
 CHG034（2026-10-11）：用户要求继续完成 T11；`a5903f6` 接入世界 -Z 承托探测、最终体积净空、ALaunchColumn 伸出/停留/收回、单次目标弹射、占用净空后实体支撑与关闭支撑时主动释放站立角色。DEC30 先记录灰盒方形截面、斜面最高接触、中心探地边缘与底部容差；参数 v0.13 补标签、1cm 容差和 1s Spent 反馈。保存 BP_DeviceLauncher / BP_LaunchColumn，引擎资源与 LFS 已核对；Editor 构建及最终 43 项 Automation 全 Success，11 项新增含真实运动/站立、D01/D02 顺序与保存资产加载。首轮 41/43、中间重载编译问题和修正日志保留。#13 为 Open / In Progress，当前真实角色 PIE、正式敌人/完整连锁和 G2 待验收；新增接入/模板报告/证据并同步阅读版，仅本地提交，用户资产改动保留，未推送或创建 PR。
 
 CHG035（2026-10-11）：用户在 T11 探地碰撞排查后确认“通过 提交并pr”。归档用户确认与 15:19 PIE 的三次成功起柱/正常种子结束（含空中启动），保留此前 NoGround / UnsupportedSurface 和 ABP_MothMurdock 除零警告；接入明确 BlockAll 为 WorldStatic、BlockAllDynamic 为 WorldDynamic，不改变现有承托规则。#13 验收补齐，关闭并同步 Project Done；更新接入、报告、任务/测试/技术设计与阅读快照。沿用既有 Editor 构建与 43 项 Automation 结果，本轮仅文档及 GitHub 收尾，没有新增助手图形 PIE 执行。按本次用户授权提交、推送 develop 并向 main 创建包含 T10/T11 的 PR；用户已有 BP_MothPlayer 资产改动不纳入，正式敌人/掉落、完整连锁、独立包及 G2 仍待验收。
+
+CHG036（2026-10-11）：用户要求继续推进 T12 / #14；`bc3ce46` 交付十项真实 World Tick / Chaos / P01 Sweep 连锁测试、布局阴性对照、可选 P01 spawn/impact/expired 日志，以及五组布局/14 件普通装置的 L_T12Chains 和创建脚本。DEC31 先约束只启动起点，不直接激活/命中后续目标或在连锁中传送对象；玩法参数 v0.13 不变。最终 Editor 构建和全量 53 项 Automation Success，首次 7/9、观察窗口修正、编译/脚本修正及最终结果分别归档。新增接入、报告与脱敏证据，更新任务/测试/技术设计/入口/阅读快照；#14 为 Open / In Progress，当前 Murdock 图形 PIE、正式敌人/完整 G2 仍待验收，仅本地提交，不推送到此前 T10/T11 PR #39，用户原有玩家资产改动保留。
+
+CHG037（2026-10-11）：用户授权“可以 创建pr”，随后明确验收回复“全部通过，可以记录验收”。按用户确认归档 T12 五站连锁/布局对照、暂停恢复与结束清理；沿用此前 Editor 构建及全量 53 项 Automation，不新增助手图形 PIE 或录屏声明。#14 验收补齐并关闭，Project Done；更新接入、报告、设计状态、任务/测试/入口与阅读快照。T10/T11 PR #39 已合入 main，保持本地 develop，T12 独立推送远程 codex/t12-natural-chains → main 并按模板创建 [PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)；只包含 T12 已提交内容，用户原有 BP_MothPlayer 改动保留。正式敌人/掉落、容量、整局重开、独立包和完整 G2 仍随后续任务验收。

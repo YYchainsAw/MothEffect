@@ -203,7 +203,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Collision")
 	TEnumAsByte<ECollisionChannel> WeaponTraceChannel = ECC_Visibility;
 
-	UPROPERTY(EditDefaultsOnly, Category="Device|Debug")
+	UPROPERTY(EditAnywhere, Category="Device|Debug")
 	bool bLogDeviceEvents = false;
 
 private:

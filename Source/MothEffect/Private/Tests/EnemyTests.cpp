@@ -176,6 +176,9 @@ namespace MothEnemyTest
 				E->OnEnemyDiedNative.AddLambda([this](AEnemyBase*, AActor*) { ++Deaths; });
 				auto* Source = NewObject<USceneComponent>(P); P->AddInstanceComponent(Source); Source->RegisterComponent(); Source->SetWorldLocation(FVector(60, 0, 150));
 				P->GetRifle()->SetMuzzleSource(Source, NAME_None);
+				// This existing native fixture intentionally has no compatible AnimInstance.
+				// Require its single presentation warning while exercising normal W01 input.
+				T->AddExpectedError(FString::Printf(TEXT("could not play on %s. Assign a Montage compatible"), *P->GetName()), EAutomationExpectedErrorFlags::Contains, 1);
 				P->SetPrimaryDown(true); P->DoPrimaryStart();
 				T->TestEqual(TEXT("Normal player press fires integrated W01"), P->GetRifle()->GetAmmoInMagazine(), 23);
 			}

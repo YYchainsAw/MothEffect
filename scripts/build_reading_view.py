@@ -43,6 +43,7 @@ DOCS = [
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),
     ('doc-changelog', '变更日志', 'Docs/05_Development_Guide/Changelog.md'),
     ('doc-test', '测试计划与验收', 'Docs/06_Test_Doc/Test_Plan.md'),
+    ('doc-t09-report', 'T09 收尾与验证报告', 'Docs/06_Test_Doc/T09_Report_2026-10-11.md'),
     ('doc-release', '发布检查清单', 'Docs/07_Release/Release_Checklist.md'),
 ]
 
@@ -78,6 +79,8 @@ def render(text):
 
 
 def fix_body(body, key, source, previous):
+    # GitHub task-list checkboxes have empty IDs, which are not usable anchors.
+    body = re.sub(r'\s+id=""', '', body)
     # Retain the previous snapshot's heading aliases so its existing links survive.
     legacy = {}
     for match in re.finditer(r'((?:<span id="[^"]+"></span>)*)<h([1-6])\b[^>]*>(.*?)</h\2>', previous, re.S):

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.22｜制定日期：2026-10-02｜更新日期：2026-10-08｜时间：香港时间（UTC+8）
+版本：v0.23｜制定日期：2026-10-02｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+
+2026-10-11 T09 原生回归：助手本机 Editor 构建成功，全量 MothEffect 23 项 Automation 全部 Success，其中新增九项覆盖投掷按压/受阻、实际暂停计时、失焦/松键、换弹竞争、死亡/EndPlay、结算禁用和 UnPossessed。非空但无法播放的 Fire/Reload/Throw Montage 不影响结算。首轮失焦与解除控制的两项失败及修正后证据保存在 [T09 验证摘录](Evidence/T09_Verification_2026-10-11.log)，覆盖与真实角色补测步骤见 [T09 报告](T09_Report_2026-10-11.md)。下表“未执行”保留为完整 TC 的初始/未完整验收状态；本轮原生分支通过不等于 Murdock 表现、真实窗口输入、全部 TC06/TC12/TC17/TC31/TC36–TC38 或整局重开已通过。
 
 2026-10-08 Murdock 迁移待执行：用户要求单 Jog 速度、取消走路/冲刺切换及一体人物/枪械接入；已写入隐藏 Rifle Actor 与外部枪口读取，并新增 `MothEffect.Weapons.Muzzle` 两项测试源码。助手未编译、未运行 UE；实际 Socket/骨骼动画、射击伤害/遮挡、Montage 与移动组合按 [Murdock_Setup](../05_Development_Guide/Murdock_Setup.md) 在 TC01/TC24/TC34/TC35/TC36/TC38 补测，旧模板的通过记录不自动扩展到新模型。
 

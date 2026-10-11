@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.21 · 2026-10-08 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.22 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-11 T09 收尾：本机 UE 5.8 Editor 增量构建成功；九项玩家边界测试复现并修正无 Flush 应用失焦续射、UnPossessed 后旧角色续射，修正后 MothEffect 共 23 项 Automation 全部 Success，未预期 errors/warnings 为零。无法播放的 Fire/Reload/Throw Montage 不影响玩法结算；真实 Murdock 动画中途停止、IA/IMC 与图形窗口操作仍待 PIE，实际整局重开随 T16 补测。收尾步骤、验证范围和 PR 报告见 [T09 报告](06_Test_Doc/T09_Report_2026-10-11.md)。Issue #11 当前 Open / In Progress，前三项已勾选，末项和证据字段仍未完成；本轮未修改 GitHub。
 
 2026-10-08 玩家迁移：Murdock 模型和配套动画、一体枪口、单 Jog 移动的现行接入见 [Murdock_Setup](05_Development_Guide/Murdock_Setup.md)。参数 v0.11 与新 JogSpeed 默认值同步，助手未编译/运行 UE；旧模板动画与独立枪步骤保留为历史或可选模式。
 
@@ -46,6 +48,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
 | 06_Test_Doc/ | [Test_Plan.md](06_Test_Doc/Test_Plan.md) | 测试计划与验收 |
+| 06_Test_Doc/ | [T09_Report_2026-10-11.md](06_Test_Doc/T09_Report_2026-10-11.md) | T09 修复、原生验证证据、PIE 收尾步骤与 PR 报告 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

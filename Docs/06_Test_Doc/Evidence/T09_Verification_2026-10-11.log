@@ -1,0 +1,82 @@
+T09 verification excerpts — 2026-10-11, Windows / UE 5.8.0-55116800
+Executor: Codex; branch: develop; final implementation commit: 2c5c3c3a4f08a8868c846e7a8e65ed19a9a0e8c7
+Scope: incremental Editor Win64 Development build and UnrealEditor-Cmd NullRHI Automation.
+Unreal log timestamps below are UTC; final run 12:57:06–12:57:20 Hong Kong (UTC+8).
+Personal project/engine/toolchain paths are redacted; original files remain in Saved/Automation/T09/.
+Test-only settings: SkeletalCube, disabled movement, recovery 0.4s, deterministic button/focus readers.
+Non-null Fire/Reload/Throw Montages cannot play; Fire warnings are expected and counted by the tests.
+Graphical PIE, real IA/IMC, Murdock animation interruption, and full-round restart were not run.
+
+=== Final build excerpt ===
+UHT compiled-in object format Default
+UHT processed MothEffectEditor in 1.5566214 seconds (0 generated files written)
+Building MothEffectEditor...
+Using Visual Studio 14.50.35728 toolchain ({VS_ROOT}\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK ({WINDOWS_SDK_ROOT}).
+{PROJECT_ROOT}\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 13.79 seconds
+
+=== Baseline: two reproducible failures; initial fixture warnings retained in original report ===
+Baseline was the uncommitted initial T09 test harness on 69caa17, before focus/UnPossessed fixes.
+Baseline summary: success=7, fail=2, fixture warnings=132
+[2026.10.11-04.49.33:604][347]LogAutomationController: Error: Test Completed. Result={Fail} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.11-04.49.33:605][347]LogAutomationController: Error: Expected 'Focus loss stops fire even without a viewport Flush callback' to be 23, but it was 21. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\PlayerBoundaryTests.cpp(275)]
+[2026.10.11-04.49.33:605][347]LogAutomationController: Error: Expected 'Returning while physically held cannot resume fire' to be false. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\PlayerBoundaryTests.cpp(278)]
+[2026.10.11-04.49.36:672][531]LogAutomationController: Error: Test Completed. Result={Fail} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.11-04.49.36:672][531]LogAutomationController: Error: Expected 'Unpossessed pawn does not keep firing' to be 23, but it was 21. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\PlayerBoundaryTests.cpp(102)]
+[2026.10.11-04.49.36:672][531]LogAutomationController: Error: Expected 'Unpossessed pawn requires a new press' to be false. [{PROJECT_ROOT}\Source\MothEffect\Private\Tests\PlayerBoundaryTests.cpp(103)]
+
+=== Final regression: original log excerpt ===
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+[2026.10.11-04.57.06:845][301]LogAutomationCommandLine: Display: Found 23 automation tests based on 'MothEffect'
+[2026.10.11-04.57.08:673][411]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.11-04.57.10:489][520]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.11-04.57.15:724][834]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.11-04.57.15:760][836]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.11-04.57.15:806][839]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.11-04.57.15:843][841]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.11-04.57.15:876][843]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.11-04.57.15:908][845]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.11-04.57.15:942][847]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.11-04.57.16:156][860]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.11-04.57.16:706][893]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.11-04.57.17:089][916]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.11-04.57.17:306][929]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.11-04.57.18:372][993]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.11-04.57.18:956][ 28]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.11-04.57.19:506][ 61]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.11-04.57.19:906][ 85]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.11-04.57.20:606][127]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.11-04.57.20:642][129]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.11-04.57.20:676][131]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.11-04.57.20:710][133]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.11-04.57.20:744][135]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.11-04.57.20:777][137]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.11-04.57.20:780][138]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 23 tests performed.
+
+=== Final exported report summary ===
+succeeded=23; succeededWithWarnings=0; failed=0; notRun=0; inProcess=0
+MothEffect.Devices.Emitter.BlockedBirthAndExpiry: Success; errors=0; warnings=0
+MothEffect.Devices.Emitter.CancellationStopsTimers: Success; errors=0; warnings=0
+MothEffect.Devices.Emitter.WorldDirectionAndLifetime: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.EndpointOccupancy: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors: Success; errors=0; warnings=0
+MothEffect.Devices.ReleaseSafety.ThinWall: Success; errors=0; warnings=0
+MothEffect.Devices.ActivationIsSingleUse: Success; errors=0; warnings=0
+MothEffect.Devices.CancelDuringActivationCallback: Success; errors=0; warnings=0
+MothEffect.Devices.RejectInvalidAndDisabledHits: Success; errors=0; warnings=0
+MothEffect.Player.T09.BlockedReleaseRetainsHeld: Success; errors=0; warnings=0
+MothEffect.Player.T09.DeathAndEndPlayCleanup: Success; errors=0; warnings=0
+MothEffect.Player.T09.FocusAndPhysicalRelease: Success; errors=0; warnings=0
+MothEffect.Player.T09.HeldInvalidationAndDamage: Success; errors=0; warnings=0
+MothEffect.Player.T09.PausePreservesTimers: Success; errors=0; warnings=0
+MothEffect.Player.T09.PickupReloadCompetition: Success; errors=0; warnings=0
+MothEffect.Player.T09.RoundCancellationRejectsOldTasks: Success; errors=0; warnings=0
+MothEffect.Player.T09.SinglePressAndRecovery: Success; errors=0; warnings=0
+MothEffect.Player.T09.UnpossessedStopsFire: Success; errors=0; warnings=0
+MothEffect.Projectiles.FirstImpactIsSingleUse: Success; errors=0; warnings=0
+MothEffect.Projectiles.RejectionAndSourceExclusion: Success; errors=0; warnings=0
+MothEffect.Projectiles.SweptThinWall: Success; errors=0; warnings=0
+MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement: Success; errors=0; warnings=0
+MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed: Success; errors=0; warnings=0
+Unexpected per-test errors=0; warnings=0. Process exit code alone is not used as a success check.

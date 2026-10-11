@@ -39,11 +39,13 @@ DOCS = [
     ('doc-device-setup', '机关状态与命中接入', 'Docs/05_Development_Guide/Device_Setup.md'),
     ('doc-device-interaction', '拾取、放下与安全投掷接入', 'Docs/05_Development_Guide/Device_Interaction_Setup.md'),
     ('doc-emitter-setup', 'D03 发射器与 P01 接入', 'Docs/05_Development_Guide/Emitter_Setup.md'),
+    ('doc-bomb-setup', 'D02 爆炸与推力接入', 'Docs/05_Development_Guide/Bomb_Setup.md'),
     ('doc-github', 'GitHub 开发流程', 'Docs/05_Development_Guide/GitHub_Workflow.md'),
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),
     ('doc-changelog', '变更日志', 'Docs/05_Development_Guide/Changelog.md'),
     ('doc-test', '测试计划与验收', 'Docs/06_Test_Doc/Test_Plan.md'),
     ('doc-t09-report', 'T09 收尾与验证报告', 'Docs/06_Test_Doc/T09_Report_2026-10-11.md'),
+    ('doc-t10-report', 'T10 交付与验证报告', 'Docs/06_Test_Doc/T10_Report_2026-10-11.md'),
     ('doc-release', '发布检查清单', 'Docs/07_Release/Release_Checklist.md'),
 ]
 

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.25 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.26 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-11 T10 实施：DeviceBase 的 Bomb 分派与 IImpulseReceiver / ExternalImpulseComponent 已落地。爆心在 Active 通知前固定；球查询按 Actor 去重、以胶囊/物理根中心判半径，伤害与推力共享 WorldStatic 实体遮挡结果；不调用其他装置的弹道接口。外力在所属 World 的 OnWorldPostActorTick 合并、替换柱子 Z 并统一限速，暂停保留，死亡/禁用/EndPlay 清理。已保存 BP_DeviceBomb，Editor 构建及 32 项 Automation 通过；正式敌人/D01 与图形 PIE 待对应阶段接入，详情见 [Bomb_Setup](../../05_Development_Guide/Bomb_Setup.md) 与 [T10 报告](../../06_Test_Doc/T10_Report_2026-10-11.md)。以下旧实现快照保留为历史。
 
 2026-10-11 T09 收尾：失焦取消不再只依赖 Controller Flush，角色 Tick 与射击许可共同检查应用焦点；释放门控仍读取真实左键，不因 Canceled/Flush 自动放行。UnPossessed 停连射并取消换弹/恢复和 Held，旧角色不留下延迟任务。原生测试分别替代硬件按键与焦点状态，使用真实隔离 World::Tick 验证暂停；Fire/Reload/Throw 的不可播放 Montage 不参与玩法结算。Editor 构建与 23 项 Automation 已通过，用户随后确认当前真实角色 PIE 通过，T09 已关闭；正式胜负/重开联调随 T16 补测，见 [T09 报告](../../06_Test_Doc/T09_Report_2026-10-11.md)。
 

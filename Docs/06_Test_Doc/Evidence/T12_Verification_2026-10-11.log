@@ -195,3 +195,13 @@ py -X utf8 scripts/build_reading_view.py --check: Reading view verified: 32 sour
 git diff --cached --check: exit 0.
 git lfs fsck: Git LFS fsck OK.
 BP_MothPlayer SHA256 unchanged: A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8.
+
+=== 2026-10-11 user PIE acceptance and PR authorization ===
+User request: 可以 创建pr
+Clarification shown: 你说“可以”，是否表示 T12 的五站连锁和暂停/清理检查都已通过？我会先创建 PR；这个回答只影响验收记录和 #14 的关闭状态。
+User reply: 全部通过，可以记录验收
+Recorded scope: Direct, BombHit, BombMiss, ColumnHit, ColumnMiss; pause/resume and projectile/device end cleanup/current PIE reset.
+Source: user confirmation. No additional assistant graphical PIE or recording is claimed.
+The prior no-push and pending-PIE entries above are historical; the user now authorizes a T12 PR.
+Existing PR #39 remains open on develop -> main. Keep local develop; publish only T12 commits on remote codex/t12-natural-chains -> develop.
+Formal enemy AI/drops, capacity, complete round restart, independent package, frame-rate/long-run checks and complete G2 remain pending.

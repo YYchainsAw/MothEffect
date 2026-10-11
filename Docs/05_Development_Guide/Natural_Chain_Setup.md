@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T12 统一弹丸与自然连锁验收
 
-版本 v0.1 · 2026-10-11 · 状态：Editor 构建、全量 53 项 Automation 与保存场景检查通过；当前图形 PIE 待验收
+版本 v0.2 · 2026-10-11 · 状态：Editor 构建、全量 53 项 Automation 与保存场景检查通过；用户确认当前五站及暂停/清理 PIE 通过
 
 实现提交 `bc3ce4628116fd42dc77a88ee2c8f84b2bfeb246`，Refs #14。参数仍为 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.13，没有为测试修改伤害、推力、发射间隔或寿命。结果与范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)。
 
@@ -41,3 +41,7 @@
 - `event=expired`：未命中的 P01 到期清理；生成者销毁后可能显示 source=None，可用出生时 HitId 关联。
 
 记录地图、源码版本、参数覆盖、操作时序、日志或录屏。当前新日志为可选 Development 证据，Shipping 不输出；ABP_MothMurdock 除零及旧 Rig/输入映射警告的历史记录不在本任务中宣称已修复。
+
+## 4. 2026-10-11 用户验收确认
+
+用户在五站与暂停/清理清单后明确回复“全部通过，可以记录验收”。据此记录 Direct、BombHit、BombMiss、ColumnHit、ColumnMiss，以及暂停恢复、弹丸/机关结束清理与重新 PIE 布局恢复通过；来源为用户确认，没有新增助手图形 PIE 或录屏。本次 #14 为 Closed / Done；本节不替代正式敌人、完整整局重开、帧率/长时间与完整 G2 的后续验收。

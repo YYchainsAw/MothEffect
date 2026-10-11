@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.29｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+版本：v0.30｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
 
-2026-10-11 T12 推进：#14 为 Open / In Progress，`bc3ce46` 已交付 P01 开发证据、十项真实连锁/布局对照/保存资产集成和五站十四件普通装置的 L_T12Chains。Editor 构建及全量 53 项 Automation Success，直接激活三类目标、爆炸推入火线、升柱送入火线和各自阴性对照均通过；原生与地图检查边界见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)。参数 v0.13 不变，[当前 PIE 清单](Natural_Chain_Setup.md)待用户验收；正式敌人/掉落、容量、整局重开、独立包与完整 G2 仍随对应任务验证。T01–T11 已 Closed / Done，T13–T27 仍 Todo；本轮仅 develop 本地提交，不把 T12 自动推送到此前 PR #39。以下段落保留历史。
+2026-10-11 T12 完成：用户确认“全部通过，可以记录验收”，五站自然连锁/布局对照及暂停恢复、结束清理的当前 Murdock PIE 已按用户确认归档，#14 为 Closed / Done。`bc3ce46` 交付源码、十项连锁测试和五站十四件普通装置的 L_T12Chains，Editor 构建与全量 53 项 Automation Success；证据和范围见 [T12 报告](../06_Test_Doc/T12_Report_2026-10-11.md)、[场景接入](Natural_Chain_Setup.md)。参数 v0.13 不变，T01–T12 已 Closed / Done，T13–T27 仍 Todo，下一项 T13；正式敌人/掉落、容量、整局重开、独立包与完整 G2 继续随对应任务验证。本次按用户授权独立提交 T12 PR：远程 codex/t12-natural-chains → develop，本地不切换 develop，既有 PR #39 保持 T10/T11 范围。以下段落保留历史。
 
 2026-10-11 T11 完成：用户在探地碰撞排查后确认“通过 提交并pr”，#13 当前实现验收已补齐并同步为 Closed / Done。D01 在 `a5903f6` 交付，两项灰盒已保存；Editor 构建与全量 43 项 Automation 通过。最新 15:19 PIE 日志有三次成功起柱及正常结束，包含空中启动；图形表现、单次弹射和支撑按用户确认归档，见 [接入清单](Launcher_Setup.md)、[T11 报告](../06_Test_Doc/T11_Report_2026-10-11.md)。地面应为 WorldStatic，使用 BlockAll 或等效自定义配置，不能以 BlockAllDynamic 替代；保留 MothColumnSurface 标签。参数 v0.13，T01–T11 为 Closed / Done，T12–T27 仍 Todo，下一项为 T12。本轮用户授权推送 develop 并向 main 创建包含尚未合入的 T10/T11 的 PR；独立包、正式敌人/掉落、完整自然连锁和 G2 仍待后续验证。以下段落保留历史。
 
@@ -116,7 +116,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T09 | [#11](https://github.com/YYchainsAw/MothEffect/issues/11) | 核心 | 输入切换、恢复、中断与单次激活边界 | T08 | 2–3 | 投掷松键与恢复后的新按压才射击，提前按下不缓存；失焦/暂停/动画中断/取消不留锁或任务；Held 免启动但玩家受伤；Active 不拾取/重启；TC06/TC12/TC17/TC31/TC37/TC38 适用分支通过 | Done / Closed；九项原生边界测试与全量 23 项回归通过，当前角色 PIE 用户确认通过；[报告](../06_Test_Doc/T09_Report_2026-10-11.md) 已归档，正式胜负/重开联调随 T16 补测 |
 | T10 | [#12](https://github.com/YYchainsAw/MothEffect/issues/12) | 核心 | D02 爆炸、伤害与推力 | T05、T06 | 2–3 | 地面/空中在激活位置爆炸；敌我受到伤害；可移动道具受推力；爆炸不直接启动其他机关 | Done / Closed；源码、灰盒与参数已交付，九项新增及全量 32 项 Automation 通过；用户确认[当前 PIE](Bomb_Setup.md)通过，正式敌人/D01 联调随后续任务补测 |
 | T11 | [#13](https://github.com/YYchainsAw/MothEffect/issues/13) | 核心 | D01 探地、升柱与弹射 | T06、T07 | 3–5 | 向世界竖直下方探地，检查最终柱体静态净空；伸出阶段逐对象单次弹射；停留期间净空后开实体支撑/阻挡，收回前关闭，不夹住角色或道具；TC09、TC10、TC33 通过 | Done / Closed；源码、两项灰盒和全量 43 项 Automation 通过，用户确认[当前 PIE](Launcher_Setup.md)通过，另有三次成功起柱日志；正式敌人/完整连锁随对应任务补测 |
-| T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | In Progress / Open；统一 P01、三类直接激活、两类实际运动连锁和布局阴性对照原生验证通过，保存测试房已交付，全量 53 项 Automation 通过；[当前 PIE](Natural_Chain_Setup.md)、正式敌人及完整 G2 待验收 |
+| T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | Done / Closed；全量 53 项 Automation、真实 P01 与两类运动连锁及阴性对照通过；用户确认五站与暂停/清理[当前 PIE](Natural_Chain_Setup.md)通过，正式敌人及完整 G2 随对应任务补测 |
 | T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Todo |
 | T14 | [#16](https://github.com/YYchainsAw/MothEffect/issues/16) | 核心 | 一套射击 AI：移动、视线、预警、P01 | T05、T12 | 3–5 | 敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置 | Todo |
 | T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | Todo |
@@ -185,4 +185,4 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 
 每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 [文档维护与变更流程](Documentation_Workflow.md) 在 [设计决策](../02_Design_Doc/TDD/Decisions/Design_Decisions.md) 与 [变更日志](Changelog.md) 中记录原因、关联任务/测试，并让 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)、[技术设计](../02_Design_Doc/TDD/Technical_Design.md)、[关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)、[玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。
 
-当前进度快照见本文件开头和任务表；[10/7 进度核查](Progress_Audit_2026-10-07.md) 为历史。T11 实现、灰盒与原生验证已交付，先补当前图形 PIE，再按依赖推进 T12；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。
+当前进度快照见本文件开头和任务表；[10/7 进度核查](Progress_Audit_2026-10-07.md) 为历史。T12 原生连锁、保存测试房及用户确认的当前 PIE 已验收，下一项按依赖推进 T13；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。

@@ -477,6 +477,7 @@ void ADeviceBase::SpawnEmitterProjectile()
 		Projectile->Destroy();
 		return;
 	}
+	Projectile->SetEventLoggingEnabled(bLogDeviceEvents);
 	Projectile->FinishSpawning(Transform);
 	if (!IsValid(Projectile) || !Projectile->HasActorBegunPlay())
 	{

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.25 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.26 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-11 T11 交付：`a5903f6` 接入 D01 静态承托探测、最终体积净空、单次弹射、净空后实体支撑和安全收回，已保存 BP_DeviceLauncher / BP_LaunchColumn。Editor 构建与全量 43 项 Automation 通过，11 项新增；参数 v0.13 补地面标签、接触容差和反馈残留。Issue #13 为 Open / In Progress，当前真实角色 PIE 待验收；入口见 [Launcher_Setup](05_Development_Guide/Launcher_Setup.md)，证据与模板报告见 [T11_Report](06_Test_Doc/T11_Report_2026-10-11.md)。正式敌人、完整连锁和 G2 继续按各自任务验收，以下 T10 记录为上一交付快照。
 
 2026-10-11 T10 完成：D02 单次爆炸、固定爆心、Actor 去重、静态遮挡伤害/推力与统一帧末外力结算已接入，BP_DeviceBomb 灰盒已生成并通过重新加载验证。Editor 构建和全量 32 项 Automation 通过，新增九项；参数 v0.12 新增 Spent 清理 0.25s。用户在接入清单后确认“测试通过”，当前 PIE 验收已归档，Issue #12 为 Closed / Done。正式敌人、D01 组合、完整连锁与 G2 随后续任务验收；下一项为 T11。入口见 [Bomb_Setup](05_Development_Guide/Bomb_Setup.md)，证据与 PR 报告见 [T10_Report](06_Test_Doc/T10_Report_2026-10-11.md)。
 
@@ -47,12 +49,14 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Device_Interaction_Setup.md](05_Development_Guide/Device_Interaction_Setup.md) | T07 挂点、持物表现、安全释放、输入与已通过范围 |
 | 05_Development_Guide/ | [Emitter_Setup.md](05_Development_Guide/Emitter_Setup.md) | T08 D03/P01 灰盒 BP、方向提示、Automation 和空中启动验收 |
 | 05_Development_Guide/ | [Bomb_Setup.md](05_Development_Guide/Bomb_Setup.md) | T10 爆炸灰盒、统一推力与当前 PIE 验收 |
+| 05_Development_Guide/ | [Launcher_Setup.md](05_Development_Guide/Launcher_Setup.md) | T11 探地标签、升柱灰盒、安全支撑与当前 PIE 验收 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
 | 06_Test_Doc/ | [Test_Plan.md](06_Test_Doc/Test_Plan.md) | 测试计划与验收 |
 | 06_Test_Doc/ | [T09_Report_2026-10-11.md](06_Test_Doc/T09_Report_2026-10-11.md) | T09 修复、原生验证证据、PIE 收尾步骤与 PR 报告 |
 | 06_Test_Doc/ | [T10_Report_2026-10-11.md](06_Test_Doc/T10_Report_2026-10-11.md) | T10 爆炸/推力交付、资产及原生验证范围与 PR 报告 |
+| 06_Test_Doc/ | [T11_Report_2026-10-11.md](06_Test_Doc/T11_Report_2026-10-11.md) | T11 升柱/弹射交付、原生与资产验证范围及 PR 报告 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

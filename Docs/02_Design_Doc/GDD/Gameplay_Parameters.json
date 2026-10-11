@@ -4,7 +4,7 @@
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "2026-10-11 T13 接入 world-local 容量、累计 Dormant 闲置寿命与清理，原有 24/6/6/64、30s/5s 不变；新增 limits.dormantSpentVisualSeconds=0.25。同源码独立工程 Editor 完整构建与全量66项Automation通过；原工程DLL因当前编辑器占用尚未完成链接，当前角色PIE待验收。T11/T12 当前实现已由用户确认验收，历史参数调优记录保留。2026-10-11 T11 接入 D01，原有探地距离、柱高/半宽、时长和目标竖直速度不变；v0.13 新增地面标签、底部接触容差 1cm 和 Spent 反馈残留 1s。Editor 构建、全量 43 项 Automation 与保存灰盒重新加载验证通过，当前真实角色 PIE、正式敌人和完整连锁待验收。此前 T10 已通过原生与用户当前 PIE 确认，v0.12 新增 bomb.spentVisualSeconds=0.25。顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "2026-10-11 T13 接入 world-local 容量、累计 Dormant 闲置寿命与清理，原有 24/6/6/64、30s/5s 不变；新增 limits.dormantSpentVisualSeconds=0.25。关闭编辑器并修正Unity测试辅助函数重名后，原工程Editor正式构建/链接与新DLL全量66项Automation通过；当前角色PIE待验收。T11/T12 当前实现已由用户确认验收，历史参数调优记录保留。2026-10-11 T11 接入 D01，原有探地距离、柱高/半宽、时长和目标竖直速度不变；v0.13 新增地面标签、底部接触容差 1cm 和 Spent 反馈残留 1s。Editor 构建、全量 43 项 Automation 与保存灰盒重新加载验证通过，当前真实角色 PIE、正式敌人和完整连锁待验收。此前 T10 已通过原生与用户当前 PIE 确认，v0.12 新增 bomb.spentVisualSeconds=0.25。顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
@@ -144,7 +144,7 @@
     {
       "date": "2026-10-11",
       "change": "T13 沿用总道具24、Active D03/D01各6、P01共64及Dormant累计30s/末5s警告；Held与合法暂停冻结，放下/投掷继续累计，新增Dormant过期Spent反馈0.25s。Config/DefaultGame.ini 同步 limits 的运行时副本。",
-      "evidence": "T13_isolated_editor_build_and_66_automation_success_125_source_files_and_config_matched_primary_DLL_locked_PIE_pending",
+      "evidence": "T13_primary_editor_unity_build_and_66_automation_success_62e6156_PIE_pending",
       "validated": false
     },
     {

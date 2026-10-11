@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.30 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.31 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-2026-10-11 T13 推进：统一 World-local 容量、累计 Dormant 闲置时钟、过期提示与 Spent/界外/重置清理已接入，基线 v0.14 保留 24/6/6/64 与 30s/5s，新增过期 Spent 反馈 0.25s。当前编辑器锁定原 DLL，已在同源码独立临时工程完成 Editor 构建，全量66项Automation Success；当前真实角色 PIE 仍待验收，#15 为 Open / In Progress。入口见 [Lifecycle_Setup](05_Development_Guide/Lifecycle_Setup.md)，范围见 [T13_Report](06_Test_Doc/T13_Report_2026-10-11.md)。实现已本地提交f9153fd，不推送；用户玩家资产改动保留。以下 T12 段落保留历史。
+2026-10-11 T13 推进：统一 World-local 容量、累计 Dormant 闲置时钟、过期提示与 Spent/界外/重置清理已接入，基线 v0.14 保留 24/6/6/64 与 30s/5s，新增过期 Spent 反馈 0.25s。用户保存并关闭编辑器后，修正 Unity 合并编译的测试辅助函数重名，原工程 Editor 构建/链接成功；使用原工程新 DLL 完成全量66项Automation Success；当前真实角色 PIE 仍待验收，#15 为 Open / In Progress。入口见 [Lifecycle_Setup](05_Development_Guide/Lifecycle_Setup.md)，范围见 [T13_Report](06_Test_Doc/T13_Report_2026-10-11.md)。实现f9153fd与Unity修正62e6156已本地提交，未推送；用户玩家资产改动保留。以下 T12 段落保留历史。
 
 2026-10-11 T12 完成：`bc3ce46` 已交付十项真实 World Tick 连锁测试、P01 可选开发日志与五组布局的 L_T12Chains；最终 Editor 构建与全量 53 项 Automation Success，参数 v0.13 不变。用户明确回复“全部通过，可以记录验收”，据此归档 Direct / BombHit / BombMiss / ColumnHit / ColumnMiss 五站及暂停恢复、结束清理的当前角色 PIE 确认，#14 为 Closed / Done。入口见 [Natural_Chain_Setup](05_Development_Guide/Natural_Chain_Setup.md)，证据和边界见 [T12_Report](06_Test_Doc/T12_Report_2026-10-11.md)。正式敌人/掉落、容量、完整整局重开、独立包与完整 G2 继续随后续任务验收。用户授权后已创建 [T12 PR #40](https://github.com/YYchainsAw/MothEffect/pull/40)，codex/t12-natural-chains → main；依赖的 T10/T11 PR #39 已合入 main，本地继续 develop。以下 T11 段落保留历史。
 

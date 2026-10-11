@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：T13 容量、累计过期与清理接入
 
-版本 v0.1 · 2026-10-11 · 状态：同源码隔离 Editor 构建与66项Automation通过；原工程正式链接和当前角色PIE待验收
+版本 v0.2 · 2026-10-11 · 状态：原工程Editor正式构建/链接与新DLL全量66项Automation通过；当前角色PIE待验收
 
-实现提交 `f9153fdb3631fa4382dd36d97ef2de39558c138d`，Refs #15；依据 R15/R16、DEC32 和 [玩法参数 v0.14](../02_Design_Doc/GDD/Gameplay_Parameters.json)。基线为总道具 24、Active D03 / D01 各 6、P01 共 64、Dormant 累计闲置 30s、末 5s 警告；本次只新增 Dormant 过期后 0.25s Spent 反馈。
+实现提交 `f9153fdb3631fa4382dd36d97ef2de39558c138d`，Unity测试修正 `62e6156bcf21a4953d5b42cf7b981b86319e3f7e`，Refs #15；依据 R15/R16、DEC32 和 [玩法参数 v0.14](../02_Design_Doc/GDD/Gameplay_Parameters.json)。基线为总道具 24、Active D03 / D01 各 6、P01 共 64、Dormant 累计闲置 30s、末 5s 警告；本次只新增 Dormant 过期后 0.25s Spent 反馈。
 
 ## 1. 运行时接入
 
@@ -16,7 +16,7 @@ Dormant 按 World gameplay time 累计，Held、暂停和玩法禁用冻结；�
 
 ## 2. 当前 PIE 清单
 
-当前编辑器加载旧 DLL，先保存改动并关闭，在 IDE 使用 Development Editor / Win64 构建原工程，再打开；隔离验证的 DLL 仅供独立测试，不更新原工程 Binaries。随后可使用 `/Game/MothEffect/Tests/L_T12Chains` 的地面区域。控制台辅助命令仅 Development 有行为：
+用户已保存并关闭编辑器，原工程 Development Editor / Win64 已成功编译并生成新 DLL；重新打开工程即可测试。使用 `/Game/MothEffect/Tests/L_T12Chains` 的地面区域。控制台辅助命令仅 Development 有行为：
 
 | 命令 | 用途 |
 |---|---|

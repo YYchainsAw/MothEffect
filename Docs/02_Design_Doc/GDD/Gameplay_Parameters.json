@@ -4,7 +4,7 @@
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "2026-10-11 T10 接入 D02 与统一推力处理，既有爆炸半径、伤害、推力和限速数值保持不变；v0.12 新增 bomb.spentVisualSeconds=0.25 作为灰盒 Spent 清理起点。原生分支与灰盒资产已通过 Editor 构建和 Automation，图形 PIE、正式敌人及 D01 组合仍待验收，顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "2026-10-11 T10 接入 D02 与统一推力处理，既有爆炸半径、伤害、推力和限速数值保持不变；v0.12 新增 bomb.spentVisualSeconds=0.25 作为灰盒 Spent 清理起点。原生分支与灰盒资产已通过 Editor 构建和 Automation，用户随后确认当前 PIE 测试通过；正式敌人及 D01 组合仍待验收，顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",

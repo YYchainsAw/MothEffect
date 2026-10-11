@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.24 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.25 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-2026-10-11 T10 交付：D02 单次爆炸、固定爆心、Actor 去重、静态遮挡伤害/推力与统一帧末外力结算已接入，BP_DeviceBomb 灰盒已生成并通过重新加载验证。Editor 构建和全量 32 项 Automation 通过，新增九项；参数 v0.12 新增 Spent 清理 0.25s。Issue #12 为 Open / In Progress，当前图形 PIE、正式敌人及 D01 连锁仍待对应阶段实测；入口见 [Bomb_Setup](05_Development_Guide/Bomb_Setup.md)，证据与 PR 报告见 [T10_Report](06_Test_Doc/T10_Report_2026-10-11.md)。
+2026-10-11 T10 完成：D02 单次爆炸、固定爆心、Actor 去重、静态遮挡伤害/推力与统一帧末外力结算已接入，BP_DeviceBomb 灰盒已生成并通过重新加载验证。Editor 构建和全量 32 项 Automation 通过，新增九项；参数 v0.12 新增 Spent 清理 0.25s。用户在接入清单后确认“测试通过”，当前 PIE 验收已归档，Issue #12 为 Closed / Done。正式敌人、D01 组合、完整连锁与 G2 随后续任务验收；下一项为 T11。入口见 [Bomb_Setup](05_Development_Guide/Bomb_Setup.md)，证据与 PR 报告见 [T10_Report](06_Test_Doc/T10_Report_2026-10-11.md)。
 
 2026-10-11 T09 完成：本机 UE 5.8 Editor 增量构建成功；九项玩家边界测试复现并修正无 Flush 应用失焦续射、UnPossessed 后旧角色续射，修正后 MothEffect 共 23 项 Automation 全部 Success，未预期 errors/warnings 为零。用户随后确认当前真实角色 PIE“测试通过”，确认原文与通过范围已归档；Issue #11 验收和验证记录已补齐，状态为 Closed / Done。实际胜负/整局重开随 T16 补测，G1/G3 继续按完整证据验收。验证范围和 PR 报告见 [T09 报告](06_Test_Doc/T09_Report_2026-10-11.md)。源码和文档仅本地提交，用户自行推送和创建 PR。
 

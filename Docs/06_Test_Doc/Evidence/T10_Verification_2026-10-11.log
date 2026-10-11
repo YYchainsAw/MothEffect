@@ -4,7 +4,7 @@ Environment: Windows / UE 5.8.0-55116800 / Editor Win64 Development / MSVC 14.50
 Native Automation: UnrealEditor-Cmd / NullRHI; log timestamps are UTC (Hong Kong UTC+8).
 Parameter ledger v0.12 matches tested defaults, adding bomb Spent cleanup 0.25s; existing blast values unchanged.
 Test-only exact-motion settings: engine SkeletalCube; gravity and falling braking disabled; no controller required.
-Graphical PIE, formal enemy AI, real D01 combinations, complete G2 and independent Windows package were not run.
+Codex did not run graphical PIE, formal enemy AI, real D01 combinations, complete G2 or an independent Windows package. Subsequent user PIE confirmation is appended separately below.
 Personal paths below are redacted. Full local logs and JSON remain in Saved/Automation/T10/.
 
 === InitialBuild.log ===
@@ -119,3 +119,25 @@ Existing warnings outside test exports are recorded below, not described as zero
 [2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
 [2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
 [2026.10.11-05.37.41:292][  0]LogBlueprint: Warning: [AssetLog] {PROJECT_ROOT}\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+
+=== User PIE acceptance confirmation — 2026-10-11 (Hong Kong date) ===
+Source: user reply in this Codex conversation after the T10 delivery and current Bomb_Setup PIE checklist.
+Original user text: 测试通过
+Evidence type: user-reported acceptance; not a new Codex graphical PIE run.
+Implementation/asset baseline: 5692d76f84e815b3cfb6a6070dd73455bb464bed; preceding delivery documentation: d76c1e5.
+Current checklist scope: ground/air activation, single-use/radius/friendly damage, movable-device impulse, static cover, no direct device activation, current player controls/pause.
+The reply is treated as acceptance of the currently implemented checklist; no per-case observations, PIE log/recording, asset SHA or execution timestamp were supplied.
+Shared damage/impulse rules have prior native two-character coverage. Formal enemy AI/death drops remain T14/T15 work.
+Real D01 combinations/natural chains remain T11/T12 work; complete round/restart remains T16 work.
+Complete G2 and an independent Windows package are not accepted by this confirmation.
+This archive changes documentation/status only; prior Editor build and 32-success Automation results are retained without rerunning UE.
+
+=== GitHub status verification after acceptance ===
+Issue URL: https://github.com/YYchainsAw/MothEffect/issues/12
+gh issue view: state=CLOSED; closedAt=2026-10-11T06:06:17Z; four acceptance checkboxes checked with the explicit current-scope note in the issue body.
+gh project item-list: item=PVTI_lAHODAW-Us4Blq_ozg-4m9o; status=Done.
+No PR was created and no Git push was performed by Codex.
+
+=== Documentation checks ===
+py scripts/validate_repo.py: passed for 191 tracked files and 21 UE assets.
+py scripts/build_reading_view.py --check: passed for 28 source sections, anchors and local links.

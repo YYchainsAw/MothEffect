@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.28｜制定日期：2026-10-02｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+版本：v0.29｜制定日期：2026-10-02｜更新日期：2026-10-11｜时间：香港时间（UTC+8）
+
+2026-10-11 T12 原生连锁验证：Editor 构建与最终全量 53 项 Automation Success，新增十项含真实 P01 激活 D01/D02/D03、D02/D01 推入火线及布局阴性对照、Pawn 生成者避让/归因不免伤、薄墙首次消耗、实际暂停和独立寿命、保存 Blueprint 真实飞行及保存地图配置重载。首轮九项为 7 Success / 2 Fail，修正清理观察窗口后全量通过；证据见 [T12 摘录](Evidence/T12_Verification_2026-10-11.log) 与 [T12 报告](T12_Report_2026-10-11.md)。TC07–TC16 当前适用原生分支已有证据，[Murdock 图形 PIE](../05_Development_Guide/Natural_Chain_Setup.md)待执行；正式敌人/掉落、完整案例、独立包与完整 G2 不据此通过，#14 保持 Open / In Progress。
 
 2026-10-11 T11 验收确认：用户在探地碰撞排查及 BlockAll / WorldStatic 配置说明后回复“通过 提交并pr”，据此完成当前 [真实角色 PIE 清单](../05_Development_Guide/Launcher_Setup.md)验收，Issue #13 为 Closed / Done；用户确认与助手执行证据分别归档。最新 15:19 PIE 日志另记录三次成功起柱、正常结束与一次空中启动，不含逐目标弹射速度/实体阶段记录，不能单独证明全部手感和边界。此前 Editor 构建与全量 43 项 Automation Success 保留，新增 11 项原生与保存资产测试及首轮 41 Success / 2 Fail 见 [T11 验证摘录](Evidence/T11_Verification_2026-10-11.log) 和 [T11 报告](T11_Report_2026-10-11.md)。当前 TC09/TC10/TC13/TC14/TC33/TC35 的已实现分支有原生证据和用户确认；正式敌人、完整自然连锁、独立 Windows 包、完整 G2 仍待后续验收，案例表继续记录完整案例状态。
 

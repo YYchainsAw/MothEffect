@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.22 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.23 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-2026-10-11 T09 收尾：本机 UE 5.8 Editor 增量构建成功；九项玩家边界测试复现并修正无 Flush 应用失焦续射、UnPossessed 后旧角色续射，修正后 MothEffect 共 23 项 Automation 全部 Success，未预期 errors/warnings 为零。无法播放的 Fire/Reload/Throw Montage 不影响玩法结算；真实 Murdock 动画中途停止、IA/IMC 与图形窗口操作仍待 PIE，实际整局重开随 T16 补测。收尾步骤、验证范围和 PR 报告见 [T09 报告](06_Test_Doc/T09_Report_2026-10-11.md)。Issue #11 当前 Open / In Progress，前三项已勾选，末项和证据字段仍未完成；本轮未修改 GitHub。
+2026-10-11 T09 完成：本机 UE 5.8 Editor 增量构建成功；九项玩家边界测试复现并修正无 Flush 应用失焦续射、UnPossessed 后旧角色续射，修正后 MothEffect 共 23 项 Automation 全部 Success，未预期 errors/warnings 为零。用户随后确认当前真实角色 PIE“测试通过”，确认原文与通过范围已归档；Issue #11 验收和验证记录已补齐，状态为 Closed / Done。实际胜负/整局重开随 T16 补测，G1/G3 继续按完整证据验收。验证范围和 PR 报告见 [T09 报告](06_Test_Doc/T09_Report_2026-10-11.md)。源码和文档仅本地提交，用户自行推送和创建 PR。
 
 2026-10-08 玩家迁移：Murdock 模型和配套动画、一体枪口、单 Jog 移动的现行接入见 [Murdock_Setup](05_Development_Guide/Murdock_Setup.md)。参数 v0.11 与新 JogSpeed 默认值同步，助手未编译/运行 UE；旧模板动画与独立枪步骤保留为历史或可选模式。
 

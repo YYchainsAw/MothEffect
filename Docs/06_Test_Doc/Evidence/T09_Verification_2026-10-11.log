@@ -80,3 +80,17 @@ MothEffect.Projectiles.SweptThinWall: Success; errors=0; warnings=0
 MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement: Success; errors=0; warnings=0
 MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed: Success; errors=0; warnings=0
 Unexpected per-test errors=0; warnings=0. Process exit code alone is not used as a success check.
+
+=== User-reported current PIE acceptance — archived 2026-10-11 ===
+Source: user confirmation in the T09 handoff conversation.
+Exact statement (Chinese): 测试通过
+Context: reply to the preceding request to complete the current-character T09 PIE checklist.
+Recorded result: current applicable T09 input/focus/pause, animation interruption,
+held/release, and lifecycle branches accepted on the basis of this user confirmation.
+Evidence type: user report; Codex did not directly execute graphical PIE.
+No per-case recording, exact execution time, or asset commit identifier was supplied.
+Full-round win/loss and restart remain assigned to T16 integration; G1/G3 are not accepted here.
+Implementation commit: 2c5c3c3a4f08a8868c846e7a8e65ed19a9a0e8c7 (local).
+Earlier documentation commit: 7dd06b9 (local).
+Remote status verified after synchronization: Issue #11 CLOSED (completed),
+closedAt=2026-10-11T05:12:48Z; Project #1 Status=Done; all four acceptance boxes checked.

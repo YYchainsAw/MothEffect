@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.24 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.25 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
 
-2026-10-11 T09 收尾：失焦取消不再只依赖 Controller Flush，角色 Tick 与射击许可共同检查应用焦点；释放门控仍读取真实左键，不因 Canceled/Flush 自动放行。UnPossessed 停连射并取消换弹/恢复和 Held，旧角色不留下延迟任务。原生测试分别替代硬件按键与焦点状态，使用真实隔离 World::Tick 验证暂停；Fire/Reload/Throw 的不可播放 Montage 不参与玩法结算。Editor 构建与 23 项 Automation 已通过，真实 Murdock 表现和完整局流程待验收，见 [T09 报告](../../06_Test_Doc/T09_Report_2026-10-11.md)。
+2026-10-11 T09 收尾：失焦取消不再只依赖 Controller Flush，角色 Tick 与射击许可共同检查应用焦点；释放门控仍读取真实左键，不因 Canceled/Flush 自动放行。UnPossessed 停连射并取消换弹/恢复和 Held，旧角色不留下延迟任务。原生测试分别替代硬件按键与焦点状态，使用真实隔离 World::Tick 验证暂停；Fire/Reload/Throw 的不可播放 Montage 不参与玩法结算。Editor 构建与 23 项 Automation 已通过，用户随后确认当前真实角色 PIE 通过，T09 已关闭；正式胜负/重开联调随 T16 补测，见 [T09 报告](../../06_Test_Doc/T09_Report_2026-10-11.md)。
 
 2026-10-08 方向表现接入：用户反馈游戏内没有方向提示。原生 UArrowComponent 绘制依赖 BillboardSprites 等视图设置，不能将它作为唯一游戏内提示；BP_DeviceEmitter 在绝对旋转的 EmitterDirectionMarker 下添加无碰撞 DirectionVisual 锥体网格，局部 Y/Pitch=-90° 令锥尖指向父组件 +X，现有原生显隐传播与方向锁定不变。步骤见 [Emitter_Setup 第 4 节](../../05_Development_Guide/Emitter_Setup.md#4-创建-bp_deviceemitter-与方向提示)，用户随后确认 PIE 方向显示通过；最终蓝图配置存盘、完整 TC03–TC05 和 G1 仍待核对。本轮不改玩法源码。
 

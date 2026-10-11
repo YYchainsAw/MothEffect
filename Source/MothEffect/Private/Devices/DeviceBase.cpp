@@ -2,6 +2,7 @@
 #include "Combat/RuleProjectile.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Components/ExternalImpulseComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
@@ -12,6 +13,7 @@
 ADeviceBase::ADeviceBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	PhysicsBody = CreateDefaultSubobject<USphereComponent>(TEXT("PhysicsBody"));
 	SetRootComponent(PhysicsBody);
 	PhysicsBody->InitSphereRadius(BodyRadiusCm);
@@ -76,6 +78,18 @@ void ADeviceBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 bool ADeviceBase::ReceiveBallisticHit_Implementation(const FHitContext& Context)
 {
 	return TryActivate(Context);
+}
+
+bool ADeviceBase::CanReceiveExternalImpulse() const
+{
+	return bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed()
+		&& (DeviceState == EDeviceState::Dormant
+			|| (DeviceState == EDeviceState::Active && DeviceKind == EDeviceKind::Emitter));
+}
+
+void ADeviceBase::ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId)
+{
+	if (CanReceiveExternalImpulse()) ExternalImpulseComponent->QueueImpulse(Velocity, bOverrideZ, EventId);
 }
 
 bool ADeviceBase::CanBePickedUp() const
@@ -146,6 +160,7 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	ActivationHitId = Context.HitId;
 	ActivationDirection = Direction;
 	ActivationImpactPoint = Context.ImpactPoint;
+	if (DeviceKind == EDeviceKind::Bomb) ExplosionCenter = GetActorLocation();
 	FHitContext ActivationContext = Context;
 	ActivationContext.ShotDirection = Direction;
 
@@ -172,10 +187,10 @@ bool ADeviceBase::FinishActivation()
 	}
 	TransitionTo(EDeviceState::Spent);
 	StopActiveEffect();
-	if (DeviceKind == EDeviceKind::Emitter && DeviceState == EDeviceState::Spent
+	if ((DeviceKind == EDeviceKind::Emitter || DeviceKind == EDeviceKind::Bomb) && DeviceState == EDeviceState::Spent
 		&& !bEndingPlay && !IsActorBeingDestroyed())
 	{
-		SetLifeSpan(FMath::Max(0.01f, EmitterSpentVisualSeconds));
+		SetLifeSpan(FMath::Max(0.01f, DeviceKind == EDeviceKind::Bomb ? BombSpentVisualSeconds : EmitterSpentVisualSeconds));
 	}
 	return true;
 }
@@ -200,6 +215,7 @@ void ADeviceBase::SetGameplayEnabled(bool bEnabled)
 		return;
 	}
 	bGameplayEnabled = bEnabled;
+	ExternalImpulseComponent->SetGameplayEnabled(bEnabled);
 	if (!bEnabled)
 	{
 		if (DeviceState == EDeviceState::Held)
@@ -241,6 +257,7 @@ bool ADeviceBase::TransitionTo(EDeviceState NewState, bool bNotify)
 	}
 	const EDeviceState OldState = DeviceState;
 	DeviceState = NewState;
+	if (!CanReceiveExternalImpulse()) ExternalImpulseComponent->ClearPending();
 	if (NewState != EDeviceState::Held)
 	{
 		Holder = nullptr;
@@ -301,9 +318,14 @@ void ADeviceBase::StopActiveEffect()
 
 void ADeviceBase::ActivateEffect(const FHitContext& Context)
 {
+	if (DeviceKind == EDeviceKind::Bomb)
+	{
+		ExplodeBomb(Context);
+		return;
+	}
 	if (DeviceKind != EDeviceKind::Emitter)
 	{
-		// D01/D02 retain their T06 state shell until T10/T11.
+		// D01 retains its T06 state shell until T11.
 		return;
 	}
 	EmitterInstigator = Context.InstigatorPawn.Get();

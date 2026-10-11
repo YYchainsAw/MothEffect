@@ -1,10 +1,10 @@
 {
-  "documentVersion": "0.11",
-  "updatedAt": "2026-10-08",
+  "documentVersion": "0.12",
+  "updatedAt": "2026-10-11",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_untested",
-  "note": "2026-10-08 用户确认玩家改用 Murdock，一体人物/枪械模型；移动只保留 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec，取消走路/冲刺速度切换。该参数与 C++ 默认值同步，尚未编译或 PIE 验收；airControl 沿用本地 Character 默认值。其他数值与规则保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "note": "2026-10-11 T10 接入 D02 与统一推力处理，既有爆炸半径、伤害、推力和限速数值保持不变；v0.12 新增 bomb.spentVisualSeconds=0.25 作为灰盒 Spent 清理起点。原生分支与灰盒资产已通过 Editor 构建和 Automation，图形 PIE、正式敌人及 D01 组合仍待验收，顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
@@ -105,7 +105,8 @@
     "characterHorizontalVelocityAddCmPerSec": 650,
     "characterUpVelocityAddCmPerSec": 450,
     "deviceRadialVelocityAddCmPerSec": 1100,
-    "activatesOtherDevices": false
+    "activatesOtherDevices": false,
+    "spentVisualSeconds": 0.25
   },
   "emitter": {
     "id": "D03",
@@ -136,6 +137,12 @@
     "stopGameplayOnResult": true
   },
   "tuningLog": [
+    {
+      "date": "2026-10-11",
+      "change": "T10 新增 D02 Spent 视觉残留 0.25s；既有 400cm/60HP/650+450cm/s/1100cm/s 和 1600cm/s 上限不变，原生与灰盒验证通过，PIE 调参待验收",
+      "evidence": "UE_5.8_editor_build_and_32_automation_success_with_saved_bomb_blueprint_integration_PIE_pending",
+      "validated": false
+    },
     {
       "date": "2026-10-08",
       "change": "T08 新增 P01 4cm Sweep 球半径、D03 出生净距 2cm 与 Spent 视觉残留 0.25s 作为未实测灰盒起点；已有速度、伤害、寿命、零重力和发射节奏不变",

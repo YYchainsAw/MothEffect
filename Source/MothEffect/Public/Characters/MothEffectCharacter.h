@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "Interfaces/BallisticReactive.h"
+#include "Interfaces/ImpulseReceiver.h"
 #include "Types/PlayerActionState.h"
 #include "Types/DeviceTypes.h"
 #include "TimerManager.h"
@@ -15,6 +16,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UHealthComponent;
+class UExternalImpulseComponent;
 class UChildActorComponent;
 class UAnimMontage;
 class ARifle;
@@ -31,7 +33,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
  * Player movement, shoulder camera, rifle/device input, action state and health.
  */
 UCLASS(abstract)
-class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallisticReactive
+class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallisticReactive, public IImpulseReceiver
 {
 	GENERATED_BODY()
 
@@ -45,6 +47,9 @@ class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallistic
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	TObjectPtr<UHealthComponent> HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;
 
 	/** Complete rifle actor, visible and positionable in the character Blueprint viewport. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
@@ -301,6 +306,7 @@ public:
 	bool GetRifleView(FVector& ViewLocation, FVector& ViewDirection) const;
 	FVector GetRifleSafetyOrigin() const;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
+	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Player|Health")
 	void OnPlayerDied(AActor* SourceActor);

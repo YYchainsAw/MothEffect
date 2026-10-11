@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/BallisticReactive.h"
+#include "Interfaces/ImpulseReceiver.h"
 #include "TimerManager.h"
 #include "Types/DeviceTypes.h"
 #include "DeviceBase.generated.h"
@@ -14,15 +15,16 @@ class ADeviceBase;
 class USceneComponent;
 class UArrowComponent;
 class ARuleProjectile;
+class UExternalImpulseComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChangedNative,
 	ADeviceBase*, EDeviceState, EDeviceState);
 
-/** Shared device state and ballistic entry point; D03 is native, D01/D02 follow later. */
+/** Shared device state and ballistic entry point; D02/D03 are native, D01 follows in T11. */
 UCLASS(Blueprintable)
-class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive
+class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, public IImpulseReceiver
 {
 	GENERATED_BODY()
 
@@ -30,6 +32,15 @@ public:
 	ADeviceBase();
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
+	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;
+	bool CanReceiveExternalImpulse() const;
+
+	UFUNCTION(BlueprintPure, Category="Device|Bomb")
+	FVector GetExplosionCenter() const { return ExplosionCenter; }
+
+	/** Presentation only; native damage and impulse settlement already completed. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Device|Bomb")
+	void OnBombExploded(FVector Center, float RadiusCm);
 
 	UPROPERTY(BlueprintAssignable, Category="Device")
 	FMothDeviceStateChanged OnDeviceStateChanged;
@@ -110,8 +121,29 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UArrowComponent> EmitterDirectionMarker;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device")
 	EDeviceKind DeviceKind = EDeviceKind::Emitter;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="1.0", Units="cm"))
+	float BombRadiusCm = 400.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0"))
+	float BombDamage = 60.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombCharacterHorizontalVelocityAdd = 650.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombCharacterUpVelocityAdd = 450.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.0", Units="cm/s"))
+	float BombDeviceRadialVelocityAdd = 1100.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Bomb", meta=(ClampMin="0.01", Units="s"))
+	float BombSpentVisualSeconds = 0.25f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter")
 	TSubclassOf<ARuleProjectile> EmitterProjectileClass;
@@ -178,6 +210,9 @@ private:
 	int32 EmitterNextShotIndex = 0;
 	int32 EmitterShotAttempts = 0;
 	int32 EmitterProjectilesSpawned = 0;
+	FVector ExplosionCenter = FVector::ZeroVector;
+
+	void ExplodeBomb(const FHitContext& Context);
 
 	void ScheduleEmitterShot();
 	void FireEmitterShot();

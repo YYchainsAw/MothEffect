@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.38 · 2026-10-12 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.39 · 2026-10-12 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-12 合并与T17推进：PR #42/#43/#44已合并到main，本地develop以cbe4330同步origin/main 0780180，保留用户玩家蓝图。L_Arena_01已落地60×50米三区、六低/三高掩体、双侧120cm平台坡道及南北回转通路；八点出生沿用T16，默认启动改为主竞技场，Ready由MothStartEncounter开始，完整UI继续T18。八件新LFS资产保存重载后15条路径完整，原工程Editor构建27.15s Succeeded，真实主地图8项Game全部Success，errors=0 / warnings=156，新增三项场地测试无告警；既有Paragon/Murdock资源告警保留。实现d9b3851、测试dce5cc6已本地提交，T17 #19 Open / In Progress，四组图形PIE待验收，战斗参数v0.17未变。本地T16依赖仍未推送/创建PR；此次合并不扩大先前手动验收范围。以下段落保留历史。 保存布局源见[T17_Arena_Layout](../../../SourceArt/Levels/T17_Arena_Layout.json)，接入见[Arena_Setup](../../05_Development_Guide/Arena_Setup.md)。
 
 2026-10-12 T16推进：三波导演已接入4 / 3+3 / 4+4固定种类/出生点，准备与延迟批次均计入待生成；真实胶囊/静态导航/安全距离检查和完整预警，占位后只在原点重试。玩家死亡/界外判负，末波结束胜利，World-local开关先关闭伤害/外力/生成再清对象与任务/绑定；当前地图OpenLevel重开，暂停结果页可重开，跨波不刷新Dormant闲置。保存BP_WaveDirector、原创警戒材质和L_T16Flow三件资产及八点静态导航，参数v0.17/Config和DEC35同步。Editor构建、最终全量95项Editor、5项真实Game流程与2项Game导航Success；实际4/6/8出生及8存活峰值、批次空窗、物理预警中断、界外、跨波闲置和十次全新World重开有证据。最终Editor导出errors=0 / warnings=1（引擎联网探测超时），此前94项warnings=0；Game流程errors=0，既有Paragon/Murdock加载/动画等156条warnings如实留存。#18保持Open / In Progress，当前图形PIE待验收；T14/T15仍待验收，T17最终场地、T18完整UI/教程及独立包/G3继续对应任务。本轮develop本地提交7d4edba/8932848/dca4554，未推送/创建T16 PR，用户玩家资产未纳入。以下段落保留历史。 类接口见[导演源码](../../../Source/MothEffect/Public/Framework/MothWaveDirector.h)，接入见[Wave_Flow_Setup](../../05_Development_Guide/Wave_Flow_Setup.md)。
 

@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：关卡、界面与资源规格
 
-游戏名：Moth Effect（飞蛾效应）｜v0.12｜2026-10-07。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。目前没有本作主竞技场或实测结果。
+游戏名：Moth Effect（飞蛾效应）｜v0.13｜2026-10-12。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见[JSON源](../../../SourceArt/Levels/T17_Arena_Layout.json)。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见[T17报告](../../06_Test_Doc/T17_Report_2026-10-12.md)，验收见[Arena_Setup](../../05_Development_Guide/Arena_Setup.md)。
 
 ## 0. 魔法朋克表现方向
 

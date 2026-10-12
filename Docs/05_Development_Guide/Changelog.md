@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.43 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.44 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.35，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.39，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -89,3 +89,6 @@ CHG045（2026-10-12）：2026-10-12 T15 PR记录：用户要求“先保持待�
 CHG046（2026-10-12）：[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43) 的PR记录head da6ff26已手动触发[Repository checks run38194066109](https://github.com/YYchainsAw/MothEffect/actions/runs/38194066109)，10:00:19香港时间Success，static-checks 6s；现有workflow目标分支过滤使自动PR检查未触发，手动结果在Actions运行页。同步实际CI类型/链接与阅读版，不修改当前PIE待验收状态；本次文档归档后的最终head另行核对GitHub实际运行结果。
 
 CHG047（2026-10-12）：2026-10-12 T16推进：三波导演已接入4 / 3+3 / 4+4固定种类/出生点，准备与延迟批次均计入待生成；真实胶囊/静态导航/安全距离检查和完整预警，占位后只在原点重试。玩家死亡/界外判负，末波结束胜利，World-local开关先关闭伤害/外力/生成再清对象与任务/绑定；当前地图OpenLevel重开，暂停结果页可重开，跨波不刷新Dormant闲置。保存BP_WaveDirector、原创警戒材质和L_T16Flow三件资产及八点静态导航，参数v0.17/Config和DEC35同步。Editor构建、最终全量95项Editor、5项真实Game流程与2项Game导航Success；实际4/6/8出生及8存活峰值、批次空窗、物理预警中断、界外、跨波闲置和十次全新World重开有证据。最终Editor导出errors=0 / warnings=1（引擎联网探测超时），此前94项warnings=0；Game流程errors=0，既有Paragon/Murdock加载/动画等156条warnings如实留存。#18保持Open / In Progress，当前图形PIE待验收；T14/T15仍待验收，T17最终场地、T18完整UI/教程及独立包/G3继续对应任务。本轮develop本地提交7d4edba/8932848/dca4554，未推送/创建T16 PR，用户玩家资产未纳入。以下段落保留历史。 接入/报告/脱敏证据新增，阅读版扩为40节。保存及首轮Game失败分别归档；已验证的终态与重开不替代T18完整界面、独立包或用户验收。
+
+
+CHG048（2026-10-12）：用户确认合并完成，核对PR42/43/44已合并main并以cbe4330同步本地develop，保留玩家资产。完成T17主竞技场L_Arena_01、八件新LFS包与布局源/生成脚本，默认关卡切换，15条保存重载路径通过；新增三项场地测试、复用五项流程测试验证主地图，原工程Editor构建27.15s与8项Game全部Success，errors=0 / warnings=156；三项新场地测试无告警。先提交d9b3851/dce5cc6，再归档报告/证据/DEC36/配置/TC17/21/32与四组当前PIE清单。保留旋转轴、已有地图NewLevel拒绝及路径中点检查三次失败；修正后真实步行/P01通过。参数v0.17未改，无T17/T16推送或PR，#19保持Open / In Progress，当前图形PIE及独立包/完整G3待验收；已有PR合并不扩大之前手动验收范围。

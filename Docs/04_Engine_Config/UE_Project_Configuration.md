@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：UE 工程配置
 
-版本 v0.11 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.12 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-12 T17当前入口：EditorStartupMap/GameDefaultMap现为`/Game/MothEffect/Maps/L_Arena_01.L_Arena_01`，GlobalDefaultGameMode为`/Game/MothEffect/Framework/BP_MothGameMode.BP_MothGameMode_C`。主场地八件资产和静态NavMesh已保存，原工程UE5.8 Editor构建与8项真实Game通过；Ready需控制台MothStartEncounter，完整UI随T18接入。原有不执行编译和ThirdPerson入口描述为历史，助手T09–T17原生验证已分别有实际记录，独立包/G0仍未补成通过。详情见[Arena_Setup](../05_Development_Guide/Arena_Setup.md)与[T17报告](../06_Test_Doc/T17_Report_2026-10-12.md)。
 
 本文件记录工程现状和 G0 配置检查，区分静态核对与运行证据。2026-10-03 本机已核对 UE 5.8.0、VS 2026 18.4 与 Windows SDK 10.0.26100.0 存在，修改前模板目标曾返回 Target is up to date。2026-10-06，[T02 Issue #3](https://github.com/YYchainsAw/MothEffect/issues/3) 已关闭、Project 为 Done，但干净编译、独立 Windows 包版本和启动证据仍未填写。用户负责资产配置与实际验收，助手不代为编译；本次只同步 Docs，不执行 UE 编译或打包。
 
@@ -10,7 +12,7 @@
 
 DefaultGame.ini 当前 ProjectName 与 ProjectDisplayedTitle 均为 Moth Effect，与用户确认的英文名一致。中文显示名统一为飞蛾效应；后续制作标题、窗口名称与投稿资料时采用对应语言的名称。本轮仅更新文档，未修改 DefaultGame.ini。
 
-现有入口为 /Game/ThirdPerson/Lvl_ThirdPerson，默认游戏模式指向 BP_ThirdPersonGameMode。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)。
+历史模板入口为 /Game/ThirdPerson/Lvl_ThirdPerson；T17当前主入口与模式见本页顶部，ThirdPerson地图保留验证用途。现有输入资产位于 /Game/Input：IMC_Default、IMC_MouseLook 与 IA_Move/Look/MouseLook/Jump。复用方式与新增输入动作见 [技术设计](../02_Design_Doc/TDD/Technical_Design.md)。
 
 工程清单启用了 ModelingToolsEditorMode（仅 Editor）、StateTree、GameplayStateTree。模块声明中还包含 Slate 与 StateTree 相关依赖。插件启用、模块依赖和本作已实现功能是三种不同状态，不因依赖存在而判定玩法已完成。
 

@@ -1,0 +1,375 @@
+T17 verification evidence | 2026-10-12 | timezone HKT UTC+8
+Environment: original MothEffect / UE 5.8.0-55116800 / Win64 Development Editor
+MSVC 14.50.35728 / Windows SDK 10.0.26100.0 / NullRHI / no sound / NoLiveCoding
+Scope: saved arena, real Game World engine ticks; no graphical PIE/package/video.
+Asset commit: d9b3851
+Static checks: 271 tracked files / 49 UE assets; JSON/local links/LFS attributes passed.
+Reading view: 42 source sections, anchors and local links valid; Git LFS fsck OK.
+Test commit: dce5cc6
+Main merge into develop: cbe4330 (origin/main 0780180; PR42/43/44 merged)
+User BP_MothPlayer SHA256 unchanged: A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8
+
+Build: Succeeded, 27.15s; existing ClearIgnoredActors deprecation warning.
+Navigation save/reload marker at UTC 12:27:45 / HKT 20:27:45:
+{
+  "map": "/Game/MothEffect/Maps/L_Arena_01",
+  "new_assets": 8,
+  "static_nav_reloaded": true,
+  "routes": [
+    {
+      "name": "S1_to_player",
+      "points": [
+        [
+          -1800.0,
+          1800.0,
+          10.0
+        ],
+        [
+          -1976.0,
+          -0.0,
+          10.0
+        ],
+        [
+          -1995.0,
+          -399.0,
+          10.0
+        ],
+        [
+          -2014.0,
+          -608.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S2_to_player",
+      "points": [
+        [
+          -800.0,
+          1800.0,
+          10.0
+        ],
+        [
+          -1976.0,
+          -988.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S3_to_player",
+      "points": [
+        [
+          800.0,
+          1800.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S4_to_player",
+      "points": [
+        [
+          -800.0,
+          -1600.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S5_to_player",
+      "points": [
+        [
+          1800.0,
+          1800.0,
+          10.0
+        ],
+        [
+          988.0,
+          1368.0,
+          10.0
+        ],
+        [
+          418.4,
+          988.0,
+          10.0
+        ],
+        [
+          304.0,
+          893.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S6_to_player",
+      "points": [
+        [
+          2600.0,
+          200.0,
+          10.0
+        ],
+        [
+          1976.0,
+          -0.0,
+          10.0
+        ],
+        [
+          494.0,
+          -456.0,
+          10.0
+        ],
+        [
+          -418.0,
+          -988.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S7_to_player",
+      "points": [
+        [
+          1800.0,
+          -1800.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "S8_to_player",
+      "points": [
+        [
+          200.0,
+          -1800.0,
+          10.0
+        ],
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "north_return",
+      "points": [
+        [
+          -2700.0,
+          2300.0,
+          10.0
+        ],
+        [
+          2700.0,
+          2300.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "south_return",
+      "points": [
+        [
+          -2700.0,
+          -2300.0,
+          10.0
+        ],
+        [
+          2700.0,
+          -2300.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "west_ramp",
+      "points": [
+        [
+          1050.0,
+          1200.0,
+          17.5
+        ],
+        [
+          1800.0,
+          1200.0,
+          130.0
+        ]
+      ]
+    },
+    {
+      "name": "east_ramp",
+      "points": [
+        [
+          2550.0,
+          1200.0,
+          35.0
+        ],
+        [
+          1800.0,
+          1200.0,
+          130.0
+        ]
+      ]
+    },
+    {
+      "name": "high_cover_detour",
+      "points": [
+        [
+          -900.0,
+          600.0,
+          10.0
+        ],
+        [
+          -722.0,
+          456.0,
+          10.0
+        ],
+        [
+          -494.0,
+          456.0,
+          10.0
+        ],
+        [
+          -300.0,
+          600.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "start_to_chain",
+      "points": [
+        [
+          -2200.0,
+          -1800.0,
+          10.0
+        ],
+        [
+          -988.0,
+          -794.3,
+          10.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "name": "chain_to_pressure",
+      "points": [
+        [
+          -0.0,
+          -0.0,
+          10.0
+        ],
+        [
+          2014.0,
+          912.0,
+          10.0
+        ],
+        [
+          2704.3,
+          1026.8,
+          22.3
+        ]
+      ]
+    }
+  ],
+  "enemy_classes": [
+    "/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C",
+    "/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C",
+    "/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C"
+  ],
+  "graphical_pie": false
+}
+
+Game command: /Game/MothEffect/Maps/L_Arena_01 -game -unattended -NullRHI -nosound -NoLiveCoding
+  -ExecCmds="Automation RunTests MothEffect.ArenaRuntime+MothEffect.WaveFlowRuntime"
+  -TestExit="Automation Test Queue Empty" -ReportExportPath=<Saved/Automation/T17/Game absolute path>
+Completed: UTC 12:31:20 / HKT 20:31:20
+All 8 states Success; 4 without warnings / 4 with warnings; failed=0 notRun=0 inProcess=0
+errors=0 warnings=156; total reported duration=88.15358 seconds (engine world clock owns tests)
+
+MothEffect.ArenaRuntime.BothRampsPhysicalWalking: Success errors=0 warnings=0 duration=7.91397s
+  INFO Saved arena ramp side=0 actual=X=1656.555 Y=1200.000 Z=212.191 destination=X=1700.000 Y=1200.000 Z=120.000
+  INFO Saved arena ramp side=1 actual=X=1943.358 Y=1200.000 Z=212.150 destination=X=1900.000 Y=1200.000 Z=120.000
+MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover: Success errors=0 warnings=0 duration=0.39696s
+  INFO Saved arena physical P01 blocker=StaticMeshActor_9 lowFlight=X=-500.000 Y=-539.470 Z=130.000
+MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision: Success errors=0 warnings=0 duration=0.00092s
+MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause: Success errors=0 warnings=0 duration=6.32618s
+MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback: Success errors=0 warnings=12 duration=6.08462s
+  INFO Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue.
+MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker: Success errors=0 warnings=12 duration=7.25912s
+MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards: Success errors=0 warnings=131 duration=35.61835s
+  INFO TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.
+MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory: Success errors=0 warnings=1 duration=24.55345s
+
+Warning message categories (automation captured events):
+  13: Empty particle Notify
+  26: Legacy Paragon Rig load
+  78: Legacy input events
+  13: Murdock animation divide by zero
+  13: Other: LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_
+  13: Travel-time navigation initialization
+
+Non-automation log diagnostics (not added to assertion error count):
+  Missing dependency package reports: 14
+  14x While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+
+Creation failures retained separately:
+  CreateArena.log: positional Python Rotator set Roll instead of Pitch; west-ramp NavMesh incomplete.
+  InspectRamps.log: saved ramp rotation/forward axis confirmed Roll +/-13.495733.
+  CreateArena2.log: NewLevel refused existing package; resumed owned-map rebuild added.
+  CreateArena3.log: complete two-point sloped path incorrectly rejected by waypoint-only check.
+  CreateArena4.log: named Rotator fields and segment intersection; saved/reloaded 15 full paths verified.
+
+Evidence boundaries:
+  P01 actually swept into saved high cover; low-cover shoulder-height P01 stayed in flight.
+  Both sides physically walked using real CharacterMovement/AIController, no teleport/jump/manual World.Tick.
+  Camera channel/ground tags/static column clearance are physics assertions, not visual camera/throw/launch acceptance.
+  Controlled flow removes only death loot for timing and preserves separate cross-wave Dormant.
+  All eight test results use current original-project DLL; no repeat of earlier 95 Editor tests for this asset-only change.
+  Four graphical PIE groups pending, issue19 Open, no PR/push for T17 or the local T16 dependency.
+
+Original SHA256 Build.log: fc8e5b38bcfc7a14965ee1e256aae4f642cc0a54293fa88f7b460e308736e461
+Original SHA256 CreateArena4.log: b949037dd6e50dff3bc0903f3c044a8bdd8812399b915a38259091b1944c4d92
+Original SHA256 SavedArena.json: 95ad4e6488031030a439c2a567960f625dd47514164f5f4e85e08f83f4eb4408
+Original SHA256 Game.log: 0fbae7e7769a687cc0c5c509dae41a0c509356ecd8cfb44af50ea506e8cd23ef
+Original SHA256 Game/index.json: d416a64c86a30cfc8c95759aaa8f12bdbc119a4aad14370d669e9ee944dcb868

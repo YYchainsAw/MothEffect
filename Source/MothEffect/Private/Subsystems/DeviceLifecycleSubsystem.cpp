@@ -103,7 +103,8 @@ ADeviceBase* UDeviceLifecycleSubsystem::SpawnDeviceInternal(TSubclassOf<ADeviceB
 {
 	if (!DeviceClass || DeviceClass->HasAnyClassFlags(CLASS_Abstract) || Transform.ContainsNaN()
 		|| !GetWorld()->HasBegunPlay() || !IsGenerationCurrent(Generation) || !ValidateBirthplace()
-		|| !MakeRoomForDevice() || !IsGenerationCurrent(Generation) || !ValidateBirthplace()) return nullptr;
+		|| !IsGenerationCurrent(Generation) || !MakeRoomForDevice() || !IsGenerationCurrent(Generation)
+		|| !ValidateBirthplace() || !IsGenerationCurrent(Generation)) return nullptr;
 	++PendingSpawns;
 	ADeviceBase* Device = GetWorld()->SpawnActorDeferred<ADeviceBase>(DeviceClass, Transform, nullptr, nullptr,
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);

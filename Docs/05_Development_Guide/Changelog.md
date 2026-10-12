@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.37 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.39 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.33，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.35，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -77,3 +77,7 @@ CHG039（2026-10-11）：用户确认已保存并关闭编辑器，继续完成T
 CHG040（2026-10-11）：用户在T13五项验收清单后确认“测试通过 创建pr”。按用户报告归档当前Murdock PIE的过期/累计持有放下投掷、暂停冻结、总容量回收保护、效果/弹丸结束与重复清理/重新PIE，结合原工程Editor正式构建及全量66项Automation，补齐#15验收并关闭、Project Done。快速七件Active、64发饱和/恢复与显式界外保留原生证据，不新增助手图形PIE或录屏。本轮只更新验收/参数证据/任务/设计/报告和阅读快照，不改玩法数值或重复运行UE。按本次授权向远程codex/t13-lifecycle推送并以main为base创建独立T13 PR，本地继续develop，用户BP_MothPlayer改动不纳入；正式敌人、完整整局/跨波、最终场地、独立包与完整G2继续随后续任务验收。
 
 CHG041（2026-10-11）：已按用户授权推送T13已提交内容至远程codex/t13-lifecycle，向main创建[T13 PR #41](https://github.com/YYchainsAw/MothEffect/pull/41)，当前Open；PR按仓库模板记录原工程构建、66项Automation与用户当前PIE验收，#15为Closed / Project Done。首个PR head为d486fbc，后续仅同步实际PR链接和交付记录，UE验证源码仍为62e6156；Repository checks按GitHub实际head结果核对。PR差异21件代码/配置/文档文件，无UE二进制资产，本地develop未切换且已有BP_MothPlayer改动保留。本轮没有授权合并PR，合并状态按GitHub后续结果记录。
+
+CHG042（2026-10-11）：用户要求推进T14，并提醒开发过程提交。e201be2交付一套射击EnemyBase、共用Health/Impulse/P01、视线/预警/间隔、最后可见位置、静态导航重试/停滞换点和死亡事件，DEC33/参数v0.15同步。1ad8496保存BP_EnemyBase与L_T14AI并接入首轮测试/Development命令；首轮新增8/10，步枪许可和道具遮挡夹具按正常玩家按键与已发弹路径修正，f68badf保留绕行目标跨重寻路。首个commandlet导航重载因AsyncLoadLock无有效路径，真实Editor Tick后正式Build/保存并验证绕静态掩体；另一个实际保存场地Game进程2项导航通过，含临时实体挡路实际侧向恢复。f68badf全量76 Success + 1 Success with warnings，原生玩家刻意无可播放动画导致NormalRifleKillsOnce带一条动画警告，玩法断言通过；678dc66明确该玩家恰好一次预期警告，不改变玩法断言。最终Editor构建Succeeded（16.18s），21:04:19香港时间全量77项Editor Success（新增11/既有66）、21:02:10两项Game Success，每项errors/warnings=0。记录首轮失败/导航锁及既有进程warnings，新增接入/模板报告/脱敏证据并同步阅读版；#16保持Open / In Progress，当前图形PIE与T15掉落/T16整局/T17最终场地及完整G3待验收。本轮逐功能仅本地提交，不推送或创建PR，用户原有玩家资产改动保留。
+
+CHG043（2026-10-12）：用户要求创建T14 PR，明确当前PIE“尚未完成，保留待验收”。核对T13 PR #41已合并，T14相对main差异26件文件且不含既有玩家资产改动，保持本地develop，推送独立远程codex/t14-shooting-ai并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open。首个head为1a18890，Repository checks run38189638920已Success；原工程Editor构建/77项Editor与2项Game导航验证源码仍为678dc66，未重复运行UE。两件新LFS资产的三个历史版本已上传，LFS fsck、本地静态与36节阅读检查通过。同步实际PR链接、用户待验收记录、交付状态和阅读版；#16保持Open / In Progress，合并后仍未验收再转Pending Acceptance；不自动关闭或合并。本轮文档head的CI另按实际结果核对。

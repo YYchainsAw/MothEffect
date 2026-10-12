@@ -7,6 +7,14 @@ UHealthComponent::UHealthComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+bool UHealthComponent::ConfigureMaxHealth(float Value)
+{
+	if (HasBegunPlay() || bEndingPlay || !FMath::IsFinite(Value) || Value < 1.0f) return false;
+	MaxHealth = Value;
+	CurrentHealth = Value;
+	return true;
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();

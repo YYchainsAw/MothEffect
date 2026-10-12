@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.34 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.35 · 2026-10-11 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-11 T14推进：EnemyBase一套射击AI已接入视线/完整预警/共用P01、最后可见位置追踪、静态导航与停滞持续换点、共享生命/推力及幂等死亡。参数v0.15与Config同步，保存BP_EnemyBase和带掩体/平台/已构建NavMesh的L_T14AI。原工程Editor构建通过，全量77项Editor Automation Success（新增11/既有66），另一个实际加载保存场地的Game进程2项导航Success；当前Murdock图形PIE待验收，#16为Open / In Progress。类/接入见[Enemy_Setup](../../05_Development_Guide/Enemy_Setup.md)，边界DEC33；T15固定掉落、T16波次/敌人注销与整局、T17最终场地未实现。以下段落保留历史。
 
 2026-10-11 T13 接入：UDeviceLifecycleSubsystem 按 Game/PIE World 统一容量，SpawnDevice 先预占总额，BeginPlay 兜底登记，Active 按启动序安全替换，P01 在初始化/首次消耗/销毁登记释放；状态提交与名额预占早于外部回调，重置通过世代与禁入防止遗留。Dormant 按游戏时间分段累计，Held/暂停/玩法禁用冻结，放下/投掷继续，末5s文字警告，Spent立即出数后残留0.25s；显式安全盒或开启的世界边界执行清理。配置副本见 DefaultGame.ini，设计边界 DEC32，接入见 [Lifecycle_Setup](../../05_Development_Guide/Lifecycle_Setup.md)。用户关闭编辑器后修正Unity测试函数重名，原工程Editor正式构建/链接与新DLL的全量66项Automation通过；用户在五项清单后确认“测试通过 创建pr”，当前角色PIE按用户报告通过；完整整局和正式敌人流程继续随后续任务验收。
 
@@ -50,7 +52,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | 同上，通过 `EDeviceKind` 分派 | `BP_DeviceLauncher / BP_DeviceBomb / BP_DeviceEmitter` | 分别绑定 D01/D02/D03 数据与外观；不增加三个 C++ 子类 |
 | `ALaunchColumn : AActor` | `BP_LaunchColumn` | 升柱表现、上升路径检测、一次弹射、净空后实体支撑 |
 | `ARuleProjectile : AActor` | `BP_RuleProjectile` | 敌人与机关共用 P01，移动、命中、寿命 |
-| `AEnemyBase : ACharacter` | `BP_EnemyBase` | 射击 AI、死亡、固定类型掉落；用内建 AIController |
+| `AEnemyBase : ACharacter` | `BP_EnemyBase` | T14射击AI/预警/P01/死亡已实现，内建AIController与静态NavMesh；固定掉落待T15 |
 | `UDeviceLifecycleSubsystem : UTickableWorldSubsystem` | 自动创建，无场景 Actor | 总道具/同类 Active/P01 容量、累计闲置、界外与重置；SpawnDevice/ResetManagedObjects 供掉落/整局接入 |
 | `AWaveDirector : AActor` | `BP_WaveDirector` | 波次、生成点、存活敌人；机关容量交给WorldSubsystem |
 | `UHealthComponent : UActorComponent` | 角色上的组件 | HP、一次死亡事件 |

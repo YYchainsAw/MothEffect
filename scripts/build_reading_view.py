@@ -43,6 +43,7 @@ DOCS = [
     ('doc-launcher-setup', 'D01 探地与升柱接入', 'Docs/05_Development_Guide/Launcher_Setup.md'),
     ('doc-natural-chain-setup', '统一弹丸与自然连锁接入', 'Docs/05_Development_Guide/Natural_Chain_Setup.md'),
     ('doc-lifecycle-setup', '容量与生命周期接入', 'Docs/05_Development_Guide/Lifecycle_Setup.md'),
+    ('doc-enemy-setup', 'T14 射击 AI 与导航接入', 'Docs/05_Development_Guide/Enemy_Setup.md'),
     ('doc-github', 'GitHub 开发流程', 'Docs/05_Development_Guide/GitHub_Workflow.md'),
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),
     ('doc-changelog', '变更日志', 'Docs/05_Development_Guide/Changelog.md'),
@@ -52,6 +53,7 @@ DOCS = [
     ('doc-t11-report', 'T11 交付与验证报告', 'Docs/06_Test_Doc/T11_Report_2026-10-11.md'),
     ('doc-t12-report', 'T12 交付与验证报告', 'Docs/06_Test_Doc/T12_Report_2026-10-11.md'),
     ('doc-t13-report', 'T13 交付与验证报告', 'Docs/06_Test_Doc/T13_Report_2026-10-11.md'),
+    ('doc-t14-report', 'T14 交付与验证报告', 'Docs/06_Test_Doc/T14_Report_2026-10-11.md'),
     ('doc-release', '发布检查清单', 'Docs/07_Release/Release_Checklist.md'),
 ]
 

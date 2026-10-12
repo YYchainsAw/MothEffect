@@ -29,6 +29,12 @@ public:
 	void MothSpawnDevice(int32 Kind = 2, int32 Count = 1);
 	UFUNCTION(Exec)
 	void MothResetDevices();
+	UFUNCTION(Exec)
+	void MothSpawnEnemy();
+	UFUNCTION(Exec)
+	void MothResetEnemies();
+	UFUNCTION(Exec)
+	void MothEnemyStats();
 	
 protected:
 

@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="Health")
 	bool IsAlive() const { return !bHasDied && CurrentHealth > 0.0f; }
 
+	/** Configure an owning archetype before component BeginPlay; never heals a live actor. */
+	bool ConfigureMaxHealth(float Value);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

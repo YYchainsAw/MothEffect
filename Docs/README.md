@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.33 · 2026-10-11 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.35 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-12 T14 PR记录：按用户要求已推送远程codex/t14-shooting-ai → main并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open；T13 PR #41已合并。用户明确确认“尚未完成，保留待验收”，当前Murdock图形PIE不记通过，#16保持Open / In Progress；合并后仍未验收则转Pending Acceptance。原工程Editor构建、77项Editor与2项Game导航沿用2026-10-11源码678dc66的实际证据；首个PR head为1a18890，Repository checks已Success（run38189638920），本次仅同步交付文档与阅读版，最终head检查另按GitHub实际结果核对。本地继续develop，玩家原有蓝图改动保留。以下段落保留历史。
+
+2026-10-11 T14推进：EnemyBase一套射击AI已接入视线/完整预警/共用P01、最后可见位置追踪、静态导航与停滞持续换点、共享生命/推力及幂等死亡。参数v0.15与Config同步，保存BP_EnemyBase和带掩体/平台/已构建NavMesh的L_T14AI。原工程Editor构建通过，全量77项Editor Automation Success（新增11/既有66），另一个实际加载保存场地的Game进程2项导航Success；当前Murdock图形PIE待验收，#16为Open / In Progress。入口见[Enemy_Setup](05_Development_Guide/Enemy_Setup.md)，范围见[T14_Report](06_Test_Doc/T14_Report_2026-10-11.md)。本轮按用户要求逐功能本地提交，未推送到T13 PR #41；玩家原有资产改动保留。以下段落保留历史。
 
 2026-10-11 T13 验收完成：统一 World-local 容量、累计 Dormant 闲置时钟、过期提示与 Spent/界外/重置清理已接入，基线 v0.14 保留 24/6/6/64 与 30s/5s，新增过期 Spent 反馈 0.25s。用户保存并关闭编辑器后，修正 Unity 合并编译的测试辅助函数重名，原工程 Editor 构建/链接成功；使用原工程新 DLL 完成全量66项Automation Success；用户在五项验收清单后回复“测试通过 创建pr”，当前真实角色PIE按用户确认归档，#15为Closed / Done。完整整局、正式敌人和G2继续随后续任务验收。入口见 [Lifecycle_Setup](05_Development_Guide/Lifecycle_Setup.md)，范围见 [T13_Report](06_Test_Doc/T13_Report_2026-10-11.md)。实现f9153fd与Unity修正62e6156已本地提交；按本次授权已推送远程codex/t13-lifecycle → main并创建[T13 PR #41](https://github.com/YYchainsAw/MothEffect/pull/41)，当前Open，本地继续develop，用户玩家资产改动保留。以下 T12 段落保留历史。
 
@@ -56,6 +60,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Launcher_Setup.md](05_Development_Guide/Launcher_Setup.md) | T11 探地标签、升柱灰盒、安全支撑与当前 PIE 验收 |
 | 05_Development_Guide/ | [Natural_Chain_Setup.md](05_Development_Guide/Natural_Chain_Setup.md) | T12 普通机关测试房、真实连锁与布局对照 PIE 清单 |
 | 05_Development_Guide/ | [Lifecycle_Setup.md](05_Development_Guide/Lifecycle_Setup.md) | T13 容量、累计闲置、过期与清理接入和 PIE 清单 |
+| 05_Development_Guide/ | [Enemy_Setup.md](05_Development_Guide/Enemy_Setup.md) | T14射击AI、已保存导航场景与当前PIE清单 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
@@ -65,6 +70,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 06_Test_Doc/ | [T11_Report_2026-10-11.md](06_Test_Doc/T11_Report_2026-10-11.md) | T11 升柱/弹射交付、原生与资产验证范围及 PR 报告 |
 | 06_Test_Doc/ | [T12_Report_2026-10-11.md](06_Test_Doc/T12_Report_2026-10-11.md) | T12 真实连锁、保存场景/资产验证范围与首次失败记录 |
 | 06_Test_Doc/ | [T13_Report_2026-10-11.md](06_Test_Doc/T13_Report_2026-10-11.md) | T13 容量/闲置/清理、构建环境与验证范围 |
+| 06_Test_Doc/ | [T14_Report_2026-10-11.md](06_Test_Doc/T14_Report_2026-10-11.md) | T14原生/导航验证、首轮失败、资产与验收边界 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

@@ -1,0 +1,27 @@
+{
+  "units": "cm",
+  "map": "/Game/MothEffect/Maps/L_Arena_01",
+  "size": [6000, 5000],
+  "player_start": [-2200, -1800, 100],
+  "spawn_points": [[-1800,1800],[-800,1800],[800,1800],[-800,-1600],[1800,1800],[2600,200],[1800,-1800],[200,-1800]],
+  "zones": [
+    {"name":"A_Start", "center_x":-2000, "color":[0.18,0.22,0.24]},
+    {"name":"B_Chain", "center_x":0, "color":[0.23,0.24,0.22]},
+    {"name":"C_Pressure", "center_x":2000, "color":[0.25,0.22,0.21]}
+  ],
+  "low_cover": [[-2200,-500],[-1600,800],[-500,-800],[500,800],[1600,-800],[2200,800]],
+  "low_cover_extent": [150,65,45],
+  "high_cover": [[-600,600],[600,-600],[2400,-500]],
+  "high_cover_extent": [100,100,90],
+  "platform": {"center":[1800,1200], "extent":[200,200], "height":120, "ramp_run":500, "ramp_width":300, "ramp_thickness":40},
+  "return_lane_centers_y": [-2300,2300],
+  "navigation_routes": [
+    {"name":"north_return", "from":[-2700,2300,90], "to":[2700,2300,90]},
+    {"name":"south_return", "from":[-2700,-2300,90], "to":[2700,-2300,90]},
+    {"name":"west_ramp", "from":[1050,1200,90], "to":[1800,1200,210], "via_x":1500},
+    {"name":"east_ramp", "from":[2550,1200,90], "to":[1800,1200,210], "via_x":2100},
+    {"name":"high_cover_detour", "from":[-900,600,90], "to":[-300,600,90]},
+    {"name":"start_to_chain", "from":[-2200,-1800,100], "to":[0,0,90]},
+    {"name":"chain_to_pressure", "from":[0,0,90], "to":[2700,1000,90]}
+  ]
+}

@@ -21,7 +21,7 @@ public class MothEffect : ModuleRules
 			"Slate"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem", "SlateCore" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

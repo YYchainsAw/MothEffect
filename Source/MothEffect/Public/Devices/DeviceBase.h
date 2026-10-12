@@ -24,6 +24,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChangedNative,
 	ADeviceBase*, EDeviceState, EDeviceState);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FMothDeviceActivatedNative, ADeviceBase*, const FHitContext&);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothDormantExpiryWarning, ADeviceBase*, Device, float, RemainingSeconds);
 
 /** Shared device state and ballistic entry point for D01/D02/D03. */
@@ -61,6 +62,8 @@ public:
 
 	/** Native gameplay observers use the same committed transitions as Blueprint presentation. */
 	FMothDeviceStateChangedNative OnDeviceStateChangedNative;
+	/** Synchronous evidence after activation commits; never retains source actors. */
+	FMothDeviceActivatedNative OnActivatedNative;
 	UPROPERTY(BlueprintAssignable, Category="Device|Lifecycle")
 	FMothDormantExpiryWarning OnDormantExpiryWarning;
 	UFUNCTION(BlueprintPure, Category="Device|Lifecycle")

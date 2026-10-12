@@ -3,6 +3,7 @@
 #include "Framework/MothEffectGameMode.h"
 #include "Framework/MothWaveDirector.h"
 #include "EngineUtils.h"
+#include "Tutorial/MothTutorialSubsystem.h"
 
 AMothEffectGameMode::AMothEffectGameMode()
 {
@@ -18,11 +19,15 @@ AMothWaveDirector* AMothEffectGameMode::GetWaveDirector() const
 bool AMothEffectGameMode::StartEncounter()
 {
 	AMothWaveDirector* Director = GetWaveDirector();
-	return Director && Director->StartEncounter();
+	if (!Director || Director->GetPhase() != EMothFlowPhase::Ready) return false;
+	GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->EndTutorial();
+	return Director->StartEncounter();
 }
 
 bool AMothEffectGameMode::RestartEncounter()
 {
 	AMothWaveDirector* Director = GetWaveDirector();
-	return Director && Director->RestartEncounter();
+	if (!Director) return false;
+	GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->EndTutorial();
+	return Director->RestartEncounter();
 }

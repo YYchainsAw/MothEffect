@@ -26,6 +26,8 @@ struct FInputActionValue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothPlayerActionChanged,
 	EPlayerActionState, OldState, EPlayerActionState, NewState);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FMothDeviceReleasedNative, ADeviceBase*, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FMothInteractionRejectedNative, const FText&);
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -185,6 +187,10 @@ protected:
 	float AimBlendAlpha = 0.0f;
 
 public:
+	FMothDeviceReleasedNative OnDeviceReleasedNative;
+	FMothInteractionRejectedNative OnInteractionRejectedNative;
+	/** Read-only counterpart of E: the first crosshair hit with full pickup eligibility. */
+	ADeviceBase* GetPickupCandidate() const;
 
 	/** Constructor */
 	AMothEffectCharacter();	

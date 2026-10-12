@@ -8,6 +8,7 @@
 
 class UInputMappingContext;
 class UUserWidget;
+class UMothHUDWidget;
 
 /**
  *  Basic PlayerController class for a third person game
@@ -19,6 +20,16 @@ class AMothEffectPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	AMothEffectPlayerController();
+	virtual void Tick(float DeltaSeconds) override;
+	virtual void OnPossess(APawn* InPawn) override;
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void StartTeaching();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void StartBattle();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ToggleMenuPause();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ResumeGame();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ReturnToTitle();
+	UMothHUDWidget* GetGameplayUI() const { return GameplayUI; }
+	void SyncUIInput();
 
 	virtual void FlushPressedKeys() override;
 	virtual bool SetPause(bool bPause, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
@@ -68,11 +79,19 @@ protected:
 
 	/** Gameplay initialization */
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 
 	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
 
 	/** Returns true if the player should use UMG touch controls */
 	bool ShouldUseTouchControls() const;
+
+private:
+	UPROPERTY() TObjectPtr<UMothHUDWidget> GameplayUI;
+	UPROPERTY(EditDefaultsOnly, Category="Moth|UI") TSoftClassPtr<UMothHUDWidget> GameplayUIClass;
+	bool bTravelRequested = false;
+	int32 AppliedUIPage = -1;
+	void InitializeGameplayUI();
 
 };

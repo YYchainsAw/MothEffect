@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入
 
-版本 v0.2 · 2026-10-12 · 状态：88项Editor全量、11项新增最终复测与2项Game导航通过；当前Murdock图形PIE待验收
+版本 v0.3 · 2026-10-12 · 状态：原生验证通过；保存关卡实例不掉落已修复，新增NullRHI关卡PIE验证通过；当前Murdock图形PIE待复测验收
 
 Refs #17，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用[T14射击AI](Enemy_Setup.md)和[T13生命周期](Lifecycle_Setup.md)，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；2026-10-12按用户要求创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)（codex/t15-enemy-drops → codex/t14-shooting-ai），当前Open；待T14合并后再改为main。用户要求保持待验收，#17保持Open / In Progress，当前四项PIE不记通过。
 
@@ -27,6 +27,8 @@ Refs #17，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终�
 ## 3. 当前 PIE 验收清单
 
 打开`/Game/MothEffect/Tests/L_T15Drops`进入PIE：左侧D01平地、中间D02墙边、右侧D03约20度坡地，三个普通射击敌人共用AI；地图保存静态NavMesh，不含脚本击杀。敌人会追近，实际死亡位置随战斗变化；验证墙边/坡地时注意把对应敌人留在该地形附近，必要时退出PIE恢复场景。
+
+2026-10-12用户实测发现保存的三个敌人不掉落。核查蓝图CDO的固定类型/掉落类正确，但关卡实例的`DropDeviceClass=None`且`DropKind=Emitter`；原自动化新生成的敌人没有覆盖此问题。已只替换本脚本拥有的三个实例，保留位置/旋转/标签并保存地图；生成器现在在修复、保存和重载后检查实例。请停止PIE并重新加载`L_T15Drops`，避免继续使用编辑器内存中的旧地图。三类敌人应显示类型背包，死亡各生成对应一件Dormant。
 
 | Development控制台 | 用途 |
 |---|---|

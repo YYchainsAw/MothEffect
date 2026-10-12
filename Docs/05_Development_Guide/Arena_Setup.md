@@ -1,6 +1,8 @@
 # Moth Effect：T17 主竞技场灰盒接入与验收
 
-版本 v0.1 · 2026-10-12 · [Issue #19](https://github.com/YYchainsAw/MothEffect/issues/19) · 当前图形 PIE 待验收
+版本 v0.2 · 2026-10-12 · [Issue #19](https://github.com/YYchainsAw/MothEffect/issues/19) · 当前图形 PIE 待验收
+
+已创建[T16/T17 PR #45](https://github.com/YYchainsAw/MothEffect/pull/45)，codex/t16-t17-wave-arena → main。用户要求保持待校验；当前图形PIE清单未记通过，#18/#19继续Open，未自动关闭。
 
 主场地为 `/Game/MothEffect/Maps/L_Arena_01`，UE 中打开 `Content/MothEffect/Maps/L_Arena_01`。保存后的默认启动关卡指向它；原有验证地图保留各自用途。进入 PIE 时导演处于 Ready，控制台输入 `MothStartEncounter` 开始，`MothFlowStats` 查看阶段/波数/存活/待生成，`MothRestartEncounter` 清理并重开。完整标题、教学和 HUD 属于 T18。
 

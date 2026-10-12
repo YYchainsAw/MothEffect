@@ -49,6 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool StartEncounter();
 	/** P0 restart reloads the current map, with admission and tasks closed before travel. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool RestartEncounter();
+	/** Tutorial uses Ready but still needs the same death/bounds cleanup before its result page. */
+	bool EndPracticeIfPlayerInvalid();
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") EMothFlowPhase GetPhase() const { return Phase; }
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetWaveNumber() const { return WaveIndex + 1; }
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetAliveCount() const;

@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：GitHub 开发流程
 
-版本 v0.3 · 2026-10-08 · 香港时间（UTC+8）
+版本 v0.4 · 2026-10-12 · 香港时间（UTC+8）
 
 仓库：[YYchainsAw/MothEffect](https://github.com/YYchainsAw/MothEffect)；看板：[MothEffect · 首版开发](https://github.com/users/YYchainsAw/projects/1)（Private，需要项目权限）。阶段截止和任务进度见 [开发任务与排期](Development_Plan.md)，游戏实测标准见 [测试计划](../06_Test_Doc/Test_Plan.md)。
 
@@ -25,6 +25,8 @@
 | [游戏 / 工程 Bug](../../.github/ISSUE_TEMPLATE/bug_report.md) | 可复现的问题 | 版本与环境、步骤、频率、预期/实际、S0–S3、修复及回归；自动使用 `bug` 标签 |
 
 创建时选择现有 Labels、负责人、Milestone 和 Project。标签描述工作类型或模块，可同时添加多个；S0–S3 严重度按测试计划填写，不依靠标签推断。
+
+2026-10-12 用户明确要求 PR 标注 assignee、labels、projects、milestone。后续创建 PR 时默认继承关联 Issue 的现有负责人、标签、项目与里程碑；有多个关联任务时按本次主要范围核对，不能留空而只写正文。创建后回读 PR 的实际字段和 Project Status，Refs 关联原 Issue；待用户游戏验收的任务保持 Open，合并不等于验收完成。目标分支以当时远端依赖状态为准。
 
 新建 PR 自动使用 [默认模板](../../.github/pull_request_template.md)，填写关联 Issue、实际执行的检查及待验收项。未执行的测试如实保留；不把代码存在或 CI 通过写成游戏测试通过。Issue/PR 的 `#编号` 由 GitHub 按创建顺序统一分配，与文档里的 T 编号分别使用。
 

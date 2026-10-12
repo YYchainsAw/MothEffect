@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.38｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+版本：v0.39｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+
+2026-10-12 T16推进：三波导演已接入4 / 3+3 / 4+4固定种类/出生点，准备与延迟批次均计入待生成；真实胶囊/静态导航/安全距离检查和完整预警，占位后只在原点重试。玩家死亡/界外判负，末波结束胜利，World-local开关先关闭伤害/外力/生成再清对象与任务/绑定；当前地图OpenLevel重开，暂停结果页可重开，跨波不刷新Dormant闲置。保存BP_WaveDirector、原创警戒材质和L_T16Flow三件资产及八点静态导航，参数v0.17/Config和DEC35同步。Editor构建、最终全量95项Editor、5项真实Game流程与2项Game导航Success；实际4/6/8出生及8存活峰值、批次空窗、物理预警中断、界外、跨波闲置和十次全新World重开有证据。最终Editor导出errors=0 / warnings=1（引擎联网探测超时），此前94项warnings=0；Game流程errors=0，既有Paragon/Murdock加载/动画等156条warnings如实留存。#18保持Open / In Progress，当前图形PIE待验收；T14/T15仍待验收，T17最终场地、T18完整UI/教程及独立包/G3继续对应任务。本轮develop本地提交7d4edba/8932848/dca4554，未推送/创建T16 PR，用户玩家资产未纳入。以下段落保留历史。 接入与四项PIE清单见[Wave_Flow_Setup](Wave_Flow_Setup.md)，报告见[T16_Report](../06_Test_Doc/T16_Report_2026-10-12.md)。
 
 2026-10-12 T15 PR记录：用户要求“先保持待验收 创建pr”，已推送codex/t15-enemy-drops并创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)，当前Open。T14 PR #42尚未合并，T15暂以codex/t14-shooting-ai为目标，只显示T15的36件改动，待#42合并后再改为main。#17继续Open / In Progress，当前图形PIE待验收、验收框保留未勾选；不关闭任务。原工程Editor构建、88项全量与最终11项复测/2项Game导航沿用已归档实测，本次仅PR与文档记录，未重复运行UE。本地继续develop，玩家原有资产改动未纳入。现有workflow仅自动检查main/develop目标，叠加PR按最终head手动运行Repository checks，实际结果另以GitHub检查页为准。以下段落保留历史。
 
@@ -130,7 +132,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Done / Closed；原工程Editor正式构建/链接与全量66项Automation通过，用户确认[当前PIE](Lifecycle_Setup.md)五项清单通过；完整整局/正式敌人分支随后续任务验收 |
 | T14 | [#16](https://github.com/YYchainsAw/MothEffect/issues/16) | 核心 | 一套射击 AI：移动、视线、预警、P01 | T05、T12 | 3–5 | 敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置 | In Progress / Open；原工程Editor构建、77项Editor与2项Game导航通过；保存[敌人/场景](Enemy_Setup.md)，[PR #42](https://github.com/YYchainsAw/MothEffect/pull/42) Open；用户确认当前角色PIE尚未完成 |
 | T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | In Progress / Open；固定掉落与12件资产已保存，88项Editor与2项Game导航通过；[四项当前PIE](Enemy_Drops_Setup.md)待用户验收；[PR #43](https://github.com/YYchainsAw/MothEffect/pull/43) Open，暂以T14分支为目标 |
-| T16 | [#18](https://github.com/YYchainsAw/MothEffect/issues/18) | 核心 | 三波导演、胜负与重开 | T13、T15 | 2–3 | 出怪和波次内容符合 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态 | Todo |
+| T16 | [#18](https://github.com/YYchainsAw/MothEffect/issues/18) | 核心 | 三波导演、胜负与重开 | T13、T15 | 2–3 | 出怪和波次内容符合 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态 | In Progress：原生/Game通过，当前PIE待验收 |
 | T17 | [#19](https://github.com/YYchainsAw/MothEffect/issues/19) | 核心 | 一张主竞技场灰盒、掩体与导航 | T14 | 2–3 | 按 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md) 的三区和尺度落地；可完成战斗/投掷/弹射；导航及出生点无卡死；保留大型场地意图，不追加第二张地图 | Todo |
 | T18 | [#20](https://github.com/YYchainsAw/MothEffect/issues/20) | 核心 | UI 布局/图标、HUD/教程与共用菜单接入 | T07、T16、T17 | 4–6 | 完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过 | Todo；血量/弹药事件已有，尚无本作 HUD；预留 4–6 小时 |
 | T19 | [#21](https://github.com/YYchainsAw/MothEffect/issues/21) | 可压缩 | 提升命中、启动、方向与警告反馈 | T12、T18 | 2–3 | 枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除 | Todo；武器事件已有，实际声音/特效与机关反馈待做 |

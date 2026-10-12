@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.42 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.43 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.35，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
@@ -87,3 +87,5 @@ CHG044（2026-10-12）：2026-10-12 T15推进：三个BP_EnemyBase子类以青�
 CHG045（2026-10-12）：2026-10-12 T15 PR记录：用户要求“先保持待验收 创建pr”，已推送codex/t15-enemy-drops并创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)，当前Open。T14 PR #42尚未合并，T15暂以codex/t14-shooting-ai为目标，只显示T15的36件改动，待#42合并后再改为main。#17继续Open / In Progress，当前图形PIE待验收、验收框保留未勾选；不关闭任务。原工程Editor构建、88项全量与最终11项复测/2项Game导航沿用已归档实测，本次仅PR与文档记录，未重复运行UE。本地继续develop，玩家原有资产改动未纳入。现有workflow仅自动检查main/develop目标，叠加PR按最终head手动运行Repository checks，实际结果另以GitHub检查页为准。以下段落保留历史。 PR首次head为0f3efc344907cb376c4e03da51af085c721f89e8，12件新LFS对象共375KB已上传；36件改动与用户玩家蓝图排除范围核对，本地241件文件/38件UE资产、38节阅读快照、diff和LFS fsck通过。同步PR链接、目标分支与用户待验收记录，不自动合并或关闭#17。
 
 CHG046（2026-10-12）：[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43) 的PR记录head da6ff26已手动触发[Repository checks run38194066109](https://github.com/YYchainsAw/MothEffect/actions/runs/38194066109)，10:00:19香港时间Success，static-checks 6s；现有workflow目标分支过滤使自动PR检查未触发，手动结果在Actions运行页。同步实际CI类型/链接与阅读版，不修改当前PIE待验收状态；本次文档归档后的最终head另行核对GitHub实际运行结果。
+
+CHG047（2026-10-12）：2026-10-12 T16推进：三波导演已接入4 / 3+3 / 4+4固定种类/出生点，准备与延迟批次均计入待生成；真实胶囊/静态导航/安全距离检查和完整预警，占位后只在原点重试。玩家死亡/界外判负，末波结束胜利，World-local开关先关闭伤害/外力/生成再清对象与任务/绑定；当前地图OpenLevel重开，暂停结果页可重开，跨波不刷新Dormant闲置。保存BP_WaveDirector、原创警戒材质和L_T16Flow三件资产及八点静态导航，参数v0.17/Config和DEC35同步。Editor构建、最终全量95项Editor、5项真实Game流程与2项Game导航Success；实际4/6/8出生及8存活峰值、批次空窗、物理预警中断、界外、跨波闲置和十次全新World重开有证据。最终Editor导出errors=0 / warnings=1（引擎联网探测超时），此前94项warnings=0；Game流程errors=0，既有Paragon/Murdock加载/动画等156条warnings如实留存。#18保持Open / In Progress，当前图形PIE待验收；T14/T15仍待验收，T17最终场地、T18完整UI/教程及独立包/G3继续对应任务。本轮develop本地提交7d4edba/8932848/dca4554，未推送/创建T16 PR，用户玩家资产未纳入。以下段落保留历史。 接入/报告/脱敏证据新增，阅读版扩为40节。保存及首轮Game失败分别归档；已验证的终态与重开不替代T18完整界面、独立包或用户验收。

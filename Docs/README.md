@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.37 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.38 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-12 T16推进：三波导演已接入4 / 3+3 / 4+4固定种类/出生点，准备与延迟批次均计入待生成；真实胶囊/静态导航/安全距离检查和完整预警，占位后只在原点重试。玩家死亡/界外判负，末波结束胜利，World-local开关先关闭伤害/外力/生成再清对象与任务/绑定；当前地图OpenLevel重开，暂停结果页可重开，跨波不刷新Dormant闲置。保存BP_WaveDirector、原创警戒材质和L_T16Flow三件资产及八点静态导航，参数v0.17/Config和DEC35同步。Editor构建、最终全量95项Editor、5项真实Game流程与2项Game导航Success；实际4/6/8出生及8存活峰值、批次空窗、物理预警中断、界外、跨波闲置和十次全新World重开有证据。最终Editor导出errors=0 / warnings=1（引擎联网探测超时），此前94项warnings=0；Game流程errors=0，既有Paragon/Murdock加载/动画等156条warnings如实留存。#18保持Open / In Progress，当前图形PIE待验收；T14/T15仍待验收，T17最终场地、T18完整UI/教程及独立包/G3继续对应任务。本轮develop本地提交7d4edba/8932848/dca4554，未推送/创建T16 PR，用户玩家资产未纳入。以下段落保留历史。 入口见[Wave_Flow_Setup](05_Development_Guide/Wave_Flow_Setup.md)，证据见[T16报告](06_Test_Doc/T16_Report_2026-10-12.md)。
 
 2026-10-12 T15 PR记录：用户要求“先保持待验收 创建pr”，已推送codex/t15-enemy-drops并创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)，当前Open。T14 PR #42尚未合并，T15暂以codex/t14-shooting-ai为目标，只显示T15的36件改动，待#42合并后再改为main。#17继续Open / In Progress，当前图形PIE待验收、验收框保留未勾选；不关闭任务。原工程Editor构建、88项全量与最终11项复测/2项Game导航沿用已归档实测，本次仅PR与文档记录，未重复运行UE。本地继续develop，玩家原有资产改动未纳入。现有workflow仅自动检查main/develop目标，叠加PR按最终head手动运行Repository checks，实际结果另以GitHub检查页为准。以下段落保留历史。
 
@@ -66,6 +68,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Lifecycle_Setup.md](05_Development_Guide/Lifecycle_Setup.md) | T13 容量、累计闲置、过期与清理接入和 PIE 清单 |
 | 05_Development_Guide/ | [Enemy_Setup.md](05_Development_Guide/Enemy_Setup.md) | T14射击AI、已保存导航场景与当前PIE清单 |
 | 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
+| 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
@@ -77,6 +80,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 06_Test_Doc/ | [T13_Report_2026-10-11.md](06_Test_Doc/T13_Report_2026-10-11.md) | T13 容量/闲置/清理、构建环境与验证范围 |
 | 06_Test_Doc/ | [T14_Report_2026-10-11.md](06_Test_Doc/T14_Report_2026-10-11.md) | T14原生/导航验证、首轮失败、资产与验收边界 |
 | 06_Test_Doc/ | [T15_Report_2026-10-12.md](06_Test_Doc/T15_Report_2026-10-12.md) | T15真实击杀/落地/容量验证与待验收记录 |
+| 06_Test_Doc/ | [T16_Report_2026-10-12.md](06_Test_Doc/T16_Report_2026-10-12.md) | T16实际三波/连续重开验证、失败及既有告警边界 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

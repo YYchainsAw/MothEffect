@@ -1,0 +1,286 @@
+T16 verification — 2026-10-12, Hong Kong UTC+8; UE log stamps are UTC.
+Original project, Win64 Development, UE 5.8.0-55116800, NullRHI, no sound, NoLiveCoding.
+Raw logs and full JSON remain in Saved/Automation/T16; this file is a redacted summary.
+Graphical PIE, standalone packaging and full G3 are pending. No T16 push/PR.
+
+BUILD CoreBuild
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+$PROJECT\Source\MothEffect\Private\Characters\MothEffectCharacter.cpp(456,62): error C2065: “UDeviceLifecycleSubsystem”: 未声明的标识符
+$PROJECT\Source\MothEffect\Private\Characters\MothEffectCharacter.cpp(456,49): error C2672: “UWorld::GetSubsystem”: 未找到匹配的重载函数
+$PROJECT\Source\MothEffect\Private\Characters\MothEffectCharacter.cpp(459,8): error C3536: “Session”: 初始化之前无法使用
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(60,36): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(60,36): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(335,36): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(335,36): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(336,34): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+$PROJECT\Source\MothEffect\Private\Framework\MothWaveDirector.cpp(336,34): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+$PROJECT\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Failed (OtherCompilationError)
+Total execution time: 16.98 seconds
+
+BUILD CoreBuild2
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Result: Succeeded
+Total execution time: 8.18 seconds
+
+BUILD TestBuild
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+$PROJECT\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 19.90 seconds
+
+BUILD BoundaryBuild
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+$PROJECT\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 19.53 seconds
+
+BUILD FinalTestBuild
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Result: Succeeded
+Total execution time: 7.14 seconds
+
+BUILD CallbackBuild
+Using Visual Studio 14.50.35728 toolchain ($VS\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+$PROJECT\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 22.77 seconds
+
+ASSETS Assets
+[2026.10.12-02.23.56:589][ 92]LogPython: Error:     raise RuntimeError('Saved director or variant references mismatch')
+[2026.10.12-02.23.56:589][ 92]LogPython: Error: RuntimeError: Saved director or variant references mismatch
+[2026.10.12-02.23.57:587][138]LogPython: Error:     raise RuntimeError('Saved director or variant references mismatch')
+[2026.10.12-02.23.57:587][138]LogPython: Error: RuntimeError: Saved director or variant references mismatch
+[2026.10.12-02.23.58:587][183]LogPython: Error:     raise RuntimeError('Saved director or variant references mismatch')
+[2026.10.12-02.23.58:587][183]LogPython: Error: RuntimeError: Saved director or variant references mismatch
+[2026.10.12-02.23.59:586][228]LogPython: Error:     raise RuntimeError('Saved director or variant references mismatch')
+[2026.10.12-02.23.59:587][228]LogPython: Error: RuntimeError: Saved director or variant references mismatch
+
+ASSETS Assets2
+[2026.10.12-02.26.54:445][119]LogPython: Error: T16_RANGE_FAILED: Saved director or variant references mismatch: actors=1 actual=[] expected=['/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C', '/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C', '/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C']
+
+ASSETS Assets3
+[2026.10.12-02.28.23:105][121]LogPython: Error: T16_RANGE_FAILED: Saved director mismatch: actors=1 actual=[] defaults=['/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C', '/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C', '/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C'] expected=['/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C', '/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C', '/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C']
+
+ASSETS Assets4
+[2026.10.12-02.31.47:657][  2]LogPython: Error: Exception: MothWaveDirector: Property 'EnemyClasses' for attribute 'enemy_classes' on 'BP_WaveDirector_C' cannot be edited on instances
+
+ASSETS Assets5
+[2026.10.12-02.34.21:552][113]LogPython: T16_RANGE_VERIFIED {"map": "/Game/MothEffect/Tests/L_T16Flow", "new_assets": 3, "spawn_routes": [3, 2, 2, 2, 2, 2, 2, 2], "ready": true, "graphical_pie": false}
+
+AUTOMATION CoreRegression
+{"succeeded": 88, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+total=88 errors=0 warnings=0
+
+AUTOMATION FlowFirst
+{"succeeded": 6, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+total=6 errors=0 warnings=0
+MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+[2026.10.12-02.35.26:775][289]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathClosesDamageSpawnsAndReentrantCallbacks} Path={MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks}
+[2026.10.12-02.35.26:808][290]LogAutomationController: Display: Test Completed. Result={Success} Name={DuplicateDirectorCannotCloseActiveSession} Path={MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession}
+[2026.10.12-02.35.26:849][292]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerBoundsFailWithoutWaitingForHealthDeath} Path={MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath}
+[2026.10.12-02.35.26:890][294]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerRemovalAndDirectorTeardownClearBindings} Path={MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings}
+[2026.10.12-02.35.26:932][296]LogAutomationController: Display: Test Completed. Result={Success} Name={TerminalDamageGateIsWorldLocal} Path={MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal}
+[2026.10.12-02.35.26:973][298]LogAutomationController: Display: Test Completed. Result={Success} Name={TutorialResetBeforePreparation} Path={MothEffect.WaveFlow.TutorialResetBeforePreparation}
+
+AUTOMATION GameFirst
+{"succeeded": 0, "succeededWithWarnings": 1, "failed": 2, "notRun": 0, "inProcess": 0}
+total=3 errors=21 warnings=20199
+MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=3555
+Warning count=1 LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.
+Warning count=1 LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.
+Warning count=1 LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.
+Warning count=3552 LogPhysics: COLLISION PROFILE [Custom] is not found
+INFO TC32 runtime: player defeat; escaped living enemy unregisters once without drop; outside D03/P01 release capacity; actual pause freezes preparation.
+MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Fail errors=20 warnings=151
+Warning count=11 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=11 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=11 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=11 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=10 LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.
+Warning count=10 LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.
+Warning count=10 LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.
+Error count=10 Expected 'Real rifle depleted before reload' to be 23, but it was 24.
+Error count=10 Expected 'Actual pending reload before death/restart' to be true.
+INFO TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.
+MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Fail errors=1 warnings=16493
+Warning count=1 LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.
+Warning count=1 LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.
+Warning count=1 LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.
+Warning count=16490 LogPhysics: COLLISION PROFILE [Custom] is not found
+Error count=1 Three-wave runtime timed out
+[2026.10.12-02.35.30:021][557]LogAutomationController: Display: Test Completed. Result={Success} Name={EnemyPlayerObjectBoundsAndPause} Path={MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause}
+[2026.10.12-02.36.16:378][281]LogAutomationController: Error: Test Completed. Result={Fail} Name={TenActualMapRestartsWithHazards} Path={MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards}
+[2026.10.12-02.37.31:470][645]LogAutomationController: Error: Test Completed. Result={Fail} Name={ThreeWavesBatchGapBlockedBirthVictory} Path={MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory}
+
+AUTOMATION Full
+{"succeeded": 94, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+total=94 errors=0 warnings=0
+MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+[2026.10.12-02.42.07:874][102]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathClosesDamageSpawnsAndReentrantCallbacks} Path={MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks}
+[2026.10.12-02.42.07:912][104]LogAutomationController: Display: Test Completed. Result={Success} Name={DuplicateDirectorCannotCloseActiveSession} Path={MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession}
+[2026.10.12-02.42.07:945][106]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerBoundsFailWithoutWaitingForHealthDeath} Path={MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath}
+[2026.10.12-02.42.07:979][108]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerRemovalAndDirectorTeardownClearBindings} Path={MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings}
+[2026.10.12-02.42.08:020][110]LogAutomationController: Display: Test Completed. Result={Success} Name={TerminalDamageGateIsWorldLocal} Path={MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal}
+[2026.10.12-02.42.08:062][112]LogAutomationController: Display: Test Completed. Result={Success} Name={TutorialResetBeforePreparation} Path={MothEffect.WaveFlow.TutorialResetBeforePreparation}
+
+AUTOMATION GameSecond
+{"succeeded": 1, "succeededWithWarnings": 2, "failed": 0, "notRun": 0, "inProcess": 0}
+total=3 errors=0 warnings=132
+MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=0
+INFO TC32 runtime: player defeat; escaped living enemy unregisters once without drop; outside D03/P01 release capacity; actual pause freezes preparation.
+MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+Warning count=11 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=11 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=11 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=11 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=10 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.
+MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+Warning count=1 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC22 runtime: actual births=4/6/8 peak=8; blocked pending and full warning; victory at 25.365s
+[2026.10.12-02.39.39:616][745]LogAutomationController: Display: Test Completed. Result={Success} Name={EnemyPlayerObjectBoundsAndPause} Path={MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause}
+[2026.10.12-02.40.26:226][737]LogAutomationController: Display: Test Completed. Result={Success} Name={TenActualMapRestartsWithHazards} Path={MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards}
+[2026.10.12-02.40.51:221][968]LogAutomationController: Display: Test Completed. Result={Success} Name={ThreeWavesBatchGapBlockedBirthVictory} Path={MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory}
+
+AUTOMATION GameWarning
+{"succeeded": 0, "succeededWithWarnings": 1, "failed": 0, "notRun": 0, "inProcess": 0}
+total=1 errors=0 warnings=12
+MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+Warning count=1 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=1 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=1 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=1 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=1 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC22 runtime: physical WorldDynamic capsule blocker appearing during warning retains S2 pending, removal requires a fresh .8s warning and births at original S2.
+[2026.10.12-02.43.48:553][766]LogAutomationController: Display: Test Completed. Result={Success} Name={SpawnWarningInterruptedByPhysicalBlocker} Path={MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker}
+
+AUTOMATION GameNavigation
+{"succeeded": 2, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+total=2 errors=0 warnings=0
+MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit state=Success errors=0 warnings=0
+INFO Saved range navigation recover=0 elapsed=2.001 from=X=1200.000 Y=-750.000 Z=90.000 to=X=999.841 Y=-750.000 Z=92.150 requests=2 stalls=0
+INFO Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Telegraphing target=MothPlayerAutomationCharacter_0 sight=1 controller=AIController_1 targetEnabled=1 targetHealth=990.0 tick=1
+MothEffect.EnemyNavigation.TemporaryObstructionRecovery state=Success errors=0 warnings=0
+INFO Saved range navigation recover=1 elapsed=7.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=968.002 Y=-1087.241 Z=92.150 requests=8 stalls=1
+INFO Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Cooldown target=MothPlayerAutomationCharacter_1 sight=1 controller=AIController_2 targetEnabled=1 targetHealth=970.0 tick=1
+[2026.10.12-02.43.40:868][ 91]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedCoverRouteAndPursuit} Path={MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit}
+[2026.10.12-02.43.47:895][631]LogAutomationController: Display: Test Completed. Result={Success} Name={TemporaryObstructionRecovery} Path={MothEffect.EnemyNavigation.TemporaryObstructionRecovery}
+
+AUTOMATION FinalFull
+{"succeeded": 94, "succeededWithWarnings": 1, "failed": 0, "notRun": 0, "inProcess": 0}
+total=95 errors=0 warnings=1
+MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+[2026.10.12-02.57.57:484][ 40]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathClosesDamageSpawnsAndReentrantCallbacks} Path={MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks}
+[2026.10.12-02.57.57:539][ 43]LogAutomationController: Display: Test Completed. Result={Success} Name={DuplicateDirectorCannotCloseActiveSession} Path={MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession}
+[2026.10.12-02.57.57:611][ 46]LogAutomationController: Display: Test Completed. Result={Success} Name={FatalHealthPresentationObservesClosedSession} Path={MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession}
+[2026.10.12-02.57.57:644][ 48]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerBoundsFailWithoutWaitingForHealthDeath} Path={MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath}
+[2026.10.12-02.57.57:711][ 51]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerRemovalAndDirectorTeardownClearBindings} Path={MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings}
+[2026.10.12-02.57.57:752][ 53]LogAutomationController: Display: Test Completed. Result={Success} Name={TerminalDamageGateIsWorldLocal} Path={MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal}
+[2026.10.12-02.57.57:795][ 55]LogAutomationController: Display: Test Completed. Result={Success} Name={TutorialResetBeforePreparation} Path={MothEffect.WaveFlow.TutorialResetBeforePreparation}
+
+AUTOMATION FinalGame
+{"succeeded": 1, "succeededWithWarnings": 4, "failed": 0, "notRun": 0, "inProcess": 0}
+total=5 errors=0 warnings=156
+MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=0
+INFO TC32 runtime: player defeat; escaped living enemy unregisters once without drop; outside D03/P01 release capacity; actual pause freezes preparation.
+MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+Warning count=1 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=1 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=1 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=1 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=1 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue.
+MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+Warning count=1 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=1 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=1 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=1 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=1 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=1 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC22 runtime: physical WorldDynamic capsule blocker appearing during warning retains S2 pending, removal requires a fresh .8s warning and births at original S2.
+MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+Warning count=11 LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning count=11 LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+Warning count=11 LogBlueprint: [AssetLog] $PROJECT\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+Warning count=11 LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning count=11 LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Tests/L_T16Flow.L_T16Flow:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0
+Warning count=10 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.
+MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+Warning count=1 LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+INFO TC22 runtime: actual births=4/6/8 peak=8; blocked pending and full warning; victory at 25.377s
+[2026.10.12-02.54.50:641][638]LogAutomationController: Display: Test Completed. Result={Success} Name={EnemyPlayerObjectBoundsAndPause} Path={MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause}
+[2026.10.12-02.54.57:231][472]LogAutomationController: Display: Test Completed. Result={Success} Name={ResultDuringDeferredWorldSpawnCallback} Path={MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback}
+[2026.10.12-02.55.04:834][600]LogAutomationController: Display: Test Completed. Result={Success} Name={SpawnWarningInterruptedByPhysicalBlocker} Path={MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker}
+[2026.10.12-02.55.43:760][406]LogAutomationController: Display: Test Completed. Result={Success} Name={TenActualMapRestartsWithHazards} Path={MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards}
+[2026.10.12-02.56.08:697][292]LogAutomationController: Display: Test Completed. Result={Success} Name={ThreeWavesBatchGapBlockedBirthVictory} Path={MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory}
+
+Preserved user player asset SHA256:
+A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8
+Core: 7d4edbaaedbc0f3bf0cd44ff93764e5433489cfe
+Saved range and initial flow validation: 8932848cef20506e254624788514cf66cedd38a6
+Final callback hardening commit is recorded in T16_Report after verification.
+
+Repository verification after staging all T16 documentation:
+Static checks passed for 254 tracked files and 41 UE assets; JSON, relative links and LFS attributes checked.
+Reading view verified: 40 source sections; anchors and local links valid.
+Git LFS fsck OK; git diff --cached --check clean.
+Issue #18 re-read: OPEN / In Progress, four acceptance boxes unchecked, final 95 Editor / five Game record present.
+Local branch develop; user player hash preserved; no T16 push/PR.

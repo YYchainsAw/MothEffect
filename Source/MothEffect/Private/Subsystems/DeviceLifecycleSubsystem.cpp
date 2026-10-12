@@ -68,7 +68,7 @@ void UDeviceLifecycleSubsystem::NotifyRejected(EMothCapacityKind Kind)
 
 bool UDeviceLifecycleSubsystem::MakeRoomForDevice()
 {
-	if (bResetting || bChangingCapacity || GetWorld()->IsPaused()) return false;
+	if (!IsGameplayEnabled() || bChangingCapacity || GetWorld()->IsPaused()) return false;
 	TGuardValue<bool> Guard(bChangingCapacity, true);
 	const uint64 Generation = LifecycleGeneration;
 	if (GetDeviceCount() < FMath::Max(1, MaxDevicesTotal)) return true;
@@ -79,7 +79,7 @@ bool UDeviceLifecycleSubsystem::MakeRoomForDevice()
 			&& Record.CreatedOrder < Order) { Oldest = Record.Device; Order = Record.CreatedOrder; }
 	if (Oldest.IsValid()) Oldest->DestroyDevice();
 	if (Generation != LifecycleGeneration) return false;
-	if (bResetting || GetDeviceCount() >= FMath::Max(1, MaxDevicesTotal))
+	if (!IsGameplayEnabled() || GetDeviceCount() >= FMath::Max(1, MaxDevicesTotal))
 	{
 		NotifyRejected(EMothCapacityKind::Devices);
 		return false;
@@ -118,11 +118,11 @@ ADeviceBase* UDeviceLifecycleSubsystem::SpawnDeviceInternal(TSubclassOf<ADeviceB
 
 bool UDeviceLifecycleSubsystem::RegisterDevice(ADeviceBase* Device)
 {
-	if (!IsLive(Device) || Device->GetWorld() != GetWorld() || bResetting) return false;
+	if (!IsLive(Device) || Device->GetWorld() != GetWorld() || !IsGameplayEnabled()) return false;
 	if (Devices.ContainsByPredicate([Device](const FDeviceRecord& R) { return R.Device == Device; })) return true;
 	const bool bReserved = ReservedSpawns.Remove(Device) > 0;
 	if (bReserved) --PendingSpawns;
-	if ((!bReserved && !MakeRoomForDevice()) || !IsLive(Device) || bResetting) return false;
+	if ((!bReserved && !MakeRoomForDevice()) || !IsLive(Device) || !IsGameplayEnabled()) return false;
 	FDeviceRecord Record;
 	Record.Device = Device;
 	Record.CreatedOrder = ++NextOrder;
@@ -138,7 +138,7 @@ void UDeviceLifecycleSubsystem::UnregisterDevice(ADeviceBase* Device)
 
 bool UDeviceLifecycleSubsystem::ReserveActivation(ADeviceBase* Device)
 {
-	if (!IsLive(Device) || bResetting || bChangingCapacity || GetWorld()->IsPaused()) return false;
+	if (!IsLive(Device) || !IsGameplayEnabled() || bChangingCapacity || GetWorld()->IsPaused()) return false;
 	FDeviceRecord* Record = Devices.FindByPredicate([Device](const FDeviceRecord& R) { return R.Device == Device; });
 	if (!Record || Record->bActivationReserved || Device->GetDeviceState() != EDeviceState::Dormant) return false;
 	const EDeviceKind Kind = Device->GetDeviceKind();
@@ -161,7 +161,7 @@ bool UDeviceLifecycleSubsystem::ReserveActivation(ADeviceBase* Device)
 		}
 	}
 	Record = Devices.FindByPredicate([Device](const FDeviceRecord& R) { return R.Device == Device; });
-	if (bResetting || !IsLive(Device) || !Record || Device->GetDeviceState() != EDeviceState::Dormant) return false;
+	if (!IsGameplayEnabled() || !IsLive(Device) || !Record || Device->GetDeviceState() != EDeviceState::Dormant) return false;
 	Record->bActivationReserved = true;
 	Record->ActiveOrder = ++NextOrder;
 	return true;
@@ -175,7 +175,7 @@ void UDeviceLifecycleSubsystem::CommitDeviceState(ADeviceBase* Device)
 
 bool UDeviceLifecycleSubsystem::CanSpawnProjectile()
 {
-	if (bResetting || GetWorld()->IsPaused()) return false;
+	if (!IsGameplayEnabled() || GetWorld()->IsPaused()) return false;
 	if (GetProjectileCount() < FMath::Max(1, MaxLiveProjectiles)) return true;
 	NotifyRejected(EMothCapacityKind::Projectiles);
 	return false;
@@ -183,7 +183,7 @@ bool UDeviceLifecycleSubsystem::CanSpawnProjectile()
 
 bool UDeviceLifecycleSubsystem::RegisterProjectile(ARuleProjectile* Projectile)
 {
-	if (!IsLive(Projectile) || Projectile->GetWorld() != GetWorld() || bResetting) return false;
+	if (!IsLive(Projectile) || Projectile->GetWorld() != GetWorld() || !IsGameplayEnabled()) return false;
 	if (Projectiles.Contains(Projectile)) return true;
 	if (!CanSpawnProjectile()) return false;
 	Projectiles.Add(Projectile);
@@ -214,7 +214,7 @@ bool UDeviceLifecycleSubsystem::IsOutsideSafety(const AActor* Actor) const
 
 void UDeviceLifecycleSubsystem::Tick(float DeltaTime)
 {
-	if (bResetting || !GetWorld()->HasBegunPlay() || GetWorld()->IsPaused()) return;
+	if (!IsGameplayEnabled() || !GetWorld()->HasBegunPlay() || GetWorld()->IsPaused()) return;
 	const TArray<FDeviceRecord> DeviceSnapshot = Devices;
 	for (const FDeviceRecord& Record : DeviceSnapshot)
 	{
@@ -228,6 +228,14 @@ void UDeviceLifecycleSubsystem::Tick(float DeltaTime)
 		if (IsLive(Projectile.Get()) && IsOutsideSafety(Projectile.Get())) Projectile->Destroy();
 	Devices.RemoveAllSwap([](const FDeviceRecord& R) { return !IsLive(R.Device.Get()); });
 	Projectiles.RemoveAllSwap([](const auto& P) { return !IsLive(P.Get()); });
+}
+
+bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
+{
+	if (bResetting) return false;
+	if (bGameplayEnabled && !bEnabled) ++LifecycleGeneration;
+	bGameplayEnabled = bEnabled;
+	return true;
 }
 
 void UDeviceLifecycleSubsystem::ResetManagedObjects()

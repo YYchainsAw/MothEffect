@@ -86,6 +86,8 @@ void AEnemyBase::PostInitializeComponents()
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
+	const auto* Session = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (Session && !Session->IsGameplayEnabled()) { Destroy(); return; }
 	HealthComponent->OnDied.AddDynamic(this, &AEnemyBase::HandleEnemyDied);
 	ProgressLocation = GetActorLocation();
 	LastProgressAt = GetWorld()->GetTimeSeconds();
@@ -96,8 +98,10 @@ void AEnemyBase::BeginPlay()
 
 bool AEnemyBase::IsCombatEnabled() const
 {
+	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
 	return bGameplayEnabled && !bDeathProcessed && !bEndingPlay && !IsActorBeingDestroyed()
-		&& HasActorBegunPlay() && HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused();
+		&& HasActorBegunPlay() && HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused()
+		&& (!Session || Session->IsGameplayEnabled());
 }
 
 bool AEnemyBase::IsUsableTarget(const APawn* Target) const

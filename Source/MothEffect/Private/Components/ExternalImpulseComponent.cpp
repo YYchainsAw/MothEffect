@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
 
 UExternalImpulseComponent::UExternalImpulseComponent()
 {
@@ -30,6 +31,8 @@ void UExternalImpulseComponent::EndPlay(const EEndPlayReason::Type EndPlayReason
 
 bool UExternalImpulseComponent::CanReceive() const
 {
+	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	if (Session && !Session->IsGameplayEnabled()) return false;
 	const AActor* Owner = GetOwner();
 	if (!bGameplayEnabled || !HasBegunPlay() || !IsValid(Owner) || Owner->IsActorBeingDestroyed()
 		|| !GetWorld() || GetWorld()->IsPaused()) return false;

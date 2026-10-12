@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "MothEffectGameMode.generated.h"
 
+class AMothWaveDirector;
+
 /**
  *  Simple GameMode for a third person game
  */
@@ -18,6 +20,12 @@ public:
 	
 	/** Constructor */
 	AMothEffectGameMode();
+	UFUNCTION(BlueprintPure, Category="Moth|Flow")
+	AMothWaveDirector* GetWaveDirector() const;
+	UFUNCTION(BlueprintCallable, Category="Moth|Flow")
+	bool StartEncounter();
+	UFUNCTION(BlueprintCallable, Category="Moth|Flow")
+	bool RestartEncounter();
 };
 
 

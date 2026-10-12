@@ -123,12 +123,15 @@ namespace MothTutorialRuntimeTest
 				Fixture->SetPrimaryDown(false); Fixture->DoPrimaryEnd();
 				Fixture->SetPrimaryDown(true); Fixture->DoPrimaryStart();
 				T->TestFalse(TEXT("Throw commits release before tutorial evidence"),Fixture->IsCarryingDevice());
-				GoodEmitter=E; Wait=FPlatformTime::Seconds()+1.6; Stage=55; return false;
+				GoodEmitter=E; ThrownAt=W->GetTimeSeconds(); Wait=0; Stage=55; return false;
 			}
 			if (Stage==55)
 			{
 				auto* E=S->GetPracticeDevice(EDeviceKind::Emitter);
+				// Observe the real landing/refill, rather than assuming a fixed wall-clock flight time.
+				if (E == GoodEmitter.Get() && W->GetTimeSeconds()-ThrownAt < 6) return false;
 				T->TestTrue(TEXT("A missed throw landing refills promptly without advancing"),S->GetStep()==EMothTutorialStep::AirborneEmitter&&E&&E!=GoodEmitter.Get()&&!S->GetFeedback().IsEmpty());
+				T->AddInfo(FString::Printf(TEXT("Missed-throw real refill observed after %.3fs gameplay time"),W->GetTimeSeconds()-ThrownAt));
 				if (!E) { Cleanup(W);return true; }
 				E->GetPhysicsBody()->SetSimulatePhysics(false); E->SetActorLocation(Fixture->GetActorLocation()+FVector(120,0,0));
 				T->TestTrue(TEXT("Refill after a missed throw can be picked up"),Fixture->TryPickupDevice(E));
@@ -203,7 +206,7 @@ namespace MothTutorialRuntimeTest
 			if (auto* D=Director(W);D&&Formal.IsValid()) D->SetPlayer(Formal.Get());
 			if (Fixture.IsValid()) Fixture->Destroy(); Fixture.Reset();
 		}
-		FAutomationTestBase* T; int32 Stage=0; double Started=0,Wait=0,PauseTime=0;float ReloadProgress=0;
+		FAutomationTestBase* T; int32 Stage=0; double Started=0,Wait=0,PauseTime=0,ThrownAt=0;float ReloadProgress=0;
 		TWeakObjectPtr<UWorld> Previous; TWeakObjectPtr<AMothEffectCharacter> Formal;
 		TWeakObjectPtr<AMothPlayerAutomationCharacter> Fixture; TWeakObjectPtr<ADeviceBase> FailedEmitter,GoodEmitter;
 	};

@@ -28,6 +28,7 @@ public:
 	void RetryStep();
 	EMothTutorialStep GetStep() const { return Step; }
 	FText GetInstruction() const;
+	FText GetFeedback() const;
 	bool IsRunning() const { return Step != EMothTutorialStep::Inactive && Step != EMothTutorialStep::Completed; }
 	int32 GetOwnedActorCount() const;
 	ADeviceBase* GetPracticeDevice(EDeviceKind Kind) const;
@@ -46,7 +47,10 @@ private:
 	FTimerHandle CheckTimer;
 	EMothTutorialStep Step = EMothTutorialStep::Inactive;
 	float LiftStartZ = 0;
-	bool bBombHit = false, bLiftHit = false, bThrown = false, bAirborneHit = false, bIndirectHit = false, bRetryAir = false;
+	bool bBombHit = false, bLiftHit = false, bLiftObserved = false, bBlastGoal = false;
+	bool bThrown = false, bAirborneHit = false, bIndirectHit = false, bRetryAir = false;
+	double ThrowCommittedAt = 0, FeedbackEndsAt = 0;
+	FText Feedback;
 	void BuildStep(EMothTutorialStep Next);
 	void ClearOwnedActors();
 	void CheckProgress();
@@ -55,5 +59,6 @@ private:
 	AMothTutorialBlastTarget* SpawnBlastTarget(FVector Location);
 	void HandleActivation(ADeviceBase* Device, const FHitContext& Context);
 	void HandleRelease(ADeviceBase* Device, bool bThrow);
+	void HandleTargetDied(AActor* Victim, AActor* Source);
 	bool IsAirborne(ADeviceBase* Device) const;
 };

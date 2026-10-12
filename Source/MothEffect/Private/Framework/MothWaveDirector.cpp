@@ -167,8 +167,9 @@ bool AMothWaveDirector::FindBirthplace(const FMothWaveSpawn& Spec, FVector& Posi
 	FNavLocation Projected;
 	if (!Nav || !Nav->ProjectPointToNavigation(Ground.ImpactPoint, Projected, FVector(40,40,100))
 		|| FVector::Dist2D(Projected.Location, Ground.ImpactPoint) > Radius) return false;
-	return !GetWorld()->OverlapBlockingTestByProfile(Position, FQuat::Identity, Capsule->GetCollisionProfileName(),
-		FCollisionShape::MakeCapsule(Radius + 2, HalfHeight), Params);
+	// Enemy responses form a Custom profile; query the actual capsule response container.
+	return !GetWorld()->OverlapBlockingTestByChannel(Position, FQuat::Identity, Capsule->GetCollisionObjectType(),
+		FCollisionShape::MakeCapsule(Radius + 2, HalfHeight), Params, FCollisionResponseParams(Capsule->GetCollisionResponseToChannels()));
 }
 
 void AMothWaveDirector::ProcessBirths(double Now)
@@ -208,7 +209,18 @@ void AMothWaveDirector::ProcessBirths(double Now)
 		WarningCircles[Spec.Point]->SetVisibility(false); WarningLabels[Spec.Point]->SetVisibility(false);
 		Enemy->FinishSpawning(Transform);
 		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->Destroy(); return; }
-		if (!IsValid(Enemy) || Enemy->IsActorBeingDestroyed()) { UnregisterEnemy(Enemy); continue; }
+		if (!IsValid(Enemy) || Enemy->IsActorBeingDestroyed())
+		{
+			UnregisterEnemy(Enemy);
+			// A failed construction/admission remains queued; an actual lethal birth is a completed spawn.
+			if (!Enemy || Enemy->GetHealthComponent()->IsAlive())
+			{
+				PendingBirths[I].bComplete = false;
+				PendingBirths[I].WarningAt = -1;
+				PendingBirths[I].RetryAt = Now + FMath::Max(.01f, SpawnRetrySeconds);
+			}
+			continue;
+		}
 		Enemy->SetCombatTarget(CombatPlayer.Get());
 		OnEnemySpawnedNative.Broadcast(Enemy, Spec);
 		if (!IsCurrent(Generation)) return;

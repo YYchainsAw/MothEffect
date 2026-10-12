@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入
 
-版本 v0.1 · 2026-10-12 · 状态：88项Editor全量、11项新增最终复测与2项Game导航通过；当前Murdock图形PIE待验收
+版本 v0.2 · 2026-10-12 · 状态：88项Editor全量、11项新增最终复测与2项Game导航通过；当前Murdock图形PIE待验收
 
-Refs #17，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用[T14射击AI](Enemy_Setup.md)和[T13生命周期](Lifecycle_Setup.md)，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；T15仅本地开发，#17保持Open / In Progress。
+Refs #17，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用[T14射击AI](Enemy_Setup.md)和[T13生命周期](Lifecycle_Setup.md)，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；2026-10-12按用户要求创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)（codex/t15-enemy-drops → codex/t14-shooting-ai），当前Open；待T14合并后再改为main。用户要求保持待验收，#17保持Open / In Progress，当前四项PIE不记通过。
 
 ## 1. 预告与固定映射
 

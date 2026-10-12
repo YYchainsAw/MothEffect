@@ -305,3 +305,13 @@ Evidence personal workspace paths redacted.
 T14 PR #42 OPEN; remote head c988079904a3c138ba7a3a1ea697cb7e9df16693; base main, head codex/t14-shooting-ai.
 Issue #16 OPEN; current graphical PIE remains pending.
 git diff --cached --check: passed after stripping trailing whitespace from log excerpts.
+
+=== T15 PR publication — 2026-10-12 ===
+User: 先保持待验收 创建pr
+PR #43 https://github.com/YYchainsAw/MothEffect/pull/43 OPEN; codex/t15-enemy-drops -> codex/t14-shooting-ai.
+First PR head: 0f3efc344907cb376c4e03da51af085c721f89e8; 36 files relative to c988079 T14 base.
+git push: Uploading LFS objects: 100% (12/12), 375 KB; new branch codex/t15-enemy-drops.
+Local static checks: 241 tracked files / 38 UE assets; reading view 38 source sections; diff check and Git LFS fsck OK.
+T14 PR #42 remains OPEN at c988079904a3c138ba7a3a1ea697cb7e9df16693; #17 OPEN / In Progress, graphical PIE pending, all acceptance boxes unchecked.
+Project currently offers Todo / In Progress / Done only; pending acceptance remains recorded in issue/PR/docs.
+No UE rerun for documentation-only PR records. Repository checks to be dispatched on final remote head; actual status available on GitHub.

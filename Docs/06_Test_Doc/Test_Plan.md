@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.35｜制定日期：2026-10-02｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+版本：v0.36｜制定日期：2026-10-02｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+
+2026-10-12 T15 PR记录：用户要求“先保持待验收 创建pr”，已推送codex/t15-enemy-drops并创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)，当前Open。T14 PR #42尚未合并，T15暂以codex/t14-shooting-ai为目标，只显示T15的36件改动，待#42合并后再改为main。#17继续Open / In Progress，当前图形PIE待验收、验收框保留未勾选；不关闭任务。原工程Editor构建、88项全量与最终11项复测/2项Game导航沿用已归档实测，本次仅PR与文档记录，未重复运行UE。本地继续develop，玩家原有资产改动未纳入。现有workflow仅自动检查main/develop目标，叠加PR按最终head手动运行Repository checks，实际结果另以GitHub检查页为准。以下段落保留历史。
 
 2026-10-12 T15推进：三个BP_EnemyBase子类以青色三角棱柱D01、橙球D02、紫长条D03预告固定掉落，共用T14射击AI；生命死亡后只尝试一次，近处有效出生、真实物理Dormant、24额度回收/保护与回调世代取消统一接入。保存12件新资产与L_T15Drops静态导航，参数v0.16/Config和DEC34同步。原工程Editor构建通过，全量88项Editor Success（新增11/既有77）；仅测试夹具修正后新增11项再次Success、2项Game保存导航Success，导出errors/warnings=0。T15 #17保持Open / In Progress、当前Murdock图形PIE待验收；T14 #16仍待用户PIE，PR #42未追加本轮内容。本轮develop本地提交，无T15推送/PR。以下段落保留历史。 TC20当前已实现分支已有真实W01/P01/D02击杀、物理落地/拾取、幂等死亡、容量与回调原生证据，当前图形PIE和独立包继续待验收；[报告](T15_Report_2026-10-12.md)保留初次资产生成与导航夹具失败，未把过程退出码0视作通过。
 

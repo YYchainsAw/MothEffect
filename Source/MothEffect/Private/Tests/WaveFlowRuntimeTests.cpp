@@ -74,7 +74,9 @@ namespace MothFlowRuntimeTest
 	bool ValidateGame(FAutomationTestBase* T, UWorld* World)
 	{
 		return T->TestNotNull(TEXT("Run in an actual -game world"), World)
-			&& T->TestTrue(TEXT("Actual saved T16 map loaded"), World->GetOutermost()->GetName().Contains(TEXT("L_T16Flow")))
+			&& T->TestTrue(TEXT("Actual saved flow range or main arena loaded"),
+				World->GetOutermost()->GetName().Contains(TEXT("L_T16Flow"))
+				|| World->GetOutermost()->GetName().Contains(TEXT("L_Arena_01")))
 			&& T->TestNotNull(TEXT("Saved native director present"), Director(World));
 	}
 

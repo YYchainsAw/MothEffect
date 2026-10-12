@@ -31,7 +31,11 @@ public:
 	ADeviceBase* SpawnDeviceForGeneration(TSubclassOf<ADeviceBase> DeviceClass, FTransform Transform,
 		uint64 Generation, TFunctionRef<bool()> ValidateBirthplace);
 	uint64 GetLifecycleGeneration() const { return LifecycleGeneration; }
-	bool IsGenerationCurrent(uint64 Generation) const { return !bResetting && LifecycleGeneration == Generation; }
+	bool IsGenerationCurrent(uint64 Generation) const { return IsGameplayEnabled() && LifecycleGeneration == Generation; }
+	/** Session admission closes before result/teardown callbacks. Fresh worlds start enabled. */
+	UFUNCTION(BlueprintPure, Category="Moth|Lifecycle")
+	bool IsGameplayEnabled() const { return bGameplayEnabled && !bResetting; }
+	bool SetGameplayEnabled(bool bEnabled);
 	UFUNCTION(BlueprintCallable, Category="Moth|Lifecycle")
 	void ResetManagedObjects();
 	/** Optional arena bounds. Without these, use the world's enabled KillZ/world bounds checks. */
@@ -98,6 +102,7 @@ private:
 	uint64 NextOrder = 0;
 	uint64 LifecycleGeneration = 0;
 	bool bResetting = false;
+	bool bGameplayEnabled = true;
 	bool bChangingCapacity = false;
 	FBox SafetyBounds = FBox(ForceInit);
 	double LastCapacityNotice[4] = { -1.0, -1.0, -1.0, -1.0 };

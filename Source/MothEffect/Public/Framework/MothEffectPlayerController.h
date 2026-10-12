@@ -37,6 +37,12 @@ public:
 	void MothResetEnemies();
 	UFUNCTION(Exec)
 	void MothEnemyStats();
+	UFUNCTION(Exec)
+	void MothFlowStats();
+	UFUNCTION(Exec)
+	void MothStartEncounter();
+	UFUNCTION(Exec)
+	void MothRestartEncounter();
 	
 protected:
 

@@ -2,6 +2,8 @@
 
 
 #include "Framework/MothEffectPlayerController.h"
+#include "Framework/MothEffectGameMode.h"
+#include "Framework/MothWaveDirector.h"
 #include "Characters/MothEffectCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
@@ -148,6 +150,8 @@ void AMothEffectPlayerController::MothSpawnEnemy()
 {
 #if !UE_BUILD_SHIPPING
 	if (!GetPawn()) return;
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()))
+		if (auto* Director = Mode->GetWaveDirector(); Director && Director->GetPhase() != EMothFlowPhase::Ready) return;
 	UClass* Class = LoadClass<AEnemyBase>(nullptr, TEXT("/Game/MothEffect/Enemies/BP_EnemyBase.BP_EnemyBase_C"));
 	if (!Class) return;
 	FActorSpawnParameters Params;
@@ -171,6 +175,8 @@ void AMothEffectPlayerController::MothSpawnDropEnemy(int32 Kind)
 {
 #if !UE_BUILD_SHIPPING
 	if (!GetPawn() || Kind < 0 || Kind > 2) return;
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()))
+		if (auto* Director = Mode->GetWaveDirector(); Director && Director->GetPhase() != EMothFlowPhase::Ready) return;
 	const TCHAR* Path = Kind == 0 ? TEXT("/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C")
 		: Kind == 1 ? TEXT("/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C")
 		: TEXT("/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C");
@@ -194,6 +200,35 @@ void AMothEffectPlayerController::MothEnemyStats()
 			*It->GetName(), *UEnum::GetValueAsString(It->GetCombatPhase()), It->GetHealthComponent()->GetCurrentHealth(),
 			*GetNameSafe(It->GetCombatTarget()), It->HasTargetSight(), It->GetShotAttempts(), It->GetProjectilesSpawned(), It->GetNavigationRequests(), It->GetStallRecoveries());
 	}
-	if (GEngine) GEngine->AddOnScreenDebugMessage(7111, 6.0f, FColor::Cyan, FString::Printf(TEXT("Enemies alive=%d (T14 debug, wave limit belongs to T16)"), Alive));
+	if (GEngine) GEngine->AddOnScreenDebugMessage(7111, 6.0f, FColor::Cyan, FString::Printf(TEXT("Enemies alive=%d"), Alive));
+#endif
+}
+
+void AMothEffectPlayerController::MothFlowStats()
+{
+#if !UE_BUILD_SHIPPING
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()))
+		if (auto* D = Mode->GetWaveDirector())
+		{
+			const FString Status = FString::Printf(TEXT("Flow %s wave=%d/3 alive=%d pending=%d prepare=%.2f"),
+				*UEnum::GetValueAsString(D->GetPhase()), D->GetWaveNumber(), D->GetAliveCount(), D->GetPendingCount(), D->GetPreparationRemaining());
+			UE_LOG(LogMothEffect, Log, TEXT("%s"), *Status);
+			if (GEngine) GEngine->AddOnScreenDebugMessage(7112, 8, FColor::Cyan, Status);
+		}
+#endif
+}
+
+void AMothEffectPlayerController::MothStartEncounter()
+{
+#if !UE_BUILD_SHIPPING
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode())) Mode->StartEncounter();
+	MothFlowStats();
+#endif
+}
+
+void AMothEffectPlayerController::MothRestartEncounter()
+{
+#if !UE_BUILD_SHIPPING
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode())) Mode->RestartEncounter();
 #endif
 }

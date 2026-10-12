@@ -1,6 +1,7 @@
 #include "Components/HealthComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -34,6 +35,8 @@ void UHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 bool UHealthComponent::ApplyHit(const FHitContext& Context)
 {
+	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	if (Session && !Session->IsGameplayEnabled()) return false;
 	if (bEndingPlay || !HasBegunPlay() || !IsAlive() || !GetWorld() || GetWorld()->IsPaused()
 		|| !Context.HitId.IsValid() || !FMath::IsFinite(Context.Damage) || Context.Damage <= 0.0f
 		|| AcceptedHits.Contains(Context.HitId))

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Characters/MothEffectCharacter.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -453,8 +454,10 @@ void AMothEffectCharacter::UnbindRifle()
 
 bool AMothEffectCharacter::IsGameplayEnabled() const
 {
+	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
 	return bGameplayEnabled && !bEndingPlay && ActionState != EPlayerActionState::Dead
-		&& HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused();
+		&& HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused()
+		&& (!Session || Session->IsGameplayEnabled());
 }
 
 bool AMothEffectCharacter::CanFireRifle() const

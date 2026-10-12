@@ -30,6 +30,7 @@ void UHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
 	AcceptedHits.Reset();
+	OnDeathCommittedNative.Clear();
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -48,6 +49,8 @@ bool UHealthComponent::ApplyHit(const FHitContext& Context)
 	CurrentHealth = FMath::Max(0.0f, CurrentHealth - Context.Damage);
 	const bool bFatal = CurrentHealth <= 0.0f;
 	bHasDied = bFatal;
+	if (bFatal) OnDeathCommittedNative.Broadcast(GetOwner(), Context.SourceActor.Get());
+	if (bEndingPlay) return true;
 	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
 	if (bFatal && !bEndingPlay)
 	{

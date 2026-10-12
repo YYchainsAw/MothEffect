@@ -7,6 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothHealthChanged, float, CurrentHealth, float, MaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothDied, AActor*, Victim, AActor*, SourceActor);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FMothDeathCommittedNative, AActor*, AActor*);
 
 UCLASS(ClassGroup=(MothEffect), meta=(BlueprintSpawnableComponent))
 class MOTHEFFECT_API UHealthComponent : public UActorComponent
@@ -21,6 +22,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Health")
 	FMothDied OnDied;
+	/** Native session owners commit results before health/death presentation callbacks. */
+	FMothDeathCommittedNative OnDeathCommittedNative;
 
 	UFUNCTION(BlueprintCallable, Category="Health")
 	bool ApplyHit(const FHitContext& Context);

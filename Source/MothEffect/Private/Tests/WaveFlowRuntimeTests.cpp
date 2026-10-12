@@ -266,6 +266,58 @@ namespace MothFlowRuntimeTest
 		float PausedRemaining = 0;
 	};
 
+	class FReentrantBirthResult final : public IAutomationLatentCommand
+	{
+	public:
+		explicit FReentrantBirthResult(FAutomationTestBase* InTest) : T(InTest) {}
+		bool Update() override
+		{
+			if (FPlatformTime::Seconds() - StartedWall > 25) { T->AddError(TEXT("Reentrant birth runtime timed out")); Cleanup(); return true; }
+			auto* Current = GameWorld(); if (!Current || !Current->HasBegunPlay()) return false;
+			if (Stage == 0)
+			{
+				if (!ValidateGame(T, Current)) return true;
+				Previous = Current; Director(Current)->RestartEncounter(); Stage = 1; return false;
+			}
+			if (Stage == 1)
+			{
+				if (Current == Previous.Get()) return false;
+				W = Current; D = Director(W); P = ReplacePlayer(W, D.Get(), FVector(-2200,-1800,100));
+				if (!T->TestNotNull(TEXT("Reentrant controlled player"), P.Get())) return true;
+				SpawnHandle = W->AddOnActorSpawnedHandler(FOnActorSpawned::FDelegate::CreateRaw(this, &FReentrantBirthResult::Spawned));
+				T->TestTrue(TEXT("Reentrant flow starts"), D->StartEncounter()); Stage = 2;
+			}
+			else if (Stage == 2 && bCallback)
+			{
+				T->TestTrue(TEXT("Spawn observer actually commits player death"), bKilled);
+				T->TestTrue(TEXT("Result during deferred allocation remains defeat"), D->GetPhase() == EMothFlowPhase::Defeat);
+				T->TestEqual(TEXT("Result clears queue despite suspended spawn call"), D->GetPendingCount(), 0);
+				T->TestEqual(TEXT("No deferred actor resurrects alive count"), D->GetAliveCount(), 0);
+				int32 Alive = 0;
+				for (TActorIterator<AEnemyBase> It(W); It; ++It) if (!It->IsActorBeingDestroyed()) ++Alive;
+				T->TestEqual(TEXT("Unfinished birth ended before post-result BeginPlay"), Alive, 0);
+				T->TestFalse(TEXT("Session still closed after returning from deferred spawn"), W->GetSubsystem<UDeviceLifecycleSubsystem>()->IsGameplayEnabled());
+				T->AddInfo(TEXT("Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue."));
+				Cleanup(); return true;
+			}
+			return false;
+		}
+	private:
+		void Spawned(AActor* Actor)
+		{
+			if (bCallback || !Actor->IsA<AEnemyBase>() || D->GetPhase() != EMothFlowPhase::Fighting) return;
+			bCallback = true; bKilled = P->GetHealthComponent()->ApplyHit(Hit(10000));
+		}
+		void Cleanup() { if (W && SpawnHandle.IsValid()) W->RemoveOnActorSpawnedHandler(SpawnHandle); SpawnHandle.Reset(); }
+		FAutomationTestBase* T; UWorld* W = nullptr;
+		TWeakObjectPtr<UWorld> Previous;
+		TWeakObjectPtr<AMothWaveDirector> D;
+		TWeakObjectPtr<AMothPlayerAutomationCharacter> P;
+		FDelegateHandle SpawnHandle;
+		int32 Stage = 0; bool bCallback = false, bKilled = false;
+		double StartedWall = FPlatformTime::Seconds();
+	};
+
 	class FInterruptedWarning final : public IAutomationLatentCommand
 	{
 	public:
@@ -421,4 +473,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothBoundsAndPauseRuntime, "MothEffect.WaveFlo
 bool FMothBoundsAndPauseRuntime::RunTest(const FString&) { ADD_LATENT_AUTOMATION_COMMAND(MothFlowRuntimeTest::FBoundsAndPause(this)); return true; }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothInterruptedWarningRuntime, "MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker", EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
 bool FMothInterruptedWarningRuntime::RunTest(const FString&) { ADD_LATENT_AUTOMATION_COMMAND(MothFlowRuntimeTest::FInterruptedWarning(this)); return true; }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothReentrantBirthRuntime, "MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback", EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+bool FMothReentrantBirthRuntime::RunTest(const FString&) { ADD_LATENT_AUTOMATION_COMMAND(MothFlowRuntimeTest::FReentrantBirthResult(this)); return true; }
 #endif

@@ -14,6 +14,7 @@
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Tests/CombatTestWorld.h"
 #include "Tests/PlayerAutomationCharacter.h"
+#include "Tests/WaveFlowObserver.h"
 #include "TimerManager.h"
 #include "Weapons/Rifle.h"
 
@@ -157,6 +158,25 @@ bool FMothFlowWorldIsolation::RunTest(const FString&)
 	TestFalse(TEXT("First session closed"), A.Manager->IsGameplayEnabled());
 	TestTrue(TEXT("Other session still admits objects"), B.Manager->IsGameplayEnabled() && B.Manager->CanSpawnProjectile());
 	TestTrue(TEXT("Other session still accepts damage"), B.Player->FindComponentByClass<UHealthComponent>()->ApplyHit(MothFlowTest::Hit(10)));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothFlowFatalPresentation, "MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FMothFlowFatalPresentation::RunTest(const FString&)
+{
+	MothFlowTest::FFixture F;
+	if (!TestNotNull(TEXT("Saved director"), F.Director)) return false;
+	F.Director->StartEncounter();
+	auto* Other = F.F.Spawn<AMothPlayerAutomationCharacter>(FVector(1000,0,100));
+	auto* Observer = NewObject<UMothWaveFlowObserver>(); Observer->Director = F.Director; Observer->OtherHealth = Other->GetHealthComponent();
+	F.Player->GetHealthComponent()->OnHealthChanged.AddDynamic(Observer, &UMothWaveFlowObserver::HealthChanged);
+	TestTrue(TEXT("Fatal hit applies"), F.Player->GetHealthComponent()->ApplyHit(MothFlowTest::Hit()));
+	TestTrue(TEXT("Actual dynamic health presentation executed"), Observer->bNotified);
+	TestTrue(TEXT("Defeat was committed before health presentation"), Observer->bTerminal);
+	TestFalse(TEXT("Health presentation cannot damage another player"), Observer->bDamaged);
+	TestFalse(TEXT("Health presentation cannot generate a replacement"), Observer->bSpawned);
+	TestEqual(TEXT("Other player remains at full health"), Other->GetHealthComponent()->GetCurrentHealth(), 100.0f);
+	F.Player->GetHealthComponent()->OnHealthChanged.RemoveDynamic(Observer, &UMothWaveFlowObserver::HealthChanged);
 	return true;
 }
 

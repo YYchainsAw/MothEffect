@@ -70,14 +70,14 @@ bool AMothWaveDirector::SetPlayer(AMothEffectCharacter* Player)
 	if (!Health || !Health->IsAlive()) return false;
 	UnbindPlayer();
 	CombatPlayer = Player; PlayerHealth = Health;
-	Health->OnDied.AddUniqueDynamic(this, &AMothWaveDirector::HandlePlayerDied);
+	Health->OnDeathCommittedNative.AddUObject(this, &AMothWaveDirector::HandlePlayerDied);
 	Player->OnEndPlay.AddUniqueDynamic(this, &AMothWaveDirector::HandlePlayerEndPlay);
 	return true;
 }
 
 void AMothWaveDirector::UnbindPlayer()
 {
-	if (PlayerHealth.IsValid()) PlayerHealth->OnDied.RemoveDynamic(this, &AMothWaveDirector::HandlePlayerDied);
+	if (PlayerHealth.IsValid()) PlayerHealth->OnDeathCommittedNative.RemoveAll(this);
 	if (CombatPlayer.IsValid()) CombatPlayer->OnEndPlay.RemoveDynamic(this, &AMothWaveDirector::HandlePlayerEndPlay);
 	PlayerHealth.Reset();
 }
@@ -200,6 +200,8 @@ void AMothWaveDirector::ProcessBirths(double Now)
 		const FTransform Transform(FRotator(0, (CombatPlayer->GetActorLocation() - Position).Rotation().Yaw, 0), Position);
 		auto* Enemy = GetWorld()->SpawnActorDeferred<AEnemyBase>(EnemyClasses[static_cast<int32>(Spec.Kind)], Transform,
 			this, nullptr, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+		// World spawn observers run even for deferred actors and may have ended this run.
+		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->Destroy(); return; }
 		if (!Enemy) { PendingBirths[I].WarningAt = -1; PendingBirths[I].RetryAt = Now + FMath::Max(.01f, SpawnRetrySeconds); continue; }
 		// Reserve count and bind before construction/BeginPlay can die, destroy, or restart the encounter.
 		PendingBirths[I].bComplete = true;
@@ -222,6 +224,7 @@ void AMothWaveDirector::ProcessBirths(double Now)
 			continue;
 		}
 		Enemy->SetCombatTarget(CombatPlayer.Get());
+		if (!IsCurrent(Generation)) return;
 		OnEnemySpawnedNative.Broadcast(Enemy, Spec);
 		if (!IsCurrent(Generation)) return;
 		PublishState();

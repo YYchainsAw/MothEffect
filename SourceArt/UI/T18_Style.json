@@ -3,7 +3,7 @@
   "authorship": "Original Moth Effect vector glyphs and native UMG layout, 2026-10-12",
   "runtime": "UMothDeviceIcon draws these glyphs as Slate lines; SVG files are editable sources, not imported raster textures",
   "palette": {"ink": "#14282D", "slate": "#34515C", "paper": "#F2EFE0", "brass": "#D8B67A", "D01": "#53D6DC", "D02": "#FF985C", "D03": "#B592EF"},
-  "fonts": {"display": "Engine Roboto Bold 46/34", "body": "Engine Roboto Regular 24/22", "utility": "Engine Roboto Condensed 21/20", "cjk": "Engine composite font fallback"},
+  "fonts": {"display": "Engine Roboto Bold 46/34", "body": "Engine Roboto Regular 24/22", "utility": "Engine Roboto BoldCondensed 21/20", "cjk": "Engine composite font fallback"},
   "layout": {"reference_resolution": [1920, 1080], "safe_margin": 24, "menu_width": 700, "tutorial_width": 800},
   "recognition": {"D01": "up arrow on support line", "D02": "ring with eight outward rays", "D03": "barrel with right arrow"}
 }

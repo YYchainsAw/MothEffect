@@ -35,7 +35,7 @@ namespace MothUIStyle
 	{
 		auto* Widget = Tree->ConstructWidget<UTextBlock>();
 		Widget->SetText(FText::FromString(Value));
-		Widget->SetFont(FCoreStyle::GetDefaultFontStyle(Size>=34?"Bold":Size<=21?"Condensed":"Regular", Size));
+		Widget->SetFont(FCoreStyle::GetDefaultFontStyle(Size>=34?"Bold":Size<=21?"BoldCondensed":"Regular", Size));
 		Widget->SetColorAndOpacity(Color); Widget->SetAutoWrapText(true);
 		return Widget;
 	}
@@ -98,24 +98,35 @@ void UMothHUDWidget::BuildLayout()
 	auto* HeldRow=WidgetTree->ConstructWidget<UHorizontalBox>();
 	HeldIcon=WidgetTree->ConstructWidget<UMothDeviceIcon>();
 	HeldRow->AddChildToHorizontalBox(HeldIcon)->SetPadding(FMargin(0,0,12,0));
-	HeldText=Text(WidgetTree,TEXT(""),22); HeldRow->AddChildToHorizontalBox(HeldText);
+	HeldText=Text(WidgetTree,TEXT(""),22); HeldText->SetAutoWrapText(false); HeldText->SetWrapTextAt(560);
+	HeldRow->AddChildToHorizontalBox(HeldText)->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 	Place(HUD,Panel(WidgetTree,HeldRow,14),{.5,1},{.5,1},{0,-24},{640,80});
-	auto* Crosshair=Text(WidgetTree,TEXT("+"),28); Crosshair->SetJustification(ETextJustify::Center);
-	Place(HUD,Crosshair,{.5,.5},{.5,.5},{0,0},{32,40});
-	AimText=Text(WidgetTree,TEXT(""),22); AimText->SetJustification(ETextJustify::Center);
-	Place(HUD,AimText,{.5,.5},{.5,0},{0,35},{720,70});
+	CrosshairText=Text(WidgetTree,TEXT("+"),28); CrosshairText->SetJustification(ETextJustify::Center);
+	FFontOutlineSettings CrosshairOutline; CrosshairOutline.OutlineSize=1; CrosshairOutline.OutlineColor=Ink;
+	CrosshairText->SetFont(FCoreStyle::GetDefaultFontStyle("Regular",28,CrosshairOutline));
+	Place(HUD,CrosshairText,{.5,.5},{.5,.5},{0,0},{32,40});
+	AimText=Text(WidgetTree,TEXT(""),20); AimText->SetJustification(ETextJustify::Center);
+	AimText->SetAutoWrapText(false); AimText->SetWrapTextAt(624);
+	AimPanel=Panel(WidgetTree,AimText,8);
+	auto* AimWidth=WidgetTree->ConstructWidget<USizeBox>(); AimWidth->SetWidthOverride(640); AimWidth->SetContent(AimPanel);
+	Place(HUD,AimWidth,{.5,.5},{.5,0},{0,28},{640,60})->SetAutoSize(true);
 	NoticeText=Text(WidgetTree,TEXT(""),22,Brass); NoticeText->SetJustification(ETextJustify::Center);
-	Place(HUD,NoticeText,{.5,.5},{.5,0},{0,-120},{760,72});
+	NoticeText->SetAutoWrapText(false); NoticeText->SetWrapTextAt(736);
+	NoticePanel=Panel(WidgetTree,NoticeText,12);
+	auto* NoticeWidth=WidgetTree->ConstructWidget<USizeBox>(); NoticeWidth->SetWidthOverride(760); NoticeWidth->SetContent(NoticePanel);
+	Place(HUD,NoticeWidth,{.5,.5},{.5,0},{0,-140},{760,72})->SetAutoSize(true);
 	auto* Teaching=WidgetTree->ConstructWidget<UVerticalBox>();
 	TutorialStepText=Text(WidgetTree,TEXT(""),22,Brass); Row(Teaching,TutorialStepText);
-	TutorialText=Text(WidgetTree,TEXT(""),24); Row(Teaching,TutorialText);
+	TutorialText=Text(WidgetTree,TEXT(""),22); TutorialText->SetAutoWrapText(false); TutorialText->SetWrapTextAt(760); Row(Teaching,TutorialText);
 	UTextBlock* RetryLabel=nullptr;
 	RetryButton=Button(WidgetTree,TEXT("重置本步道具"),RetryLabel); Row(Teaching,RetryButton,0);
+	RetryLabel->SetFont(FCoreStyle::GetDefaultFontStyle("Regular",20));
 	RetryButton->OnClicked.AddUniqueDynamic(this,&UMothHUDWidget::RetryClicked);
 	auto* TeachingPanel=Panel(WidgetTree,Teaching);
 	TeachingPanel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	// Text and retry visibility drive the panel's visibility in RenderState.
-	Place(HUD,TeachingPanel,{.5,1},{.5,1},{0,-195},{800,258});
+	auto* TeachingWidth=WidgetTree->ConstructWidget<USizeBox>(); TeachingWidth->SetWidthOverride(800); TeachingWidth->SetContent(TeachingPanel);
+	Place(HUD,TeachingWidth,{.5,1},{.5,1},{0,-195},{800,258})->SetAutoSize(true);
 
 	MenuContent=WidgetTree->ConstructWidget<UVerticalBox>();
 	Row(MenuContent,Text(WidgetTree,TEXT("MOTH EFFECT"),46,Brass),8);
@@ -238,7 +249,7 @@ void UMothHUDWidget::RenderState()
 	HeldIcon->SetDeviceKind(State.HeldKind);
 	HeldText->SetText(FText::FromString(State.bHeld?UMothDeviceIcon::GetDeviceName(State.HeldKind).ToString()+TEXT("   左键投掷 / E 放下"):
 		TEXT("空手   左键射击 / 对准道具按 E 拾取")));
-	FString Aim;
+	FString Aim; FLinearColor AimColor=MothUIStyle::Paper;
 	if (Player.IsValid()&&!State.bHeld)
 	{
 		FVector Origin,Direction;
@@ -251,14 +262,18 @@ void UMothHUDWidget::RenderState()
 				if (auto* Device=Cast<ADeviceBase>(Hit.GetActor()); Device&&Device->GetDeviceState()==EDeviceState::Dormant)
 				{
 					Aim=UMothDeviceIcon::GetDeviceName(Device->GetDeviceKind()).ToString()+TEXT(" · 射击启动");
+					AimColor=UMothDeviceIcon::GetDeviceColor(Device->GetDeviceKind());
 					if (Player->GetPickupCandidate()==Device) Aim+=TEXT(" / E 拾取");
 				}
 		}
 	}
 	AimText->SetText(FText::FromString(Aim));
-	NoticeText->SetText(GetWorld()->GetTimeSeconds()<NoticeEndsAt?Notice:FText::GetEmpty());
+	AimPanel->SetVisibility(Aim.IsEmpty()?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
+	AimText->SetColorAndOpacity(AimColor); CrosshairText->SetColorAndOpacity(AimColor);
+	NoticeText->SetText(GetWorld()->GetTimeSeconds()<NoticeEndsAt?Notice:Tutorial.IsValid()?Tutorial->GetFeedback():FText::GetEmpty());
+	NoticePanel->SetVisibility(NoticeText->GetText().IsEmpty()?ESlateVisibility::Collapsed:ESlateVisibility::HitTestInvisible);
 	const bool bTeaching=State.Page==EMothUIPage::Tutorial;
-	TutorialText->GetParent()->GetParent()->SetVisibility(bTeaching?ESlateVisibility::SelfHitTestInvisible:ESlateVisibility::Collapsed);
+	TutorialText->GetParent()->GetParent()->GetParent()->SetVisibility(bTeaching?ESlateVisibility::SelfHitTestInvisible:ESlateVisibility::Collapsed);
 	TutorialText->SetText(Tutorial.IsValid()?Tutorial->GetInstruction():FText::GetEmpty());
 	TutorialStepText->SetText(FText::FromString(FString::Printf(TEXT("教学  %d / 3   ·   实际完成操作后进入下一步"),static_cast<int32>(State.Tutorial))));
 	if (RenderedPage!=State.Page)

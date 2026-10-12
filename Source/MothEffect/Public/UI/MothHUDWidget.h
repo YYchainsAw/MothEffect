@@ -65,8 +65,11 @@ private:
 	UPROPERTY() TObjectPtr<UTextBlock> HeldText;
 	UPROPERTY() TObjectPtr<UMothDeviceIcon> HeldIcon;
 	UPROPERTY() TObjectPtr<UTextBlock> AimText;
+	UPROPERTY() TObjectPtr<UTextBlock> CrosshairText;
 	UPROPERTY() TObjectPtr<UTextBlock> TutorialText;
 	UPROPERTY() TObjectPtr<UTextBlock> NoticeText;
+	UPROPERTY() TObjectPtr<UBorder> NoticePanel;
+	UPROPERTY() TObjectPtr<UBorder> AimPanel;
 	UPROPERTY() TObjectPtr<UTextBlock> MenuTitle;
 	UPROPERTY() TObjectPtr<UTextBlock> MenuDescription;
 	UPROPERTY() TObjectPtr<UButton> PrimaryButton;

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.40 · 2026-10-12 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.41 · 2026-10-12 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-12 T18推进：原生 UMG HUD、三种原创矢量图标、实际动作驱动的三步教学和标题/暂停/教学完成/胜负/重开面板已接入。首次读取真实生命/弹药/持物/波次，事件更新并在换玩家/重开时解绑；进入战斗重载关卡，仅保存一次开始意图。教学分别核验爆炸死亡来源、真实物理抬升、投出且空中 W01 启动、D03 P01→D02 间接击杀；落地/错误启动补充，独立目标允许换顺序，暂停保留合法换弹。实现阶段96项 Editor 全量及主地图10项 Game 回归通过，后续教学重试/最终布局的 UI 分支在三种分辨率真实 D3D12 离屏渲染复测通过；既有资源/动画告警保留。#20 Open / In Progress，五组当前硬件输入与完整图形 PIE 待验收，TC26 外部盲玩及独立包留后续；本轮本地 develop 提交，未推送/创建 T18 PR，T16/T17 PR #45 待校验状态保留。 见 [UI_Setup](../../05_Development_Guide/UI_Setup.md) 与 [T18报告](../../06_Test_Doc/T18_Report_2026-10-12.md)。 以下段落保留历史。
 
 2026-10-12 T16/T17 PR记录：按用户要求“创建pr”“保持待校验”，已推送codex/t16-t17-wave-arena → main并创建[PR #45](https://github.com/YYchainsAw/MothEffect/pull/45)。main尚无T16，因此同一PR交付三波/胜负/重开及T17主竞技场，共51件功能/证据改动、11件新LFS资产；使用Refs #18/#19，两项Issue继续Open / In Progress，四组图形PIE分别待校验、完整验收框未勾选。原工程T16最终95项Editor/5项Game及T17主场地8项Game沿用既有真实记录，本次仅PR与文档，不重复执行UE。独立PR工作树验证271件文件/49件UE资产、42节阅读版、diff及LFS fsck通过；11件LFS对象220KB已上传，用户玩家蓝图未纳入。本地继续develop，GitHub Repository checks按最终head另行核对，静态CI不代替游戏验收。以下段落保留历史。
 
@@ -242,3 +244,11 @@ T08 发射调度：从激活时间计算 `firstShotDelay + n * shotInterval`，�
 新增源码与资产目录、命名和完整编译约定见 [代码与资产命名规范](../../03_Code_Standard/Coding_Conventions.md)。
 
 提交范围、Git LFS、缓存忽略与恢复约定见 [版本管理规范](../../03_Code_Standard/Version_Control.md)。规则或参数变化按 [文档维护与变更流程](../../05_Development_Guide/Documentation_Workflow.md) 同步文档及回归测试。
+
+## 7. T18 HUD、教学与菜单
+
+`UMothHUDWidget` 在本地控制器拥有正式 Pawn/Rifle/Director 后构造原生 WidgetTree，保存的 WBP_MothHUD 仅作入口。初始 getter + AddUniqueDynamic 事件订阅，NativeTick 读取倒计时/换弹进度/准星/短提示；来源变更与 NativeDestruct 解绑。E 的提示遵循 T07 首次准星阻挡命中与完整拾取条件，受伤/弹药/动作/波次显示来自生产对象。
+
+`UMothTutorialSubsystem` 持有世界内弱引用与一次 CheckTimer；激活/释放/靶死亡观察只记录来源与证据，计时器再转换步骤/清理自有对象。目标死亡必须来自该步 D02；D01 实际高度达标后独立保留；第二步必须曾真正投出且 W01 在空中启动，错误启动或落地自动补充；第三步 P01 的 SourceActor 保留源 D03，因此可区分 W01 直接启动。Ready 教学界外复用导演 Defeat 清理，世界结束清所有自有靶/标记/绑定。
+
+菜单 UIOnly + 鼠标 + 主按钮焦点，教学/战斗 GameOnly + 视口焦点；切换取消持续按压，不把取消当作实际松键。Pause 不调用 SetGameplayEnabled(false)，所以合法换弹/恢复任务在世界暂停期间冻结、恢复继续。进入正式战斗 OpenLevel 重置所有状态；MothGameInstance 只有一位待开始意图，先绑定新玩家并成功 Preparing 后消费，结果重开清意图回到标题。原生激活观察回调后再次检查结束/状态/会话，防止回调结算后发出效果。

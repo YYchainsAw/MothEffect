@@ -32,6 +32,8 @@ public:
 	UFUNCTION(Exec)
 	void MothSpawnEnemy();
 	UFUNCTION(Exec)
+	void MothSpawnDropEnemy(int32 Kind);
+	UFUNCTION(Exec)
 	void MothResetEnemies();
 	UFUNCTION(Exec)
 	void MothEnemyStats();

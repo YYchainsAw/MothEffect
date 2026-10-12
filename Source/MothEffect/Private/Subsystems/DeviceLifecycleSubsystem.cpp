@@ -89,8 +89,21 @@ bool UDeviceLifecycleSubsystem::MakeRoomForDevice()
 
 ADeviceBase* UDeviceLifecycleSubsystem::SpawnDevice(TSubclassOf<ADeviceBase> DeviceClass, FTransform Transform)
 {
+	return SpawnDeviceInternal(DeviceClass, Transform, LifecycleGeneration, [] { return true; });
+}
+
+ADeviceBase* UDeviceLifecycleSubsystem::SpawnDeviceForGeneration(TSubclassOf<ADeviceBase> DeviceClass,
+	FTransform Transform, uint64 Generation, TFunctionRef<bool()> ValidateBirthplace)
+{
+	return SpawnDeviceInternal(DeviceClass, Transform, Generation, ValidateBirthplace);
+}
+
+ADeviceBase* UDeviceLifecycleSubsystem::SpawnDeviceInternal(TSubclassOf<ADeviceBase> DeviceClass,
+	FTransform Transform, uint64 Generation, TFunctionRef<bool()> ValidateBirthplace)
+{
 	if (!DeviceClass || DeviceClass->HasAnyClassFlags(CLASS_Abstract) || Transform.ContainsNaN()
-		|| !GetWorld()->HasBegunPlay() || !MakeRoomForDevice()) return nullptr;
+		|| !GetWorld()->HasBegunPlay() || !IsGenerationCurrent(Generation) || !ValidateBirthplace()
+		|| !MakeRoomForDevice() || !IsGenerationCurrent(Generation) || !ValidateBirthplace()) return nullptr;
 	++PendingSpawns;
 	ADeviceBase* Device = GetWorld()->SpawnActorDeferred<ADeviceBase>(DeviceClass, Transform, nullptr, nullptr,
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
@@ -98,6 +111,7 @@ ADeviceBase* UDeviceLifecycleSubsystem::SpawnDevice(TSubclassOf<ADeviceBase> Dev
 	ReservedSpawns.Add(Device);
 	Device->FinishSpawning(Transform);
 	if (ReservedSpawns.Remove(Device)) --PendingSpawns;
+	if (!IsGenerationCurrent(Generation)) { if (IsLive(Device)) Device->DestroyDevice(); return nullptr; }
 	return IsLive(Device) && Device->HasActorBegunPlay() ? Device : nullptr;
 }
 

@@ -9,6 +9,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Devices/DeviceBase.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -59,6 +60,20 @@ AEnemyBase::AEnemyBase()
 	AimArrow->SetHiddenInGame(true);
 	AimArrow->SetCanEverAffectNavigation(false);
 	ProjectileClass = ARuleProjectile::StaticClass();
+	BackpackMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackpackMesh"));
+	BackpackMesh->SetupAttachment(GetCapsuleComponent());
+	BackpackMesh->SetRelativeLocation(FVector(-45, 0, 15));
+	BackpackMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BackpackMesh->SetCanEverAffectNavigation(false);
+	BackpackMesh->SetVisibility(false);
+	DropHintText = CreateDefaultSubobject<UTextRenderComponent>(TEXT("DropHintText"));
+	DropHintText->SetupAttachment(GetCapsuleComponent());
+	DropHintText->SetRelativeLocation(FVector(0, 0, 90));
+	DropHintText->SetAbsolute(false, true, false);
+	DropHintText->SetHorizontalAlignment(EHTA_Center);
+	DropHintText->SetWorldSize(22);
+	DropHintText->SetVisibility(false);
+	DropHintText->SetCanEverAffectNavigation(false);
 }
 
 void AEnemyBase::PostInitializeComponents()
@@ -75,6 +90,7 @@ void AEnemyBase::BeginPlay()
 	ProgressLocation = GetActorLocation();
 	LastProgressAt = GetWorld()->GetTimeSeconds();
 	NextFireAt = LastProgressAt + FMath::Max(0.01f, TelegraphSeconds);
+	RefreshDropAppearance();
 	LogEvent(TEXT("begin"));
 }
 
@@ -162,6 +178,7 @@ void AEnemyBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	if (!IsCombatEnabled()) return;
+	if (DropDeviceClass && CombatTarget.IsValid()) DropHintText->SetWorldRotation((AimPoint() - DropHintText->GetComponentLocation()).Rotation());
 	if (!IsUsableTarget(CombatTarget.Get()))
 	{
 		SetCombatTarget(nullptr);
@@ -290,6 +307,13 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 {
 	if (Victim != this || bDeathProcessed || bEndingPlay) return;
 	bDeathProcessed = true;
+	// Snapshot before any presentation/death observer can reset the world or destroy us.
+	const auto FixedDropClass = DropDeviceClass;
+	const EDeviceKind FixedDropKind = DropKind;
+	const FVector DeathLocation = GetActorLocation();
+	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	const uint64 DropGeneration = Lifecycle ? Lifecycle->GetLifecycleGeneration() : 0;
+	bDropAttempted = FixedDropClass != nullptr;
 	bGameplayEnabled = false;
 	++CombatGeneration;
 	CombatPhase = EEnemyCombatPhase::Dead;
@@ -305,6 +329,7 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 	LogEvent(TEXT("death"));
 	if (!bEndingPlay && !IsActorBeingDestroyed()) OnEnemyDiedNative.Broadcast(this, Source);
 	if (!bEndingPlay && !IsActorBeingDestroyed()) OnEnemyDied.Broadcast(this, Source);
+	TryDropDevice(FixedDropClass, FixedDropKind, DeathLocation, DropGeneration);
 }
 
 void AEnemyBase::EndPlay(const EEndPlayReason::Type Reason)

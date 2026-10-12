@@ -167,6 +167,22 @@ void AMothEffectPlayerController::MothResetEnemies()
 #endif
 }
 
+void AMothEffectPlayerController::MothSpawnDropEnemy(int32 Kind)
+{
+#if !UE_BUILD_SHIPPING
+	if (!GetPawn() || Kind < 0 || Kind > 2) return;
+	const TCHAR* Path = Kind == 0 ? TEXT("/Game/MothEffect/Enemies/BP_EnemyLauncher.BP_EnemyLauncher_C")
+		: Kind == 1 ? TEXT("/Game/MothEffect/Enemies/BP_EnemyBomb.BP_EnemyBomb_C")
+		: TEXT("/Game/MothEffect/Enemies/BP_EnemyEmitter.BP_EnemyEmitter_C");
+	UClass* Class = LoadClass<AEnemyBase>(nullptr, Path);
+	if (!Class) return;
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	GetWorld()->SpawnActor<AEnemyBase>(Class, GetPawn()->GetActorLocation() + GetPawn()->GetActorForwardVector() * 900.0f, FRotator::ZeroRotator, Params);
+	MothEnemyStats();
+#endif
+}
+
 void AMothEffectPlayerController::MothEnemyStats()
 {
 #if !UE_BUILD_SHIPPING

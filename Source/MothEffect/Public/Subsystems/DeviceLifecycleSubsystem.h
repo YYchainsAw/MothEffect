@@ -27,6 +27,11 @@ public:
 	/** Drop/spawn callers use this entry before allocating an actor. Placed actors also register. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Lifecycle")
 	ADeviceBase* SpawnDevice(TSubclassOf<ADeviceBase> DeviceClass, FTransform Transform);
+	/** Revalidate birthplace after capacity callbacks; never admit a drop from a reset epoch. */
+	ADeviceBase* SpawnDeviceForGeneration(TSubclassOf<ADeviceBase> DeviceClass, FTransform Transform,
+		uint64 Generation, TFunctionRef<bool()> ValidateBirthplace);
+	uint64 GetLifecycleGeneration() const { return LifecycleGeneration; }
+	bool IsGenerationCurrent(uint64 Generation) const { return !bResetting && LifecycleGeneration == Generation; }
 	UFUNCTION(BlueprintCallable, Category="Moth|Lifecycle")
 	void ResetManagedObjects();
 	/** Optional arena bounds. Without these, use the world's enabled KillZ/world bounds checks. */
@@ -97,6 +102,8 @@ private:
 	FBox SafetyBounds = FBox(ForceInit);
 	double LastCapacityNotice[4] = { -1.0, -1.0, -1.0, -1.0 };
 	bool MakeRoomForDevice();
+	ADeviceBase* SpawnDeviceInternal(TSubclassOf<ADeviceBase> DeviceClass, FTransform Transform,
+		uint64 Generation, TFunctionRef<bool()> ValidateBirthplace);
 	bool IsOutsideSafety(const AActor* Actor) const;
 	void NotifyRejected(EMothCapacityKind Kind);
 };

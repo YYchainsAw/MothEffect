@@ -1,0 +1,315 @@
+T18 verification evidence / 2026-10-12 Asia/Hong_Kong (UTC+8)
+Unreal 5.8.0-55116800; Win64 Development Editor; MSVC 14.50.35728; Windows SDK 10.0.26100.0
+EditorFinal/GameFinal: implementation snapshot 89b672f; final production snapshot 732bf22.
+720/1080 Verified: final production + test-only event-wait fix fdc7204; 1440 Accepted: final production + f1abf88 tests.
+Accepted in a folder name is not manual acceptance. Failed runs are retained below.
+Full raw reports/logs are local Saved artifacts. PNG copies below are unmodified renderer bytes.
+Manual hardware/PIE: five groups pending; standalone/T21 and external blind play/TC26/T22 pending.
+Issue #20 Open; Project In Progress. T18 not pushed/no PR; PR45 unchanged Open/unmerged at a52e7bd.
+
+{"report": "Saved/Automation/T18/EditorFinal/index.json", "sha256": "fcd5014e3558e180ca1060537b7d1c7b9eae7f2100f976b2fc77fb2034688286", "UTC": "2026.10.12-13.54.39", "tests": 96, "states": {"Success": 96}, "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.BombIntoFirelineAndLayoutControl", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.ColumnIntoFirelineAndLayoutControl", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.DirectBomb", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.DirectEmitter", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.DirectLauncher", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.PausedFlightAndIndependentLifetime", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.SavedBlueprintNaturalChain", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.SavedRangeConfiguration", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.SourceExclusionAndAttributionDamage", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Chains.ThinWallConsumesFirstImpact", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Combat.Impulse.FrameMergeAndClamp", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Combat.Impulse.InvalidAndDuplicateEvents", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Combat.Impulse.PauseAndCancellation", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.CancelBeforeEffect", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.HeldAndNonBallisticStates", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.PhysicalMovement", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.SingleUseAndFrozenCenter", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Bomb.StaticCoverAndRadius", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Emitter.BlockedBirthAndExpiry", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Emitter.CancellationStopsTimers", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Emitter.WorldDirectionAndLifetime", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.BombColumnOrderIndependent", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.FullStaticVolumeAndContact", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.InvalidGroundConsumesSeed", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.OccupiedUntilExpiry", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.PauseCancellationAndEndPlay", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.SavedBlueprintIntegration", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.SlopeAndPlatformEdge", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.ReleaseSafety.EndpointOccupancy", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.ReleaseSafety.ThinWall", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.ActivationIsSingleUse", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.CancelDuringActivationCallback", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Devices.RejectInvalidAndDisabledHits", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.ActualWorldPauseFreezesWarning", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.CoverCancelsWarningAndReacquires", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.DeathIdempotenceConfigAndBomb", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.NormalRifleKillsOnce", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.RealP01ActivatesDormantDevice", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.SavedBlueprintAndRange", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.IdempotentDeathAndFixedClass", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.NormalW01KillsAllVariants", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.RealD02KillsAllVariants", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.RealP01KillsAllVariants", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.RecyclesOldestDormant", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.DisabledIdleClockResumes", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.FullCapacityProtectsHeld", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.SavedBlueprintsAndDebugController", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Lifecycle.TotalRecyclesOldestDormant", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.BlockedReleaseRetainsHeld", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.DeathAndEndPlayCleanup", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.FocusAndPhysicalRelease", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.HeldInvalidationAndDamage", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.PausePreservesTimers", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.PickupReloadCompetition", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.RoundCancellationRejectsOldTasks", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.SinglePressAndRecovery", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Player.T09.UnpossessedStopsFire", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Projectiles.FirstImpactIsSingleUse", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Projectiles.RejectionAndSourceExclusion", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Projectiles.SweptThinWall", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.WaveFlow.TutorialResetBeforePreparation", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed", "state": "Success", "errors": 0, "warnings": 0}
+
+{"report": "Saved/Automation/T18/GameFinal/index.json", "sha256": "99f7cb54d3b5274e6bf67b0c32e98afd3ffbf611b139305aae45dc9a7435ebb0", "UTC": "2026.10.12-13.53.49", "tests": 10, "states": {"Success": 10}, "errors": 0, "warnings": 204}
+{"test": "MothEffect.ArenaRuntime.BothRampsPhysicalWalking", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision", "state": "Success", "errors": 0, "warnings": 0}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Success", "errors": 0, "warnings": 14}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"test": "MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause", "state": "Success", "errors": 0, "warnings": 1}
+{"test": "MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback", "state": "Success", "errors": 0, "warnings": 12}
+{"test": "MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker", "state": "Success", "errors": 0, "warnings": 12}
+{"test": "MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards", "state": "Success", "errors": 0, "warnings": 131}
+{"test": "MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory", "state": "Success", "errors": 0, "warnings": 1}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 17, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 17, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 17, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 17, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 17, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+{"warningOccurrences": 14, "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'"}
+
+{"report": "Saved/Automation/T18/UIRun1/index.json", "sha256": "db960c1fa762919c2fe0b66cb4cddd8df6c9648526f0e5fee0a89c9cecea6027", "UTC": "2026.10.12-13.44.56", "tests": 2, "states": {"Fail": 2}, "errors": 3, "warnings": 25}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Fail", "errors": 2, "warnings": 3}
+{"event": {"type": "Error", "message": "Expected 'Throw commits release before tutorial evidence' to be false.", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"event": {"type": "Error", "message": "Tutorial flow timeout stage=7 step=2", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Fail", "errors": 1, "warnings": 22}
+{"event": {"type": "Error", "message": "Expected 'Start battle travels to fresh Preparing world with gameplay input' to be true.", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 2, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 2, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 2, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 2, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/UIRun2/index.json", "sha256": "1bcc4738e456bf57df34da9cb8e739ca6fb224ac051241735ea92f581a86f6e6", "UTC": "2026.10.12-13.47.17", "tests": 2, "states": {"Fail": 2}, "errors": 2, "warnings": 25}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Fail", "errors": 1, "warnings": 3}
+{"event": {"type": "Error", "message": "Tutorial flow timeout stage=8 step=3", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Fail", "errors": 1, "warnings": 22}
+{"event": {"type": "Error", "message": "Expected 'Start battle travels to fresh Preparing world with gameplay input' to be true.", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 2, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 2, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 2, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 2, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 2, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/Render720Accepted/index.json", "sha256": "327fd671eb3139545d3b2196ba7f4f6e698d40e0a5aaead48a81b37c13afb727", "UTC": "2026.10.12-14.22.28", "tests": 2, "states": {"Fail": 1, "Success": 1}, "errors": 1, "warnings": 48}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Fail", "errors": 1, "warnings": 15}
+{"event": {"type": "Error", "message": "Expected 'A missed throw landing refills promptly without advancing' to be true.", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."}
+{"warningOccurrences": 4, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 4, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/Render1080Accepted/index.json", "sha256": "2c4c4dc3f133d3ad5611484a9dee97d498be8eff3deafe11ed43a41f7d3e846d", "UTC": "2026.10.12-14.22.34", "tests": 2, "states": {"Fail": 1, "Success": 1}, "errors": 1, "warnings": 48}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Fail", "errors": 1, "warnings": 15}
+{"event": {"type": "Error", "message": "Expected 'A missed throw landing refills promptly without advancing' to be true.", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."}
+{"warningOccurrences": 4, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 4, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/Render1440Accepted/index.json", "sha256": "099fe683ccabc538e5f939c488168eb6803f335da22dba7735926642e2cb1e9f", "UTC": "2026.10.12-14.22.29", "tests": 2, "states": {"Success": 2}, "errors": 0, "warnings": 48}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Success", "errors": 0, "warnings": 15}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."}
+{"warningOccurrences": 4, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 4, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/Render720Verified/index.json", "sha256": "eca287ce98fb6015402f284232b8cc68146040088a1b8bc35202696ced8afaa7", "UTC": "2026.10.12-14.32.51", "tests": 2, "states": {"Success": 2}, "errors": 0, "warnings": 48}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Success", "errors": 0, "warnings": 15}
+{"event": {"type": "Info", "message": "Missed-throw real refill observed after 1.090s gameplay time", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."}
+{"warningOccurrences": 4, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 4, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"report": "Saved/Automation/T18/Render1080Verified/index.json", "sha256": "3cf331b30f4f79d297ca735d6700c3e3d5ed3f94af04380cb37d537b5ab7bba0", "UTC": "2026.10.12-14.32.51", "tests": 2, "states": {"Success": 2}, "errors": 0, "warnings": 48}
+{"test": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause", "state": "Success", "errors": 0, "warnings": 15}
+{"event": {"type": "Info", "message": "Missed-throw real refill observed after 1.100s gameplay time", "context": "", "artifact": "00000000000000000000000000000000"}}
+{"test": "MothEffect.UIRuntime.StartBattleDefeatAndRestart", "state": "Success", "errors": 0, "warnings": 33}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay."}
+{"warningOccurrences": 1, "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot."}
+{"warningOccurrences": 4, "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"}
+{"warningOccurrences": 4, "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight"}
+{"warningOccurrences": 4, "message": "LogBlueprint: [AssetLog] D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble"}
+{"warningOccurrences": 4, "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0"}
+
+{"artifact": "Saved/Automation/T18/Build16Console.log", "bytes": 2914, "sha256": "c18551bc7ee452ec5dae5531771ba1a2afb8662a1d232b37b3c590e66a4cc33f"}
+{"artifact": "Saved/Automation/T18/Build16.log", "bytes": 11656, "sha256": "8a4fc8e55716a05fceec197e5d1a0317b8f658370d719e25ec9ca67ff03f7a23"}
+{"artifact": "Saved/Automation/T18/AssetVerification.json", "bytes": 187, "sha256": "43cedf04f5d73d3542cd528944b96a84683e9871872efe6eda2396dfcd803c85"}
+{"artifact": "Saved/Automation/T18/Render720Verified.log", "bytes": 283263, "sha256": "891344835d9b9902b47e75ce1f7a137e19677a000fe7349d3f9280b45b780276"}
+{"artifact": "Saved/Automation/T18/Render1080Verified.log", "bytes": 277084, "sha256": "1684f2de66dfb5845f5296c046c1096d3c16289c30eaf4cd4ef16b78e0e51911"}
+{"artifact": "Saved/Automation/T18/Render1440Accepted.log", "bytes": 314059, "sha256": "b40a0ea8a4971aa9e13183c0455bead321f1740d0ebc9ee48eb9e1c1ba9a39d3"}
+Build16Console: Result Succeeded, Total execution time 19.47 seconds; existing ClearIgnoredActors C4996 warning preserved.
+AssetVerification: /Game/MothEffect/UI/WBP_MothHUD.WBP_MothHUD_C; native_parent=/Script/MothEffect.MothHUDWidget; saved=true.
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/01_Title.png", "dimensions": [1280, 720], "bytes": 246606, "sha256": "db561213f909a8e017f33aadd25186b7f62dff7d1178ad6dc748497d13c531d4"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/02_Tutorial.png", "dimensions": [1280, 720], "bytes": 729323, "sha256": "a06e52e13ae86c4c83a5b6e86c8f305f4b0fae0e85130c58cd9bd5b7fb7c69c5"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/03_Pause.png", "dimensions": [1280, 720], "bytes": 253852, "sha256": "1912c3f4d4a5cf9a573fc5827eecd66db0be79e597561c9b3595262ca49965f1"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/04_TutorialComplete.png", "dimensions": [1280, 720], "bytes": 148273, "sha256": "13c3d8dbb79b0e086cefd6643c3a9b1b7e02a561a929ce746c7a94056ef68ebf"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/05_BattleHUD.png", "dimensions": [1280, 720], "bytes": 748023, "sha256": "df892ef72cd828f241584fab00099b8e830865a8af57eb9ee9d727ff616bc765"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/06_Defeat.png", "dimensions": [1280, 720], "bytes": 262054, "sha256": "2fa7b3d993ade2cb7c5d086f05ffb68aa9825a209723e6884559420f6d442b6e"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/07_HeldAndStep2.png", "dimensions": [1280, 720], "bytes": 783573, "sha256": "38b8a8a675ab9f5f02bea28964fc8c9f22da859679490295dda9e31291dbe820"}
+{"originalPNG": "Saved/Automation/T18/Screens720Verified/08_IndirectStep3.png", "dimensions": [1280, 720], "bytes": 149634, "sha256": "6a2243acbc9bdfece141a9a7dbf496d715d3fafaad2f7957fbe801739e570e4d"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/01_Title.png", "dimensions": [1920, 1080], "bytes": 418912, "sha256": "58f854a9e5303e58bdecfa66b538780853750ebe643da48d3ee12b44786fdcc6"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/02_Tutorial.png", "dimensions": [1920, 1080], "bytes": 1314006, "sha256": "bf1451c76d52c56d8830afa992d6e7348f72573ad524b29e9ad43bb4b956e0d9"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/03_Pause.png", "dimensions": [1920, 1080], "bytes": 431102, "sha256": "717946301dda8d01b92970909bfe089ed02ec0d087e01312d4e7d8e50544ac84"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/04_TutorialComplete.png", "dimensions": [1920, 1080], "bytes": 248628, "sha256": "c90ac9bfeb0b248f13f2b790862214dfb4d6da790c73d987e28ef7c195e4411b"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/05_BattleHUD.png", "dimensions": [1920, 1080], "bytes": 1360365, "sha256": "69ae1f158416302a360ec6890743beb56282bba91dfb4aff807c808868abd226"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/06_Defeat.png", "dimensions": [1920, 1080], "bytes": 439942, "sha256": "17c1a3b109d7510901c4978df14cfaf54d839a4a6c3d188abe2de22db80ad918"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/07_HeldAndStep2.png", "dimensions": [1920, 1080], "bytes": 1462942, "sha256": "3eaaaf62c1f75d6116c1eb0807f839e108c280d9d5f6b7d3873587b03d856dda"}
+{"originalPNG": "Saved/Automation/T18/Screens1080Verified/08_IndirectStep3.png", "dimensions": [1920, 1080], "bytes": 254837, "sha256": "ba0500838408503cb21e960a23b0936af8ea3398b29736c759f9ec7b0021cc8a"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/01_Title.png", "dimensions": [2560, 1440], "bytes": 641293, "sha256": "775542d6498ef1d7bb75475cd6d3f20ead5a91a6ef431d6066b8403ca757a83e"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/02_Tutorial.png", "dimensions": [2560, 1440], "bytes": 2050812, "sha256": "f6b8b5c3409d221275f6003f269463b15017a4ec37944b865b99f13eefa6850a"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/03_Pause.png", "dimensions": [2560, 1440], "bytes": 654947, "sha256": "739c86cf1cb762df7e477f7b6d35945cd7558ace73bbc69d385d51152d65c187"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/04_TutorialComplete.png", "dimensions": [2560, 1440], "bytes": 380029, "sha256": "7cfa85e35dc38ef8e7e4f59b776bdbcb7714296abd31fa4f0754df8e77b6a00c"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/05_BattleHUD.png", "dimensions": [2560, 1440], "bytes": 2158924, "sha256": "11aa219cefaac0e2987a3cc1f959a14efe57ada9b9c906b4d51e6452cfd8287a"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/06_Defeat.png", "dimensions": [2560, 1440], "bytes": 635629, "sha256": "3030335d7046593c5e8c4c2898e6c6545c7624a9a6ef016c4511f8753c5d750d"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/07_HeldAndStep2.png", "dimensions": [2560, 1440], "bytes": 2454652, "sha256": "3d7f9f5c9db84ebd9ca7b4207bbad9783ace35c46fc1c82c35dbe12d54bebc21"}
+{"originalPNG": "Saved/Automation/T18/Screens1440Accepted/08_IndirectStep3.png", "dimensions": [2560, 1440], "bytes": 392443, "sha256": "2ea7cd9b5b13b808b9f6a359c9946023394005d4b45dab7f3593ddefd9939f82"}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Title_1280x720.png", "source": "Saved/Automation/T18/Screens720Verified/01_Title.png", "sha256": "db561213f909a8e017f33aadd25186b7f62dff7d1178ad6dc748497d13c531d4", "dimensions": [1280, 720]}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Tutorial_1920x1080.png", "source": "Saved/Automation/T18/Screens1080Verified/02_Tutorial.png", "sha256": "bf1451c76d52c56d8830afa992d6e7348f72573ad524b29e9ad43bb4b956e0d9", "dimensions": [1920, 1080]}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Pause_1280x720.png", "source": "Saved/Automation/T18/Screens720Verified/03_Pause.png", "sha256": "1912c3f4d4a5cf9a573fc5827eecd66db0be79e597561c9b3595262ca49965f1", "dimensions": [1280, 720]}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Complete_1280x720.png", "source": "Saved/Automation/T18/Screens720Verified/04_TutorialComplete.png", "sha256": "13c3d8dbb79b0e086cefd6643c3a9b1b7e02a561a929ce746c7a94056ef68ebf", "dimensions": [1280, 720]}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Battle_2560x1440.png", "source": "Saved/Automation/T18/Screens1440Accepted/05_BattleHUD.png", "sha256": "11aa219cefaac0e2987a3cc1f959a14efe57ada9b9c906b4d51e6452cfd8287a", "dimensions": [2560, 1440]}
+{"archivedPNG": "Docs/06_Test_Doc/Evidence/T18/Defeat_1280x720.png", "source": "Saved/Automation/T18/Screens720Verified/06_Defeat.png", "sha256": "2fa7b3d993ade2cb7c5d086f05ffb68aa9825a209723e6884559420f6d442b6e", "dimensions": [1280, 720]}
+User BP_MothPlayer unchanged SHA256=a3de76da7f3440b048ca5ea9668e41f4d11414d7f2e9ccba31743777584d0af8; excluded from all T18 commits.
+Archive checks: validate_repo.py passed for 297 tracked files / 50 UE assets; Reading_View 44 source sections / source hashes / anchors / local links passed; git diff --cached --check passed; Git LFS fsck OK.
+Issue20 body update read back exactly; state Open; six acceptance boxes still unchecked; Project Status read back In Progress. PR45 still Open/unmerged, head a52e7bdbe9e0566997532ba87f02408fdad792cc; no T18 push/PR.

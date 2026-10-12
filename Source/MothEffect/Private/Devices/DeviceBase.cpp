@@ -102,6 +102,7 @@ void ADeviceBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterDevice(this);
 	Holder = nullptr;
 	TransitionTo(EDeviceState::Destroyed);
+	OnActivatedNative.Clear();
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -216,8 +217,12 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	LogHit(ActivationContext, true);
 	if (!bEndingPlay && bGameplayEnabled && DeviceState == EDeviceState::Active)
 	{
-		bEffectRunning = true;
-		ActivateEffect(ActivationContext);
+		OnActivatedNative.Broadcast(this, ActivationContext);
+		if (!bEndingPlay && !IsActorBeingDestroyed() && bGameplayEnabled && DeviceState == EDeviceState::Active)
+		{
+			bEffectRunning = true;
+			ActivateEffect(ActivationContext);
+		}
 	}
 	return true;
 }

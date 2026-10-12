@@ -332,6 +332,14 @@ bool AMothWaveDirector::RestartEncounter()
 	return true;
 }
 
+bool AMothWaveDirector::EndPracticeIfPlayerInvalid()
+{
+	if (bEndingPlay || bChangingFlow || Phase != EMothFlowPhase::Ready || !CombatPlayer.IsValid()
+		|| !PlayerHealth.IsValid() || (PlayerHealth->IsAlive() && !IsOutside(CombatPlayer->GetActorLocation()))) return false;
+	FinishEncounter(EMothFlowPhase::Defeat);
+	return Phase == EMothFlowPhase::Defeat;
+}
+
 void AMothWaveDirector::ShowWarning(int32 Point, const FVector& Position, bool bBlocked, EDeviceKind Kind)
 {
 	WarningCircles[Point]->SetWorldLocation(Position + FVector(0,0,1));

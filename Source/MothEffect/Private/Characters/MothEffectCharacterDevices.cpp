@@ -37,7 +37,9 @@ bool AMothEffectCharacter::RejectDeviceInteraction(const TCHAR* Reason)
 #if !UE_BUILD_SHIPPING
 	UE_LOG(LogMothEffect, Log, TEXT("Player %s device interaction rejected: %s"), *GetName(), Reason);
 #endif
-	OnDeviceInteractionRejected(FText::FromString(Reason));
+	const FText Message = FText::FromString(Reason);
+	OnInteractionRejectedNative.Broadcast(Message);
+	if (!bEndingPlay) OnDeviceInteractionRejected(Message);
 	return false;
 }
 
@@ -91,6 +93,28 @@ void AMothEffectCharacter::DoInteract()
 		return;
 	}
 	TryPickupDevice(Device);
+}
+
+ADeviceBase* AMothEffectCharacter::GetPickupCandidate() const
+{
+	if (!IsGameplayEnabled() || !GetWorld() || bDeviceInteractionInProgress || IsValid(HeldDevice)
+		|| (ActionState != EPlayerActionState::Ready && ActionState != EPlayerActionState::Reloading)
+		|| !FMath::IsFinite(PickupRangeCm) || PickupRangeCm <= 0 || !GetMesh()->DoesSocketExist(DeviceAttachSocket)) return nullptr;
+	FVector ViewLocation, ViewDirection;
+	if (!GetRifleView(ViewLocation, ViewDirection)) return nullptr;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(MothHUDPickupCandidate), true, this);
+	TArray<AActor*> Attached; GetAttachedActors(Attached, true, true); Params.AddIgnoredActors(Attached);
+	const ECollisionChannel Channel = IsValid(Rifle) ? Rifle->GetWeaponTraceChannel() : ECC_Visibility;
+	FHitResult Hit;
+	if (!GetWorld()->LineTraceSingleByChannel(Hit, ViewLocation,
+		ViewLocation + ViewDirection * (PickupRangeCm + FVector::Distance(ViewLocation, GetActorLocation())), Channel, Params)) return nullptr;
+	ADeviceBase* Device = Cast<ADeviceBase>(Hit.GetActor());
+	if (!IsValid(Device) || !Device->CanBePickedUp()
+		|| FVector::DistSquared(GetActorLocation(), Device->GetActorLocation()) > FMath::Square(PickupRangeCm)) return nullptr;
+	Params.AddIgnoredActor(Device);
+	if (GetWorld()->LineTraceSingleByChannel(Hit, ViewLocation, Device->GetActorLocation(), Channel, Params)
+		|| GetWorld()->LineTraceSingleByChannel(Hit, GetRifleSafetyOrigin(), Device->GetActorLocation(), Channel, Params)) return nullptr;
+	return Device;
 }
 
 bool AMothEffectCharacter::TryPickupDevice(ADeviceBase* Device)
@@ -244,7 +268,8 @@ bool AMothEffectCharacter::TryReleaseHeldDevice(bool bThrow)
 	if (IsGameplayEnabled() && ActionState == NewState && IsValid(Device))
 	{
 		if (bThrow && ThrowMontage) PlayAnimMontage(ThrowMontage);
-		OnDeviceReleased(Device, bThrow);
+		OnDeviceReleasedNative.Broadcast(Device, bThrow);
+		if (IsGameplayEnabled() && ActionState == NewState && IsValid(Device)) OnDeviceReleased(Device, bThrow);
 	}
 	return true;
 }

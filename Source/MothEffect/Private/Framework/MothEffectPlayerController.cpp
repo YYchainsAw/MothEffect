@@ -18,6 +18,134 @@
 #include "EngineUtils.h"
 #include "Components/HealthComponent.h"
 #include "Engine/World.h"
+#include "Framework/MothGameInstance.h"
+#include "Tutorial/MothTutorialSubsystem.h"
+#include "UI/MothHUDWidget.h"
+#include "Weapons/Rifle.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+
+AMothEffectPlayerController::AMothEffectPlayerController()
+{
+	PrimaryActorTick.bTickEvenWhenPaused = true;
+	bShouldPerformFullTickWhenPaused = true;
+	GameplayUIClass = TSoftClassPtr<UMothHUDWidget>(FSoftObjectPath(TEXT("/Game/MothEffect/UI/WBP_MothHUD.WBP_MothHUD_C")));
+}
+
+void AMothEffectPlayerController::InitializeGameplayUI()
+{
+	if (bTravelRequested || GameplayUI || !IsLocalPlayerController() || !GetWorld()
+		|| (GetWorld()->WorldType != EWorldType::Game && GetWorld()->WorldType != EWorldType::PIE)) return;
+	auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn());
+	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+	auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
+	// Older isolated test maps retain their original input flow.
+	if (!ControlledCharacter || !ControlledCharacter->GetRifle() || !Director || !Director->HasActorBegunPlay()) return;
+	// PlayerController may tick before the director's first Tick after OpenLevel.
+	if (!Director->GetPlayer() && !Director->SetPlayer(ControlledCharacter)) return;
+	UClass* Class = GameplayUIClass.LoadSynchronous();
+	GameplayUI = CreateWidget<UMothHUDWidget>(this, Class ? Class : UMothHUDWidget::StaticClass());
+	if (!GameplayUI) return;
+	GameplayUI->AddToPlayerScreen(10);
+	if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel()
+		&& Mode->StartEncounter()) Instance->ConsumeBattleAfterTravel();
+	GameplayUI->RefreshState(); SyncUIInput();
+}
+
+void AMothEffectPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	InitializeGameplayUI();
+	if (GameplayUI && !bTravelRequested) { GameplayUI->RefreshState(); SyncUIInput(); }
+}
+
+void AMothEffectPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	AppliedUIPage = -1;
+	InitializeGameplayUI();
+}
+
+void AMothEffectPlayerController::EndPlay(const EEndPlayReason::Type Reason)
+{
+	bTravelRequested = true;
+	if (GameplayUI) GameplayUI->RemoveFromParent();
+	GameplayUI = nullptr;
+	Super::EndPlay(Reason);
+}
+
+void AMothEffectPlayerController::SyncUIInput()
+{
+	if (!GameplayUI || bTravelRequested) return;
+	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
+	if (AppliedUIPage == static_cast<int32>(Page)) return;
+	AppliedUIPage = static_cast<int32>(Page);
+	const bool bMenu = GameplayUI->IsMenuVisible();
+	if (auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn()))
+	{
+		ControlledCharacter->CancelCombatInput(); ControlledCharacter->ResetMovementInput();
+		// Pause freezes legal tasks such as reload/recovery; it does not cancel them.
+		if (Page != EMothUIPage::Pause)
+		{
+			auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+			auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
+			if (!Director || Director->GetPlayer() == ControlledCharacter) ControlledCharacter->SetGameplayEnabled(!bMenu);
+		}
+	}
+	ResetIgnoreMoveInput(); ResetIgnoreLookInput();
+	SetIgnoreMoveInput(bMenu); SetIgnoreLookInput(bMenu);
+	bShowMouseCursor = bMenu;
+	if (bMenu)
+	{
+		FInputModeUIOnly InputMode; InputMode.SetWidgetToFocus(GameplayUI->GetMenuFocusTarget()->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); SetInputMode(InputMode);
+		GameplayUI->GetMenuFocusTarget()->SetUserFocus(this);
+	}
+	else
+	{
+		FInputModeGameOnly InputMode; InputMode.SetConsumeCaptureMouseDown(true); SetInputMode(InputMode);
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
+	}
+}
+
+void AMothEffectPlayerController::StartTeaching()
+{
+	if (bTravelRequested || !GetWorld() || GetWorld()->IsPaused()) return;
+	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+	if (Mode && GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->StartTutorial(
+		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector()))
+	{
+		if (GameplayUI) GameplayUI->RefreshState(); SyncUIInput();
+	}
+}
+
+void AMothEffectPlayerController::StartBattle()
+{
+	if (bTravelRequested || !GameplayUI || (GameplayUI->GetHUDState().Page != EMothUIPage::Title
+		&& GameplayUI->GetHUDState().Page != EMothUIPage::TutorialComplete)) return;
+	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+	auto* Instance = GetGameInstance<UMothGameInstance>();
+	if (!Mode || !Instance) return;
+	Instance->QueueBattleAfterTravel();
+	if (Mode->RestartEncounter()) bTravelRequested = true;
+	else Instance->CancelBattleAfterTravel();
+}
+
+void AMothEffectPlayerController::ReturnToTitle()
+{
+	if (bTravelRequested || !GetWorld()) return;
+	if (auto* Instance = GetGameInstance<UMothGameInstance>()) Instance->CancelBattleAfterTravel();
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()); Mode && Mode->RestartEncounter()) bTravelRequested = true;
+}
+
+void AMothEffectPlayerController::ToggleMenuPause()
+{
+	if (!GameplayUI || bTravelRequested) return;
+	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
+	if (Page == EMothUIPage::Pause) ResumeGame();
+	else if (Page == EMothUIPage::Gameplay || Page == EMothUIPage::Tutorial) SetPause(true);
+}
+
+void AMothEffectPlayerController::ResumeGame() { if (GetWorld() && GetWorld()->IsPaused()) SetPause(false); }
 
 void AMothEffectPlayerController::BeginPlay()
 {
@@ -46,6 +174,8 @@ void AMothEffectPlayerController::BeginPlay()
 void AMothEffectPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+	if (InputComponent) InputComponent->BindKey(EKeys::Escape, IE_Pressed, this,
+		&AMothEffectPlayerController::ToggleMenuPause).bExecuteWhenPaused = true;
 
 	// only add IMCs for local player controllers
 	if (IsLocalPlayerController())
@@ -97,6 +227,7 @@ bool AMothEffectPlayerController::SetPause(bool bPause, FCanUnpause CanUnpauseDe
 			PlayerCharacter->ResetMovementInput();
 		}
 	}
+	if (bSucceeded && GameplayUI) { GameplayUI->RefreshState(); SyncUIInput(); }
 	return bSucceeded;
 }
 

@@ -36,7 +36,7 @@ namespace MothUIStyle
 		auto* Widget = Tree->ConstructWidget<UTextBlock>();
 		Widget->SetText(FText::FromString(Value));
 		Widget->SetFont(FCoreStyle::GetDefaultFontStyle(Size>=34?"Bold":Size<=21?"BoldCondensed":"Regular", Size));
-		Widget->SetColorAndOpacity(Color); Widget->SetAutoWrapText(true);
+		Widget->SetColorAndOpacity(Color); Widget->SetAutoWrapText(false);
 		return Widget;
 	}
 	UBorder* Panel(UWidgetTree* Tree, UWidget* Content, float Padding = 20)
@@ -131,7 +131,7 @@ void UMothHUDWidget::BuildLayout()
 	MenuContent=WidgetTree->ConstructWidget<UVerticalBox>();
 	Row(MenuContent,Text(WidgetTree,TEXT("MOTH EFFECT"),46,Brass),8);
 	MenuTitle=Text(WidgetTree,TEXT("飞蛾效应"),34); Row(MenuContent,MenuTitle,18);
-	MenuDescription=Text(WidgetTree,TEXT(""),24); Row(MenuContent,MenuDescription,22);
+	MenuDescription=Text(WidgetTree,TEXT(""),24); MenuDescription->SetWrapTextAt(636); Row(MenuContent,MenuDescription,22);
 	auto* IconRow=WidgetTree->ConstructWidget<UHorizontalBox>();
 	for (EDeviceKind Kind : {EDeviceKind::Launcher,EDeviceKind::Bomb,EDeviceKind::Emitter})
 	{

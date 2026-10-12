@@ -44,6 +44,14 @@ namespace MothEnemyNavTest
 			}
 			T->AddInfo(FString::Printf(TEXT("Saved range navigation recover=%d elapsed=%.3f from=%s to=%s requests=%d stalls=%d"), bRecover, Elapsed,
 				*StartLocation.ToString(), *E->GetActorLocation().ToString(), E->GetNavigationRequests(), E->GetStallRecoveries()));
+			T->AddInfo(FString::Printf(TEXT("Navigation diagnostics combat=%d phase=%s target=%s sight=%d controller=%s targetEnabled=%d targetHealth=%.1f tick=%d"),
+				E->IsCombatEnabled(), *UEnum::GetValueAsString(E->GetCombatPhase()), *GetNameSafe(E->GetCombatTarget()), E->HasTargetSight(),
+				*GetNameSafe(E->GetController()), Target->IsGameplayEnabled(), Target->FindComponentByClass<UHealthComponent>()->GetCurrentHealth(), E->IsActorTickEnabled()));
+			FHitResult SightHit; FCollisionQueryParams SightParams(SCENE_QUERY_STAT(MothNavDiagnostics), false, E.Get());
+			World->LineTraceSingleByChannel(SightHit, E->GetPawnViewLocation(), Target->GetPawnViewLocation(), ECC_Visibility, SightParams);
+			T->AddInfo(FString::Printf(TEXT("Navigation sight blocker=%s component=%s origin=%s targetEye=%s targetPosition=%s impact=%s"),
+				*GetNameSafe(SightHit.GetActor()), *GetNameSafe(SightHit.GetComponent()), *E->GetPawnViewLocation().ToString(),
+				*Target->GetPawnViewLocation().ToString(), *Target->GetActorLocation().ToString(), *SightHit.ImpactPoint.ToString()));
 			Cleanup(); return true;
 		}
 	private:
@@ -52,7 +60,9 @@ namespace MothEnemyNavTest
 			for (const FWorldContext& Context : GEngine->GetWorldContexts()) if (Context.WorldType == EWorldType::Game) { World = Context.World(); break; }
 			if (!T->TestNotNull(TEXT("Run with -game /Game/MothEffect/Tests/L_T14AI"), World)) return true;
 			if (!T->TestTrue(TEXT("Game actually loaded the saved T14 range"), World->GetOutermost()->GetName().Contains(TEXT("L_T14AI")))) { World = nullptr; return true; }
-			for (TActorIterator<AEnemyBase> It(World); It; ++It) It->SetGameplayEnabled(false);
+			// The placed shooter may move into this fixture's sight line during startup.
+			// Disabling AI alone retains its blocking capsule; isolate both gameplay and collision.
+			for (TActorIterator<AEnemyBase> It(World); It; ++It) { It->SetGameplayEnabled(false); It->SetActorEnableCollision(false); }
 			UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 			if (!T->TestNotNull(TEXT("Saved game-world navigation system"), Nav)) return true;
 			UNavigationPath* Path = UNavigationSystemV1::FindPathToLocationSynchronously(World, FVector(1000, 0, 90), FVector(-1000, 0, 90));
@@ -65,7 +75,8 @@ namespace MothEnemyNavTest
 			Target = World->SpawnActorDeferred<AMothPlayerAutomationCharacter>(AMothPlayerAutomationCharacter::StaticClass(), Transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 			if (!T->TestNotNull(TEXT("Navigation enemy"), E.Get()) || !T->TestNotNull(TEXT("Navigation target"), Target.Get())) { Cleanup(); return true; }
 			Target->FindComponentByClass<UHealthComponent>()->ConfigureMaxHealth(1000); Target->FinishSpawning(Transform);
-			E->SetCombatTarget(Target.Get());
+			T->TestTrue(TEXT("Living navigation target is accepted"), E->SetCombatTarget(Target.Get()));
+			T->TestTrue(TEXT("Controlled navigation fixture starts with clear target sight"), E->HasTargetSight());
 			StartedAt = World->GetTimeSeconds();
 			return false;
 		}

@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "Interfaces/BallisticReactive.h"
 #include "Interfaces/ImpulseReceiver.h"
+#include "Types/DeviceTypes.h"
 #include "EnemyBase.generated.h"
 
 class ARuleProjectile;
@@ -13,9 +14,13 @@ class UStaticMeshComponent;
 class UTextRenderComponent;
 class UArrowComponent;
 class AEnemyBase;
+class ADeviceBase;
 
 UENUM(BlueprintType)
 enum class EEnemyCombatPhase : uint8 { Idle, Pursuing, Telegraphing, Cooldown, Disabled, Dead };
+
+UENUM(BlueprintType)
+enum class EEnemyDropResult : uint8 { Unconfigured, Ready, Spawned, InvalidClass, NoSafeLocation, Rejected, Cancelled };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothEnemyDied, AEnemyBase*, Enemy, AActor*, Source);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMothEnemyTelegraph, AEnemyBase*, Enemy, bool, bVisible);
@@ -31,6 +36,7 @@ public:
 	AEnemyBase();
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PostInitializeComponents() override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
 	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;
 	UFUNCTION(BlueprintCallable, Category="Enemy")
@@ -51,6 +57,13 @@ public:
 	int32 GetProjectilesSpawned() const { return ProjectilesSpawned; }
 	int32 GetNavigationRequests() const { return NavigationRequests; }
 	int32 GetStallRecoveries() const { return StallRecoveries; }
+	UFUNCTION(BlueprintPure, Category="Enemy|Drop")
+	EDeviceKind GetDropKind() const { return DropKind; }
+	UFUNCTION(BlueprintPure, Category="Enemy|Drop")
+	EEnemyDropResult GetDropResult() const { return DropResult; }
+	UFUNCTION(BlueprintPure, Category="Enemy|Drop")
+	ADeviceBase* GetDroppedDevice() const { return DroppedDevice.Get(); }
+	int32 GetDropAttempts() const { return bDropAttempted ? 1 : 0; }
 	FMothEnemyDiedNative OnEnemyDiedNative;
 	FMothEnemyTelegraphNative OnTelegraphChangedNative;
 	UPROPERTY(BlueprintAssignable, Category="Enemy")
@@ -71,6 +84,23 @@ protected:
 	TObjectPtr<UTextRenderComponent> TelegraphText;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UArrowComponent> AimArrow;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UStaticMeshComponent> BackpackMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UTextRenderComponent> DropHintText;
+	/** Null keeps the T14 base shooter drop-free. Three child BPs provide fixed classes. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|Drop")
+	TSubclassOf<ADeviceBase> DropDeviceClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|Drop")
+	EDeviceKind DropKind = EDeviceKind::Emitter;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Enemy|Drop", meta=(ClampMin="0.0", Units="cm"))
+	float DropSearchRadiusCm = 150.0f;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Enemy|Drop", meta=(ClampMin="1.0", Units="cm"))
+	float DropGroundProbeDistanceCm = 1500.0f;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Enemy|Drop", meta=(ClampMin="0.01", Units="cm"))
+	float DropClearanceCm = 2.0f;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Enemy|Drop", meta=(ClampMin="0.0", ClampMax="1.0"))
+	float DropGroundUpNormalMin = 0.65f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|Attack")
 	TSubclassOf<ARuleProjectile> ProjectileClass;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Enemy", meta=(ClampMin="1.0"))
@@ -114,6 +144,12 @@ private:
 	void FireProjectile();
 	FVector AimPoint() const;
 	void LogEvent(const TCHAR* Event) const;
+	void RefreshDropAppearance();
+	void TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation);
+	bool FindDropTransform(const ADeviceBase* Defaults, const FVector& DeathLocation, FTransform& OutTransform) const;
+	TWeakObjectPtr<ADeviceBase> DroppedDevice;
+	EEnemyDropResult DropResult = EEnemyDropResult::Unconfigured;
+	bool bDropAttempted = false;
 	TWeakObjectPtr<APawn> CombatTarget;
 	EEnemyCombatPhase CombatPhase = EEnemyCombatPhase::Idle;
 	FVector LastSeenLocation = FVector::ZeroVector;

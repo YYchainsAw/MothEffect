@@ -1,6 +1,6 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.39 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.42 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
 
 本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档集为 v0.35，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
@@ -81,3 +81,9 @@ CHG041（2026-10-11）：已按用户授权推送T13已提交内容至远程code
 CHG042（2026-10-11）：用户要求推进T14，并提醒开发过程提交。e201be2交付一套射击EnemyBase、共用Health/Impulse/P01、视线/预警/间隔、最后可见位置、静态导航重试/停滞换点和死亡事件，DEC33/参数v0.15同步。1ad8496保存BP_EnemyBase与L_T14AI并接入首轮测试/Development命令；首轮新增8/10，步枪许可和道具遮挡夹具按正常玩家按键与已发弹路径修正，f68badf保留绕行目标跨重寻路。首个commandlet导航重载因AsyncLoadLock无有效路径，真实Editor Tick后正式Build/保存并验证绕静态掩体；另一个实际保存场地Game进程2项导航通过，含临时实体挡路实际侧向恢复。f68badf全量76 Success + 1 Success with warnings，原生玩家刻意无可播放动画导致NormalRifleKillsOnce带一条动画警告，玩法断言通过；678dc66明确该玩家恰好一次预期警告，不改变玩法断言。最终Editor构建Succeeded（16.18s），21:04:19香港时间全量77项Editor Success（新增11/既有66）、21:02:10两项Game Success，每项errors/warnings=0。记录首轮失败/导航锁及既有进程warnings，新增接入/模板报告/脱敏证据并同步阅读版；#16保持Open / In Progress，当前图形PIE与T15掉落/T16整局/T17最终场地及完整G3待验收。本轮逐功能仅本地提交，不推送或创建PR，用户原有玩家资产改动保留。
 
 CHG043（2026-10-12）：用户要求创建T14 PR，明确当前PIE“尚未完成，保留待验收”。核对T13 PR #41已合并，T14相对main差异26件文件且不含既有玩家资产改动，保持本地develop，推送独立远程codex/t14-shooting-ai并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open。首个head为1a18890，Repository checks run38189638920已Success；原工程Editor构建/77项Editor与2项Game导航验证源码仍为678dc66，未重复运行UE。两件新LFS资产的三个历史版本已上传，LFS fsck、本地静态与36节阅读检查通过。同步实际PR链接、用户待验收记录、交付状态和阅读版；#16保持Open / In Progress，合并后仍未验收再转Pending Acceptance；不自动关闭或合并。本轮文档head的CI另按实际结果核对。
+
+CHG044（2026-10-12）：2026-10-12 T15推进：三个BP_EnemyBase子类以青色三角棱柱D01、橙球D02、紫长条D03预告固定掉落，共用T14射击AI；生命死亡后只尝试一次，近处有效出生、真实物理Dormant、24额度回收/保护与回调世代取消统一接入。保存12件新资产与L_T15Drops静态导航，参数v0.16/Config和DEC34同步。原工程Editor构建通过，全量88项Editor Success（新增11/既有77）；仅测试夹具修正后新增11项再次Success、2项Game保存导航Success，导出errors/warnings=0。T15 #17保持Open / In Progress、当前Murdock图形PIE待验收；T14 #16仍待用户PIE，PR #42未追加本轮内容。本轮develop本地提交，无T15推送/PR。以下段落保留历史。 核心f8e3216，资产/原生53ba114，最终测试6512650；测试接入15.38s、最终Editor构建14.98s。全量88项09:27:20通过；仅测试源码修正后新增11项09:32:35与Game导航2项09:32:32通过。保留OBJ UV Ensure、Tint API返回值、保存地图导航初始化/已有地图拒绝与额外射手胶囊挡视线失败证据；不改变生产视线规则。新增接入/报告/脱敏证据与38节阅读版，#17待当前PIE，未创建T15 PR。
+
+CHG045（2026-10-12）：2026-10-12 T15 PR记录：用户要求“先保持待验收 创建pr”，已推送codex/t15-enemy-drops并创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)，当前Open。T14 PR #42尚未合并，T15暂以codex/t14-shooting-ai为目标，只显示T15的36件改动，待#42合并后再改为main。#17继续Open / In Progress，当前图形PIE待验收、验收框保留未勾选；不关闭任务。原工程Editor构建、88项全量与最终11项复测/2项Game导航沿用已归档实测，本次仅PR与文档记录，未重复运行UE。本地继续develop，玩家原有资产改动未纳入。现有workflow仅自动检查main/develop目标，叠加PR按最终head手动运行Repository checks，实际结果另以GitHub检查页为准。以下段落保留历史。 PR首次head为0f3efc344907cb376c4e03da51af085c721f89e8，12件新LFS对象共375KB已上传；36件改动与用户玩家蓝图排除范围核对，本地241件文件/38件UE资产、38节阅读快照、diff和LFS fsck通过。同步PR链接、目标分支与用户待验收记录，不自动合并或关闭#17。
+
+CHG046（2026-10-12）：[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43) 的PR记录head da6ff26已手动触发[Repository checks run38194066109](https://github.com/YYchainsAw/MothEffect/actions/runs/38194066109)，10:00:19香港时间Success，static-checks 6s；现有workflow目标分支过滤使自动PR检查未触发，手动结果在Actions运行页。同步实际CI类型/链接与阅读版，不修改当前PIE待验收状态；本次文档归档后的最终head另行核对GitHub实际运行结果。

@@ -111,6 +111,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Device")
 	USphereComponent* GetPhysicsBody() const { return PhysicsBody.Get(); }
+	/** The backpack copies only this visual; physical/query roots remain unchanged. */
+	UStaticMeshComponent* GetDeviceMesh() const { return DeviceMesh.Get(); }
 
 	UFUNCTION(BlueprintPure, Category="Device|Emitter")
 	UArrowComponent* GetEmitterDirectionMarker() const { return EmitterDirectionMarker.Get(); }

@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：T14 射击 AI 与导航接入
 
-版本 v0.1 · 2026-10-11 · 状态：Editor构建、77项Editor Automation与2项Game导航测试通过；当前Murdock图形PIE待验收
+版本 v0.2 · 2026-10-12 · 状态：Editor构建、77项Editor Automation与2项Game导航测试通过；当前Murdock图形PIE待验收
 
-实现e201be2，场景/测试1ad8496，导航修正f68badf，动画夹具预期警告修正与UE验证源码678dc66，Refs #16；依据DEC33、TC21及[参数v0.15](../02_Design_Doc/GDD/Gameplay_Parameters.json)。本轮没有推送或创建T14 PR；T13 PR #41的远程分支不包含本轮提交。
+实现e201be2，场景/测试1ad8496，导航修正f68badf，动画夹具预期警告修正与UE验证源码678dc66，Refs #16；依据DEC33、TC21及[参数v0.15](../02_Design_Doc/GDD/Gameplay_Parameters.json)。2026-10-11开发验证当次仅本地提交；2026-10-12按用户要求推送codex/t14-shooting-ai → main并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open。T13 PR #41已合并，本地继续develop。用户确认“尚未完成，保留待验收”，下列当前PIE检查继续待验收。
 
 ## 1. 运行时与保存资产
 

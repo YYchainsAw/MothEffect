@@ -298,3 +298,11 @@ Content/MothEffect/Tests/L_T14AI.umap: filter: lfs
 Content/MothEffect/Tests/L_T14AI.umap: diff: lfs
 Content/MothEffect/Tests/L_T14AI.umap: merge: lfs
 Content/MothEffect/Tests/L_T14AI.umap: text: unset
+
+=== 2026-10-12 PR publication ===
+PR #42 OPEN: https://github.com/YYchainsAw/MothEffect/pull/42
+Head codex/t14-shooting-ai -> base main; initial head 1a18890c2fbd7df6c29a718a369bb12a061fcbd1.
+Initial Repository checks SUCCESS: https://github.com/YYchainsAw/MothEffect/actions/runs/38189638920 ; static-checks completed 2026-10-12T00:51:59Z.
+User confirmed current graphical PIE not completed; #16 remains OPEN / In Progress. No new UE run or graphical acceptance claimed.
+Two new LFS assets / three historical objects uploaded; existing player Blueprint excluded and preserved.
+Post-publication documentation commit updates links/records only; its final CI must be checked separately.

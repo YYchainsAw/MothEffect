@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.36｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+版本：v0.37｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+
+2026-10-12 T15推进：三个BP_EnemyBase子类以青色三角棱柱D01、橙球D02、紫长条D03预告固定掉落，共用T14射击AI；生命死亡后只尝试一次，近处有效出生、真实物理Dormant、24额度回收/保护与回调世代取消统一接入。保存12件新资产与L_T15Drops静态导航，参数v0.16/Config和DEC34同步。原工程Editor构建通过，全量88项Editor Success（新增11/既有77）；仅测试夹具修正后新增11项再次Success、2项Game保存导航Success，导出errors/warnings=0。T15 #17保持Open / In Progress、当前Murdock图形PIE待验收；T14 #16仍待用户PIE，PR #42未追加本轮内容。本轮develop本地提交，无T15推送/PR。以下段落保留历史。 接入和四项PIE清单见[Enemy_Drops_Setup](Enemy_Drops_Setup.md)。T16–T27仍Todo。
 
 2026-10-12 T14 PR记录：按用户要求已推送远程codex/t14-shooting-ai → main并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open；T13 PR #41已合并。用户明确确认“尚未完成，保留待验收”，当前Murdock图形PIE不记通过，#16保持Open / In Progress；合并后仍未验收则转Pending Acceptance。原工程Editor构建、77项Editor与2项Game导航沿用2026-10-11源码678dc66的实际证据；首个PR head为1a18890，Repository checks已Success（run38189638920），本次仅同步交付文档与阅读版，最终head检查另按GitHub实际结果核对。本地继续develop，玩家原有蓝图改动保留。以下段落保留历史。
 
@@ -125,7 +127,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T12 | [#14](https://github.com/YYchainsAw/MothEffect/issues/14) | 核心 | P01 统一触发与自然连锁 | T08、T10、T11 | 2–4 | 敌人与机关弹丸按统一规则命中、启动、伤敌我；生成者忽略自己的弹丸；两种非脚本连锁满足 G2 | Done / Closed；全量 53 项 Automation、真实 P01 与两类运动连锁及阴性对照通过；用户确认五站与暂停/清理[当前 PIE](Natural_Chain_Setup.md)通过，正式敌人及完整 G2 随对应任务补测 |
 | T13 | [#15](https://github.com/YYchainsAw/MothEffect/issues/15) | 核心 | 容量、过期、Spent 与清理 | T06、T12 | 1.5–2.5 | 按 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 与 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 管理总道具/活跃数上限、警告和清理；总道具容量回收不删除 Held/Active，同类 Active 上限按规则结束最早装置；多次重开计数回到基线 | Done / Closed；原工程Editor正式构建/链接与全量66项Automation通过，用户确认[当前PIE](Lifecycle_Setup.md)五项清单通过；完整整局/正式敌人分支随后续任务验收 |
 | T14 | [#16](https://github.com/YYchainsAw/MothEffect/issues/16) | 核心 | 一套射击 AI：移动、视线、预警、P01 | T05、T12 | 3–5 | 敌人能看见/追踪玩家，隔墙不无视遮挡射击；开火前提示；掉落前可被击杀；攻击间隔走配置 | In Progress / Open；原工程Editor构建、77项Editor与2项Game导航通过；保存[敌人/场景](Enemy_Setup.md)，[PR #42](https://github.com/YYchainsAw/MothEffect/pull/42) Open；用户确认当前角色PIE尚未完成 |
-| T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | Todo |
+| T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | In Progress / Open；固定掉落与12件资产已保存，88项Editor与2项Game导航通过；[四项当前PIE](Enemy_Drops_Setup.md)待用户验收；仅本地提交 |
 | T16 | [#18](https://github.com/YYchainsAw/MothEffect/issues/18) | 核心 | 三波导演、胜负与重开 | T13、T15 | 2–3 | 出怪和波次内容符合 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态 | Todo |
 | T17 | [#19](https://github.com/YYchainsAw/MothEffect/issues/19) | 核心 | 一张主竞技场灰盒、掩体与导航 | T14 | 2–3 | 按 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md) 的三区和尺度落地；可完成战斗/投掷/弹射；导航及出生点无卡死；保留大型场地意图，不追加第二张地图 | Todo |
 | T18 | [#20](https://github.com/YYchainsAw/MothEffect/issues/20) | 核心 | UI 布局/图标、HUD/教程与共用菜单接入 | T07、T16、T17 | 4–6 | 完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过 | Todo；血量/弹药事件已有，尚无本作 HUD；预留 4–6 小时 |

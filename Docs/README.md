@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.35 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.36 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-12 T15推进：三个BP_EnemyBase子类以青色三角棱柱D01、橙球D02、紫长条D03预告固定掉落，共用T14射击AI；生命死亡后只尝试一次，近处有效出生、真实物理Dormant、24额度回收/保护与回调世代取消统一接入。保存12件新资产与L_T15Drops静态导航，参数v0.16/Config和DEC34同步。原工程Editor构建通过，全量88项Editor Success（新增11/既有77）；仅测试夹具修正后新增11项再次Success、2项Game保存导航Success，导出errors/warnings=0。T15 #17保持Open / In Progress、当前Murdock图形PIE待验收；T14 #16仍待用户PIE，PR #42未追加本轮内容。本轮develop本地提交，无T15推送/PR。以下段落保留历史。 入口见[Enemy_Drops_Setup](05_Development_Guide/Enemy_Drops_Setup.md)，证据见[T15报告](06_Test_Doc/T15_Report_2026-10-12.md)。
 
 2026-10-12 T14 PR记录：按用户要求已推送远程codex/t14-shooting-ai → main并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open；T13 PR #41已合并。用户明确确认“尚未完成，保留待验收”，当前Murdock图形PIE不记通过，#16保持Open / In Progress；合并后仍未验收则转Pending Acceptance。原工程Editor构建、77项Editor与2项Game导航沿用2026-10-11源码678dc66的实际证据；首个PR head为1a18890，Repository checks已Success（run38189638920），本次仅同步交付文档与阅读版，最终head检查另按GitHub实际结果核对。本地继续develop，玩家原有蓝图改动保留。以下段落保留历史。
 
@@ -61,6 +63,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Natural_Chain_Setup.md](05_Development_Guide/Natural_Chain_Setup.md) | T12 普通机关测试房、真实连锁与布局对照 PIE 清单 |
 | 05_Development_Guide/ | [Lifecycle_Setup.md](05_Development_Guide/Lifecycle_Setup.md) | T13 容量、累计闲置、过期与清理接入和 PIE 清单 |
 | 05_Development_Guide/ | [Enemy_Setup.md](05_Development_Guide/Enemy_Setup.md) | T14射击AI、已保存导航场景与当前PIE清单 |
+| 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
@@ -71,6 +74,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 06_Test_Doc/ | [T12_Report_2026-10-11.md](06_Test_Doc/T12_Report_2026-10-11.md) | T12 真实连锁、保存场景/资产验证范围与首次失败记录 |
 | 06_Test_Doc/ | [T13_Report_2026-10-11.md](06_Test_Doc/T13_Report_2026-10-11.md) | T13 容量/闲置/清理、构建环境与验证范围 |
 | 06_Test_Doc/ | [T14_Report_2026-10-11.md](06_Test_Doc/T14_Report_2026-10-11.md) | T14原生/导航验证、首轮失败、资产与验收边界 |
+| 06_Test_Doc/ | [T15_Report_2026-10-12.md](06_Test_Doc/T15_Report_2026-10-12.md) | T15真实击杀/落地/容量验证与待验收记录 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

@@ -1,0 +1,307 @@
+T15 verification archive — 2026-10-12 Asia/Hong_Kong
+UE log timestamps are UTC; report prose uses UTC+8.
+Repository: YYchainsAw/MothEffect; local develop only.
+Runtime/assets: f8e3216 / 53ba114; final test-only source: 65126507a56a896a5349cda9c9da6d87385da5ec
+
+=== CoreBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+<PROJECT>\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 30.56 seconds
+
+=== TestBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+<PROJECT>\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 15.38 seconds
+
+=== NavigationDiagnosticBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+<PROJECT>\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 15.05 seconds
+
+=== SightDiagnosticBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Result: Succeeded
+Total execution time: 5.47 seconds
+
+=== FinalBuild.log ===
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+<PROJECT>\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 14.98 seconds
+
+=== CreateRange.log ===
+[2026.10.12-01.11.14:157][  2]LogOutputDevice: Error: Ensure condition failed: UVs.IsValidIndex(VertexData.UVIndex)  [File:D:\build\++UE5\Sync\Engine\Plugins\Interchange\Runtime\Source\Import\Private\Mesh\InterchangeOBJTranslator.cpp] [Line: 227]
+[2026.10.12-01.11.15:546][  2]EnsureFailed: Error: Ensure condition failed: UVs.IsValidIndex(VertexData.UVIndex)  [File:D:\build\++UE5\Sync\Engine\Plugins\Interchange\Runtime\Source\Import\Private\Mesh\InterchangeOBJTranslator.cpp] [Line: 227]
+[2026.10.12-01.11.15:636][  2]LogPython: Error: RuntimeError: Cannot set material Tint
+[2026.10.12-01.11.15:636][  2]LogEditorPythonExecuter: Error: Python script executed with errors
+
+=== CreateRangeRetry.log ===
+[2026.10.12-01.20.58:417][263]LogPython: Error: T15_RANGE_FAILED: navigation timeout
+
+=== CreateRangeFinal.log ===
+[2026.10.12-01.21.31:590][  2]LogPython: Error: RuntimeError: Cannot create owned T15 map
+[2026.10.12-01.21.31:591][  2]LogEditorPythonExecuter: Error: Python script executed with errors
+
+=== CreateRangeVerified.log ===
+[2026.10.12-01.22.15:235][ 91]LogPython: T15_RANGE_VERIFIED {"map": "/Game/MothEffect/Tests/L_T15Drops", "enemies": 3, "fixed_drop_pairs": 3, "new_assets": 12, "navigation": true, "points": ["<Struct 'Vector' (0x0000025A5C78AEA0) {x: -2000.000000, y: -700.000000, z: 10.000000}>", "<Struct 'Vector' (0x0000025A5C7B7FD0) {x: 2000.000000, y: -700.000000, z: 10.000000}>"], "scripted_deaths": false}
+
+=== First/index.json ===
+{"reportCreatedOn": "2026.10.12-01.23.30", "succeeded": 11, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace: Success errors=0 warnings=0
+MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel: Success errors=0 warnings=0
+MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry: Success errors=0 warnings=0
+MothEffect.EnemyDrops.IdempotentDeathAndFixedClass: Success errors=0 warnings=0
+MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict: Success errors=0 warnings=0
+MothEffect.EnemyDrops.NormalW01KillsAllVariants: Success errors=0 warnings=0
+Info: Drop case=0 variant=0 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Launcher count=1
+Info: Drop case=0 variant=1 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=0 variant=2 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Emitter count=1
+MothEffect.EnemyDrops.RealD02KillsAllVariants: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RealP01KillsAllVariants: Success errors=0 warnings=0
+Info: Drop case=1 variant=0 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Launcher count=1
+Info: Drop case=1 variant=1 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=1 variant=2 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Emitter count=1
+MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir: Success errors=0 warnings=0
+Info: Drop case=2 variant=0 position=X=64.000 Y=-120.000 Z=110.000 type=EDeviceKind::Launcher count=2
+Info: Drop case=2 variant=1 position=X=-0.250 Y=-120.000 Z=110.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=2 variant=2 position=X=-51.600 Y=-120.000 Z=110.074 type=EDeviceKind::Emitter count=1
+Info: Drop case=2 variant=3 position=X=0.000 Y=0.000 Z=2843.894 type=EDeviceKind::Launcher count=1
+MothEffect.EnemyDrops.RecyclesOldestDormant: Success errors=0 warnings=0
+MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange: Success errors=0 warnings=0
+
+=== Full/index.json ===
+{"reportCreatedOn": "2026.10.12-01.27.20", "succeeded": 88, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+MothEffect.Chains.BombIntoFirelineAndLayoutControl: Success errors=0 warnings=0
+MothEffect.Chains.ColumnIntoFirelineAndLayoutControl: Success errors=0 warnings=0
+MothEffect.Chains.DirectBomb: Success errors=0 warnings=0
+MothEffect.Chains.DirectEmitter: Success errors=0 warnings=0
+MothEffect.Chains.DirectLauncher: Success errors=0 warnings=0
+MothEffect.Chains.PausedFlightAndIndependentLifetime: Success errors=0 warnings=0
+MothEffect.Chains.SavedBlueprintNaturalChain: Success errors=0 warnings=0
+MothEffect.Chains.SavedRangeConfiguration: Success errors=0 warnings=0
+MothEffect.Chains.SourceExclusionAndAttributionDamage: Success errors=0 warnings=0
+MothEffect.Chains.ThinWallConsumesFirstImpact: Success errors=0 warnings=0
+MothEffect.Combat.Impulse.FrameMergeAndClamp: Success errors=0 warnings=0
+MothEffect.Combat.Impulse.InvalidAndDuplicateEvents: Success errors=0 warnings=0
+MothEffect.Combat.Impulse.PauseAndCancellation: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.CancelBeforeEffect: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.HeldAndNonBallisticStates: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.PhysicalMovement: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.SingleUseAndFrozenCenter: Success errors=0 warnings=0
+MothEffect.Devices.Bomb.StaticCoverAndRadius: Success errors=0 warnings=0
+MothEffect.Devices.Emitter.BlockedBirthAndExpiry: Success errors=0 warnings=0
+MothEffect.Devices.Emitter.CancellationStopsTimers: Success errors=0 warnings=0
+MothEffect.Devices.Emitter.WorldDirectionAndLifetime: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.BombColumnOrderIndependent: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.FullStaticVolumeAndContact: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.InvalidGroundConsumesSeed: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.OccupiedUntilExpiry: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.PauseCancellationAndEndPlay: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.SavedBlueprintIntegration: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.SlopeAndPlatformEdge: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles: Success errors=0 warnings=0
+MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor: Success errors=0 warnings=0
+MothEffect.Devices.ReleaseSafety.EndpointOccupancy: Success errors=0 warnings=0
+MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors: Success errors=0 warnings=0
+MothEffect.Devices.ReleaseSafety.ThinWall: Success errors=0 warnings=0
+MothEffect.Devices.ActivationIsSingleUse: Success errors=0 warnings=0
+MothEffect.Devices.CancelDuringActivationCallback: Success errors=0 warnings=0
+MothEffect.Devices.RejectInvalidAndDisabledHits: Success errors=0 warnings=0
+MothEffect.Enemies.ActualWorldPauseFreezesWarning: Success errors=0 warnings=0
+MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel: Success errors=0 warnings=0
+MothEffect.Enemies.CoverCancelsWarningAndReacquires: Success errors=0 warnings=0
+MothEffect.Enemies.DeathIdempotenceConfigAndBomb: Success errors=0 warnings=0
+MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover: Success errors=0 warnings=0
+MothEffect.Enemies.NormalRifleKillsOnce: Success errors=0 warnings=0
+MothEffect.Enemies.RealP01ActivatesDormantDevice: Success errors=0 warnings=0
+MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion: Success errors=0 warnings=0
+MothEffect.Enemies.SavedBlueprintAndRange: Success errors=0 warnings=0
+MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery: Success errors=0 warnings=0
+MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact: Success errors=0 warnings=0
+MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace: Success errors=0 warnings=0
+MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel: Success errors=0 warnings=0
+MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry: Success errors=0 warnings=0
+MothEffect.EnemyDrops.IdempotentDeathAndFixedClass: Success errors=0 warnings=0
+MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict: Success errors=0 warnings=0
+MothEffect.EnemyDrops.NormalW01KillsAllVariants: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RealD02KillsAllVariants: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RealP01KillsAllVariants: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RecyclesOldestDormant: Success errors=0 warnings=0
+MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange: Success errors=0 warnings=0
+MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile: Success errors=0 warnings=0
+MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport: Success errors=0 warnings=0
+MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota: Success errors=0 warnings=0
+MothEffect.Lifecycle.DisabledIdleClockResumes: Success errors=0 warnings=0
+MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy: Success errors=0 warnings=0
+MothEffect.Lifecycle.FullCapacityProtectsHeld: Success errors=0 warnings=0
+MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause: Success errors=0 warnings=0
+MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease: Success errors=0 warnings=0
+MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission: Success errors=0 warnings=0
+MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds: Success errors=0 warnings=0
+MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes: Success errors=0 warnings=0
+MothEffect.Lifecycle.SavedBlueprintsAndDebugController: Success errors=0 warnings=0
+MothEffect.Lifecycle.TotalRecyclesOldestDormant: Success errors=0 warnings=0
+MothEffect.Player.T09.BlockedReleaseRetainsHeld: Success errors=0 warnings=0
+MothEffect.Player.T09.DeathAndEndPlayCleanup: Success errors=0 warnings=0
+MothEffect.Player.T09.FocusAndPhysicalRelease: Success errors=0 warnings=0
+MothEffect.Player.T09.HeldInvalidationAndDamage: Success errors=0 warnings=0
+MothEffect.Player.T09.PausePreservesTimers: Success errors=0 warnings=0
+MothEffect.Player.T09.PickupReloadCompetition: Success errors=0 warnings=0
+MothEffect.Player.T09.RoundCancellationRejectsOldTasks: Success errors=0 warnings=0
+MothEffect.Player.T09.SinglePressAndRecovery: Success errors=0 warnings=0
+MothEffect.Player.T09.UnpossessedStopsFire: Success errors=0 warnings=0
+MothEffect.Projectiles.FirstImpactIsSingleUse: Success errors=0 warnings=0
+MothEffect.Projectiles.RejectionAndSourceExclusion: Success errors=0 warnings=0
+MothEffect.Projectiles.SweptThinWall: Success errors=0 warnings=0
+MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement: Success errors=0 warnings=0
+MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed: Success errors=0 warnings=0
+
+=== Navigation/index.json ===
+{"reportCreatedOn": "2026.10.12-01.24.41", "succeeded": 0, "succeededWithWarnings": 0, "failed": 2, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit: Fail errors=2 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Info: Saved range navigation recover=0 elapsed=2.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+MothEffect.EnemyNavigation.TemporaryObstructionRecovery: Fail errors=5 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Error: Expected 'Temporary non-nav obstruction triggers timed recovery' to be true.
+Error: Expected 'Recovery requests alternate reachable positions' to be true.
+Error: Expected 'Recovery produces lateral physical movement around obstruction' to be true.
+Info: Saved range navigation recover=1 elapsed=7.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+
+=== NavigationDiagnostics/index.json ===
+{"reportCreatedOn": "2026.10.12-01.28.24", "succeeded": 0, "succeededWithWarnings": 0, "failed": 2, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit: Fail errors=2 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Info: Saved range navigation recover=0 elapsed=2.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Pursuing target=MothPlayerAutomationCharacter_0 sight=0 controller=AIController_1 targetEnabled=1 targetHealth=990.0 tick=1
+MothEffect.EnemyNavigation.TemporaryObstructionRecovery: Fail errors=5 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Error: Expected 'Temporary non-nav obstruction triggers timed recovery' to be true.
+Error: Expected 'Recovery requests alternate reachable positions' to be true.
+Error: Expected 'Recovery produces lateral physical movement around obstruction' to be true.
+Info: Saved range navigation recover=1 elapsed=7.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Pursuing target=MothPlayerAutomationCharacter_1 sight=0 controller=AIController_2 targetEnabled=1 targetHealth=1000.0 tick=1
+
+=== SightDiagnostics/index.json ===
+{"reportCreatedOn": "2026.10.12-01.30.22", "succeeded": 0, "succeededWithWarnings": 0, "failed": 2, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit: Fail errors=2 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Info: Saved range navigation recover=0 elapsed=2.001 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Pursuing target=MothPlayerAutomationCharacter_0 sight=0 controller=AIController_1 targetEnabled=1 targetHealth=990.0 tick=1
+Info: Navigation sight blocker=BP_EnemyBase_C_0 component=CollisionCylinder origin=X=1200.000 Y=-750.000 Z=152.150 targetEye=X=-800.000 Y=-750.000 Z=154.000 targetPosition=X=-800.000 Y=-750.000 Z=90.000 impact=X=834.361 Y=-750.000 Z=152.488
+MothEffect.EnemyNavigation.TemporaryObstructionRecovery: Fail errors=5 warnings=0
+Error: Expected 'Formal AIController issues navigation requests' to be true.
+Error: Expected 'Real CharacterMovement advances in saved NavMesh world' to be true.
+Error: Expected 'Temporary non-nav obstruction triggers timed recovery' to be true.
+Error: Expected 'Recovery requests alternate reachable positions' to be true.
+Error: Expected 'Recovery produces lateral physical movement around obstruction' to be true.
+Info: Saved range navigation recover=1 elapsed=7.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=1200.000 Y=-750.000 Z=92.150 requests=0 stalls=0
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Pursuing target=MothPlayerAutomationCharacter_1 sight=0 controller=AIController_2 targetEnabled=1 targetHealth=1000.0 tick=1
+Info: Navigation sight blocker=Actor_0 component=BoxComponent_0 origin=X=1200.000 Y=-750.000 Z=152.150 targetEye=X=-800.000 Y=-750.000 Z=154.000 targetPosition=X=-800.000 Y=-750.000 Z=90.000 impact=X=1030.000 Y=-750.000 Z=152.307
+
+=== FocusedFinal/index.json ===
+{"reportCreatedOn": "2026.10.12-01.32.35", "succeeded": 11, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace: Success errors=0 warnings=0
+MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel: Success errors=0 warnings=0
+MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry: Success errors=0 warnings=0
+MothEffect.EnemyDrops.IdempotentDeathAndFixedClass: Success errors=0 warnings=0
+MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict: Success errors=0 warnings=0
+MothEffect.EnemyDrops.NormalW01KillsAllVariants: Success errors=0 warnings=0
+Info: Drop case=0 variant=0 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Launcher count=1
+Info: Drop case=0 variant=1 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=0 variant=2 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Emitter count=1
+MothEffect.EnemyDrops.RealD02KillsAllVariants: Success errors=0 warnings=0
+MothEffect.EnemyDrops.RealP01KillsAllVariants: Success errors=0 warnings=0
+Info: Drop case=1 variant=0 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Launcher count=1
+Info: Drop case=1 variant=1 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=1 variant=2 position=X=600.000 Y=0.000 Z=20.000 type=EDeviceKind::Emitter count=1
+MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir: Success errors=0 warnings=0
+Info: Drop case=2 variant=0 position=X=64.000 Y=-120.000 Z=110.000 type=EDeviceKind::Launcher count=2
+Info: Drop case=2 variant=1 position=X=-0.250 Y=-120.000 Z=110.000 type=EDeviceKind::Bomb count=1
+Info: Drop case=2 variant=2 position=X=-51.600 Y=-120.000 Z=110.074 type=EDeviceKind::Emitter count=1
+Info: Drop case=2 variant=3 position=X=0.000 Y=0.000 Z=2843.894 type=EDeviceKind::Launcher count=1
+MothEffect.EnemyDrops.RecyclesOldestDormant: Success errors=0 warnings=0
+MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange: Success errors=0 warnings=0
+
+=== NavigationFinal/index.json ===
+{"reportCreatedOn": "2026.10.12-01.32.32", "succeeded": 2, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "inProcess": 0}
+MothEffect.EnemyNavigation.SavedCoverRouteAndPursuit: Success errors=0 warnings=0
+Info: Saved range navigation recover=0 elapsed=2.001 from=X=1200.000 Y=-750.000 Z=90.000 to=X=999.876 Y=-750.000 Z=92.150 requests=2 stalls=0
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Telegraphing target=MothPlayerAutomationCharacter_0 sight=1 controller=AIController_1 targetEnabled=1 targetHealth=990.0 tick=1
+Info: Navigation sight blocker=None component=None origin=X=999.876 Y=-750.000 Z=152.150 targetEye=X=-800.000 Y=-750.000 Z=154.000 targetPosition=X=-800.000 Y=-750.000 Z=90.000 impact=X=0.000 Y=0.000 Z=0.000
+MothEffect.EnemyNavigation.TemporaryObstructionRecovery: Success errors=0 warnings=0
+Info: Saved range navigation recover=1 elapsed=7.000 from=X=1200.000 Y=-750.000 Z=90.000 to=X=968.125 Y=-1087.105 Z=92.150 requests=8 stalls=1
+Info: Navigation diagnostics combat=1 phase=EEnemyCombatPhase::Cooldown target=MothPlayerAutomationCharacter_1 sight=1 controller=AIController_2 targetEnabled=1 targetHealth=970.0 tick=1
+Info: Navigation sight blocker=None component=None origin=X=968.125 Y=-1087.105 Z=152.150 targetEye=X=-800.000 Y=-750.000 Z=154.000 targetPosition=X=-800.000 Y=-750.000 Z=90.000 impact=X=0.000 Y=0.000 Z=0.000
+
+=== First runtime drop excerpts ===
+[2026.10.12-01.23.17:915][290]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Rejected device=None death=X=0.000 Y=0.000 Z=92.400 position=none attempts=1 total=23
+[2026.10.12-01.23.18:044][294]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Rejected device=None death=X=0.000 Y=0.000 Z=92.400 position=none attempts=1 total=24
+[2026.10.12-01.23.18:087][296]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.18:087][296]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=500.000 Y=0.000 Z=92.400 position=X=500.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.23.18:088][296]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=1000.000 Y=0.000 Z=92.400 position=X=1000.000 Y=0.000 Z=22.000 attempts=1 total=3
+[2026.10.12-01.23.19:004][341]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.20:380][407]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.21:487][473]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.21:949][500]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.23.21:953][500]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_1 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.23.21:957][501]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.23.22:692][545]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.24:020][610]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.25:119][676]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.25:573][704]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=167.275 position=X=64.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.23.26:523][761]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=-0.250 Y=0.000 Z=92.400 position=X=-0.250 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.23.27:629][817]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=0.000 Y=0.000 Z=117.836 position=X=-9.298 Y=0.000 Z=42.006 attempts=1 total=1
+[2026.10.12-01.23.28:872][875]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=3000.000 position=X=0.000 Y=0.000 Z=3000.000 attempts=1 total=1
+[2026.10.12-01.23.30:142][932]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=24
+
+=== FocusedFinal runtime drop excerpts ===
+[2026.10.12-01.32.24:782][300]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Rejected device=None death=X=0.000 Y=0.000 Z=92.400 position=none attempts=1 total=23
+[2026.10.12-01.32.24:903][304]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Rejected device=None death=X=0.000 Y=0.000 Z=92.400 position=none attempts=1 total=24
+[2026.10.12-01.32.24:934][306]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.24:935][306]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=500.000 Y=0.000 Z=92.400 position=X=500.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.32.24:935][306]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=1000.000 Y=0.000 Z=92.400 position=X=1000.000 Y=0.000 Z=22.000 attempts=1 total=3
+[2026.10.12-01.32.25:682][352]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.26:778][417]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.27:877][483]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.28:351][511]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.32.28:356][511]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_1 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.32.28:362][511]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.32.29:084][555]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.30:183][621]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.31:284][687]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=600.000 Y=0.000 Z=92.400 position=X=600.000 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.31:738][715]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=167.275 position=X=64.000 Y=0.000 Z=22.000 attempts=1 total=2
+[2026.10.12-01.32.32:687][772]LogMothEffect: Enemy BP_EnemyBomb_C_0 drop=EDeviceKind::Bomb result=EEnemyDropResult::Spawned device=BP_DropBomb_C_0 death=X=-0.250 Y=0.000 Z=92.400 position=X=-0.250 Y=0.000 Z=22.000 attempts=1 total=1
+[2026.10.12-01.32.33:637][829]LogMothEffect: Enemy BP_EnemyEmitter_C_0 drop=EDeviceKind::Emitter result=EEnemyDropResult::Spawned device=BP_DropEmitter_C_0 death=X=0.000 Y=0.000 Z=117.836 position=X=-9.298 Y=0.000 Z=42.006 attempts=1 total=1
+[2026.10.12-01.32.34:587][886]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=3000.000 position=X=0.000 Y=0.000 Z=3000.000 attempts=1 total=1
+[2026.10.12-01.32.35:556][943]LogMothEffect: Enemy BP_EnemyLauncher_C_0 drop=EDeviceKind::Launcher result=EEnemyDropResult::Spawned device=BP_DropLauncher_C_0 death=X=0.000 Y=0.000 Z=92.400 position=X=0.000 Y=0.000 Z=22.000 attempts=1 total=24
+
+=== Limits / pending ===
+11 new EnemyDrops tests and 88 Editor full tests passed; final test-only edits revalidated by 11 focused and 2 Game navigation tests.
+No graphical PIE, recording, Windows package, full TC20/G3 or T16/T17 acceptance claimed.
+12 new owned assets; original triangular prism + engine sphere/cube + original Tint material.
+BP_MothPlayer unchanged and excluded: SHA256 A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8.
+#17 Open / In Progress; #16 current PIE pending; no T15 push or PR, no mutation of T14 PR #42.
+
+=== Repository checks (actual output, 2026-10-12) ===
+Static checks passed for 241 tracked files and 38 UE assets.
+Checked JSON, inline relative-link targets, and LFS attributes; no UE build or gameplay tests.
+Reading view verified: 38 source sections; anchors and local links valid.
+Git LFS fsck OK
+scripts/create_t15_drop_range.py and scripts/build_reading_view.py syntax valid; no cache written.
+Evidence personal workspace paths redacted.
+T14 PR #42 OPEN; remote head c988079904a3c138ba7a3a1ea697cb7e9df16693; base main, head codex/t14-shooting-ai.
+Issue #16 OPEN; current graphical PIE remains pending.
+git diff --cached --check: passed after stripping trailing whitespace from log excerpts.

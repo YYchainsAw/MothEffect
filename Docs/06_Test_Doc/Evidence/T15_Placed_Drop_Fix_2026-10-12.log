@@ -50,5 +50,9 @@ Validation-script corrections during investigation:
    Final script uses the official GuidLibrary.new_guid() for unique actual hits.
 All failed attempts retained under Saved/Automation/T15; final checks above passed.
 
-Graphical/user acceptance remains pending. Stop PIE and reload L_T15Drops before
-testing the repaired saved actors. No T14/T15/T16 acceptance checkbox was marked passed.
+At automated validation, graphical/user acceptance remained pending.
+2026-10-12 subsequent user reply: "测试通过 创建pr".
+Record the preceding requested manual retest scope: W01 kills the three variants,
+matching drops and pickup passed. No full terrain/capacity/pause, other weapon,
+T14 or T16 acceptance is inferred. Issue #17 remains open for its full checklist.
+Fix commit develop a211685; isolated PR transplant 8f1ae8e on codex/t15-enemy-drops.

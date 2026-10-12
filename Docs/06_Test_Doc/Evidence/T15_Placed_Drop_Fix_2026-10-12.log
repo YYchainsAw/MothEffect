@@ -1,0 +1,58 @@
+T15 saved-range no-drop fix — 2026-10-12
+
+User report: enemies in L_T15Drops do not drop devices.
+User PIE log: Launcher/Bomb/Emitter health=0 event=death, no device birth.
+Fresh commandlet inspection:
+  All three saved BP CDOs have the matching DropDeviceClass and DropKind.
+  All three original saved map instances: DropDeviceClass=None, DropKind=Emitter.
+  Previous tests spawned fresh saved classes and only checked map load/existence.
+
+Fix: replace only the three generator-owned stale enemy instances in L_T15Drops,
+preserve location/rotation/scale/label/tags, save, reload and validate fixed class/kind.
+Generator now invokes the same saved-instance validation and repair path.
+EditDefaultsOnly is retained; instance property editing is not bypassed.
+User BP_MothPlayer SHA256 remains:
+A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8
+
+Repair commandlet: exit 0, errors=0, warnings=9 (existing imported inputs/navigation).
+Marker: T15_PLACED_DROPS_VERIFIED repaired=true, all three fixed pairs after reload.
+Local logs: Saved/Automation/T15/RepairPlacedDropsFinal.log
+
+Saved-map regression: ticking Editor NullRHI PIE (simulate).
+Each original saved actor receives three real HealthComponent hits (20 each),
+health 60->40->20->0. Further damage rejected. No hardware input or W01 trajectory
+is claimed by this script; the existing W01/P01/D02 tests cover those separately.
+After 0.8s: corpses removed, exactly three matching Dormant physics-enabled drops.
+
+2026.10.12-06.12.39:085 UTC
+Enemy BP_EnemyLauncher_C_1 drop=Launcher result=Spawned device=BP_DropLauncher_C_0
+death=(-2000,700,92.150) position=(-2000,700,22) attempts=1 total=1
+Enemy BP_EnemyBomb_C_1 drop=Bomb result=Spawned device=BP_DropBomb_C_0
+death=(-10.125,700,92.150) position=(-10.125,700,22) attempts=1 total=2
+Enemy BP_EnemyEmitter_C_1 drop=Emitter result=Spawned device=BP_DropEmitter_C_0
+death=(2000,500,215.680) position=(2000,507.524,141.957) attempts=1 total=3
+T15_PLACED_DROP_PIE_VERIFIED success=true, three saved enemies and three drops.
+Local logs/JSON: Saved/Automation/T15/PlacedDropPIEFinalVerified.log,
+Saved/Automation/T15/PlacedDropRegression.json
+
+Focused Editor Automation rerun: MothEffect.EnemyDrops, 11/11 Success.
+Export: succeeded=10, succeededWithWarnings=1, failed=0, notRun=0; errors=0.
+NormalW01KillsAllVariants warnings=1: LogHttp connectivity probe timed out after 3s
+(google.com/generate_204). Other ten tests warnings=0. Existing imported-asset
+startup warnings remain in the whole process log.
+Local logs/report: Saved/Automation/T15/PlacedFixEditor.log,
+Saved/Automation/T15/PlacedFixEditor/index.json
+
+Validation-script corrections during investigation:
+1. EditDefaultsOnly rejects set_editor_property on placed actors; repair now replaces
+   only owned actors with fresh instances, preserving the existing class contract.
+2. Python Guid constructor positional arguments unsupported; an empty Guid is invalid.
+   Final script uses the official GuidLibrary.new_guid() for unique actual hits.
+All failed attempts retained under Saved/Automation/T15; final checks above passed.
+
+At automated validation, graphical/user acceptance remained pending.
+2026-10-12 subsequent user reply: "测试通过 创建pr".
+Record the preceding requested manual retest scope: W01 kills the three variants,
+matching drops and pickup passed. No full terrain/capacity/pause, other weapon,
+T14 or T16 acceptance is inferred. Issue #17 remains open for its full checklist.
+Fix commit develop a211685; isolated PR transplant 8f1ae8e on codex/t15-enemy-drops.

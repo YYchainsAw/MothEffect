@@ -19,6 +19,8 @@
 #include "Tests/PlayerAutomationCharacter.h"
 #include "TimerManager.h"
 #include "Weapons/Rifle.h"
+#include "Framework/MothEffectPlayerController.h"
+#include "UI/MothHUDWidget.h"
 
 namespace MothFlowRuntimeTest
 {
@@ -148,6 +150,16 @@ namespace MothFlowRuntimeTest
 				T->TestFalse(TEXT("Victory closes projectile generation"), M->CanSpawnProjectile());
 				T->TestFalse(TEXT("Victory closes direct damage to living player"), P->GetHealthComponent()->ApplyHit(Hit(10)));
 				T->TestNull(TEXT("Victory refuses device spawn"), Device(W, 2, FVector(0,0,100)));
+				if (auto* PC = Cast<AMothEffectPlayerController>(UGameplayStatics::GetPlayerController(W,0)))
+				{
+					if (auto* UI = PC->GetGameplayUI())
+					{
+						UI->RefreshState(); PC->SyncUIInput();
+						T->TestTrue(TEXT("Three real waves end in the victory menu with cursor and blocked pawn input"),
+							UI->GetHUDState().Page == EMothUIPage::Victory && PC->bShowMouseCursor && PC->IsMoveInputIgnored());
+					}
+					else T->AddError(TEXT("Main flow map must create its actual HUD"));
+				}
 				T->AddInfo(FString::Printf(TEXT("TC22 runtime: actual births=%d/%d/%d peak=%d; blocked pending and full warning; victory at %.3fs"), Counts[0], Counts[1], Counts[2], PeakAlive, Now));
 				Cleanup(); return true;
 			}

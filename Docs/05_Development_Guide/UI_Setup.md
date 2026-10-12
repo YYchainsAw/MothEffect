@@ -1,8 +1,8 @@
 # Moth Effect：T18 HUD、教学与菜单接入
 
-版本 v0.1 · 2026-10-12 · 状态：已接入；当前硬件输入与完整图形 PIE 待验收
+版本 v0.2 · 2026-10-12 · 状态：已接入；当前硬件输入与完整图形 PIE 待验收
 
-打开 `/Game/MothEffect/Maps/L_Arena_01` 后 Play，从标题页选择“开始教学”或“直接进入竞技场”。标题、暂停、教学完成、胜利和失败使用同一套面板；不需要输入控制台命令。T16/T17 的 [PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) 保持原有待校验状态，T18 当前仅在本地 develop 开发。
+打开 `/Game/MothEffect/Maps/L_Arena_01` 后 Play，从标题页选择“开始教学”或“直接进入竞技场”。标题、暂停、教学完成、胜利和失败使用同一套面板；不需要输入控制台命令。T16/T17 的 [PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) 已合并 main，先前手动待校验范围继续保留。T18 已通过 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46) 提交至 main，五组当前硬件 PIE 仍待验收。
 
 当前入口优先教学但允许主动直接开战；参数账本原有 `flow.tutorialRequiredFirstRun=true` 尚未接入首次教学持久化锁定，这一 UI 差异已记录在 T18 报告与参数账本。
 

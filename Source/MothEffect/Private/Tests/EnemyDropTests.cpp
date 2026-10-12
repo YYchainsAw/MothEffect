@@ -8,6 +8,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Devices/DeviceBase.h"
 #include "EngineUtils.h"
+#include "Engine/StaticMesh.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Misc/AutomationTest.h"
 #include "Materials/MaterialInterface.h"
@@ -149,6 +150,8 @@ bool FMothDropSaved::RunTest(const FString&)
 		auto* Hint = FindObject<UTextRenderComponent>(E, TEXT("DropHintText"));
 		if (!TestNotNull(TEXT("Non-colliding backpack"), Bag) || !TestNotNull(TEXT("Type text independent of color"), Hint)) return false;
 		TestEqual(TEXT("Backpack predicts actual drop mesh"), Bag->GetStaticMesh(), Defaults->GetDeviceMesh()->GetStaticMesh());
+		const FVector VisualExtent = Defaults->GetDeviceMesh()->GetStaticMesh()->GetBounds().BoxExtent * Defaults->GetDeviceMesh()->GetRelativeScale3D();
+		TestTrue(TEXT("Saved geometry remains pickup sized after OBJ unit conversion"), VisualExtent.GetMin() > 1 && VisualExtent.GetMax() <= 30);
 		TestEqual(TEXT("Backpack and drop share saved material"), Bag->GetMaterial(0), Defaults->GetDeviceMesh()->GetMaterial(0));
 		FLinearColor Tint;
 		TestTrue(TEXT("Saved material reloads the actual cyan/orange/purple parameter"), Bag->GetMaterial(0)

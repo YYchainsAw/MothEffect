@@ -1,8 +1,13 @@
 """UE ticking editor script: own only new T15 packages; save a real drop range."""
 from pathlib import Path
 import json
+import sys
 import time
 import unreal
+
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(unreal.Paths.project_dir()) / 'scripts'))
+from t15_range_validation import validate_placed_enemies
 
 assets = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
 actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
@@ -161,6 +166,10 @@ if not levels.load_level(map_path):
     raise RuntimeError('Cannot reload saved T15 map for navigation initialization')
 world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
 
+# Validate actual saved actors, not only the Blueprint CDOs or newly spawned test actors.
+# Repair the generator-owned instances even when resuming an existing map.
+validate_placed_enemies(world, repair=True)
+
 # Real editor ticks release the asynchronous load lock before the static navigation build.
 unreal.EditorPythonScripting.set_keep_python_script_alive(True)
 started = time.monotonic()
@@ -184,6 +193,10 @@ def verify(delta):
         return
     if not levels.save_current_level():
         raise RuntimeError('Cannot save built T15 navigation')
+    if not levels.load_level(map_path):
+        raise RuntimeError('Cannot reload saved T15 range for instance validation')
+    saved_world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    validate_placed_enemies(saved_world)
     unreal.log('T15_RANGE_VERIFIED '+json.dumps({'map': map_path, 'enemies':3, 'fixed_drop_pairs':3, 'new_assets':len(owned), 'navigation':True, 'points':[str(p) for p in path.path_points], 'scripted_deaths':False}))
     unreal.unregister_slate_post_tick_callback(handle)
     unreal.EditorPythonScripting.set_keep_python_script_alive(False)

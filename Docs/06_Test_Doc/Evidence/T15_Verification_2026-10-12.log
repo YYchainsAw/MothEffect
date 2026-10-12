@@ -315,3 +315,10 @@ Local static checks: 241 tracked files / 38 UE assets; reading view 38 source se
 T14 PR #42 remains OPEN at c988079904a3c138ba7a3a1ea697cb7e9df16693; #17 OPEN / In Progress, graphical PIE pending, all acceptance boxes unchecked.
 Project currently offers Todo / In Progress / Done only; pending acceptance remains recorded in issue/PR/docs.
 No UE rerun for documentation-only PR records. Repository checks to be dispatched on final remote head; actual status available on GitHub.
+
+=== First T15 remote static check (actual) ===
+Repository checks run38194066109 https://github.com/YYchainsAw/MothEffect/actions/runs/38194066109
+Event workflow_dispatch; headSha da6ff265aef6f9adf884cfa622c86f1dc4d1d407; status completed; conclusion success.
+static-checks success, started 2026-10-12T02:00:13Z, completed 2026-10-12T02:00:19Z.
+gh pr checks 43: no checks reported (pull_request base filter excludes codex/t14-shooting-ai; manual dispatch recorded on Actions run, not automatic PR checks).
+No UE rerun and no graphical PIE pass reported. Documentation archive after this run requires its final head to be separately checked.

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：三波、胜负与重开接入
 
-版本 v0.1 · 2026-10-12 · 状态：T16 原生/真实 Game 验证通过，当前图形 PIE 待验收
+版本 v0.2 · 2026-10-12 · 状态：T16 原生/真实 Game 验证通过，当前图形 PIE 待验收
+
+已创建[T16/T17 PR #45](https://github.com/YYchainsAw/MothEffect/pull/45)，codex/t16-t17-wave-arena → main。用户要求保持待校验；当前图形PIE清单未记通过，#18/#19继续Open，未自动关闭。
 
 对应 [T16 #18](https://github.com/YYchainsAw/MothEffect/issues/18)。源码与资产已在本地 develop 提交；T14/T15 的图形验收保持待验收。完整证据见 [T16 报告](../06_Test_Doc/T16_Report_2026-10-12.md)。
 

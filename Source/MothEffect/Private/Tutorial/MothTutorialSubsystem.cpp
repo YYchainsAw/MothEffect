@@ -28,6 +28,8 @@ bool UMothTutorialSubsystem::StartTutorial(AMothEffectCharacter* InPlayer, AMoth
 		|| !InPlayer->GetHealthComponent()->IsAlive() || GetWorld()->IsPaused()) return false;
 	EndTutorial();
 	Config = DuplicateObject<UMothTutorialConfig>(InConfig ? InConfig : GetDefault<UMothTutorialConfig>(), this);
+	Config->ClearFlags(RF_Public | RF_Standalone);
+	Config->SetFlags(RF_Transient);
 	Player = InPlayer;
 	Director = InDirector;
 	Player->SetGameplayEnabled(true);

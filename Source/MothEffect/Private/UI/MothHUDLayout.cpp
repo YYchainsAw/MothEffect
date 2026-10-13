@@ -136,4 +136,3 @@ void MothHUDLayout::Build(UWidgetTree* Tree)
 	auto* Menu=Panel(Tree,MenuOverlay,24,TEXT("Menu")); Menu->SetBrushColor(FLinearColor(.008f,.018f,.022f,.88f));
 	auto* MenuSlot=Root->AddChildToOverlay(Menu); MenuSlot->SetHorizontalAlignment(HAlign_Fill); MenuSlot->SetVerticalAlignment(VAlign_Fill);
 }
-

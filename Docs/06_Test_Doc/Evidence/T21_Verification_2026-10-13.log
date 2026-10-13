@@ -1,0 +1,174 @@
+T21 independent Windows package verification | 2026-10-13 Asia/Hong_Kong
+UE5.8.0-55116800 / Win64 Development; manual input/whole-play recording and external TC26 pending
+PR47 final head=2d861a0d4b5d1113c37bf847b7350668b3e08c9c; Repository checks Success 7s; PR Open, not merged
+PR47: YYchainsAw; feature/polish/area:ui/area:combat/area:art; MothEffect · 首版开发 In Progress; M5 milestone
+BUILD_INPUTS {"task": "T21", "local_time_hong_kong": "20261013_220904", "git_commit": "1dbde1ebacda190c06b39f20acefc5378a078ca0", "configuration": "Win64 Development", "default_map": "/Game/MothEffect/Maps/L_Arena_01", "gameplay_parameters": "v0.18", "editor_closed": true, "git_status": [" M Content/MothEffect/Characters/Player/BP_MothPlayer.uasset"], "archive_directory": "D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Builds\\T21\\MothEffect_20261013_220904_1dbde1e", "uat_arguments": ["BuildCookRun", "-project=D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\MothEffect.uproject", "-nop4", "-platform=Win64", "-clientconfig=Development", "-cook", "-stage", "-pak", "-iostore", "-archive", "-archivedirectory=D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Builds\\T21\\MothEffect_20261013_220904_1dbde1e", "-map=/Game/MothEffect/Maps/L_Arena_01", "-nocompileeditor", "-skipeditorcontent", "-nodebuginfo", "-prereqs", "-unattended", "-utf8output", "-build"], "external_dependencies": "Read from this project; original third-party package version/license/full restoration evidence pending.", "user_pie_acceptance": "Pending", "complete_G3": "Pending external TC26"}
+RECORDED_INPUT_HASHES count=257
+BUILD_RESULT {
+  "uat_exit_code": 0,
+  "input_changes": [],
+  "archive_directory": "D:\\YYchainsaw\\Unreal-Projects\\MothEffect\\Builds\\T21\\MothEffect_20261013_220904_1dbde1e"
+}
+********** BUILD COMMAND STARTED **********
+Result: Succeeded
+Total execution time: 82.42 seconds
+********** BUILD COMMAND COMPLETED **********
+********** COOK COMMAND STARTED **********
+LogInit: Display: LogLinker: Warning: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight
+LogInit: Display: LogBlueprint: Warning: [AssetLog] D:\YYchainsaw\Unreal-Projects\MothEffect\Content\ParagonMurdock\Characters\Heroes\Murdock\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward
+LogInit: Display: Success - 0 error(s), 8 warning(s)
+********** COOK COMMAND COMPLETED **********
+********** STAGE COMMAND STARTED **********
+LogIoStore: Display: Input:       742 Packages
+********** STAGE COMMAND COMPLETED **********
+********** ARCHIVE COMMAND STARTED **********
+********** ARCHIVE COMMAND COMPLETED **********
+BuildCookRun time: 605.62 s
+BUILD SUCCESSFUL
+AutomationTool exiting with ExitCode=0 (Success)
+PACKAGED_REPORT {"succeeded": 3, "succeededWithWarnings": 9, "failed": 0, "errors": 0, "warnings": 82, "dateUTC": "2026.10.13-14.26.06", "duration": 105.09757232666016}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.ArtRuntime.ArenaLayerAndVisualGallery state=Success errors=0 warnings=5
+Warning LogStreaming: LoadPackage: SkipPackage: /Game/MothEffect/UI/DA_MothTutorial (0xC33029D63B702C05) - The package to load does not exist on disk or in the loader
+Warning LogUObjectGlobals: Failed to find object 'Object /Game/MothEffect/UI/DA_MothTutorial.DA_MothTutorial'
+Info T20 runtime: actual saved device appearances=3 coverVisuals=9 runes=3 layers=1; main arena blocker and reversible layer verified
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147482071.CharacterMesh0.ABP_MothMurdock_C_2147482069
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Success errors=0 warnings=7
+Warning LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.
+Warning LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.
+Warning LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Info T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147481548.CharacterMesh0.ABP_MothMurdock_C_2147481546
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=8
+Warning LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.
+Warning LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.
+Warning LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogMothEffect: FireMontage 'AnimMontage_2147481430' could not play on MothPlayerAutomationCharacter_2147481432. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot.
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147480947.CharacterMesh0.ABP_MothMurdock_C_2147480945
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=9
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147480774.CharacterMesh0.ABP_MothMurdock_C_2147480772
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147480575.CharacterMesh0.ABP_MothMurdock_C_2147480573
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147480379.CharacterMesh0.ABP_MothMurdock_C_2147480377
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Info TC32 runtime: player defeat; escaped living enemy unregisters once without drop; outside D03/P01 release capacity; actual pause freezes preparation.
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=4
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147480096.CharacterMesh0.ABP_MothMurdock_C_2147480094
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=4
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147479915.CharacterMesh0.ABP_MothMurdock_C_2147479913
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Info TC22 runtime: physical WorldDynamic capsule blocker appearing during warning retains S2 pending, removal requires a fresh .8s warning and births at original S2.
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=43
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147479724.CharacterMesh0.ABP_MothMurdock_C_2147479722
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147479416.CharacterMesh0.ABP_MothMurdock_C_2147479414
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147479109.CharacterMesh0.ABP_MothMurdock_C_2147479107
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147478801.CharacterMesh0.ABP_MothMurdock_C_2147478799
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147478494.CharacterMesh0.ABP_MothMurdock_C_2147478492
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147478187.CharacterMesh0.ABP_MothMurdock_C_2147478185
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147477880.CharacterMesh0.ABP_MothMurdock_C_2147477878
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147477573.CharacterMesh0.ABP_MothMurdock_C_2147477571
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147477266.CharacterMesh0.ABP_MothMurdock_C_2147477264
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147476959.CharacterMesh0.ABP_MothMurdock_C_2147476957
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Warning LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance
+Warning LogScript: Script Msg: Divide by zero: Divide_DoubleDouble
+Warning LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_2147476652.CharacterMesh0.ABP_MothMurdock_C_2147476650
+Info TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+Warning LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'
+Info TC22 runtime: actual births=4/6/8 peak=8; blocked pending and full warning; victory at 25.107s
+RAW_RUN Packaged1
+LogCsvProfiler: Display: Metadata set : commandline="" -unattended -RenderOffscreen -windowed -ResX=1920 -ResY=1080 -ForceRes -MothArtScreens -MothFeedbackScreens -ExecCmds="Automation RunTests MothEffect.ArtRuntime+MothEffect.FeedbackRuntime+MothEffect.UIRuntime+MothEffect.ArenaRuntime+MothEffect.WaveFlowRuntime" -TestExit="Automation Test Queue Empty" -ReportExportPath=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/Packaged1 -abslog=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/Packaged1.log""
+LogFilePackageStore: Mounting container: Id=80e7aae6da7d63ea, Order=4, NumPackages=742
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+LogInit: Compatible Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+LogInit: Command Line:  -unattended -RenderOffscreen -windowed -ResX=1920 -ResY=1080 -ForceRes -MothArtScreens -MothFeedbackScreens -ExecCmds="Automation RunTests MothEffect.ArtRuntime+MothEffect.FeedbackRuntime+MothEffect.UIRuntime+MothEffect.ArenaRuntime+MothEffect.WaveFlowRuntime" -TestExit="Automation Test Queue Empty" -ReportExportPath=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/Packaged1 -abslog=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/Packaged1.log
+LogInit: Base Directory: D:/YYchainsaw/Unreal-Projects/MothEffect/Builds/T21/MothEffect_20261013_220904_1dbde1e/Windows/MothEffect/Binaries/Win64/
+[2026.10.13-14.24.10:496][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-14.24.12:094][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2026.10.13-14.24.12:265][  0]LogInit: FAudioDevice initialized with ID 1.
+[2026.10.13-14.24.20:832][553]LogAutomationController: Error: Failed to load test report html template - No report will be generated.
+[2026.10.13-14.26.06:355][299]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 12 tests performed.
+[2026.10.13-14.26.06:355][300]LogExit: Display: **** TestExit: Automation Test Queue Empty ****
+[2026.10.13-14.26.06:355][300]LogWindows: FPlatformMisc::RequestExitWithStatus(1, 0, FEngineLoop::Tick.GScopedTestExit)
+RAW_RUN ExtractedSmoke
+LogCsvProfiler: Display: Metadata set : commandline="" MothEffect -unattended -RenderOffscreen -windowed -ResX=1920 -ResY=1080 -ForceRes -benchmark -seconds=5 -ExecCmds="Shot SHOWUI" -abslog=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/ExtractedSmoke.log""
+LogFilePackageStore: Mounting container: Id=80e7aae6da7d63ea, Order=4, NumPackages=742
+LogInit: Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+LogInit: Compatible Engine Version: 5.8.0-55116800+++UE5+Release-5.8
+LogInit: Command Line: -unattended -RenderOffscreen -windowed -ResX=1920 -ResY=1080 -ForceRes -benchmark -seconds=5 -ExecCmds="Shot SHOWUI" -abslog=D:/YYchainsaw/Unreal-Projects/MothEffect/Saved/Automation/T21/ExtractedSmoke.log
+LogInit: Base Directory: D:/YYchainsaw/Unreal-Projects/MothEffect/Builds/T21/Extracted_20261013_220904_1dbde1e/Windows/MothEffect/Binaries/Win64/
+[2026.10.13-14.48.08:858][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-14.48.12:231][151]LogWindows: FPlatformMisc::RequestExitWithStatus(0, 0, FEngineLoop::Tick.Benchmarking)
+[2026.10.13-14.48.12:998][152]LogExit: Game engine shut down
+EXTRACTED_BOOTSTRAP_EXIT_CODE=0; benchmark exit, not manual Quit-button acceptance
+ZIP {"task": "T21", "configuration": "Win64 Development", "code_commit": "1dbde1ebacda190c06b39f20acefc5378a078ca0", "input_git_status": [" M Content/MothEffect/Characters/Player/BP_MothPlayer.uasset"], "user_blueprint_sha256": "A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8", "zip_file": "MothEffect_T21_20261013_220904_1dbde1e.zip", "zip_bytes": 675284546, "zip_sha256": "419291d94201172a9df1a81e1b4d86bc37c5ce601252d658c5138745b6f2977d", "extracted_hashes_match": true, "launcher": "Windows/MothEffect.exe", "runtime_saved_excluded": true, "user_acceptance": "Pending; internal automation does not close manual T21/G3."}
+ZIP_PAYLOAD_FILES=44; every extracted SHA256 equals source; runtime Saved excluded
+SCREEN Docs/06_Test_Doc/Evidence/T21/01_ExtractedTitle.png 1920x1080 sha256=6f5daab5cae3b0b74fd7f9917210036ffb5dc64b0a2a5afd472d6e5a2afee3f5
+SCREEN Docs/06_Test_Doc/Evidence/T21/02_PackagedHitHUD.png 1920x1080 sha256=b8052aad5e5580af12b1d9a1948bf05bfa26cd4f022724b5ba8234f888931350
+SCREEN Docs/06_Test_Doc/Evidence/T21/03_PackagedDeviceShells.png 1920x1080 sha256=07e8a5be76c7fa3a5951532916f83ea3cdb35949ad1ff3d10b8b7ccba42ba232
+PRESERVED_AND_INCLUDED_IN_INTERNAL_PACKAGE user BP_MothPlayer SHA256=a3de76da7f3440b048ca5ea9668e41f4d11414d7f2e9ccba31743777584d0af8
+GITHUB #23 Open / In Progress, four complete acceptance boxes unchecked; T14–T20 pending scopes preserved
+MANIFEST_CORRECTION initial suffix match selected ABP_MothPlayer hash=416B25CF58F66AB03A31AD919BD63ACE98451774D7B759B552B440A92BCB8641; original BuildInputs has correct exact player hash=A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8; sidecar corrected, ZIP checksum unchanged; fix bbb612e
+ARCHIVE_REGRESSION Success: distinct ABP/BP identity; runtime Saved excluded; actual ZIP/extracted bytes match; existing targets rejected with ZIP unchanged
+STATIC_CHECKS Success: 394 tracked files and 79 UE assets; JSON, relative-link targets and LFS attributes
+READING_VIEW Success: 50 source sections; offline source digests, anchors and local links valid
+STAGED_DIFF_CHECK Success: no whitespace errors; staged scope excludes user BP_MothPlayer
+SCREEN_LFS_ATTRIBUTES Success: all three T21 PNG files filter/diff/merge=lfs, text=unset; Git LFS OIDs equal original screenshot SHA256
+ISSUE_READBACK Success: #23 Open, four complete acceptance boxes unchecked, actual build/ZIP identity recorded; no pending record fields

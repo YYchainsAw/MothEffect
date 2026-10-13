@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.46 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.47 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-13 T21已实际生成Win64 Development内部包（代码1dbde1e、玩法v0.18）：Build/Cook/Pak/IoStore/Archive成功，真正打包EXE内十二项全部Success（0 test errors / 82 warnings），完整ZIP约644MiB，四十四件运行文件重新解压SHA一致，干净解压启动器进入标题并正常退出。本包读取用户当前未提交玩家蓝图，构建前后输入hash不变、未保存或纳入PR；清单已修正ABP同后缀误选。原始日志的HTML报告模板诊断与旧资源/动画告警保留。四组真人操作和完整录像待验收，#23 Open / In Progress、四框未勾选；TC26留T22，完整G3待验收。 试玩步骤见[Windows内部包](05_Development_Guide/Windows_Test_Package.md)，结果与包清单见[T21报告](06_Test_Doc/T21_Report_2026-10-13.md)。PR #47最终head 2d861a0的Repository checks已Success（7s），未合并；T21本地另行提交。以下段落保留历史。
 
 2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 以下段落保留历史。
 
@@ -86,6 +88,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
+| 05_Development_Guide/ | [Windows_Test_Package.md](05_Development_Guide/Windows_Test_Package.md) | T21完整Windows内部包、重建和四组真人验收 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |
@@ -99,6 +102,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 06_Test_Doc/ | [T15_Report_2026-10-12.md](06_Test_Doc/T15_Report_2026-10-12.md) | T15真实击杀/落地/容量验证与待验收记录 |
 | 06_Test_Doc/ | [T16_Report_2026-10-12.md](06_Test_Doc/T16_Report_2026-10-12.md) | T16实际三波/连续重开验证、失败及既有告警边界 |
 | 06_Test_Doc/ | [T17_Report_2026-10-12.md](06_Test_Doc/T17_Report_2026-10-12.md) | T17坡道/P01/导航与主场地8项Game结果，图形PIE待验收 |
+| 06_Test_Doc/ | [T21_Report_2026-10-13.md](06_Test_Doc/T21_Report_2026-10-13.md) | T21实际Game打包/十二项程序/解压启动结果和待验收边界 |
 | 07_Release/ | [Release_Checklist.md](07_Release/Release_Checklist.md) | 发布检查清单 |
 | Assets/UML/ | 当前为空 | 后续实际产出的 UML 图及源文件 |
 

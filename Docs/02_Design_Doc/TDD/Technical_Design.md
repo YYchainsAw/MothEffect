@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.45 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.46 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-13 T21使用[Windows打包入口](../../../scripts/build_windows_test.ps1)构建实际Game目标与主地图，记录提交、未提交路径及前后输入hash；[完整压缩入口](../../../scripts/archive_windows_test.py)排除运行Saved并重新解压逐文件验证。十二项包内程序测试与干净解压启动通过，详见[T21报告](../../06_Test_Doc/T21_Report_2026-10-13.md)。原有玩法/接口与v0.18参数不变；Development内部包含自动化入口，Shipping候选继续T25；当前未提交玩家蓝图的包内版本与PR版本分别记录，真人输入/声音/完整录像待验收。以下段落保留历史。
 
 2026-10-13 T20：PrototypeArtProfile独立提供显示模型/材料/局部Transform；设备与背包直接共用解析入口，材质按语义槽名适配OBJ重排。开关保留原外观与用户替换；场景层仅主竞技场生成一次，识别T17标签/材质/尺寸，排除大围墙，关闭/销毁恢复原渲染。原掩体承担碰撞/导航，新网格与灯饰无玩法查询；资产软引用目录纳入Cook。接口与改造步骤见[Prototype_Art_Setup](../../05_Development_Guide/Prototype_Art_Setup.md)，实际验证见[T20报告](../../06_Test_Doc/T20_Report_2026-10-13.md)。用户后续机制/UI改造按新规则更新权威文档、配置与测试。
 

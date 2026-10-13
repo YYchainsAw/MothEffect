@@ -1,0 +1,238 @@
+{
+  "task": "T21",
+  "configuration": "Win64 Development",
+  "code_commit": "1dbde1ebacda190c06b39f20acefc5378a078ca0",
+  "input_git_status": [
+    " M Content/MothEffect/Characters/Player/BP_MothPlayer.uasset"
+  ],
+  "user_blueprint_sha256": "A3DE76DA7F3440B048CA5EA9668E41F4D11414D7F2E9CCBA31743777584D0AF8",
+  "zip_file": "MothEffect_T21_20261013_220904_1dbde1e.zip",
+  "zip_bytes": 675284546,
+  "zip_sha256": "419291d94201172a9df1a81e1b4d86bc37c5ce601252d658c5138745b6f2977d",
+  "payload_files": [
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/DbgHelp/dbghelp.dll",
+      "bytes": 2232688,
+      "sha256": "26113f7ba29a99ca6dbc2382b358c866a68c5fc216ff5f176f0e974b604893c3"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/MsQuic/v220/win64/msquic.dll",
+      "bytes": 2547080,
+      "sha256": "50302d524870b678f4c28afd18bd8ab01e97ddd3a571cd5db655dc4b944716f5"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64/GFSDK_Aftermath_Lib.x64.dll",
+      "bytes": 5799024,
+      "sha256": "1045346aa09570d6822ab60846faa05c57064b1de6073828c753a83d678b0013"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Ogg/Win64/VS2015/libogg_64.dll",
+      "bytes": 59832,
+      "sha256": "554105bb9b8610c933e05861938d518289b310665d8316dc6200e2c2ab1dc92b"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbis_64.dll",
+      "bytes": 1724856,
+      "sha256": "05bfb55d52c5b90df85d423ba89b2a17161fa51180e3b94eb3ad3b0c1b4ecc14"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbisfile_64.dll",
+      "bytes": 48568,
+      "sha256": "1808c294fa51ace8a2dd2a746aa04b982ae3bbffa622e4c267d224ad83f8254b"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_api_dump.dll",
+      "bytes": 8161680,
+      "sha256": "2f36797f1bec116df070d932cbccae42fe99ec9bdba9b5b87f406e96e8dc61b2"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_api_dump.json",
+      "bytes": 13848,
+      "sha256": "9e55221c225dce4b5448bac7dadb7e39fd216f51354dde02e58f950f4a0dd80b"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_crash_diagnostic.dll",
+      "bytes": 2890128,
+      "sha256": "8a6ddbc3c1bab3dec3b94130e26b17574361cc87383ebc61bcb388c8ac787b19"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_crash_diagnostic.json",
+      "bytes": 23055,
+      "sha256": "578bde354874789671dee1a96468c965619c9f3ba16cfa65f850e81a80674087"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_gfxreconstruct.dll",
+      "bytes": 8166288,
+      "sha256": "c1fd377d17d7f91b9caada87f3642244aa80ce19fc235b0c4a57de3a9edb353a"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_gfxreconstruct.json",
+      "bytes": 28099,
+      "sha256": "71d4e243a2af74874f4f61378bdfe3753cb01ce5eb9b98400d83612bf882a815"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_profiles.dll",
+      "bytes": 1485200,
+      "sha256": "02951b037469f48ca295955dfba8c426830463423b5c08b2fac7df40c4fd7e19"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_profiles.json",
+      "bytes": 66696,
+      "sha256": "6095c28691757e083a8c1bef3c69ca76a8b5017e21acaf55d1bc7e82221a0fbe"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_shader_object.dll",
+      "bytes": 415632,
+      "sha256": "b919c9fafe9fb3d1694a76c5a5ca070201eaa83fe049432f6add39b9d948dc0a"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_shader_object.json",
+      "bytes": 4455,
+      "sha256": "18ecafc9a65e1b7af8cd0e36dc936026cdb3aed333c4ea5a7c17d6d9465cfaf4"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_synchronization2.dll",
+      "bytes": 397192,
+      "sha256": "477d729cc827daebb5bbe43989b68cc1871e3d9d0b603e3758af61acd28f0620"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_synchronization2.json",
+      "bytes": 1910,
+      "sha256": "a1e980a24be9a16a826b00c27d61b85ee0e2e17226dc9c4e8eec031879e5f26a"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_validation.dll",
+      "bytes": 19509136,
+      "sha256": "e3efda6fbf877c9f4f1d1d551afc1c889b4892d0af4c4537706a66cc9c2d6315"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_validation.json",
+      "bytes": 95917,
+      "sha256": "5c464b84457776d92a674de506f7b7a489294583a7d7609f78fcc52bc4406d09"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64/WinPixEventRuntime.dll",
+      "bytes": 69056,
+      "sha256": "cb8decc98fb12f209d2dc99d46fd113ccabb937bc66ec5c02313a85ae58e434f"
+    },
+    {
+      "path": "Windows/Engine/Binaries/ThirdParty/Windows/XAudio2_9/x64/xaudio2_9redist.dll",
+      "bytes": 858152,
+      "sha256": "bf0fc3902b3bd84da3406370fca75b3c70bb2f1901aa72d51c689a3d7368babe"
+    },
+    {
+      "path": "Windows/Engine/Config/StagedBuild_MothEffect.ini",
+      "bytes": 3,
+      "sha256": "f1945cd6c19e56b3c1c78943ef5ec18116907a4ca1efc40a57d48ab1db7adfc5"
+    },
+    {
+      "path": "Windows/Engine/Content/Renderer/TessellationTable.bin",
+      "bytes": 259568,
+      "sha256": "edc4f3b628a139c5e185bbaeca661c95c1f427368d3b92892c5cff36c56dd941"
+    },
+    {
+      "path": "Windows/Engine/Content/Slate/Cursor/invisible.cur",
+      "bytes": 326,
+      "sha256": "fef3980fa567e9c45d5d8dcaa432a2c1a3f3bb17fe67d7ab198164f56c142aa1"
+    },
+    {
+      "path": "Windows/Engine/Extras/Redist/en-us/vc_redist.arm64.exe",
+      "bytes": 11751688,
+      "sha256": "adfa777c65610fed5806151e056b1692c948c5803c5105be4de4c5835294237f"
+    },
+    {
+      "path": "Windows/Engine/Extras/Redist/en-us/vc_redist.x64.exe",
+      "bytes": 18569648,
+      "sha256": "ada4099d9275802d74b3962b9122bbcdf35fde4bad13c3bf71c39c8d957c2116"
+    },
+    {
+      "path": "Windows/Engine/Plugins/NNE/NNERuntimeORT/Binaries/ThirdParty/Onnxruntime/Win64/onnxruntime.dll",
+      "bytes": 17339384,
+      "sha256": "3732c47fe88117a50c83b125122676d3637b7edc5624631bca7e7fb9ad073b07"
+    },
+    {
+      "path": "Windows/Engine/Saved/Config/Windows/Manifest.ini",
+      "bytes": 25,
+      "sha256": "531bfb7088f544a87ff1268a69a3648dc0648ba49aaca9c3c67d4c4dcf87f088"
+    },
+    {
+      "path": "Windows/Manifest_NonUFSFiles_Win64.txt",
+      "bytes": 3046,
+      "sha256": "6b0cd7b358bc9f4eed8d065fe9252f51ce2f5175c76d784675af9c4071abc07a"
+    },
+    {
+      "path": "Windows/Manifest_UFSFiles_Win64.txt",
+      "bytes": 244970,
+      "sha256": "a18ab69a22587d5baf3821ce840f7ea38a40e6c985db2a2ca88a9f00e54ffec2"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/D3D12/x64/D3D12Core.dll",
+      "bytes": 4831768,
+      "sha256": "81390fdb18051864a687344b2e90dcebd8221f8a3085bb2de61cc4d5d5cd1f7d"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/D3D12/x64/d3d12SDKLayers.dll",
+      "bytes": 4943344,
+      "sha256": "a8cf9479634637ccf504768d130bc92eaa3dba40b7e691235034bee513dad5c4"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/DML/x64/DirectML.dll",
+      "bytes": 18538488,
+      "sha256": "1360c25e2ea821a7b7167ccdc3240a8bcb62ed1f49179231466ebf36f06c8072"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/MothEffect.exe",
+      "bytes": 341254656,
+      "sha256": "1ded0d0b08c5fc0974c9fcf68e8e66d571d9338e97b0bc74393539d41fb4bf64"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/tbb12.dll",
+      "bytes": 342456,
+      "sha256": "691983b2655a47533c5b9022881682f8dbcaecd11e8bdb741d265640d672b1a3"
+    },
+    {
+      "path": "Windows/MothEffect/Binaries/Win64/tbbmalloc.dll",
+      "bytes": 117176,
+      "sha256": "7e4c77616dbb7703dcf75670031fd89eb1a930fa6054991e74f5188e7f6dc240"
+    },
+    {
+      "path": "Windows/MothEffect/Content/Paks/global.ucas",
+      "bytes": 3250224,
+      "sha256": "642452196b449251ea080675e3a95dda0b6cc904b3220b6cb1147b740b673765"
+    },
+    {
+      "path": "Windows/MothEffect/Content/Paks/global.utoc",
+      "bytes": 794,
+      "sha256": "e09d905af0e81c935e666d18eeb99018360692e5001c9e721e6c1e3d0df027cf"
+    },
+    {
+      "path": "Windows/MothEffect/Content/Paks/MothEffect-Windows.pak",
+      "bytes": 11458134,
+      "sha256": "f2a466f7205da8ff8d8c540fa1a26f1415e91afecc3dc0c69923385e767bad4a"
+    },
+    {
+      "path": "Windows/MothEffect/Content/Paks/MothEffect-Windows.ucas",
+      "bytes": 464927680,
+      "sha256": "9b4d8f6367915553083c0dd1b825d2fefe0f5c1205ff5d1ba46dbc1e5d0711f5"
+    },
+    {
+      "path": "Windows/MothEffect/Content/Paks/MothEffect-Windows.utoc",
+      "bytes": 358634,
+      "sha256": "854265d8ebba1a58131540c5b2566fcfa3fb4f856e6be5d2f5388692d310e985"
+    },
+    {
+      "path": "Windows/MothEffect.exe",
+      "bytes": 171520,
+      "sha256": "791316dd7f8c7e65081118a621e16e073b5b6b663fb8098fd7af021c06942d34"
+    },
+    {
+      "path": "Windows/NOTICES.txt",
+      "bytes": 111,
+      "sha256": "ba49ae5586f817b36a2772269f71f899cb1f54b5f2720fad951319edd5e140b8"
+    }
+  ],
+  "extracted_hashes_match": true,
+  "launcher": "Windows/MothEffect.exe",
+  "runtime_saved_excluded": true,
+  "user_acceptance": "Pending; internal automation does not close manual T21/G3."
+}

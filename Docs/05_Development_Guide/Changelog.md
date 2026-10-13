@@ -1,8 +1,8 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.51 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.52 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.46，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.47，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 
@@ -107,3 +107,5 @@ CHG053（2026-10-13）：按用户要求完成T19默认反馈。实现8112648接
 CHG054（2026-10-13）：2026-10-13 T20原型完成：三种原创机关外壳、金属掩体模块、符文灯饰、共用材质与DA_PrototypeArt共17资产保存并新进程重载，重复运行文件SHA保持一致。机关与敌人背包共用可替换外观，主场地九块掩体与三灯饰由可关闭场景层接入；现有碰撞/导航和v0.18玩法基线保留。构建、107项全量Editor回归及最后一项夹具修正后的3项专项、实际D3D12/音频主地图12项通过；首轮围墙误识别、Static夹具、旧灰盒断言与导入失败如实留档。用户后续深度修改机制与整套UI，当前实现作为可运行基线；五组真实玩家/场地/独立包待验收，第三方缺依赖与完整恢复待补。实现3c6c8e5、Refs #22本地提交，补[原型制作入口](Prototype_Art_Setup.md)、[报告](../06_Test_Doc/T20_Report_2026-10-13.md)、三张原始1920×1080截图、DEC40与48节阅读版。初始TObjectPtr/成员遮蔽构建失败、OBJ槽排序/Y镜像导入失败及两轮测试失败保留；新构建发现T19上升线Rotation未初始化并修正。#22保持Open / In Progress、六验收框未勾选；用户玩家资产未保存或纳入，未推送/创建PR。
 
 CHG055（2026-10-13）：2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 网络失败先回读确认未创建重复PR，改用REST完成创建，再补字段；仅一份PR，未自动合并或关闭任务。
+
+CHG056（2026-10-13）：按用户“创建pr后推进t21”，PR #47最终head 2d861a0的Repository checks Success（7s）后，在develop产出T21内部Win64 Development包。1dbde1e打包入口、8339649完整ZIP/重解压入口、bbb612e玩家蓝图精确路径哈希修正均本地提交；真实Game Build/Cook/Stage/Pak/IoStore/Archive成功，Cook 0 errors / 8 unique warnings，742 cooked packages，真正包内十二项Success/0 test errors/82 warnings，HTML模板诊断保留。约644MiB ZIP四十四件运行文件hash一致，干净解压启动器进入标题并benchmark退出0。清单初版误选ABP同后缀，依据原始BuildInputs修正并实测小包归档/排除Saved/拒绝覆盖回归；程序容器与用户蓝图没有改变。归档三张原始1920×1080截图、包清单、日志、[四组验收](Windows_Test_Package.md)及[T21报告](../06_Test_Doc/T21_Report_2026-10-13.md)，新增DEC41并同步50节阅读版。#23 Open / In Progress，四框未勾选；真人键鼠/声音/完整通关录屏待验收，TC26与完整G3继续T22；用户玩家蓝图未保存或纳入Git/T18–T20 PR，本轮无T21推送/PR。

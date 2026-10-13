@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.47｜更新日期：2026-10-13｜时间：香港时间（UTC+8）
+版本：v0.48｜更新日期：2026-10-13｜时间：香港时间（UTC+8）
+
+2026-10-13 T21已实际生成Win64 Development内部包（代码1dbde1e、玩法v0.18）：Build/Cook/Pak/IoStore/Archive成功，真正打包EXE内十二项全部Success（0 test errors / 82 warnings），完整ZIP约644MiB，四十四件运行文件重新解压SHA一致，干净解压启动器进入标题并正常退出。本包读取用户当前未提交玩家蓝图，构建前后输入hash不变、未保存或纳入PR；清单已修正ABP同后缀误选。原始日志的HTML报告模板诊断与旧资源/动画告警保留。四组真人操作和完整录像待验收，#23 Open / In Progress、四框未勾选；TC26留T22，完整G3待验收。 [四组验收](Windows_Test_Package.md)与[T21实际报告](../06_Test_Doc/T21_Report_2026-10-13.md)为当前依据。以下段落保留历史。
 
 2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 以下段落保留历史。
 
@@ -153,7 +155,7 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T18 | [#20](https://github.com/YYchainsAw/MothEffect/issues/20) | 核心 | UI 布局/图标、HUD/教程与共用菜单接入 | T07、T16、T17 | 4–6 | 完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过 | Open / In Progress；[PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)已合并；编辑接口/基础骨架本地完成，具体UI用户制作；五组硬件 PIE 待验收，见 [UI_Setup](UI_Setup.md) |
 | T19 | [#21](https://github.com/YYchainsAw/MothEffect/issues/21) | 可压缩 | 提升命中、启动、方向与警告反馈 | T12、T18 | 2–3 | 枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除 | 默认反馈实现与配置已接入；原生/主地图结果见[T19报告](../06_Test_Doc/T19_Report_2026-10-13.md)，四组用户PIE待验收；#21 Open / In Progress |
 | T20 | [#22](https://github.com/YYchainsAw/MothEffect/issues/22) | 可压缩 | 少量原创机关/场景资产、整合与来源记录 | T17 灰盒；最终整合依赖 T19 | 6–8 | 完成三种简洁原创机关外壳、一个可复用掩体和一个符文/灯光装饰；统一色形/材质，敌人标记与掉落对应；保留来源/制作记录，核对模板依赖恢复；不改变玩法碰撞与方向，替换后验证操作与打包 | 原型/接口已完成并本地提交；17资产与原生/主地图回归通过，见[T20报告](../06_Test_Doc/T20_Report_2026-10-13.md)；五组用户验收/缺依赖恢复/独立包待执行，#22 Open / In Progress |
-| T21 | [#23](https://github.com/YYchainsAw/MothEffect/issues/23) | 核心 | 内部完整打包试玩与 G3 内部验收 | T09、T13、T16–T18 | 2–3 | 从独立包通关三波并死亡重开，TC20–TC25 和玩家专项适用分支有结果与录屏；TC26 由 T22 完成，通过前完整 G3 保持待验收 | Todo |
+| T21 | [#23](https://github.com/YYchainsAw/MothEffect/issues/23) | 核心 | 内部完整打包试玩与 G3 内部验收 | T09、T13、T16–T18 | 2–3 | 从独立包通关三波并死亡重开，TC20–TC25 和玩家专项适用分支有结果与录屏；TC26 由 T22 完成，通过前完整 G3 保持待验收 | In Progress；内部包/十二项程序/解压启动通过，四组真人操作与完整录像待验收 |
 | T22 | [#24](https://github.com/YYchainsAw/MothEffect/issues/24) | 可压缩 | 外部盲玩反馈 | T19、T21 | 1.5–2.5 | 至少一名不了解设计的人盲玩并执行 TC26，保存误操作和理解观察；失败结果交给 T23，复测通过后结合内部流程记录完整 G3；本任务不等待修复才交接 | Todo |
 | T23 | [#25](https://github.com/YYchainsAw/MothEffect/issues/25) | 核心 | 根据证据调整参数与教学 | T22 | 2–3 | 只改已暴露问题；更新 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 与资源参数，并回归相关测试；玩家可理解发射方向与危险来源，记录改前/改后 | Todo |
 | T24 | [#26](https://github.com/YYchainsAw/MothEffect/issues/26) | 核心 | 性能压力、稳定与边界修复 | T13、T21、T23 | 2–4 | 在指定基准机器与最大配置密度下录性能；重开、退出、失败流程没有泄漏和崩溃；记录达标或具体问题，不能只写“流畅” | Todo |

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：版本管理与 Git 排除规范
 
-版本 v0.8 · 2026-10-06 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.9 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-13 T21构建/压缩脚本按功能在develop本地提交；完整Windows包留Builds，不进Git。包清单、原始截图和验证摘录归档Docs，PNG使用LFS；生成的Build/*/FileOpenOrder忽略。用户玩家蓝图未保存/暂存/推送，但当前内部包读取它，原始构建hash与包清单明确标识；[T21报告](../06_Test_Doc/T21_Report_2026-10-13.md)记录实际包与纯提交树的差别。PR #47交付此前T18–T20，元数据和最终head CI通过；本地T21未另建PR，完整新克隆依赖恢复仍待验收。
 
 本文件定义仓库、排除规则与恢复约定。origin 为 https://github.com/YYchainsAw/MothEffect.git，远程为已公开、有提交的仓库。2026-10-06 核对 `main` 与 `develop` 均包含 [PR #30](https://github.com/YYchainsAw/MothEffect/pull/30) 的轻量 Actions 和 [PR #31](https://github.com/YYchainsAw/MothEffect/pull/31) 的 Issue/PR 模板；核对时两分支指向 `bea7273cf4a7319f85469eb572a10425c4e67ca6`。Git/origin/忽略/LFS 已配置，远程写入和 PR 合并已完成；里程碑 tag 仍以实际验收为依据。
 
@@ -38,7 +40,7 @@ T03 的 [Issue #5](https://github.com/YYchainsAw/MothEffect/issues/5) 已关闭�
 
 早期扫描的 Content 共 753 个 .uasset/.umap、约 134.4 MiB；此统计覆盖全部本机资源，不代表当前提交范围。当前只保留 Content/MothEffect，其余 Content 和生成目录均排除，实际候选文件数量以 git ls-files --others --exclude-standard 为准。
 
-当前 DefaultEngine.ini 的默认地图和游戏模式仍指向 /Game/ThirdPerson，源码/模板还使用 Characters、Input 等资源。按本轮规则，这些资源不会进入 Git；从远程全新克隆时，需要另行补齐模板资源或迁移依赖才能复现本机工程。本次未移动资产、修改引用或验证新克隆启动。以后若使用外置 Actor/Object 数据，还需核对 Content/__ExternalActors__、Content/__ExternalObjects__ 中是否存在本作关卡的必要数据；当前它们也按用户要求忽略。
+2026-10-13当前 DefaultEngine.ini 的默认地图为 /Game/MothEffect/Maps/L_Arena_01，游戏模式为已提交的MothEffect入口；历史ThirdPerson默认配置已经由T17迁移。玩家动画/骨骼等仍引用Git范围外的ParagonMurdock、模板与其他来源资源，完整新克隆需要按实际依赖补齐；T20审计记录的缺ParagonShinbi资源与第三方版本/许可/恢复证据尚未解决。T21已在现有本机资源组合下Cook并运行成功，不能作为新克隆恢复成功。以后若使用外置Actor/Object数据，还需核对 Content/__ExternalActors__、Content/__ExternalObjects__ 中必要数据；当前它们继续按用户要求忽略。
 
 .gitignore 只影响未跟踪文件，不能清除已有历史中的内容；未来误提交文件时需要另行处理索引或历史。[GitHub：忽略文件](https://docs.github.com/en/get-started/git-basics/ignoring-files)
 

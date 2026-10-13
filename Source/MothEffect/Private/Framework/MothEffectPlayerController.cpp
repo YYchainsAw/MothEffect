@@ -112,7 +112,7 @@ void AMothEffectPlayerController::StartTeaching()
 	if (bTravelRequested || !GetWorld() || GetWorld()->IsPaused()) return;
 	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
 	if (Mode && GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->StartTutorial(
-		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector()))
+		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector(), GameplayUI ? GameplayUI->GetTutorialConfig() : nullptr))
 	{
 		if (GameplayUI) GameplayUI->RefreshState(); SyncUIInput();
 	}

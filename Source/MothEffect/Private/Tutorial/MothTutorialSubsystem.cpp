@@ -1,5 +1,6 @@
 #include "Tutorial/MothTutorialSubsystem.h"
 #include "Tutorial/MothTutorialTarget.h"
+#include "Tutorial/MothTutorialConfig.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
 #include "Components/HealthComponent.h"
@@ -15,12 +16,18 @@ bool UMothTutorialSubsystem::DoesSupportWorldType(EWorldType::Type Type) const
 	return Type == EWorldType::Game || Type == EWorldType::PIE;
 }
 
-bool UMothTutorialSubsystem::StartTutorial(AMothEffectCharacter* InPlayer, AMothWaveDirector* InDirector)
+const UMothTutorialConfig* UMothTutorialSubsystem::GetConfig() const
+{
+	return Config ? Config.Get() : GetDefault<UMothTutorialConfig>();
+}
+
+bool UMothTutorialSubsystem::StartTutorial(AMothEffectCharacter* InPlayer, AMothWaveDirector* InDirector, const UMothTutorialConfig* InConfig)
 {
 	if (!IsValid(InPlayer) || !IsValid(InDirector) || InPlayer->GetWorld() != GetWorld()
 		|| InDirector->GetWorld() != GetWorld() || InDirector->GetPhase() != EMothFlowPhase::Ready
 		|| !InPlayer->GetHealthComponent()->IsAlive() || GetWorld()->IsPaused()) return false;
 	EndTutorial();
+	Config = DuplicateObject<UMothTutorialConfig>(InConfig ? InConfig : GetDefault<UMothTutorialConfig>(), this);
 	Player = InPlayer;
 	Director = InDirector;
 	Player->SetGameplayEnabled(true);
@@ -51,6 +58,7 @@ void UMothTutorialSubsystem::EndTutorial()
 	if (Player.IsValid()) Player->OnDeviceReleasedNative.RemoveAll(this);
 	ClearOwnedActors();
 	Player.Reset(); Director.Reset();
+	Config = nullptr;
 	Feedback = FText::GetEmpty(); FeedbackEndsAt = 0;
 	if (Step != EMothTutorialStep::Inactive)
 	{
@@ -97,26 +105,29 @@ void UMothTutorialSubsystem::BuildStep(EMothTutorialStep Next)
 	bBombHit = bLiftHit = bLiftObserved = bBlastGoal = bThrown = bAirborneHit = bIndirectHit = bRetryAir = false;
 	ThrowCommittedAt = 0;
 	Feedback = FText::GetEmpty(); FeedbackEndsAt = 0;
+	const auto* Settings = GetConfig();
 	if (Next == EMothTutorialStep::BombAndLift)
 	{
-		SpawnDevice(EDeviceKind::Bomb, FVector(-2200, -850, 40));
-		BlastTarget = SpawnBlastTarget(FVector(-2020, -850, 40));
-		SpawnDevice(EDeviceKind::Launcher, FVector(-1700, -1200, 40));
-		LiftTarget = SpawnTarget(FVector(-1700, -1200, 130), true);
+		SpawnDevice(EDeviceKind::Bomb, Settings->BombLocation);
+		BlastTarget = SpawnBlastTarget(Settings->BlastTargetLocation);
+		SpawnDevice(EDeviceKind::Launcher, Settings->LauncherLocation);
+		LiftTarget = SpawnTarget(Settings->LiftTargetLocation, true);
 		LiftStartZ = LiftTarget.IsValid() ? LiftTarget->GetActorLocation().Z : 0;
 	}
 	else if (Next == EMothTutorialStep::AirborneEmitter && Player.IsValid())
 	{
-		const FVector Location = Player->GetActorLocation() + Player->GetActorForwardVector() * 140 + FVector(0, 0, -50);
+		const FVector Offset = Settings->EmitterPlayerOffset;
+		const FVector Location = Player->GetActorLocation() + Player->GetActorForwardVector() * Offset.X
+			+ Player->GetActorRightVector() * Offset.Y + FVector::UpVector * Offset.Z;
 		ThrownEmitter = SpawnDevice(EDeviceKind::Emitter, Location);
 	}
 	else if (Next == EMothTutorialStep::IndirectChain)
 	{
-		SpawnDevice(EDeviceKind::Emitter, FVector(-2200, -1200, 40));
-		SpawnDevice(EDeviceKind::Bomb, FVector(-1600, -1200, 40));
-		BlastTarget = SpawnBlastTarget(FVector(-1420, -1200, 40));
+		SpawnDevice(EDeviceKind::Emitter, Settings->ChainEmitterLocation);
+		SpawnDevice(EDeviceKind::Bomb, Settings->ChainBombLocation);
+		BlastTarget = SpawnBlastTarget(Settings->ChainTargetLocation);
 		FActorSpawnParameters Params;
-		auto* Marker = GetWorld()->SpawnActor<AActor>(FVector(-2520, -1200, 80), FRotator::ZeroRotator, Params);
+		auto* Marker = GetWorld()->SpawnActor<AActor>(Settings->ArrowLocation, Settings->ArrowRotation, Params);
 		if (Marker)
 		{
 			OwnedActors.Add(Marker);
@@ -124,7 +135,7 @@ void UMothTutorialSubsystem::BuildStep(EMothTutorialStep Next)
 			Marker->SetRootComponent(Arrow); Marker->AddInstanceComponent(Arrow);
 			Arrow->ArrowColor = FColor(181, 146, 239); Arrow->ArrowLength = 300;
 			Arrow->SetHiddenInGame(false); Arrow->RegisterComponent();
-			Marker->SetActorLocation(FVector(-2520, -1200, 80));
+			Marker->SetActorTransform(FTransform(Settings->ArrowRotation, Settings->ArrowLocation));
 		}
 	}
 	else if (Next == EMothTutorialStep::Completed)
@@ -151,7 +162,7 @@ void UMothTutorialSubsystem::RetryStep()
 {
 	if (IsRunning() && Player.IsValid() && !GetWorld()->IsPaused())
 	{
-		BuildStep(Step); Feedback=FText::FromString(TEXT("已重置本步道具。")); FeedbackEndsAt=GetWorld()->GetTimeSeconds()+3;
+		BuildStep(Step); Feedback=GetConfig()->ResetFeedback; FeedbackEndsAt=GetWorld()->GetTimeSeconds()+3;
 	}
 }
 
@@ -219,8 +230,7 @@ void UMothTutorialSubsystem::CheckProgress()
 		{
 			const bool bInvalidHit = bRetryAir;
 			BuildStep(EMothTutorialStep::AirborneEmitter);
-			Feedback = FText::FromString(bInvalidHit ? TEXT("请先投出，再射击空中的发射器。已补充道具。")
-				: TEXT("已补充发射器；松开左键后，再试一次。"));
+			Feedback = bInvalidHit ? GetConfig()->InvalidAirHitFeedback : GetConfig()->RefillFeedback;
 			FeedbackEndsAt = GetWorld()->GetTimeSeconds() + 3;
 		}
 	}
@@ -236,9 +246,9 @@ FText UMothTutorialSubsystem::GetInstruction() const
 {
 	switch (Step)
 	{
-	case EMothTutorialStep::BombAndLift: return FText::FromString(TEXT("射击橙色爆裂器，炸毁方块；再射击青色抬升器，把箱子抬起。爆炸也会伤到自己，保持距离。"));
-	case EMothTutorialStep::AirborneEmitter: return FText::FromString(TEXT("E 拾取紫色发射器，左键投出。松开左键，恢复后重新按下，射击空中道具。启动瞬间锁定弹道方向，之后不跟随准星；失败会补充。"));
-	case EMothTutorialStep::IndirectChain: return FText::FromString(TEXT("沿紫色箭头从左向右射击发射器，让它的弹丸启动前方爆裂器，间接炸毁方块。方向锁定后，移动准星不会改变连锁。"));
+	case EMothTutorialStep::BombAndLift: return GetConfig()->BombAndLiftInstruction;
+	case EMothTutorialStep::AirborneEmitter: return GetConfig()->AirborneInstruction;
+	case EMothTutorialStep::IndirectChain: return GetConfig()->IndirectInstruction;
 	default: return FText::GetEmpty();
 	}
 }

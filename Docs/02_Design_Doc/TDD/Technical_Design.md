@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.43 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.44 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-13 T19：新增世界内FeedbackSubsystem、可编辑Profile、瞬时Visual Actor和DeviceFeedback组件。命中/效果从提交后的原生入口触发；真实几何无碰撞/Overlap/导航/阴影，箭头使用缓存世界方向。声音、网格效果与屏幕Alpha按游戏时间暂停；生命周期关闭/重置先清记录再结束实例，出生回调返回复核玩法与表现世代。枪口、命中、三类型启动和过期声音均有默认资产；独立包资产纳入AlwaysCook，但本轮不声称完成打包。接口见[默认配置](../../../Source/MothEffect/Public/Feedback/MothFeedbackProfile.h)、[世界反馈](../../../Source/MothEffect/Public/Feedback/MothFeedbackSubsystem.h)，制作与替换见[Feedback_Setup](../../05_Development_Guide/Feedback_Setup.md)，结果见[T19报告](../../06_Test_Doc/T19_Report_2026-10-13.md)。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 

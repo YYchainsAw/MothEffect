@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.43 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.44 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-13 T19默认反馈已完成：枪口/确认命中/受伤、三机关启动、世界锁定方向、Active/Spent与过期警告使用无碰撞几何和8个原创短音效；DA_DefaultFeedback提供替换与参数入口。暂停随游戏时间，结算/重试同步清理，出生回调重入使用世代复核；缺失的HUD字体来源已修复，保留用户样式。构建、104项Editor回归及最终9项反馈/UI、真实D3D12/音频主地图11项通过，失败历史与五张原始截图见[T19报告](06_Test_Doc/T19_Report_2026-10-13.md)。四组用户PIE仍待验收，独立包留T21；#21 Open / In Progress，实现8112648、修正e00348f本地develop提交，未推送/创建PR。制作与验收见[Feedback_Setup](05_Development_Guide/Feedback_Setup.md)。以下段落保留历史。
 
 2026-10-13 T18编辑接口已接入：保存Designer基础树和25个控件绑定，菜单文案/页面预览在Class Defaults，教学说明与布置在DA_MothTutorial；具体UI由用户制作。Editor构建、2项编辑回归、主地图10项及扩充UI2项通过，当前硬件PIE待验收。本轮本地develop提交，未创建新PR；原PR #46已合并。编辑入口见[UI_Setup](05_Development_Guide/UI_Setup.md)，结果见[T18报告](06_Test_Doc/T18_Report_2026-10-12.md)。以下段落保留历史。
 

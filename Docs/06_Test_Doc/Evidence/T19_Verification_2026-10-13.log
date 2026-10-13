@@ -1,0 +1,355 @@
+T19 default feedback verification | 2026-10-13 Asia/Hong_Kong
+UE 5.8.0-55116800 | Win64 Development | local develop; no package/manual PIE acceptance
+Report exports below distinguish NullRHI from actual D3D12/audio evidence.
+BUILD Saved/Automation/T19/Build1Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Devices\DeviceBase.cpp(411,26): error C2039: "IsValid": 不是 "TObjectPtr<APawn>" 的成员
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothDeviceFeedbackComponent.cpp(37,26): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothDeviceFeedbackComponent.cpp(37,26): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothDeviceFeedbackComponent.cpp(37,32): error C2664: “bool IsValid(const UObject *)”: 无法将参数 1 从“<error type> *”转换为“const UObject *”
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothDeviceFeedbackComponent.cpp(52,26): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothDeviceFeedbackComponent.cpp(52,26): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothFeedbackVisual.cpp(29,27): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothFeedbackVisual.cpp(29,27): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothFeedbackVisual.cpp(50,13): error C3535: 无法推导“auto *”的类型(依据“TObjectPtr<UStaticMeshComponent>”)
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothFeedbackVisual.cpp(50,13): error C2440: “初始化”: 无法从“TObjectPtr<UStaticMeshComponent>”转换为“<error type> *”
+Result: Failed (OtherCompilationError)
+Total execution time: 28.75 seconds
+BUILD Saved/Automation/T19/Build2Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Devices\DeviceBase.cpp(411,26): error C2039: "IsValid": 不是 "TObjectPtr<APawn>" 的成员
+Result: Failed (OtherCompilationError)
+Total execution time: 3.67 seconds
+BUILD Saved/Automation/T19/Build3Console.log
+Result: Succeeded
+Total execution time: 5.81 seconds
+BUILD Saved/Automation/T19/Build4Console.log
+Result: Succeeded
+Total execution time: 14.45 seconds
+BUILD Saved/Automation/T19/Build5Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\FeedbackRuntimeTests.cpp(121,8): error C2666: “FAutomationTestBase::TestEqual”: 重载函数具有类似的转换
+Result: Failed (OtherCompilationError)
+Total execution time: 11.10 seconds
+BUILD Saved/Automation/T19/Build6Console.log
+Result: Succeeded
+Total execution time: 6.09 seconds
+BUILD Saved/Automation/T19/Build7Console.log
+Result: Succeeded
+Total execution time: 17.11 seconds
+BUILD Saved/Automation/T19/Build8Console.log
+Result: Succeeded
+Total execution time: 12.60 seconds
+BUILD Saved/Automation/T19/Build9Console.log
+Result: Succeeded
+Total execution time: 18.45 seconds
+BUILD Saved/Automation/T19/Build10Console.log
+Result: Succeeded
+Total execution time: 9.53 seconds
+BUILD Saved/Automation/T19/Build11Console.log
+Result: Succeeded
+Total execution time: 6.03 seconds
+BUILD Saved/Automation/T19/Build12Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\FeedbackRuntimeTests.cpp(49,23): error C3535: 无法推导“auto *”的类型(依据“TObjectPtr<APawn>”)
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\FeedbackRuntimeTests.cpp(49,23): error C2440: “初始化”: 无法从“TObjectPtr<APawn>”转换为“<error type> *”
+Result: Failed (OtherCompilationError)
+Total execution time: 11.49 seconds
+BUILD Saved/Automation/T19/Build13Console.log
+Result: Succeeded
+Total execution time: 6.84 seconds
+ASSETS Saved/Automation/T19/AssetsCreated.json {"created": ["/Game/MothEffect/Feedback/M_DefaultFeedback", "/Game/MothEffect/Feedback/SA_DefaultFeedback", "/Game/MothEffect/Feedback/Audio/S_Rifle", "/Game/MothEffect/Feedback/Audio/S_Hit", "/Game/MothEffect/Feedback/Audio/S_Damage", "/Game/MothEffect/Feedback/Audio/S_Launcher", "/Game/MothEffect/Feedback/Audio/S_Bomb", "/Game/MothEffect/Feedback/Audio/S_Emitter", "/Game/MothEffect/Feedback/Audio/S_Pulse", "/Game/MothEffect/Feedback/Audio/S_Warning", "/Game/MothEffect/Feedback/DA_DefaultFeedback"], "profile": "/Game/MothEffect/Feedback/DA_DefaultFeedback.DA_DefaultFeedback", "cue_slots": 12, "sounds": 8, "material": "/Game/MothEffect/Feedback/M_DefaultFeedback.M_DefaultFeedback", "attenuation": "/Game/MothEffect/Feedback/SA_DefaultFeedback.SA_DefaultFeedback", "existing_assets_preserved": true}
+ASSETS Saved/Automation/T19/AssetsReloaded.json {"created": [], "profile": "/Game/MothEffect/Feedback/DA_DefaultFeedback.DA_DefaultFeedback", "cue_slots": 12, "sounds": 8, "material": "/Game/MothEffect/Feedback/M_DefaultFeedback.M_DefaultFeedback", "attenuation": "/Game/MothEffect/Feedback/SA_DefaultFeedback.SA_DefaultFeedback", "existing_assets_preserved": true}
+REPORT Editor1 {"succeeded": 98, "succeededWithWarnings": 4, "failed": 0, "notRun": 0, "errors": 0, "warnings": 53, "reportCreatedOnUTC": "2026.10.13-02.17.14", "duration": 147.75662231445312}
+TEST MothEffect.Chains.BombIntoFirelineAndLayoutControl state=Success errors=0 warnings=1
+TEST MothEffect.Chains.ColumnIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectBomb state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectEmitter state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectLauncher state=Success errors=0 warnings=1
+TEST MothEffect.Chains.PausedFlightAndIndependentLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedBlueprintNaturalChain state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedRangeConfiguration state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SourceExclusionAndAttributionDamage state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ThinWallConsumesFirstImpact state=Success errors=0 warnings=1
+TEST MothEffect.Combat.Impulse.FrameMergeAndClamp state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.InvalidAndDuplicateEvents state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.PauseAndCancellation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.CancelBeforeEffect state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.HeldAndNonBallisticStates state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.PhysicalMovement state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.SingleUseAndFrozenCenter state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.StaticCoverAndRadius state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.BlockedBirthAndExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.CancellationStopsTimers state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.WorldDirectionAndLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.BombColumnOrderIndependent state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.FullStaticVolumeAndContact state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.InvalidGroundConsumesSeed state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OccupiedUntilExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PauseCancellationAndEndPlay state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SavedBlueprintIntegration state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SlopeAndPlatformEdge state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.EndpointOccupancy state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.ThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ActivationIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Devices.CancelDuringActivationCallback state=Success errors=0 warnings=0
+TEST MothEffect.Devices.RejectInvalidAndDisabledHits state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.ActualWorldPauseFreezesWarning state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CoverCancelsWarningAndReacquires state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.DeathIdempotenceConfigAndBomb state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.NormalRifleKillsOnce state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01ActivatesDormantDevice state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SavedBlueprintAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.IdempotentDeathAndFixedClass state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.NormalW01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealD02KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealP01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DisabledIdleClockResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.FullCapacityProtectsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SavedBlueprintsAndDebugController state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.TotalRecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.BlockedReleaseRetainsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.DeathAndEndPlayCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.FocusAndPhysicalRelease state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.HeldInvalidationAndDamage state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PausePreservesTimers state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PickupReloadCompetition state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.RoundCancellationRejectsOldTasks state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.SinglePressAndRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.UnpossessedStopsFire state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.FirstImpactIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.RejectionAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.SweptThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting state=Success errors=0 warnings=50
+TEST MothEffect.UI.DesignerPreviewDoesNotBindGameplay state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed state=Success errors=0 warnings=0
+REPORT EditorFinal {"succeeded": 101, "succeededWithWarnings": 3, "failed": 0, "notRun": 0, "errors": 0, "warnings": 52, "reportCreatedOnUTC": "2026.10.13-02.29.01", "duration": 146.70166015625}
+TEST MothEffect.Chains.BombIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ColumnIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectBomb state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectEmitter state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectLauncher state=Success errors=0 warnings=0
+TEST MothEffect.Chains.PausedFlightAndIndependentLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedBlueprintNaturalChain state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedRangeConfiguration state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SourceExclusionAndAttributionDamage state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ThinWallConsumesFirstImpact state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.FrameMergeAndClamp state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.InvalidAndDuplicateEvents state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.PauseAndCancellation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.CancelBeforeEffect state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.HeldAndNonBallisticStates state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.PhysicalMovement state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.SingleUseAndFrozenCenter state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.StaticCoverAndRadius state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.BlockedBirthAndExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.CancellationStopsTimers state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.WorldDirectionAndLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.BombColumnOrderIndependent state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.FullStaticVolumeAndContact state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.InvalidGroundConsumesSeed state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OccupiedUntilExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PauseCancellationAndEndPlay state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SavedBlueprintIntegration state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SlopeAndPlatformEdge state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.EndpointOccupancy state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.ThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ActivationIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Devices.CancelDuringActivationCallback state=Success errors=0 warnings=0
+TEST MothEffect.Devices.RejectInvalidAndDisabledHits state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.ActualWorldPauseFreezesWarning state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CoverCancelsWarningAndReacquires state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.DeathIdempotenceConfigAndBomb state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.NormalRifleKillsOnce state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01ActivatesDormantDevice state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SavedBlueprintAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact state=Success errors=0 warnings=1
+TEST MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.IdempotentDeathAndFixedClass state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.NormalW01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealD02KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealP01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.ExpiryHeldDropAndSpent state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DisabledIdleClockResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.FullCapacityProtectsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause state=Success errors=0 warnings=1
+TEST MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SavedBlueprintsAndDebugController state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.TotalRecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.BlockedReleaseRetainsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.DeathAndEndPlayCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.FocusAndPhysicalRelease state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.HeldInvalidationAndDamage state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PausePreservesTimers state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PickupReloadCompetition state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.RoundCancellationRejectsOldTasks state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.SinglePressAndRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.UnpossessedStopsFire state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.FirstImpactIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.RejectionAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.SweptThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting state=Success errors=0 warnings=50
+TEST MothEffect.UI.DesignerPreviewDoesNotBindGameplay state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed state=Success errors=0 warnings=0
+REPORT EditorFocused {"succeeded": 6, "succeededWithWarnings": 0, "failed": 0, "notRun": 0, "errors": 0, "warnings": 0, "reportCreatedOnUTC": "2026.10.13-02.31.07", "duration": 0.5741757750511169}
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.ExpiryHeldDropAndSpent state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation state=Success errors=0 warnings=0
+REPORT EditorVerified {"succeeded": 8, "succeededWithWarnings": 1, "failed": 0, "notRun": 0, "errors": 0, "warnings": 50, "reportCreatedOnUTC": "2026.10.13-02.46.38", "duration": 0.7641743421554565}
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.ExpiryHeldDropAndSpent state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation state=Success errors=0 warnings=0
+TEST MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting state=Success errors=0 warnings=50
+TEST MothEffect.UI.DesignerPreviewDoesNotBindGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle state=Success errors=0 warnings=0
+REPORT Game1 {"succeeded": 3, "succeededWithWarnings": 7, "failed": 1, "notRun": 0, "errors": 1, "warnings": 220, "reportCreatedOnUTC": "2026.10.13-02.20.34", "duration": 107.54158020019531}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Fail errors=1 warnings=14
+T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=0
+Expected ('Warning') level log message or higher matching 'could not play on' to occur 1 times with Contains match type, but it was found 0 time(s).
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=16
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=33
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+[2026.10.13-02.19.00:082][626]LogAutomationController: T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=0
+REPORT RenderFinal {"succeeded": 3, "succeededWithWarnings": 7, "failed": 1, "notRun": 0, "errors": 2, "warnings": 220, "reportCreatedOnUTC": "2026.10.13-02.33.10", "duration": 114.9626693725586}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Fail errors=2 warnings=14
+Expected 'Blocked muzzle consumes a real shot and emits muzzle cue' to be 2, but it was 1.
+Expected 'Blocked shot gives no confirmed hit marker' to be 0.000000, but it was 0.923055 and outside tolerance 0.000100.
+T19 feedback runtime: shot=1 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=16
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=33
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+[2026.10.13-02.30.51:331][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-02.31.02:122][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2026.10.13-02.31.02:727][  0]LogInit: FAudioDevice initialized with ID 1.
+[2026.10.13-02.31.29:305][680]LogAutomationController: T19 feedback runtime: shot=1 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+REPORT RenderVerified {"succeeded": 3, "succeededWithWarnings": 8, "failed": 0, "notRun": 0, "errors": 0, "warnings": 220, "reportCreatedOnUTC": "2026.10.13-02.48.40", "duration": 115.04154968261719}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Success errors=0 warnings=14
+T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=16
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=33
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+[2026.10.13-02.46.22:443][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-02.46.31:707][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2026.10.13-02.46.32:196][  0]LogInit: FAudioDevice initialized with ID 1.
+[2026.10.13-02.46.58:494][779]LogAutomationController: T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+AUDIO {"name": "S_Rifle", "channels": 1, "rate": 48000, "duration": 0.09, "peak": 0.7000030518509476, "rms": 0.13598437779964928, "sha256": "fcb9fd524d7217db3ff8eb705d62fd88c1bd86b90399988400f48dc3dc90c5e1"}
+AUDIO {"name": "S_Hit", "channels": 1, "rate": 48000, "duration": 0.07, "peak": 0.7000030518509476, "rms": 0.20510539153886728, "sha256": "fb26c6382f638b62b3544f2c0073a82f383b3516a9cffdc10ceefcdc212828a9"}
+AUDIO {"name": "S_Damage", "channels": 1, "rate": 48000, "duration": 0.16, "peak": 0.7000030518509476, "rms": 0.16494932894424036, "sha256": "b70a47c81e530b610c8fa2e49e558c86cef48881b50d19bad87b559a3bc789b4"}
+AUDIO {"name": "S_Launcher", "channels": 1, "rate": 48000, "duration": 0.28, "peak": 0.7000030518509476, "rms": 0.21692660407951128, "sha256": "36b9d053b0512550a1973ea502bbfbd130c0ed92b396ad90585aed1263b82385"}
+AUDIO {"name": "S_Bomb", "channels": 1, "rate": 48000, "duration": 0.36, "peak": 0.7000030518509476, "rms": 0.1149735486804021, "sha256": "77bc11e120541353ff8c09f7e04566a256185c13c412287eea0a787660acc09c"}
+AUDIO {"name": "S_Emitter", "channels": 1, "rate": 48000, "duration": 0.22, "peak": 0.7000030518509476, "rms": 0.21651983537914718, "sha256": "6e12cd932dfee4a277fc0aa066ee36f4bf24c85c6d6dd5522654cfb284165f52"}
+AUDIO {"name": "S_Pulse", "channels": 1, "rate": 48000, "duration": 0.08, "peak": 0.7000030518509476, "rms": 0.21442687649565492, "sha256": "1f8b1fd587dc7d885e82504c8225d5fee6d5e3bc30d83ffdfc7295238b1da626"}
+AUDIO {"name": "S_Warning", "channels": 1, "rate": 48000, "duration": 0.26, "peak": 0.7000030518509476, "rms": 0.2094199808271979, "sha256": "a9a0a1b17e61306ddbe0d16716615f9637d292e71af73119805d8ba295c99307"}
+SCREEN Docs/06_Test_Doc/Evidence/T19/01_ConfirmedHit.png 1920x1080 sha256=d316529f5cc0042b18d80a41f81c71d1574acba6b68667cd8f81a44cb8bb756b
+SCREEN Docs/06_Test_Doc/Evidence/T19/02_DamageEdges.png 1920x1080 sha256=6ed76ffeda8e5a2d5b014c7663bf70bb1247f0fc3dfd076a8b9c847585dee1ac
+SCREEN Docs/06_Test_Doc/Evidence/T19/03_Launcher.png 1920x1080 sha256=390e8859808c82da8c5feab7eed96af80885ebd22efbd2db57fa98ddca239fac
+SCREEN Docs/06_Test_Doc/Evidence/T19/04_Bomb.png 1920x1080 sha256=aa95ac66e1420a3a9f279fd547c15124ebad6f3f0e21ca107a871aebb12ec27c
+SCREEN Docs/06_Test_Doc/Evidence/T19/05_Emitter.png 1920x1080 sha256=c2912d65d6a697f382d4297c3a35491dfeb5cb64e668167ff7dcef5663489fa6
+PRESERVED user BP_MothPlayer SHA256=a3de76da7f3440b048ca5ea9668e41f4d11414d7f2e9ccba31743777584d0af8
+LOCAL implementation=8112648 corrections-and-tests=e00348f branch=develop; no push or PR
+STATIC validate_repo.py passed: 345 tracked files, 62 UE assets; JSON, relative links and LFS attributes valid
+STATIC build_reading_view.py passed: 46 source sections; anchors and local links valid
+STATIC git diff --cached --check passed; git lfs fsck OK
+READING first generation failed after Markdown API EOF; bounded retry completed successfully
+GITHUB issue #21 verification updated and read back: Open, four unchecked acceptance boxes, YYchainsAw, polish/area:combat/area:ui, milestone M5
+GITHUB project item changed Todo -> In Progress and read back; manual PIE, sound audibility and aim occlusion remain pending

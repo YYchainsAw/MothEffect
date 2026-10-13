@@ -60,6 +60,8 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& Geometry, float DeltaSeconds) override;
+	virtual int32 NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& CullingRect,
+		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bParentEnabled) const override;
 	virtual FReply NativeOnKeyDown(const FGeometry& Geometry, const FKeyEvent& Event) override;
 private:
 	FMothHUDState State;
@@ -70,6 +72,8 @@ private:
 	bool bControlsReady = false;
 	FSlateColor DefaultAimColor, DefaultCrosshairColor;
 protected:
+	/** Disable when replacing these two screen cues in your Widget Blueprint. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultCombatFeedback = true;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Teaching") TSoftObjectPtr<UMothTutorialConfig> TutorialConfig;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy TitleCopy;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy PauseCopy;

@@ -13,10 +13,13 @@
 #include "Types/MothCollisionChannels.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "GameFramework/PlayerController.h"
+#include "Feedback/MothDeviceFeedbackComponent.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 
 ADeviceBase::ADeviceBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	DefaultFeedback = CreateDefaultSubobject<UMothDeviceFeedbackComponent>(TEXT("DefaultFeedback"));
 	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	PhysicsBody = CreateDefaultSubobject<USphereComponent>(TEXT("PhysicsBody"));
 	SetRootComponent(PhysicsBody);
@@ -220,6 +223,8 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 		OnActivatedNative.Broadcast(this, ActivationContext);
 		if (!bEndingPlay && !IsActorBeingDestroyed() && bGameplayEnabled && DeviceState == EDeviceState::Active)
 		{
+			GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, ActivationImpactPoint, ActivationDirection,
+				IsValid(Context.InstigatorPawn) && Context.InstigatorPawn->IsPlayerControlled() && Context.InstigatorPawn->IsLocallyControlled());
 			bEffectRunning = true;
 			ActivateEffect(ActivationContext);
 		}
@@ -324,10 +329,13 @@ bool ADeviceBase::TransitionTo(EDeviceState NewState, bool bNotify)
 		Holder = nullptr;
 	}
 	ApplyStateCollision();
+	if (DefaultFeedback && DefaultFeedback->HasBegunPlay()) DefaultFeedback->RefreshPresentation();
 	if (bNotify)
 	{
 		NotifyStateChanged(OldState, NewState);
 	}
+	if (NewState == EDeviceState::Spent && DeviceState == EDeviceState::Spent && bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed())
+		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Spent, GetActorLocation()+FVector::UpVector*60);
 	return true;
 }
 
@@ -401,6 +409,7 @@ void ADeviceBase::ActivateEffect(const FHitContext& Context)
 	EmitterExpiresAt = EmitterStartedAt + FMath::Max(0.01f, EmitterDurationSeconds);
 	EmitterDirectionMarker->SetWorldRotation(ActivationDirection.Rotation());
 	EmitterDirectionMarker->SetVisibility(true, true);
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Emitter, GetActorLocation(), ActivationDirection);
 	GetWorldTimerManager().SetTimer(EmitterExpiryTimer, this, &ADeviceBase::ExpireEmitter,
 		FMath::Max(0.01f, EmitterDurationSeconds), false);
 	ScheduleEmitterShot();
@@ -594,6 +603,7 @@ void ADeviceBase::UpdateIdleLifecycle(float Lifetime, float WarningSeconds, floa
 		if (!bExpiryWarningActive)
 		{
 			bExpiryWarningActive = true;
+			GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Expiry, GetActorLocation());
 #if !UE_BUILD_SHIPPING
 			if (bLogDeviceEvents) UE_LOG(LogMothEffect, Log, TEXT("Device %s expiryWarning remaining=%.3f idle=%.3f"), *GetName(), Remaining, GetDormantIdleSeconds());
 #endif

@@ -1,4 +1,5 @@
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "Combat/RuleProjectile.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
@@ -235,6 +236,7 @@ bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
 	if (bResetting) return false;
 	if (bGameplayEnabled && !bEnabled) ++LifecycleGeneration;
 	bGameplayEnabled = bEnabled;
+	if (!bEnabled) if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
 	return true;
 }
 
@@ -242,6 +244,7 @@ void UDeviceLifecycleSubsystem::ResetManagedObjects()
 {
 	if (bResetting) return;
 	TGuardValue<bool> Guard(bResetting, true);
+	if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
 	++LifecycleGeneration;
 	const auto DeviceSnapshot = Devices;
 	const auto ProjectileSnapshot = Projectiles;

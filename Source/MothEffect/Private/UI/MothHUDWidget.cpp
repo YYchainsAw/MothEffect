@@ -13,6 +13,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "MothHUDLayout.h"
 #include "Tutorial/MothTutorialConfig.h"
+#include "Feedback/MothFeedbackSubsystem.h"
+#include "Rendering/DrawElements.h"
 
 UMothHUDWidget::UMothHUDWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -97,6 +99,39 @@ void UMothHUDWidget::BindButtons(bool bBind)
 void UMothHUDWidget::NativeConstruct() { Super::NativeConstruct(); BindButtons(true); RefreshState(); }
 void UMothHUDWidget::NativeDestruct() { BindButtons(false); UnbindSources(); Super::NativeDestruct(); }
 void UMothHUDWidget::NativeTick(const FGeometry& Geometry,float DeltaSeconds) { Super::NativeTick(Geometry,DeltaSeconds); RefreshState(); }
+
+int32 UMothHUDWidget::NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& CullingRect,
+	FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bParentEnabled) const
+{
+	Layer=Super::NativePaint(Args,Geometry,CullingRect,Elements,Layer,Style,bParentEnabled);
+	const auto* Feedback=GetWorld()?GetWorld()->GetSubsystem<UMothFeedbackSubsystem>():nullptr;
+	if (!bDrawDefaultCombatFeedback||IsDesignTime()||IsMenuVisible()||!Feedback) return Layer;
+	const FVector2D Size=Geometry.GetLocalSize();
+	const float Hit=Feedback->GetHitMarkerAlpha(), Damage=Feedback->GetDamageEdgeAlpha();
+	if (Hit<=0&&Damage<=0) return Layer;
+	++Layer;
+	auto Line=[&](FVector2D A,FVector2D B,FLinearColor Color,float Width)
+	{
+		TArray<FVector2D> Points{A,B};
+		FSlateDrawElement::MakeLines(Elements,Layer,Geometry.ToPaintGeometry(),Points,ESlateDrawEffect::None,Color,true,Width);
+	};
+	if (Hit>0)
+	{
+		FVector2D Center=Size*.5f;
+		if (CrosshairText) { const auto& G=CrosshairText->GetCachedGeometry(); Center=Geometry.AbsoluteToLocal(G.LocalToAbsolute(G.GetLocalSize()*.5f)); }
+		for (int32 X : {-1,1}) for (int32 Y : {-1,1})
+			Line(Center+FVector2D(X*9,Y*9),Center+FVector2D(X*15,Y*15),FLinearColor(1,1,1,Hit),2);
+	}
+	if (Damage>0)
+	{
+		const FLinearColor Red(1,.12f,.08f,Damage*.65f);
+		Line(FVector2D(4,4),FVector2D(Size.X-4,4),Red,5);
+		Line(FVector2D(4,4),FVector2D(4,Size.Y-4),Red,5);
+		Line(FVector2D(Size.X-4,4),Size-FVector2D(4,4),Red,5);
+		Line(FVector2D(4,Size.Y-4),Size-FVector2D(4,4),Red,5);
+	}
+	return Layer;
+}
 
 void UMothHUDWidget::UnbindSources()
 {

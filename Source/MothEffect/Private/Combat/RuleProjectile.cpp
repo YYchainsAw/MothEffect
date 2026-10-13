@@ -8,6 +8,8 @@
 #include "MothEffect.h"
 #include "Types/MothCollisionChannels.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Feedback/MothFeedbackSubsystem.h"
+#include "Devices/DeviceBase.h"
 
 ARuleProjectile::ARuleProjectile()
 {
@@ -86,6 +88,8 @@ void ARuleProjectile::BeginPlay()
 	ProjectileMovement->Velocity = FlightDirection * ProjectileMovement->InitialSpeed;
 	ProjectileMovement->Activate(true);
 	SetLifeSpan(FMath::Max(0.01f, LifetimeSeconds));
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(Cast<ADeviceBase>(FiringSource.Get()) ? EMothFeedbackCue::EmitterShot : EMothFeedbackCue::EnemyShot,
+		GetActorLocation(), FlightDirection);
 #if !UE_BUILD_SHIPPING
 	if (bLogProjectileEvents)
 		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=spawn hit=%s source=%s instigator=%s position=%s direction=%s speed=%.1f lifetime=%.2f"),
@@ -170,6 +174,7 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 #endif
 	if (!bEndingPlay && !IsActorBeingDestroyed())
 	{
+		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Impact, Hit.ImpactPoint+Hit.ImpactNormal*2, Hit.ImpactNormal);
 		OnImpactNative.Broadcast(this, HitActor, Context);
 		if (!bEndingPlay && !IsActorBeingDestroyed())
 		{

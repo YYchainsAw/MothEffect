@@ -19,6 +19,7 @@ class UExternalImpulseComponent;
 class ALaunchColumn;
 class UTextRenderComponent;
 class UDeviceLifecycleSubsystem;
+class UMothDeviceFeedbackComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
@@ -35,6 +36,7 @@ class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, pub
 
 public:
 	ADeviceBase();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Device|Feedback") TObjectPtr<UMothDeviceFeedbackComponent> DefaultFeedback;
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
 	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;

@@ -18,3 +18,4 @@
 
 # Original T18 renderer captures; copy bytes unchanged from the automation run.
 Docs/06_Test_Doc/Evidence/T18/*.png filter=lfs diff=lfs merge=lfs -text
+SourceArt/Feedback/*.wav filter=lfs diff=lfs merge=lfs -text

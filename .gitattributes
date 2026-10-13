@@ -10,6 +10,7 @@
 *.cs text eol=lf
 *.ini text eol=lf
 *.py text eol=lf
+*.ps1 text eol=lf
 *.obj text eol=lf
 *.mtl text eol=lf
 *.uproject text eol=lf
@@ -23,4 +24,5 @@
 Docs/06_Test_Doc/Evidence/T18/*.png filter=lfs diff=lfs merge=lfs -text
 Docs/06_Test_Doc/Evidence/T19/*.png filter=lfs diff=lfs merge=lfs -text
 Docs/06_Test_Doc/Evidence/T20/*.png filter=lfs diff=lfs merge=lfs -text
+Docs/06_Test_Doc/Evidence/T21/*.png filter=lfs diff=lfs merge=lfs -text
 SourceArt/Feedback/*.wav filter=lfs diff=lfs merge=lfs -text

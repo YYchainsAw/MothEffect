@@ -4,6 +4,9 @@
 /Saved/
 /DerivedDataCache/
 
+# Generated cook traces; Build icons and packaging configuration remain versioned.
+/Build/*/FileOpenOrder/
+
 # Plugin caches are generated. Keep plugin binaries by default because
 # binary-only plugins may require them. Add exact rules for source plugins.
 /Plugins/**/Intermediate/

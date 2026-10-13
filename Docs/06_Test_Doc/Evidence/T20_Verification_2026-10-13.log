@@ -1,0 +1,380 @@
+T20 replaceable prototype art verification | 2026-10-13 Asia/Hong_Kong
+UE 5.8.0-55116800 / Win64 Development Editor / local develop; manual PIE and independent package pending
+BUILD Build1Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Art\DeviceAppearance.cpp(14,90): error C2445: 条件表达式的 result 类型有歧义: 类型“T *”和“TObjectPtr<UStaticMesh>”可转换为多个常见类型
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\AI\EnemyDrops.cpp(24,15): error C4458: “Mesh”的声明隐藏了类成员
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Feedback\MothFeedbackVisual.cpp(73) : warning C4701: 使用了可能未初始化的局部变量“Rotation”
+Result: Failed (OtherCompilationError)
+Total execution time: 47.07 seconds
+BUILD Build2Console.log
+Result: Succeeded
+Total execution time: 16.05 seconds
+BUILD Build3Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 46.13 seconds
+BUILD Build4Console.log
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 29.53 seconds
+BUILD Build5Console.log
+Result: Succeeded
+Total execution time: 8.66 seconds
+IMPORT Assets1.log
+[2026.10.13-13.10.07:035][  2]LogPython: Error: RuntimeError: Material slots must remain Metal/Copper/Glow: SM_D01Launcher ['Copper', 'Glow', 'Metal']
+IMPORT Assets2.log
+[2026.10.13-13.12.39:270][  2]LogPython: Error: RuntimeError: OBJ import changed centimeters or axes: SM_RuneBeacon {'min': [-15.399999618530273, -15.399999618530273, 0.0], 'max': [15.399999618530273, 15.699999809265137, 44.20000076293945]}
+IMPORT Assets3.log
+[2026.10.13-13.15.41:911][  2]LogPython: T20_ART_ASSETS {"created": ["/Game/MothEffect/PrototypeArt/Meshes/SM_RuneBeacon", "/Game/MothEffect/PrototypeArt/DA_PrototypeArt"], "mesh_checks": [{"name": "SM_D01Launcher", "bounds_cm": {"min": [-11.899999618530273, -11.899999618530273, -14.0], "max": [11.899999618530273, 11.899999618530273, 15.5]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D02Bomb", "bounds_cm": {"min": [-17.299999237060547, -14.550000190734863, -15.399999618530273], "max": [17.299999237060547, 14.550000190734863, 15.399999618530273]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D03Emitter", "bounds_cm": {"min": [-13.0, -6.5, -8.0], "max": [16.299999237060547, 6.5, 6.800000190734863]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_CoverModule", "bounds_cm": {"min": [-50.0, -50.0, -50.0], "max": [50.0, 50.0, 50.0]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_RuneBeacon", "bounds_cm": {"min": [-15.399999618530273, -15.399999618530273, 0.0], "max": [15.399999618530273, 15.699999809265137, 44.20000076293945]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": true}], "profile": "/Game/MothEffect/PrototypeArt/DA_PrototypeArt.DA_PrototypeArt", "device_slots": 3, "existing_assets_preserved": true, "blueprints_and_maps_saved": false}
+IMPORT Assets4.log
+[2026.10.13-13.33.22:326][  2]LogPython: T20_ART_ASSETS {"created": [], "mesh_checks": [{"name": "SM_D01Launcher", "bounds_cm": {"min": [-11.899999618530273, -11.899999618530273, -14.0], "max": [11.899999618530273, 11.899999618530273, 15.5]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D02Bomb", "bounds_cm": {"min": [-17.299999237060547, -14.550000190734863, -15.399999618530273], "max": [17.299999237060547, 14.550000190734863, 15.399999618530273]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D03Emitter", "bounds_cm": {"min": [-13.0, -6.5, -8.0], "max": [16.299999237060547, 6.5, 6.800000190734863]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_CoverModule", "bounds_cm": {"min": [-50.0, -50.0, -50.0], "max": [50.0, 50.0, 50.0]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_RuneBeacon", "bounds_cm": {"min": [-15.399999618530273, -15.399999618530273, 0.0], "max": [15.399999618530273, 15.699999809265137, 44.20000076293945]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}], "profile": "/Game/MothEffect/PrototypeArt/DA_PrototypeArt.DA_PrototypeArt", "device_slots": 3, "existing_assets_preserved": true, "blueprints_and_maps_saved": false}
+ASSETS AssetsCreated {"created": ["/Game/MothEffect/PrototypeArt/Meshes/SM_RuneBeacon", "/Game/MothEffect/PrototypeArt/DA_PrototypeArt"], "mesh_checks": [{"name": "SM_D01Launcher", "bounds_cm": {"min": [-11.899999618530273, -11.899999618530273, -14.0], "max": [11.899999618530273, 11.899999618530273, 15.5]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D02Bomb", "bounds_cm": {"min": [-17.299999237060547, -14.550000190734863, -15.399999618530273], "max": [17.299999237060547, 14.550000190734863, 15.399999618530273]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D03Emitter", "bounds_cm": {"min": [-13.0, -6.5, -8.0], "max": [16.299999237060547, 6.5, 6.800000190734863]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_CoverModule", "bounds_cm": {"min": [-50.0, -50.0, -50.0], "max": [50.0, 50.0, 50.0]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_RuneBeacon", "bounds_cm": {"min": [-15.399999618530273, -15.399999618530273, 0.0], "max": [15.399999618530273, 15.699999809265137, 44.20000076293945]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": true}], "profile": "/Game/MothEffect/PrototypeArt/DA_PrototypeArt.DA_PrototypeArt", "device_slots": 3, "existing_assets_preserved": true, "blueprints_and_maps_saved": false}
+ASSETS AssetsReloaded {"created": [], "mesh_checks": [{"name": "SM_D01Launcher", "bounds_cm": {"min": [-11.899999618530273, -11.899999618530273, -14.0], "max": [11.899999618530273, 11.899999618530273, 15.5]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D02Bomb", "bounds_cm": {"min": [-17.299999237060547, -14.550000190734863, -15.399999618530273], "max": [17.299999237060547, 14.550000190734863, 15.399999618530273]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_D03Emitter", "bounds_cm": {"min": [-13.0, -6.5, -8.0], "max": [16.299999237060547, 6.5, 6.800000190734863]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_CoverModule", "bounds_cm": {"min": [-50.0, -50.0, -50.0], "max": [50.0, 50.0, 50.0]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}, {"name": "SM_RuneBeacon", "bounds_cm": {"min": [-15.399999618530273, -15.399999618530273, 0.0], "max": [15.399999618530273, 15.699999809265137, 44.20000076293945]}, "slots": ["Copper", "Glow", "Metal"], "simple_collision_count": 0, "new": false}], "profile": "/Game/MothEffect/PrototypeArt/DA_PrototypeArt.DA_PrototypeArt", "device_slots": 3, "existing_assets_preserved": true, "blueprints_and_maps_saved": false}
+REPORT Editor1 {"succeeded": 105, "succeededWithWarnings": 1, "failed": 2, "errors": 2, "warnings": 51, "reportCreatedOnUTC": "2026.10.13-13.22.36", "duration": 149.60723876953125}
+TEST MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits state=Success errors=0 warnings=0
+TEST MothEffect.Art.ReversibleCoverLayerPreservesBlocking state=Fail errors=1 warnings=1
+Expected 'Hidden original cover still blocks actual shots' to be true.
+TEST MothEffect.Art.SavedMeshesMaterialsAndUnits state=Success errors=0 warnings=0
+TEST MothEffect.Chains.BombIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ColumnIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectBomb state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectEmitter state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectLauncher state=Success errors=0 warnings=0
+TEST MothEffect.Chains.PausedFlightAndIndependentLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedBlueprintNaturalChain state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedRangeConfiguration state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SourceExclusionAndAttributionDamage state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ThinWallConsumesFirstImpact state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.FrameMergeAndClamp state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.InvalidAndDuplicateEvents state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.PauseAndCancellation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation state=Fail errors=1 warnings=0
+Expected 'Graybox has 40cm visual diameter' to be true.
+TEST MothEffect.Devices.Bomb.CancelBeforeEffect state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.HeldAndNonBallisticStates state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.PhysicalMovement state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.SingleUseAndFrozenCenter state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.StaticCoverAndRadius state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.BlockedBirthAndExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.CancellationStopsTimers state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.WorldDirectionAndLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.BombColumnOrderIndependent state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.FullStaticVolumeAndContact state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.InvalidGroundConsumesSeed state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OccupiedUntilExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PauseCancellationAndEndPlay state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SavedBlueprintIntegration state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SlopeAndPlatformEdge state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.EndpointOccupancy state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.ThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ActivationIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Devices.CancelDuringActivationCallback state=Success errors=0 warnings=0
+TEST MothEffect.Devices.RejectInvalidAndDisabledHits state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.ActualWorldPauseFreezesWarning state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CoverCancelsWarningAndReacquires state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.DeathIdempotenceConfigAndBomb state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.NormalRifleKillsOnce state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01ActivatesDormantDevice state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SavedBlueprintAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.IdempotentDeathAndFixedClass state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.NormalW01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealD02KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealP01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.ExpiryHeldDropAndSpent state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DisabledIdleClockResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.FullCapacityProtectsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SavedBlueprintsAndDebugController state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.TotalRecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.BlockedReleaseRetainsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.DeathAndEndPlayCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.FocusAndPhysicalRelease state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.HeldInvalidationAndDamage state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PausePreservesTimers state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PickupReloadCompetition state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.RoundCancellationRejectsOldTasks state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.SinglePressAndRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.UnpossessedStopsFire state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.FirstImpactIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.RejectionAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.SweptThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting state=Success errors=0 warnings=50
+TEST MothEffect.UI.DesignerPreviewDoesNotBindGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed state=Success errors=0 warnings=0
+[2026.10.13-13.19.59:080][  0]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.22.36:530][194]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 108 tests performed.
+REPORT Render1 {"succeeded": 3, "succeededWithWarnings": 8, "failed": 1, "errors": 2, "warnings": 232, "reportCreatedOnUTC": "2026.10.13-13.22.14", "duration": 122.26406860351562}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.ArtRuntime.ArenaLayerAndVisualGallery state=Fail errors=2 warnings=11
+Expected 'All six low and three high covers dressed' to be 9, but it was 13.
+Expected 'Re-enable recreates only nine visuals' to be 9, but it was 13.
+T20 runtime: actual saved device appearances=3 coverVisuals=9 runes=3 layers=1; main arena blocker and reversible layer verified
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Success errors=0 warnings=15
+T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=16
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=33
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+[2026.10.13-13.19.47:696][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-13.19.58:522][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2026.10.13-13.19.58:692][  0]LogInit: FAudioDevice initialized with ID 1.
+[2026.10.13-13.20.01:839][  0]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.24:758][711]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.29:708][235]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.43:229][824]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.44:525][828]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.46:842][962]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.48:213][975]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.20.55:912][740]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.02:436][393]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.10:149][191]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.13:942][496]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.17:709][809]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.21:478][133]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.25:270][448]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.29:027][767]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.33:250][ 12]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.37:220][268]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.41:143][528]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.45:048][801]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.21.49:520][ 66]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.22.14:666][113]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 12 tests performed.
+REPORT EditorFinal {"succeeded": 105, "succeededWithWarnings": 2, "failed": 1, "errors": 3, "warnings": 52, "reportCreatedOnUTC": "2026.10.13-13.30.57", "duration": 150.68272399902344}
+TEST MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits state=Success errors=0 warnings=0
+TEST MothEffect.Art.ReversibleCoverLayerPreservesBlocking state=Fail errors=3 warnings=1
+Expected 'Recognizes saved material plus runtime tag' to be 1, but it was 0.
+Expected 'Only original render geometry is hidden' to be false.
+Expected 'Refresh does not duplicate covers' to be 1, but it was 0.
+TEST MothEffect.Art.SavedMeshesMaterialsAndUnits state=Success errors=0 warnings=0
+TEST MothEffect.Chains.BombIntoFirelineAndLayoutControl state=Success errors=0 warnings=1
+TEST MothEffect.Chains.ColumnIntoFirelineAndLayoutControl state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectBomb state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectEmitter state=Success errors=0 warnings=0
+TEST MothEffect.Chains.DirectLauncher state=Success errors=0 warnings=0
+TEST MothEffect.Chains.PausedFlightAndIndependentLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedBlueprintNaturalChain state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SavedRangeConfiguration state=Success errors=0 warnings=0
+TEST MothEffect.Chains.SourceExclusionAndAttributionDamage state=Success errors=0 warnings=0
+TEST MothEffect.Chains.ThinWallConsumesFirstImpact state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.FrameMergeAndClamp state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.InvalidAndDuplicateEvents state=Success errors=0 warnings=0
+TEST MothEffect.Combat.Impulse.PauseAndCancellation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.CancelBeforeEffect state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.HeldAndNonBallisticStates state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.PhysicalMovement state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.SingleUseAndFrozenCenter state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Bomb.StaticCoverAndRadius state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.BlockedBirthAndExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.CancellationStopsTimers state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Emitter.WorldDirectionAndLifetime state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.BombColumnOrderIndependent state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.FullStaticVolumeAndContact state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.InvalidGroundConsumesSeed state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OccupiedUntilExpiry state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PauseCancellationAndEndPlay state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SavedBlueprintIntegration state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.SlopeAndPlatformEdge state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles state=Success errors=0 warnings=0
+TEST MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.EndpointOccupancy state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ReleaseSafety.ThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Devices.ActivationIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Devices.CancelDuringActivationCallback state=Success errors=0 warnings=0
+TEST MothEffect.Devices.RejectInvalidAndDisabledHits state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.ActualWorldPauseFreezesWarning state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.CoverCancelsWarningAndReacquires state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.DeathIdempotenceConfigAndBomb state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.NormalRifleKillsOnce state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01ActivatesDormantDevice state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SavedBlueprintAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.IdempotentDeathAndFixedClass state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.NormalW01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealD02KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealP01KillsAllVariants state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.RecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.BoundedPauseAndSessionCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.CommittedEventsAndLockedArrow state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DamageAndProjectileAreSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.DefaultAssetsLoad state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.ExpiryHeldDropAndSpent state=Success errors=0 warnings=0
+TEST MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.DisabledIdleClockResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.FullCapacityProtectsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.SavedBlueprintsAndDebugController state=Success errors=0 warnings=0
+TEST MothEffect.Lifecycle.TotalRecyclesOldestDormant state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.BlockedReleaseRetainsHeld state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.DeathAndEndPlayCleanup state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.FocusAndPhysicalRelease state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.HeldInvalidationAndDamage state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PausePreservesTimers state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.PickupReloadCompetition state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.RoundCancellationRejectsOldTasks state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.SinglePressAndRecovery state=Success errors=0 warnings=0
+TEST MothEffect.Player.T09.UnpossessedStopsFire state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.FirstImpactIsSingleUse state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.RejectionAndSourceExclusion state=Success errors=0 warnings=0
+TEST MothEffect.Projectiles.SweptThinWall state=Success errors=0 warnings=0
+TEST MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting state=Success errors=0 warnings=50
+TEST MothEffect.UI.DesignerPreviewDoesNotBindGameplay state=Success errors=0 warnings=0
+TEST MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal state=Success errors=0 warnings=0
+TEST MothEffect.WaveFlow.TutorialResetBeforePreparation state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement state=Success errors=0 warnings=0
+TEST MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed state=Success errors=0 warnings=0
+[2026.10.13-13.28.19:155][  0]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.30.57:563][203]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 108 tests performed.
+REPORT RenderFinal {"succeeded": 3, "succeededWithWarnings": 9, "failed": 0, "errors": 0, "warnings": 232, "reportCreatedOnUTC": "2026.10.13-13.30.31", "duration": 121.9637451171875}
+TEST MothEffect.ArenaRuntime.BothRampsPhysicalWalking state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover state=Success errors=0 warnings=0
+TEST MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision state=Success errors=0 warnings=0
+TEST MothEffect.ArtRuntime.ArenaLayerAndVisualGallery state=Success errors=0 warnings=11
+T20 runtime: actual saved device appearances=3 coverVisuals=9 runes=3 layers=1; main arena blocker and reversible layer verified
+TEST MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup state=Success errors=0 warnings=15
+T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=4 audioAtPause=1
+TEST MothEffect.UIRuntime.ActionDrivenTutorialAndPause state=Success errors=0 warnings=16
+TEST MothEffect.UIRuntime.StartBattleDefeatAndRestart state=Success errors=0 warnings=33
+TEST MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause state=Success errors=0 warnings=1
+TEST MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker state=Success errors=0 warnings=12
+TEST MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards state=Success errors=0 warnings=131
+TEST MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory state=Success errors=0 warnings=1
+[2026.10.13-13.28.05:634][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2026.10.13-13.28.16:652][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2026.10.13-13.28.16:758][  0]LogInit: FAudioDevice initialized with ID 1.
+[2026.10.13-13.28.19:146][  0]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.28.41:776][725]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.28.46:634][248]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.00:184][901]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.01:413][905]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.03:688][ 35]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.04:986][ 45]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.13:133][853]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.20:127][319]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.28:156][900]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.31:930][200]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.35:753][504]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.39:565][815]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.43:370][124]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.47:292][420]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.51:132][700]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.54:968][  4]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.29.58:847][312]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.30.02:725][617]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.30.06:482][918]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.30.31:577][117]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 12 tests performed.
+REPORT EditorVerified {"succeeded": 3, "succeededWithWarnings": 0, "failed": 0, "errors": 0, "warnings": 0, "reportCreatedOnUTC": "2026.10.13-13.33.26", "duration": 0.050906501710414886}
+TEST MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits state=Success errors=0 warnings=0
+TEST MothEffect.Art.ReversibleCoverLayerPreservesBlocking state=Success errors=0 warnings=0
+TEST MothEffect.Art.SavedMeshesMaterialsAndUnits state=Success errors=0 warnings=0
+[2026.10.13-13.33.20:846][  0]LoadErrors: While trying to load package /Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage, a dependent package /Game/ParagonShinbi/Characters/Heroes/Shinbi/Animations/LevelStart (B77EC61828C0AA4F) was not available. Additional explanatory information follows:
+[2026.10.13-13.33.26:617][308]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 3 tests performed.
+SOURCE {"name": "SM_D01Launcher", "source_file": "SM_D01Launcher.obj", "source_sha256": "df8d5c44798b66c489fc785f246ab70590f3237b769724a7213a4c723a8579ac", "material_slots": ["Metal", "Copper", "Glow"], "purpose": "Upward launch pedestal and triangular arrow prism", "collision_policy": "visual_only; device gameplay sphere remains authoritative", "bounds_cm": {"min": [-11.9, -11.9, -14.0], "max": [11.9, 11.9, 15.5]}, "size_cm": [23.8, 23.8, 29.5], "max_vertex_radius_cm": 18.117671, "vertex_count": 384, "triangle_count": 128, "normal_count": 128, "uv_count": 384, "triangles_per_material": {"Metal": 48, "Copper": 52, "Glow": 28}}
+SOURCE {"name": "SM_D02Bomb", "source_file": "SM_D02Bomb.obj", "source_sha256": "e503e42c6f6aecc1963f8172745e5598b061dda8debbb88b2cb134ac0142b92c", "material_slots": ["Metal", "Copper", "Glow"], "purpose": "Orange faceted core, crossed sealing rings, copper seal", "collision_policy": "visual_only; device gameplay sphere remains authoritative", "bounds_cm": {"min": [-17.3, -14.55, -15.4], "max": [17.3, 14.55, 15.4]}, "size_cm": [34.6, 29.1, 30.8], "max_vertex_radius_cm": 17.529689, "vertex_count": 984, "triangle_count": 328, "normal_count": 328, "uv_count": 984, "triangles_per_material": {"Metal": 120, "Copper": 148, "Glow": 60}}
+SOURCE {"name": "SM_D03Emitter", "source_file": "SM_D03Emitter.obj", "source_sha256": "4d1dd9e4924892affcd5414fec566aa2879f9e8c9f75f51cb10433d367e639a2", "material_slots": ["Metal", "Copper", "Glow"], "purpose": "Directional rectangular body with +X muzzle", "collision_policy": "visual_only; device gameplay sphere remains authoritative", "bounds_cm": {"min": [-13.0, -6.5, -8.0], "max": [16.3, 6.5, 6.8]}, "size_cm": [29.3, 13.0, 14.8], "max_vertex_radius_cm": 16.542068, "vertex_count": 480, "triangle_count": 160, "normal_count": 160, "uv_count": 480, "triangles_per_material": {"Metal": 52, "Copper": 52, "Glow": 56}}
+SOURCE {"name": "SM_CoverModule", "source_file": "SM_CoverModule.obj", "source_sha256": "f869cb7feeeb73e90445a2872f57b8e049d1e97207ecdc1bb56be519ae0595a4", "material_slots": ["Metal", "Copper", "Glow"], "purpose": "Faceted metal barricade, framed feet and luminous chevron", "collision_policy": "retains original T17 cube collision at exact [-50,50] cm bounds", "bounds_cm": {"min": [-50.0, -50.0, -50.0], "max": [50.0, 50.0, 50.0]}, "size_cm": [100.0, 100.0, 100.0], "max_vertex_radius_cm": 86.60254, "vertex_count": 636, "triangle_count": 212, "normal_count": 212, "uv_count": 636, "triangles_per_material": {"Metal": 68, "Copper": 96, "Glow": 48}}
+SOURCE {"name": "SM_RuneBeacon", "source_file": "SM_RuneBeacon.obj", "source_sha256": "26a5df5a4bfa38683b065790397cfb7f6955d2ee2ac834d77e861f50a01e02d8", "material_slots": ["Metal", "Copper", "Glow"], "purpose": "Switchable decoration: floating rune crystal and four-post frame", "collision_policy": "NoCollision; no navigation relevance; actor visibility may be disabled", "bounds_cm": {"min": [-15.4, -15.7, 0.0], "max": [15.4, 15.4, 44.2]}, "size_cm": [30.8, 31.1, 44.2], "max_vertex_radius_cm": 46.304211, "vertex_count": 600, "triangle_count": 200, "normal_count": 200, "uv_count": 600, "triangles_per_material": {"Metal": 76, "Copper": 104, "Glow": 20}}
+ASSET Content/MothEffect/PrototypeArt/DA_PrototypeArt.uasset bytes=1227 sha256=63269493a711f71e71998e75177429a049ca8d4ab169d68bb4d7bf0da99a3d4d
+ASSET Content/MothEffect/PrototypeArt/Materials/M_PrototypeGlow.uasset bytes=6508 sha256=292ebd58ecc0803031cd336130472b2472071f2a94fdb623c80f0c522c88c0a9
+ASSET Content/MothEffect/PrototypeArt/Materials/M_PrototypeMetal.uasset bytes=6290 sha256=e21a02f2e10c2d3468ec42336deb07a1c4a0c0b759055abb952e6fc2530c0292
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_Copper.uasset bytes=3333 sha256=55cc0bb975a57a67166b699fb29ebea3cade9dc7246a3d88ca19f08e1616ecd5
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D01Glow.uasset bytes=3461 sha256=e249840f1929b539b87cc9ebc2e3eb4876df304c5be939bfbade56a0f34ca4e6
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D01Metal.uasset bytes=3345 sha256=4346a67a437bd102d3949fad1cb775da3b242673ae38dfb0ea7df6d326f39175
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D02Glow.uasset bytes=3461 sha256=63d9b36786add36652545d2f8ea7901ef68bd4d53b4d123903a5f51538f28ea4
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D02Metal.uasset bytes=3345 sha256=77eaf5d5217d1c7466c1cb7ae2f0e3cee03129e9e9ea98aaf9a99c7a2ec40386
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D03Glow.uasset bytes=3461 sha256=9db57d1889b43000683a853cc66e574466b2d18715e5a07bdffa8e55c0ea793c
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_D03Metal.uasset bytes=3345 sha256=d7909ac7f906aef69c5e1721c72fede57d3b8aacd38d3e3d8d8f1bc4daac4430
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_Metal.uasset bytes=3327 sha256=cd266123cb5e0f3a2bafd9cd9b134e7e153240c044d1f34f0c91e325bcb0e3bb
+ASSET Content/MothEffect/PrototypeArt/Materials/MI_RuneGlow.uasset bytes=3467 sha256=5d4b43d5ce01f80c1197614b1b80451803d8f7765d0c66bb0e1753431f39508d
+ASSET Content/MothEffect/PrototypeArt/Meshes/SM_CoverModule.uasset bytes=16138 sha256=70610d1b36dc28fa1cedf1dc80adb261bd2a5d390bc2d2164cab926ec0213de5
+ASSET Content/MothEffect/PrototypeArt/Meshes/SM_D01Launcher.uasset bytes=15271 sha256=774c683a9ab9984166068cca8332b6fe96cfa4c249d2589ae9fa579b217b0093
+ASSET Content/MothEffect/PrototypeArt/Meshes/SM_D02Bomb.uasset bytes=17970 sha256=a76f171bae8eee1be5c273f5dfafd1b3c73a8e58d57d3103078de974078c8998
+ASSET Content/MothEffect/PrototypeArt/Meshes/SM_D03Emitter.uasset bytes=15603 sha256=43d737c5f33b908fc841610d2250759ed6c5d9e262524d06641fcfeb4ffcb552
+ASSET Content/MothEffect/PrototypeArt/Meshes/SM_RuneBeacon.uasset bytes=16283 sha256=561676521eb4e50619311e2f38eec48f120d547055afe4f1703a6d665692ecef
+SCREEN Docs/06_Test_Doc/Evidence/T20/01_DeviceShells.png 1920x1080 sha256=26785e88efd4f159796bb2f7e41b0cfb574ca1f4f4230de5c1260b46d4bfbcce
+SCREEN Docs/06_Test_Doc/Evidence/T20/02_CoverModule.png 1920x1080 sha256=acb1e3a2890bf1120d39e4a28412294ea06e76b1116eb81048cc9a222079f8a7
+SCREEN Docs/06_Test_Doc/Evidence/T20/03_RuneBeacon.png 1920x1080 sha256=385efa537bfbfe3344de2364e0af6a1fbed019b78310e4459883472119d281f6
+PRESERVED user BP_MothPlayer SHA256=a3de76da7f3440b048ca5ea9668e41f4d11414d7f2e9ccba31743777584d0af8
+LOCAL implementation-and-tests=3c6c8e5 branch=develop; no push or PR
+RELOAD all 17 pre-existing prototype asset SHA256 hashes unchanged after Assets4; created=[]
+STATIC generator --check verified five meshes/eight deterministic files; no file writes
+STATIC implementation validation passed: 379 tracked files/79 UE assets
+STATIC final validation passed: 385 tracked files/79 UE assets; JSON/relative links/LFS attributes
+STATIC reading view generated and verified: 48 source sections/anchors/local links
+STATIC git diff --cached --check passed; git lfs fsck OK
+GITHUB project #22 changed Todo -> In Progress and read back; issue remains Open with six unchecked acceptance boxes

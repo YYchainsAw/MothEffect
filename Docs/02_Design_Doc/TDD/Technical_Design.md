@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.44 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.45 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-13 T20：PrototypeArtProfile独立提供显示模型/材料/局部Transform；设备与背包直接共用解析入口，材质按语义槽名适配OBJ重排。开关保留原外观与用户替换；场景层仅主竞技场生成一次，识别T17标签/材质/尺寸，排除大围墙，关闭/销毁恢复原渲染。原掩体承担碰撞/导航，新网格与灯饰无玩法查询；资产软引用目录纳入Cook。接口与改造步骤见[Prototype_Art_Setup](../../05_Development_Guide/Prototype_Art_Setup.md)，实际验证见[T20报告](../../06_Test_Doc/T20_Report_2026-10-13.md)。用户后续机制/UI改造按新规则更新权威文档、配置与测试。
 
 2026-10-13 T19：新增世界内FeedbackSubsystem、可编辑Profile、瞬时Visual Actor和DeviceFeedback组件。命中/效果从提交后的原生入口触发；真实几何无碰撞/Overlap/导航/阴影，箭头使用缓存世界方向。声音、网格效果与屏幕Alpha按游戏时间暂停；生命周期关闭/重置先清记录再结束实例，出生回调返回复核玩法与表现世代。枪口、命中、三类型启动和过期声音均有默认资产；独立包资产纳入AlwaysCook，但本轮不声称完成打包。接口见[默认配置](../../../Source/MothEffect/Public/Feedback/MothFeedbackProfile.h)、[世界反馈](../../../Source/MothEffect/Public/Feedback/MothFeedbackSubsystem.h)，制作与替换见[Feedback_Setup](../../05_Development_Guide/Feedback_Setup.md)，结果见[T19报告](../../06_Test_Doc/T19_Report_2026-10-13.md)。
 

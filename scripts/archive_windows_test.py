@@ -46,7 +46,7 @@ def main():
         checks.append(dict(path='Windows/'+relative.as_posix(),bytes=path.stat().st_size,sha256=original))
     inputs=json.loads(args.build_inputs.read_text(encoding='utf-8-sig'))
     manifest=dict(task='T21',configuration=inputs['configuration'],code_commit=inputs['git_commit'],
-        input_git_status=inputs['git_status'],user_blueprint_sha256=next(x['sha256'] for x in inputs['input_hashes'] if x['path'].endswith('BP_MothPlayer.uasset')),
+        input_git_status=inputs['git_status'],user_blueprint_sha256=next(x['sha256'] for x in inputs['input_hashes'] if x['path']=='Content/MothEffect/Characters/Player/BP_MothPlayer.uasset'),
         zip_file=output.name,zip_bytes=output.stat().st_size,zip_sha256=digest(output),payload_files=checks,
         extracted_hashes_match=True,launcher='Windows/MothEffect.exe',runtime_saved_excluded=True,
         user_acceptance='Pending; internal automation does not close manual T21/G3.')

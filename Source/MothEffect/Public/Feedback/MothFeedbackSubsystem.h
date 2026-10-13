@@ -39,5 +39,6 @@ private:
 	TMap<EMothFeedbackCue,double> LastSound;
 	TMap<EMothFeedbackCue,uint64> Counts;
 	double LastHit=-100, LastDamage=-100;
-	bool bClosed=false, bAudioPaused=false;
+	uint64 PresentationGeneration=0;
+	bool bClosed=false, bAudioPaused=false, bClearing=false;
 };

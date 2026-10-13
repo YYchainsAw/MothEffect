@@ -24,7 +24,7 @@ void AMothFeedbackVisual::InitializeCue(EMothFeedbackCue Kind, const FMothFeedba
 	Cue=Kind; Duration=FMath::Clamp(Style.Duration,.02f,2.f);
 	Size=FMath::Clamp(RadiusCm>0?RadiusCm:Style.SizeCm,1.f,1000.f);
 	// Bomb ring stays horizontal; directional flashes align to the committed flight direction.
-	SetActorRotation(Cue==EMothFeedbackCue::Bomb?FRotator::ZeroRotator:Direction.GetSafeNormal().Rotation());
+	SetActorRotation(Cue==EMothFeedbackCue::Bomb||Cue==EMothFeedbackCue::Launcher?FRotator::ZeroRotator:Direction.GetSafeNormal().Rotation());
 	if (auto* Material=Profile->Material.LoadSynchronous())
 		for (const auto& Mesh : Pieces)
 		{

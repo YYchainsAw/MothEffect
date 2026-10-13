@@ -25,21 +25,25 @@ TStatId UMothFeedbackSubsystem::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_S
 
 void UMothFeedbackSubsystem::Tick(float)
 {
-	Visuals.RemoveAllSwap([](const auto& Item){ return !Item.IsValid()||Item->IsActorBeingDestroyed(); });
+	Visuals.RemoveAll([](const auto& Item){ return !Item.IsValid()||Item->IsActorBeingDestroyed(); });
 	const bool bPaused=GetWorld()->IsPaused();
 	if (bPaused!=bAudioPaused)
 	{
 		bAudioPaused=bPaused;
 		for (const auto& Item : Audio) if (Item.IsValid()) Item->SetPaused(bPaused);
 	}
-	Audio.RemoveAllSwap([this](const auto& Item){ return !Item.IsValid()||(!bAudioPaused&&!Item->IsPlaying()); });
+	Audio.RemoveAll([this](const auto& Item){ return !Item.IsValid()||(!bAudioPaused&&!Item->IsPlaying()); });
 }
 
 void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVector Direction, bool bLocalConfirmedHit, bool bLocalDamage, float RadiusCm)
 {
 	UWorld* World=GetWorld();
-	if (bClosed||!Profile||!Profile->bEnabled||!World||World->IsPaused()||Position.ContainsNaN()||Direction.ContainsNaN()
+	if (bClosed||bClearing||!Profile||!Profile->bEnabled||!World||World->IsPaused()||Position.ContainsNaN()||Direction.ContainsNaN()
 		||!World->GetSubsystem<UDeviceLifecycleSubsystem>()->IsGameplayEnabled()) return;
+	const auto* Session=World->GetSubsystem<UDeviceLifecycleSubsystem>();
+	const uint64 SessionGeneration=Session->GetLifecycleGeneration(), FeedbackGeneration=PresentationGeneration;
+	auto StillCurrent=[&] { return !bClosed&&!bClearing&&PresentationGeneration==FeedbackGeneration
+		&&Session->IsGenerationCurrent(SessionGeneration)&&!World->IsPaused()&&Profile->bEnabled; };
 	const auto* Style=Profile->Styles.Find(Kind); if (!Style) return;
 	++Counts.FindOrAdd(Kind);
 	const double Now=World->GetTimeSeconds();
@@ -50,15 +54,21 @@ void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVect
 	{
 		while (Visuals.Num()>=FMath::Clamp(Profile->MaxVisualCues,1,64))
 		{
-			if (Visuals[0].IsValid()) Visuals[0]->Destroy(); Visuals.RemoveAt(0);
+			const auto Oldest=Visuals[0]; Visuals.RemoveAt(0);
+			if (Oldest.IsValid()) Oldest->Destroy();
+			if (!StillCurrent()) return;
 		}
 		FActorSpawnParameters Params; Params.ObjectFlags|=RF_Transient;
 		Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		if (auto* Visual=World->SpawnActor<AMothFeedbackVisual>(Position,FRotator::ZeroRotator,Params))
 		{
+			// World spawn observers may end/reset the session before this actor is tracked.
+			if (!StillCurrent()||!IsValid(Visual)||Visual->IsActorBeingDestroyed())
+			{ if (IsValid(Visual)&&!Visual->IsActorBeingDestroyed()) Visual->Destroy(); return; }
 			Visual->InitializeCue(Kind,*Style,Profile,Direction,RadiusCm); Visuals.Add(Visual);
 		}
 	}
+	if (!StillCurrent()) return;
 	const double* Previous=LastSound.Find(Kind);
 	if (Profile->bAudio&&Profile->MasterVolume>0&&Style->Volume>0&&(!Previous||Now-*Previous>=FMath::Max(0.f,Style->AudioInterval)))
 	{
@@ -67,20 +77,29 @@ void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVect
 			LastSound.Add(Kind,Now);
 			while (Audio.Num()>=FMath::Clamp(Profile->MaxAudioVoices,1,32))
 			{
-				if (Audio[0].IsValid()) Audio[0]->Stop(); Audio.RemoveAt(0);
+				const auto Oldest=Audio[0]; Audio.RemoveAt(0);
+				if (Oldest.IsValid()) Oldest->Stop();
+				if (!StillCurrent()) return;
 			}
 			if (auto* Voice=UGameplayStatics::SpawnSoundAtLocation(World,Sound,Position,FRotator::ZeroRotator,
-				FMath::Clamp(Profile->MasterVolume*Style->Volume,0.f,1.f),1.f,0.f,Profile->Attenuation.LoadSynchronous())) Audio.Add(Voice);
+				FMath::Clamp(Profile->MasterVolume*Style->Volume,0.f,1.f),1.f,0.f,Profile->Attenuation.LoadSynchronous()))
+			{
+				if (!StillCurrent()) { Voice->Stop(); return; }
+				Audio.Add(Voice);
+			}
 		}
 	}
 }
 
 void UMothFeedbackSubsystem::ClearFeedback()
 {
-	for (const auto& Item : Visuals) if (Item.IsValid()) Item->Destroy();
-	for (const auto& Item : Audio) if (Item.IsValid()) Item->Stop();
+	if (bClearing) return;
+	TGuardValue<bool> Guard(bClearing,true); ++PresentationGeneration;
+	const auto VisualSnapshot=Visuals; const auto AudioSnapshot=Audio;
 	Visuals.Reset(); Audio.Reset(); LastSound.Reset(); LastHit=LastDamage=-100;
 	bAudioPaused=false;
+	for (const auto& Item : VisualSnapshot) if (Item.IsValid()) Item->Destroy();
+	for (const auto& Item : AudioSnapshot) if (Item.IsValid()) Item->Stop();
 	for (TActorIterator<ADeviceBase> It(GetWorld()); It; ++It)
 		if (It->DefaultFeedback) It->DefaultFeedback->RefreshPresentation();
 }

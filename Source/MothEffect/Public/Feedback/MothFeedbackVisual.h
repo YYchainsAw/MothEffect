@@ -14,6 +14,7 @@ class MOTHEFFECT_API AMothFeedbackVisual : public AActor
 	GENERATED_BODY()
 public:
 	AMothFeedbackVisual();
+	EMothFeedbackCue GetCueKind() const { return Cue; }
 	void InitializeCue(EMothFeedbackCue Kind, const FMothFeedbackStyle& Style, UMothFeedbackProfile* Profile, FVector Direction, float RadiusCm);
 	virtual void Tick(float DeltaSeconds) override;
 private:

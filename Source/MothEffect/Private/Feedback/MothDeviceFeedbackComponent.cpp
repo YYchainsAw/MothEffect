@@ -90,12 +90,14 @@ void UMothDeviceFeedbackComponent::RefreshPresentation()
 	else
 	{
 		// Up arrow for D01; side arrow for D03. Geometry remains distinct without color.
-		const FRotator GlyphRotation=(Facing.Quaternion()*FRotator(0,0,Kind==EDeviceKind::Launcher?90:0).Quaternion()).Rotator();
+		const FRotator GlyphRotation=Kind==EDeviceKind::Launcher
+			? FRotationMatrix::MakeFromYZ(FVector::UpVector,Facing.RotateVector(FVector::RightVector)).Rotator() : Facing;
 		Bar(0,Origin,GlyphRotation,FVector(.03f,Size/100,.03f));
 		for (int32 I=1; I<3; ++I)
 		{
-			const FRotator Head(0,0,I==1?45:-45);
-			Bar(I,Origin+GlyphRotation.RotateVector(FVector(0,Size*.4f,(I==1?1:-1)*Size*.16f)),
+			const FVector Back(0,Size*.4f,(I==1?1:-1)*Size*.16f), Tip(0,Size*.56f,0);
+			const FRotator Head=FRotationMatrix::MakeFromY(Tip-Back).Rotator();
+			Bar(I,Origin+GlyphRotation.RotateVector(Back),
 				(GlyphRotation.Quaternion()*Head.Quaternion()).Rotator(),FVector(.03f,Size*.45f/100,.03f));
 		}
 	}
@@ -106,7 +108,10 @@ void UMothDeviceFeedbackComponent::RefreshPresentation()
 		const FVector Start=Device->GetActorLocation()+Direction*32;
 		Bar(4,Start+Direction*(Length*.5f),Rotation,FVector(Length/100,.035f,.035f));
 		for (int32 I=5; I<7; ++I)
-			Bar(I,Start+Rotation.RotateVector(FVector(Length-8,(I==5?1:-1)*6,0)),
-				(Rotation.Quaternion()*FRotator(0,I==5?35:-35,0).Quaternion()).Rotator(),FVector(.22f,.04f,.04f));
+		{
+			const FVector Back(Length-8,(I==5?1:-1)*6,0), Tip(Length+1,0,0);
+			const FRotator Head=FRotationMatrix::MakeFromX(Tip-Back).Rotator();
+			Bar(I,Start+Rotation.RotateVector(Back),(Rotation.Quaternion()*Head.Quaternion()).Rotator(),FVector(.22f,.04f,.04f));
+		}
 	}
 }

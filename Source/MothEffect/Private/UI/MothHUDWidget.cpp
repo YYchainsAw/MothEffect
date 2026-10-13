@@ -15,6 +15,7 @@
 #include "Tutorial/MothTutorialConfig.h"
 #include "Feedback/MothFeedbackSubsystem.h"
 #include "Rendering/DrawElements.h"
+#include "Styling/CoreStyle.h"
 
 UMothHUDWidget::UMothHUDWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -76,6 +77,16 @@ void UMothHUDWidget::ResolveControls()
 
 void UMothHUDWidget::NativePreConstruct()
 {
+	// CoreStyle's shared composite font is not serialized in a Designer asset.
+	// Restore only a missing font source; retain all user-assigned fonts and styling.
+	if (WidgetTree) WidgetTree->ForEachWidget([](UWidget* Widget)
+	{
+		if (auto* Text=Cast<UTextBlock>(Widget))
+		{
+			FSlateFontInfo Font=Text->GetFont();
+			if (!Font.HasValidFont()) { Font.CompositeFont=FCoreStyle::GetDefaultFont(); Text->SetFont(Font); }
+		}
+	});
 	ResolveControls(); bMenuRendered = false;
 	if (IsDesignTime() && bControlsReady)
 	{

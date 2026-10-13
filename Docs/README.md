@@ -1,6 +1,12 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.42 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.45 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-13 T20原型完成：三种原创机关外壳、金属掩体模块、符文灯饰、共用材质与DA_PrototypeArt共17资产保存并新进程重载，重复运行文件SHA保持一致。机关与敌人背包共用可替换外观，主场地九块掩体与三灯饰由可关闭场景层接入；现有碰撞/导航和v0.18玩法基线保留。构建、107项全量Editor回归及最后一项夹具修正后的3项专项、实际D3D12/音频主地图12项通过；首轮围墙误识别、Static夹具、旧灰盒断言与导入失败如实留档。用户后续深度修改机制与整套UI，当前实现作为可运行基线；五组真实玩家/场地/独立包待验收，第三方缺依赖与完整恢复待补。实现3c6c8e5本地develop提交，#22 Open / In Progress，未推送/创建PR；配置见[Prototype_Art_Setup](05_Development_Guide/Prototype_Art_Setup.md)，实际证据见[T20报告](06_Test_Doc/T20_Report_2026-10-13.md)。以下段落保留历史。
+
+2026-10-13 T19默认反馈已完成：枪口/确认命中/受伤、三机关启动、世界锁定方向、Active/Spent与过期警告使用无碰撞几何和8个原创短音效；DA_DefaultFeedback提供替换与参数入口。暂停随游戏时间，结算/重试同步清理，出生回调重入使用世代复核；缺失的HUD字体来源已修复，保留用户样式。构建、104项Editor回归及最终9项反馈/UI、真实D3D12/音频主地图11项通过，失败历史与五张原始截图见[T19报告](06_Test_Doc/T19_Report_2026-10-13.md)。四组用户PIE仍待验收，独立包留T21；#21 Open / In Progress，实现8112648、修正e00348f本地develop提交，未推送/创建PR。制作与验收见[Feedback_Setup](05_Development_Guide/Feedback_Setup.md)。以下段落保留历史。
+
+2026-10-13 T18编辑接口已接入：保存Designer基础树和25个控件绑定，菜单文案/页面预览在Class Defaults，教学说明与布置在DA_MothTutorial；具体UI由用户制作。Editor构建、2项编辑回归、主地图10项及扩充UI2项通过，当前硬件PIE待验收。本轮本地develop提交，未创建新PR；原PR #46已合并。编辑入口见[UI_Setup](05_Development_Guide/UI_Setup.md)，结果见[T18报告](06_Test_Doc/T18_Report_2026-10-12.md)。以下段落保留历史。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 

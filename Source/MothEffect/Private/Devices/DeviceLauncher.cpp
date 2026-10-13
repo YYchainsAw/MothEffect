@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "MothEffect.h"
 #include "Types/MothCollisionChannels.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 
 void ADeviceBase::StartLauncher()
 {
@@ -67,6 +68,8 @@ void ADeviceBase::StartLauncher()
 	if (bLogDeviceEvents) UE_LOG(LogMothEffect, Log, TEXT("Launcher %s hit=%s origin=%s base=%s column=%s"),
 		*GetName(), *ActivationHitId.ToString(), *LauncherOrigin.ToString(), *Base.ToString(), *Column->GetName());
 #endif
+	if (!bEndingPlay && bGameplayEnabled && DeviceState == EDeviceState::Active)
+		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Launcher, Base, FVector::UpVector);
 }
 
 void ADeviceBase::FailLauncher(ELauncherFailureReason Reason)
@@ -79,6 +82,7 @@ void ADeviceBase::FailLauncher(ELauncherFailureReason Reason)
 		: Reason == ELauncherFailureReason::StaticObstruction ? TEXT("BLOCKED SPACE") : TEXT("COLUMN FAILED");
 	LauncherFeedback->SetText(FText::FromString(Message));
 	LauncherFeedback->SetVisibility(true);
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Failure, LauncherOrigin);
 #if !UE_BUILD_SHIPPING
 	DrawDebugSphere(GetWorld(), LauncherOrigin, 35.0f, 12, FColor::Red, false, LauncherSpentVisualSeconds, 0, 3.0f);
 	if (bLogDeviceEvents) UE_LOG(LogMothEffect, Log, TEXT("Launcher %s failed=%s; seed consumed"),

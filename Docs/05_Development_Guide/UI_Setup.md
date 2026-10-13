@@ -1,18 +1,45 @@
 # Moth Effect：T18 HUD、教学与菜单接入
 
-版本 v0.2 · 2026-10-12 · 状态：已接入；当前硬件输入与完整图形 PIE 待验收
+版本 v0.3 · 2026-10-13 · 状态：编辑接口已接入；具体 UI 制作由用户完成，当前硬件 PIE 待验收
 
-打开 `/Game/MothEffect/Maps/L_Arena_01` 后 Play，从标题页选择“开始教学”或“直接进入竞技场”。标题、暂停、教学完成、胜利和失败使用同一套面板；不需要输入控制台命令。T16/T17 的 [PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) 已合并 main，先前手动待校验范围继续保留。T18 已通过 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46) 提交至 main，五组当前硬件 PIE 仍待验收。
+打开 `/Game/MothEffect/Maps/L_Arena_01` 后 Play，从标题页选择“开始教学”或“直接进入竞技场”。标题、暂停、教学完成、胜利和失败使用同一套面板；不需要输入控制台命令。[PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) 与 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46) 已合并 main，先前手动待校验范围继续保留。2026-10-13 补齐 Designer 控件树和绑定，按用户要求只提供代码接口与基础骨架，排版、配色和美术由用户制作。
 
 当前入口优先教学但允许主动直接开战；参数账本原有 `flow.tutorialRequiredFirstRun=true` 尚未接入首次教学持久化锁定，这一 UI 差异已记录在 T18 报告与参数账本。
 
 ## 接入与数据
 
-- `AMothEffectPlayerController` 在拥有本地正式玩家、步枪及地图导演后创建 `WBP_MothHUD`；无导演的旧独立验证场保留其输入流程。新 Widget Blueprint 继承 `UMothHUDWidget`，布局由原生 UMG WidgetTree 创建。
+制作入口为 `/Game/MothEffect/UI/WBP_MothHUD`，详见下面的编辑说明。
+
+- `AMothEffectPlayerController` 在拥有本地正式玩家、步枪及地图导演后创建 `WBP_MothHUD`；无导演的旧独立验证场保留其输入流程。Widget Blueprint 继承 `UMothHUDWidget`，保存的 Designer 树通过 `BindWidget` 自动绑定。原生布局仅供无 WBP 的后备实例使用；教学面板显隐使用命名绑定，调整控件父子层级不会破坏逻辑。
 - 首次绑定主动读取 Health、Rifle、Held、WaveDirector 和 Tutorial 的 getter；生命、弹药、动作、波次、教学事件更新显示。连续换弹进度、准备倒计时、准星候选和短提示由当前世界的时间读取。换玩家时解绑旧来源，Widget EndPlay/NativeDestruct 清理绑定。
 - E 的候选是准星射线第一个阻挡命中的 Dormant 道具，满足距离、持物挂点、动作和两条无遮挡检查；HUD 复用只读候选查询，不改变 T07 交互。Held 只提示投掷/放下，不提示射击启动。
 - 菜单使用 UIOnly、显示鼠标并将键盘焦点交给主按钮；教学/战斗使用 GameOnly、隐藏鼠标并恢复视口焦点。Esc 暂停/继续；按钮可用 Tab/方向键、Enter/Space 操作。暂停停连射、冻结世界合法任务；继续不会伪造投掷后的实际松键。
 - 进入正式战斗先清理教学并 OpenLevel 重载当前关卡。`UMothGameInstance` 仅保留一次“新世界开始战斗”的意图，成功进入 Preparing 后消费；生命、弹药、持物、教学状态、波次、对象与绑定仍归各自世界。结果“重新开始”回到全新标题，不自动再开战。
+
+## 你制作 UI 的入口
+
+1. 打开 `/Game/MothEffect/UI/WBP_MothHUD`，父类保持 `MothHUDWidget`。Designer 已有 54 个控件的基础骨架，运行时优先使用保存的控件树；可以调整锚点、位置、尺寸、间距、字体、文字颜色、进度条填充色及按钮样式，添加自己的图片与装饰。
+2. Class Defaults → **Moth / Designer Preview**：选择 `Preview Page` 查看 Title、Gameplay、Tutorial、Pause、TutorialComplete、Victory、Defeat；`Preview Tutorial Step` 查看三步说明，`Preview Held` / `Preview Held Kind` 查看持物状态。编译后刷新预览。预览不会创建教学对象或读取玩法世界。
+3. Class Defaults → **Moth / Menu Copy**：修改每页 Title、Description、Primary Action、Secondary Action。`BrandText`、`MovementHint`、`ReloadHint`、`RetryLabel`、`QuitLabel` 等静态文案直接在 Designer 修改。生命/弹药/波次、步骤说明、状态提示和菜单动作名称由代码刷新。
+4. Class Defaults → **Moth / Teaching / Tutorial Config** 指向 `/Game/MothEffect/UI/DA_MothTutorial`。打开该 Data Asset 修改三步教学说明、重试提示和道具/靶/箭头位置。第一、三步为世界坐标；第二步 `Emitter Player Offset` 是相对玩家的 X 前、Y 右、Z 上偏移。每次开始教学复制一份配置，修改后重新开始教学生效。位置调整需同时保持爆炸距离、抬升范围和第三步弹道关系；箭头旋转只改变提示方向。
+5. 编译/保存 WBP 和修改的配置，再 Play 主地图核对实际效果。蓝图图表可用 `Get HUD State` 读取当前数据；现有四个按钮已由父类绑定。
+
+以下 25 个绑定控件保留**名称和兼容类型**，勾选 **Is Variable**。它们可以换父容器或移动；`HUD`、`Menu`、`TeachingPanel`、`AimPanel`、`NoticePanel` 可使用任意 UWidget 派生类型，其余保留下表类型。缺名或错误类型会在 WBP 编译时提示。
+
+| 功能 | 控件名 | 类型 |
+| --- | --- | --- |
+| 显示区域 | `HUD`、`Menu`、`TeachingPanel`、`AimPanel`、`NoticePanel` | Widget；基础骨架为 Canvas/Border |
+| 生命 | `HealthText` / `HealthBar` | TextBlock / ProgressBar |
+| 弹药与换弹 | `AmmoText` / `ReloadBar` | TextBlock / ProgressBar |
+| 波次 | `WaveText` | TextBlock |
+| 持物 | `HeldText` / `HeldIcon` | TextBlock / MothDeviceIcon |
+| 瞄准与提示 | `AimText`、`CrosshairText`、`NoticeText` | TextBlock |
+| 教学 | `TutorialText`、`TutorialStepText` / `RetryButton` | TextBlock / Button |
+| 菜单内容 | `MenuTitle`、`MenuDescription` | TextBlock |
+| 主/次操作 | `PrimaryButton`、`SecondaryButton` / `PrimaryLabel`、`SecondaryLabel` | Button / TextBlock |
+| 退出 | `QuitButton` | Button |
+
+刷新管理上述控件的内容、进度、页面显隐和交互候选色；字体、位置、尺寸及普通文字/面板样式由 Designer 管理。`AimText` 和 `CrosshairText` 在有效机关候选时使用类型色，候选消失后恢复 Designer 设置的颜色。`MothDeviceIcon` 的 Device Kind 可在 Designer 修改，保存后仍保留对应轮廓。
 
 ## 三步教学
 
@@ -30,7 +57,7 @@
 
 暗青底、浅米文字、铜色信息，Roboto Bold 标题、Regular 正文和 BoldCondensed 小标签；中文使用引擎复合字体回退。教学按文字实际高度排版，准星有描边，交互/失败提示有暗底，键盘焦点始终可见。以 1920×1080 为参照，SafeZone、锚点与工程 DPI 规则处理 1280×720 / 1920×1080 / 2560×1440。三种实际分辨率和字符显示以交付报告中的渲染证据为准；独立包字体仍需 T21 验收。
 
-仅新建 `/Game/MothEffect/UI/WBP_MothHUD`，不改已有玩家或控制器蓝图。重建入口为 [create_t18_ui.py](../../scripts/create_t18_ui.py)，脚本只认领并保存自己的包，不使用 SaveAll。C++ 构建后可用 Editor Python 执行；只有 `T18_UI_ASSET_VERIFIED` 与保存类检查都成功才算资产验证通过。
+自有 UI 资产为 `/Game/MothEffect/UI/WBP_MothHUD` 和 `/Game/MothEffect/UI/DA_MothTutorial`。初始化入口为 [create_t18_ui.py](../../scripts/create_t18_ui.py)：仅空树时生成基础控件，已有 Designer 树保留；存在的配置不覆盖，缺绑定报错。脚本仅编译/保存该 WBP 与新建的配置，不使用 SaveAll。C++ 构建后可用 Editor Python 执行；只有 `T18_DESIGNER_ASSET_VERIFIED`、编译和保存类检查成功才算资产验证通过。已有样式账本为参考记录，运行时样式由保存的 WBP 决定。
 
 ## 当前用户 PIE 验收
 

@@ -47,6 +47,8 @@ DOCS = [
     ('doc-enemy-setup', 'T14 射击 AI 与导航接入', 'Docs/05_Development_Guide/Enemy_Setup.md'),
     ('doc-wave-flow', 'T16 三波、胜负与重开接入', 'Docs/05_Development_Guide/Wave_Flow_Setup.md'),
     ('doc-ui', 'T18 HUD、教学与共用菜单接入', 'Docs/05_Development_Guide/UI_Setup.md'),
+    ('doc-feedback', 'T19 默认反馈与替换入口', 'Docs/05_Development_Guide/Feedback_Setup.md'),
+    ('doc-prototype-art', 'T20 原型外观与替换入口', 'Docs/05_Development_Guide/Prototype_Art_Setup.md'),
     ('doc-arena', 'T17 主竞技场灰盒接入', 'Docs/05_Development_Guide/Arena_Setup.md'),
     ('doc-github', 'GitHub 开发流程', 'Docs/05_Development_Guide/GitHub_Workflow.md'),
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),
@@ -61,6 +63,8 @@ DOCS = [
     ('doc-t14-report', 'T14 交付与验证报告', 'Docs/06_Test_Doc/T14_Report_2026-10-11.md'),
     ('doc-t16-report', 'T16 三波导演交付报告', 'Docs/06_Test_Doc/T16_Report_2026-10-12.md'),
     ('doc-t18-report', 'T18 HUD、教学与菜单交付报告', 'Docs/06_Test_Doc/T18_Report_2026-10-12.md'),
+    ('doc-t19-report', 'T19 默认反馈交付报告', 'Docs/06_Test_Doc/T19_Report_2026-10-13.md'),
+    ('doc-t20-report', 'T20 原型外观交付报告', 'Docs/06_Test_Doc/T20_Report_2026-10-13.md'),
     ('doc-t17-report', 'T17 主竞技场交付报告', 'Docs/06_Test_Doc/T17_Report_2026-10-12.md'),
     ('doc-release', '发布检查清单', 'Docs/07_Release/Release_Checklist.md'),
 ]

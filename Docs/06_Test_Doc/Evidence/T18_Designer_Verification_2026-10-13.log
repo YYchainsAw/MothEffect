@@ -1,0 +1,129 @@
+T18 Designer integration verification - 2026-10-13
+User scope: code, bindings and editable scaffold; UI visual production belongs to the user.
+Code commit: eefd06de1aa353435fcb9f28a09693ebe8cf2c15
+Editor builds: UE 5.8 / Win64 Development Editor. Automation: NullRHI.
+No new image/hardware PIE/package acceptance. Issue #20 remains OPEN.
+
+AssetVerificationCreated.json
+{
+  "created_layout": true,
+  "widget_count": 54,
+  "required_bindings": 25,
+  "compiler_errors": 0,
+  "compiler_warnings": 0,
+  "class": "/Game/MothEffect/UI/WBP_MothHUD.WBP_MothHUD_C",
+  "package": "/Game/MothEffect/UI/WBP_MothHUD",
+  "config_package": "/Game/MothEffect/UI/DA_MothTutorial",
+  "config_created": true,
+  "saved": true
+}
+sha256=1ae5f1bdaba8efc454fb8060d270909eb7aec04d3f8f1f47bc3520c83c54f816
+
+AssetVerificationReloaded.json
+{
+  "created_layout": false,
+  "widget_count": 54,
+  "required_bindings": 25,
+  "compiler_errors": 0,
+  "compiler_warnings": 0,
+  "class": "/Game/MothEffect/UI/WBP_MothHUD.WBP_MothHUD_C",
+  "package": "/Game/MothEffect/UI/WBP_MothHUD",
+  "config_package": "/Game/MothEffect/UI/DA_MothTutorial",
+  "config_created": false,
+  "saved": true
+}
+sha256=f0d4aa3b798b83557209c44ca247b22b6d8f91e0cfa596f2f515f879d796e199
+
+Build1
+{Project}/Source/MothEffect/Private/Tests/DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 31.06 seconds
+sha256=5d119cf05b6a01932afd514e69986446251e4559405f08bf6f8b145310420c64
+
+Build2
+{Project}/Source/MothEffect/Private/Tests/UIDesignerTests.cpp(54,2): error C2666: “FAutomationTestBase::TestEqual”: 重载函数具有类似的转换
+{Project}/Source/MothEffect/Private/Tests/DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Failed (OtherCompilationError)
+Total execution time: 13.69 seconds
+sha256=ea0528e633f5ee9189f1b48027cc02c652df63f37edace2ecd96dba2c85e59ab
+
+Build3
+{Project}/Source/MothEffect/Private/Tests/DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+Result: Succeeded
+Total execution time: 14.03 seconds
+sha256=42ebc60ef973a3771b48f1e15e734b614ecbd93e4b1e543e277d2ab54fb62764
+
+Build4
+Result: Succeeded
+Total execution time: 5.96 seconds
+sha256=20e6666d2e6d6cb5ce1d63ec7cde8ec68ac225c6873c0a42d192b42febe4109a
+
+Build2 failed only on a new test assertion (font size float vs int); corrected to 41.f.
+Build3 and Build4 succeeded. The pre-existing ClearIgnoredActors deprecation was not suppressed.
+
+EditorUI
+reportCreatedOn_UTC=2026.10.13-00.50.05
+{"succeeded": 1, "succeededWithWarnings": 1, "failed": 0, "notRun": 0, "inProcess": 0}
+errors=0 warnings=50
+MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting: Success errors=0 warnings=50
+MothEffect.UI.DesignerPreviewDoesNotBindGameplay: Success errors=0 warnings=0
+warning_categories={"LogBlueprint": 50}
+report_sha256=6ad046c9998a87b4ec6ae463fc45cbd142d8b64b3fa966a230d7aa9c9ef494c0
+log_sha256=1ac5f90c4704f4b8910e69bfe1957413e2562c79fafc2f87c4697bab3b3749db
+
+GameRuntime
+reportCreatedOn_UTC=2026.10.13-00.51.41
+{"succeeded": 3, "succeededWithWarnings": 7, "failed": 0, "notRun": 0, "inProcess": 0}
+errors=0 warnings=205
+MothEffect.ArenaRuntime.BothRampsPhysicalWalking: Success errors=0 warnings=0
+MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover: Success errors=0 warnings=0
+MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision: Success errors=0 warnings=0
+MothEffect.UIRuntime.ActionDrivenTutorialAndPause: Success errors=0 warnings=15
+MothEffect.UIRuntime.StartBattleDefeatAndRestart: Success errors=0 warnings=33
+MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause: Success errors=0 warnings=1
+MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback: Success errors=0 warnings=12
+MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker: Success errors=0 warnings=12
+MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards: Success errors=0 warnings=131
+MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory: Success errors=0 warnings=1
+warning_categories={"LogBlueprint": 119, "LogCrowdFollowing": 17, "LogLinker": 17, "LogMothEffect": 4, "LogParticles": 14, "LogScript": 34}
+report_sha256=0fba26528e9b71c8656d79cdb2fe55f4323512da245d9d13c61d547238c5e1e0
+log_sha256=25ce3acdaf5e07fe74c940413002885c3fc1b66cf3dd89de6e21c65edcc2bc59
+
+UIRuntimeFinal
+reportCreatedOn_UTC=2026.10.13-00.54.50
+{"succeeded": 0, "succeededWithWarnings": 2, "failed": 0, "notRun": 0, "inProcess": 0}
+errors=0 warnings=48
+MothEffect.UIRuntime.ActionDrivenTutorialAndPause: Success errors=0 warnings=15
+MothEffect.UIRuntime.StartBattleDefeatAndRestart: Success errors=0 warnings=33
+warning_categories={"LogBlueprint": 28, "LogCrowdFollowing": 4, "LogLinker": 4, "LogMothEffect": 4, "LogScript": 8}
+report_sha256=99b08e716bfd6eb5f535c565fca6a6de2b448e5449d4fd71f29c7914173bb159
+log_sha256=0557441ab0e7010143221aae9f33f6ec7f5d0a08705fd5585b3c8da05bf5edf4
+
+EditorUI warnings=50: disposable empty Widget Blueprint initially compiles twice without the 25 controls.
+Its edited Designer tree then compiles, binds and preserves font/colour/position/reparenting.
+The delivered Blueprint has zero compiler errors/warnings both on first save and fresh-process reload.
+Runtime warnings are retained in complete local reports; no warning filters were added.
+UIRuntimeFinal additionally clicks the bound RetryButton and verifies edited teaching copy/placement/feedback
+and per-run snapshot stability after editing the configuration source.
+
+Delivered source/package hashes:
+Content/MothEffect/UI/WBP_MothHUD.uasset sha256=9f6f478a4e010f66a74bb0c356e006d725a484666505a29e126b095f6f079e3e
+Content/MothEffect/UI/DA_MothTutorial.uasset sha256=415c43ffd1bcae4cc1c50a9c6e538a6d1422b29a74b7fd88e4870091b3ff2f4d
+Source/MothEffect/Public/UI/MothHUDWidget.h sha256=c2ea5848c27e6b705206e6a9e8eb2361c6cbd05768171d428d4a755c0c1626c9
+Source/MothEffect/Private/UI/MothHUDWidget.cpp sha256=9728919ac6ff5f3aa10b8b31dec22cdcfc60c633c2d91c8ebb57575baff7fa09
+Source/MothEffect/Private/UI/MothHUDLayout.h sha256=27db09d969d92aa3294afbb06f9133e7f057f55f0349dbe6d46377c6e209f930
+Source/MothEffect/Private/UI/MothHUDLayout.cpp sha256=96a1765e70da06da7e03c4422bc66c054a864e3a363ca3a196e711947384a2ac
+Source/MothEffect/Public/UI/MothUIEditorLibrary.h sha256=1bc0ec080b2310373a8bcf7ba6e35291467ff44dda83a3de1b1a20bdfdf981af
+Source/MothEffect/Private/UI/MothUIEditorLibrary.cpp sha256=612305a2a32744fdafc3055136957055478b3637fa27781519224561fd2013f3
+Source/MothEffect/Public/UI/MothDeviceIcon.h sha256=2ba12f7c1c938ad5de04a200b448fafc34b5f7635a423f3311ca8afa74dd0d0a
+Source/MothEffect/Private/UI/MothDeviceIcon.cpp sha256=5a4d69a77a6fc2ed1575063db3ca7b150465fc23bda7fba3e35650bf070d4847
+Source/MothEffect/Public/Tutorial/MothTutorialConfig.h sha256=edc413ffe818b29800a8ff40419b466b9b6a3a65cf45bea382e3ab341b890295
+Source/MothEffect/Public/Tutorial/MothTutorialSubsystem.h sha256=6602d01478ad6fa84e45742c9c1f0eb65eb8b87ea1469a00a15ed434a6707e92
+Source/MothEffect/Private/Tutorial/MothTutorialSubsystem.cpp sha256=e643464d1257552f34534d5733e343d834a21ed0f293cfc675f569fc5e5ea9c5
+Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp sha256=8cf500089a93c523fde7d88b9ff66ab83c930a43eb738b330dc99747faa1ea01
+Source/MothEffect/Private/Tests/UIDesignerTests.cpp sha256=2d190b63f46e6d21b7f0c304341e2141cf67c37d9307b8f6c496ac52a5e7ae4b
+Source/MothEffect/Private/Tests/TutorialUIRuntimeTests.cpp sha256=14d89b473edc78c456b26f840eb8dcf271a2f14993d7b6799fe574b94d776058
+Source/MothEffect/MothEffect.Build.cs sha256=d9de0a51e667e7002f8c5be7141c32aec549fd6c946219680300cefde00563f2
+scripts/create_t18_ui.py sha256=10128f8fbf431e877d9c5427358ee6f6ad55af5d0be6b93c62300c53bf0849f6
+
+Excluded user-modified BP_MothPlayer SHA256=a3de76da7f3440b048ca5ea9668e41f4d11414d7f2e9ccba31743777584d0af8

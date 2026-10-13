@@ -1,6 +1,12 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.43｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+版本：v0.46｜更新日期：2026-10-13｜时间：香港时间（UTC+8）
+
+2026-10-13 T20原型完成：三种原创机关外壳、金属掩体模块、符文灯饰、共用材质与DA_PrototypeArt共17资产保存并新进程重载，重复运行文件SHA保持一致。机关与敌人背包共用可替换外观，主场地九块掩体与三灯饰由可关闭场景层接入；现有碰撞/导航和v0.18玩法基线保留。构建、107项全量Editor回归及最后一项夹具修正后的3项专项、实际D3D12/音频主地图12项通过；首轮围墙误识别、Static夹具、旧灰盒断言与导入失败如实留档。用户后续深度修改机制与整套UI，当前实现作为可运行基线；五组真实玩家/场地/独立包待验收，第三方缺依赖与完整恢复待补。实现3c6c8e5本地develop提交，#22 Open / In Progress，未推送/创建PR；配置见[Prototype_Art_Setup](Prototype_Art_Setup.md)，结果见[T20报告](../06_Test_Doc/T20_Report_2026-10-13.md)。以下段落保留历史。
+
+2026-10-13 T19默认反馈完成：默认材质/配置/空间衰减与8个原创短音效，共11资产保存并新进程重载；真实提交后的开火/命中/伤害/三机关启动与过期反馈接入，D03世界锁定箭头及色形状态由原生组件继承，Designer保持用户制作入口。方向图形按世界向量构造，反馈出生回调结算/清理不得回生，缺失HUD字体来源只补来源不改样式。构建、104项Editor回归及最终9项反馈/UI、真实D3D12/音频主地图11项通过，首次夹具失败与五张原始截图见[T19报告](../06_Test_Doc/T19_Report_2026-10-13.md)。#21保持Open，Project In Progress，四组当前PIE/听感待验收；实现8112648与修正e00348f本地develop提交，未推送/创建PR。调节入口见[Feedback_Setup](Feedback_Setup.md)。以下段落保留历史。
+
+2026-10-13 T18编辑接入：PR #46已合并main，develop已同步。保存Designer基础控件树，补25个必需绑定、四按钮生命周期、Class Defaults菜单文案/预览与教学配置Data Asset；用户明确具体UI由自己制作。Editor构建、2项编辑回归、主地图10项与扩充UI2项通过，告警/失败记录见[T18报告](../06_Test_Doc/T18_Report_2026-10-12.md)。本轮本地提交，未推送/创建新PR；#20保持Open，五组硬件PIE与独立包待验收。制作入口见[UI_Setup](UI_Setup.md)。以下段落保留历史。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 
@@ -142,9 +148,9 @@ T18 的 4 小时与 T20 的 6 小时是各自下界，实际需要 6/8 小时时
 | T15 | [#17](https://github.com/YYchainsAw/MothEffect/issues/17) | 核心 | 三种敌人外观与确定掉落 | T14、T10、T11 | 1–2 | 三种简单外观与符号分别对应 D01/D02/D03；死亡位置掉落一次，掉落对象状态正确，不做随机表 | In Progress / Open；#43/#44已合并；固定掉落保存实例修复与W01击杀/匹配掉落/拾取已由用户确认，容量/更多地形等边界继续待验收 |
 | T16 | [#18](https://github.com/YYchainsAw/MothEffect/issues/18) | 核心 | 三波导演、胜负与重开 | T13、T15 | 2–3 | 出怪和波次内容符合 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md)；玩家死亡结束战斗；最后一波结束胜利；重开清对象、事件、计时器与波次状态 | In Progress / Open；[PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) → main；原生/Game通过，用户要求保持当前PIE待校验 |
 | T17 | [#19](https://github.com/YYchainsAw/MothEffect/issues/19) | 核心 | 一张主竞技场灰盒、掩体与导航 | T14 | 2–3 | 按 [关卡、界面与资源规格](../02_Design_Doc/GDD/Level_UI_Asset_Specification.md) 的三区和尺度落地；可完成战斗/投掷/弹射；导航及出生点无卡死；保留大型场地意图，不追加第二张地图 | In Progress / Open；[PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) → main；15条保存路线/8项主场地Game通过，用户要求四组当前PIE待校验；见[Arena_Setup](Arena_Setup.md) |
-| T18 | [#20](https://github.com/YYchainsAw/MothEffect/issues/20) | 核心 | UI 布局/图标、HUD/教程与共用菜单接入 | T07、T16、T17 | 4–6 | 完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过 | Open / In Progress；[PR #46](https://github.com/YYchainsAw/MothEffect/pull/46) → main，完整元数据已核对；五组硬件 PIE 待验收，见 [UI_Setup](UI_Setup.md) |
-| T19 | [#21](https://github.com/YYchainsAw/MothEffect/issues/21) | 可压缩 | 提升命中、启动、方向与警告反馈 | T12、T18 | 2–3 | 枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除 | Todo；武器事件已有，实际声音/特效与机关反馈待做 |
-| T20 | [#22](https://github.com/YYchainsAw/MothEffect/issues/22) | 可压缩 | 少量原创机关/场景资产、整合与来源记录 | T17 灰盒；最终整合依赖 T19 | 6–8 | 完成三种简洁原创机关外壳、一个可复用掩体和一个符文/灯光装饰；统一色形/材质，敌人标记与掉落对应；保留来源/制作记录，核对模板依赖恢复；不改变玩法碰撞与方向，替换后验证操作与打包 | Todo；已有 Rifle 动画/BP_Rifle，原创机关与场景资产待做；预留 6–8 小时 |
+| T18 | [#20](https://github.com/YYchainsAw/MothEffect/issues/20) | 核心 | UI 布局/图标、HUD/教程与共用菜单接入 | T07、T16、T17 | 4–6 | 完成生命/弹药/持物/波次与三机关图标，按真实状态显示教程、开始/暂停/胜负/重开；初始值正确，暂停输入模式与鼠标切换可用，目标分辨率不裁切；最低操作观察通过 | Open / In Progress；[PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)已合并；编辑接口/基础骨架本地完成，具体UI用户制作；五组硬件 PIE 待验收，见 [UI_Setup](UI_Setup.md) |
+| T19 | [#21](https://github.com/YYchainsAw/MothEffect/issues/21) | 可压缩 | 提升命中、启动、方向与警告反馈 | T12、T18 | 2–3 | 枪口/命中、三装置类型、方向箭头、Active/Spent、过期警告可区分；最低反馈保留，多层粒子与音色变体可删除 | 默认反馈实现与配置已接入；原生/主地图结果见[T19报告](../06_Test_Doc/T19_Report_2026-10-13.md)，四组用户PIE待验收；#21 Open / In Progress |
+| T20 | [#22](https://github.com/YYchainsAw/MothEffect/issues/22) | 可压缩 | 少量原创机关/场景资产、整合与来源记录 | T17 灰盒；最终整合依赖 T19 | 6–8 | 完成三种简洁原创机关外壳、一个可复用掩体和一个符文/灯光装饰；统一色形/材质，敌人标记与掉落对应；保留来源/制作记录，核对模板依赖恢复；不改变玩法碰撞与方向，替换后验证操作与打包 | 原型/接口已完成并本地提交；17资产与原生/主地图回归通过，见[T20报告](../06_Test_Doc/T20_Report_2026-10-13.md)；五组用户验收/缺依赖恢复/独立包待执行，#22 Open / In Progress |
 | T21 | [#23](https://github.com/YYchainsAw/MothEffect/issues/23) | 核心 | 内部完整打包试玩与 G3 内部验收 | T09、T13、T16–T18 | 2–3 | 从独立包通关三波并死亡重开，TC20–TC25 和玩家专项适用分支有结果与录屏；TC26 由 T22 完成，通过前完整 G3 保持待验收 | Todo |
 | T22 | [#24](https://github.com/YYchainsAw/MothEffect/issues/24) | 可压缩 | 外部盲玩反馈 | T19、T21 | 1.5–2.5 | 至少一名不了解设计的人盲玩并执行 TC26，保存误操作和理解观察；失败结果交给 T23，复测通过后结合内部流程记录完整 G3；本任务不等待修复才交接 | Todo |
 | T23 | [#25](https://github.com/YYchainsAw/MothEffect/issues/25) | 核心 | 根据证据调整参数与教学 | T22 | 2–3 | 只改已暴露问题；更新 [玩法参数基线](../02_Design_Doc/GDD/Gameplay_Parameters.json) 与资源参数，并回归相关测试；玩家可理解发射方向与危险来源，记录改前/改后 | Todo |

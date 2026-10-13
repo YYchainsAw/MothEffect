@@ -12,6 +12,7 @@ class AMothEffectCharacter;
 class AMothTutorialTarget;
 class AMothTutorialBlastTarget;
 class AMothWaveDirector;
+class UMothTutorialConfig;
 
 UENUM(BlueprintType)
 enum class EMothTutorialStep : uint8 { Inactive, BombAndLift, AirborneEmitter, IndirectChain, Completed };
@@ -23,7 +24,7 @@ class MOTHEFFECT_API UMothTutorialSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 public:
-	bool StartTutorial(AMothEffectCharacter* Player, AMothWaveDirector* Director);
+	bool StartTutorial(AMothEffectCharacter* Player, AMothWaveDirector* Director, const UMothTutorialConfig* Config = nullptr);
 	void EndTutorial();
 	void RetryStep();
 	EMothTutorialStep GetStep() const { return Step; }
@@ -38,6 +39,9 @@ public:
 protected:
 	virtual bool DoesSupportWorldType(EWorldType::Type Type) const override;
 private:
+	/** Per-run snapshot: editing the source asset never moves an active teaching goal. */
+	UPROPERTY() TObjectPtr<UMothTutorialConfig> Config;
+	const UMothTutorialConfig* GetConfig() const;
 	TWeakObjectPtr<AMothEffectCharacter> Player;
 	TWeakObjectPtr<AMothWaveDirector> Director;
 	TArray<TWeakObjectPtr<AActor>> OwnedActors;

@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：测试计划与验收
 
-版本：v0.41｜制定日期：2026-10-02｜更新日期：2026-10-12｜时间：香港时间（UTC+8）
+版本：v0.43｜制定日期：2026-10-02｜更新日期：2026-10-13｜时间：香港时间（UTC+8）
+
+2026-10-13 T20原型完成：三种原创机关外壳、金属掩体模块、符文灯饰、共用材质与DA_PrototypeArt共17资产保存并新进程重载，重复运行文件SHA保持一致。机关与敌人背包共用可替换外观，主场地九块掩体与三灯饰由可关闭场景层接入；现有碰撞/导航和v0.18玩法基线保留。构建、107项全量Editor回归及最后一项夹具修正后的3项专项、实际D3D12/音频主地图12项通过；首轮围墙误识别、Static夹具、旧灰盒断言与导入失败如实留档。用户后续深度修改机制与整套UI，当前实现作为可运行基线；五组真实玩家/场地/独立包待验收，第三方缺依赖与完整恢复待补。完整原始结果与告警见[T20报告](T20_Report_2026-10-13.md)及[证据](Evidence/T20_Verification_2026-10-13.log)。TC34/TC35/TC38实际玩家、四向/空中方向、场地/独立包仍按[五组清单](../05_Development_Guide/Prototype_Art_Setup.md)验收，完整G4不自动通过。
+
+2026-10-13 T19默认反馈：枪口/命中/伤害、三机关启动、锁定方向、Active/Spent和过期反馈已接入。104项Editor回归、最终反馈6项+Designer3项、真实D3D12/音频主地图11项通过，原始1920×1080截图五张，详见[T19报告](T19_Report_2026-10-13.md)及[证据](Evidence/T19_Verification_2026-10-13.log)。首轮夹具告警次数、渲染夹具真实时间/世界时间差异导致的失败保留，最终均已修正通过。原生方向/去重/清理分支不代替完整TC03/TC04/TC18；四组当前硬件PIE、声音听感及遮挡检查见[Feedback_Setup](../05_Development_Guide/Feedback_Setup.md)，当前全部待验收，#21保持Open。游戏参数v0.18未调优，独立包与外部盲玩继续后续任务。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 

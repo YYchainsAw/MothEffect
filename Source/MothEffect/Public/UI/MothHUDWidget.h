@@ -7,7 +7,7 @@
 #include "Types/PlayerActionState.h"
 #include "MothHUDWidget.generated.h"
 
-class UTextBlock; class UProgressBar; class UVerticalBox; class UBorder; class UCanvasPanel;
+class UTextBlock; class UProgressBar; class UMothTutorialConfig;
 class UButton; class UMothDeviceIcon; class AMothEffectCharacter; class ARifle; class UHealthComponent;
 
 UENUM(BlueprintType)
@@ -31,22 +31,37 @@ struct FMothHUDState
 	UPROPERTY(BlueprintReadOnly) EMothTutorialStep Tutorial = EMothTutorialStep::Inactive;
 };
 
-/** Native UMG layout, optional saved Widget Blueprint entry. Getters initialise, signals keep it current. */
+USTRUCT(BlueprintType)
+struct FMothMenuCopy
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FText Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(MultiLine=true)) FText Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FText PrimaryAction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FText SecondaryAction;
+};
+
+/** Designer owns presentation; native bindings own state and button actions. */
 UCLASS(Blueprintable)
 class MOTHEFFECT_API UMothHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UMothHUDWidget(const FObjectInitializer& ObjectInitializer);
 	void RefreshState();
-	const FMothHUDState& GetHUDState() const { return State; }
+	UFUNCTION(BlueprintPure, Category="Moth|UI") FMothHUDState GetHUDState() const { return State; }
+	UMothTutorialConfig* GetTutorialConfig() const;
 	UWidget* GetMenuFocusTarget() const;
 	bool IsMenuVisible() const;
 	void ShowInteractionNotice(const FText& Message);
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
+	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& Geometry, float DeltaSeconds) override;
+	virtual int32 NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& CullingRect,
+		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bParentEnabled) const override;
 	virtual FReply NativeOnKeyDown(const FGeometry& Geometry, const FKeyEvent& Event) override;
 private:
 	FMothHUDState State;
@@ -54,36 +69,56 @@ private:
 	TWeakObjectPtr<ARifle> Rifle;
 	TWeakObjectPtr<AMothWaveDirector> Director;
 	TWeakObjectPtr<UMothTutorialSubsystem> Tutorial;
-	UPROPERTY() TObjectPtr<UCanvasPanel> HUD;
-	UPROPERTY() TObjectPtr<UBorder> Menu;
-	UPROPERTY() TObjectPtr<UVerticalBox> MenuContent;
-	UPROPERTY() TObjectPtr<UTextBlock> HealthText;
-	UPROPERTY() TObjectPtr<UProgressBar> HealthBar;
-	UPROPERTY() TObjectPtr<UTextBlock> AmmoText;
-	UPROPERTY() TObjectPtr<UProgressBar> ReloadBar;
-	UPROPERTY() TObjectPtr<UTextBlock> WaveText;
-	UPROPERTY() TObjectPtr<UTextBlock> HeldText;
-	UPROPERTY() TObjectPtr<UMothDeviceIcon> HeldIcon;
-	UPROPERTY() TObjectPtr<UTextBlock> AimText;
-	UPROPERTY() TObjectPtr<UTextBlock> CrosshairText;
-	UPROPERTY() TObjectPtr<UTextBlock> TutorialText;
-	UPROPERTY() TObjectPtr<UTextBlock> NoticeText;
-	UPROPERTY() TObjectPtr<UBorder> NoticePanel;
-	UPROPERTY() TObjectPtr<UBorder> AimPanel;
-	UPROPERTY() TObjectPtr<UTextBlock> MenuTitle;
-	UPROPERTY() TObjectPtr<UTextBlock> MenuDescription;
-	UPROPERTY() TObjectPtr<UButton> PrimaryButton;
-	UPROPERTY() TObjectPtr<UTextBlock> PrimaryLabel;
-	UPROPERTY() TObjectPtr<UButton> SecondaryButton;
-	UPROPERTY() TObjectPtr<UTextBlock> SecondaryLabel;
-	UPROPERTY() TObjectPtr<UButton> QuitButton;
-	UPROPERTY() TObjectPtr<UButton> RetryButton;
-	UPROPERTY() TObjectPtr<UTextBlock> TutorialStepText;
+	bool bControlsReady = false;
+	FSlateColor DefaultAimColor, DefaultCrosshairColor;
+protected:
+	/** Disable when replacing these two screen cues in your Widget Blueprint. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultCombatFeedback = true;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Teaching") TSoftObjectPtr<UMothTutorialConfig> TutorialConfig;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy TitleCopy;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy PauseCopy;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy TutorialCompleteCopy;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy VictoryCopy;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy DefeatCopy;
+	/** Preview only: never alters a gameplay world or starts a tutorial. */
+	UPROPERTY(EditAnywhere, Category="Moth|Designer Preview") EMothUIPage PreviewPage = EMothUIPage::Title;
+	UPROPERTY(EditAnywhere, Category="Moth|Designer Preview") EMothTutorialStep PreviewTutorialStep = EMothTutorialStep::BombAndLift;
+	UPROPERTY(EditAnywhere, Category="Moth|Designer Preview") bool bPreviewHeld = false;
+	UPROPERTY(EditAnywhere, Category="Moth|Designer Preview") EDeviceKind PreviewHeldKind = EDeviceKind::Emitter;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> HUD;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> Menu;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> TeachingPanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> HealthText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UProgressBar> HealthBar;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> AmmoText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UProgressBar> ReloadBar;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> WaveText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> HeldText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UMothDeviceIcon> HeldIcon;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> AimText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> CrosshairText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> TutorialText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> NoticeText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> NoticePanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> AimPanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> MenuTitle;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> MenuDescription;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> PrimaryButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> PrimaryLabel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> SecondaryButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> SecondaryLabel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> QuitButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> RetryButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> TutorialStepText;
+private:
 	FText Notice;
 	double NoticeEndsAt = 0;
 	EMothUIPage RenderedPage = EMothUIPage::Defeat;
+	bool bMenuRendered = false;
 	bool bRendering = false;
 	void BuildLayout();
+	void ResolveControls();
+	void BindButtons(bool bBind);
 	void BindSources();
 	void UnbindSources();
 	void RenderState();

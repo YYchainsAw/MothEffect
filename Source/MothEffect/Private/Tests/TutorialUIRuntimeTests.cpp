@@ -4,9 +4,11 @@
 #include "Framework/MothWaveDirector.h"
 #include "Framework/MothGameInstance.h"
 #include "Tutorial/MothTutorialSubsystem.h"
+#include "Tutorial/MothTutorialConfig.h"
 #include "Tutorial/MothTutorialTarget.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/HealthComponent.h"
+#include "Components/Button.h"
 #include "Components/SphereComponent.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
@@ -72,7 +74,9 @@ namespace MothTutorialRuntimeTest
 			if (FPlatformTime::Seconds()<Wait) return false;
 			if (Stage==1)
 			{
-				PC->StartTeaching(); UI->RefreshState(); PC->SyncUIInput();
+				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("PrimaryButton")));
+				if (!T->TestNotNull(TEXT("Saved Designer primary button"),Button)) return true;
+				Button->OnClicked.Broadcast(); UI->RefreshState(); PC->SyncUIInput();
 				T->TestTrue(TEXT("Start button enters real tutorial with gameplay input"),S->GetStep()==EMothTutorialStep::BombAndLift&&!PC->bShowMouseCursor&&!PC->IsMoveInputIgnored());
 				Capture(TEXT("02_Tutorial.png")); Wait=FPlatformTime::Seconds()+.6; Stage=2; return false;
 			}
@@ -86,7 +90,8 @@ namespace MothTutorialRuntimeTest
 			if (Stage==3)
 			{
 				T->TestEqual(TEXT("Paused world clock is frozen while Slate renders menu"),W->GetTimeSeconds(),PauseTime);
-				PC->ResumeGame(); T->TestTrue(TEXT("Resume restores tutorial and gameplay input"),!W->IsPaused()&&UI->GetHUDState().Page==EMothUIPage::Tutorial&&!PC->bShowMouseCursor);
+				Cast<UButton>(UI->GetWidgetFromName(TEXT("PrimaryButton")))->OnClicked.Broadcast();
+				T->TestTrue(TEXT("Bound resume button restores tutorial and gameplay input"),!W->IsPaused()&&UI->GetHUDState().Page==EMothUIPage::Tutorial&&!PC->bShowMouseCursor);
 				// Replace only the controlled pawn for deterministic physical-button/focus input.
 				Formal=Cast<AMothEffectCharacter>(PC->GetPawn());
 				S->EndTutorial();
@@ -94,7 +99,21 @@ namespace MothTutorialRuntimeTest
 				Fixture=W->SpawnActor<AMothPlayerAutomationCharacter>(FVector(-2200,-1800,100),FRotator::ZeroRotator,Params);
 				if (!T->TestNotNull(TEXT("Deterministic input fixture"),Fixture.Get())) return true;
 				PC->Possess(Fixture.Get()); D->SetPlayer(Fixture.Get()); Fixture->SetInputFocused(true);
-				T->TestTrue(TEXT("Tutorial may restart from its current Ready world"),S->StartTutorial(Fixture.Get(),D));
+				auto* Config=DuplicateObject<UMothTutorialConfig>(UI->GetTutorialConfig(),GetTransientPackage());
+				Config->BombLocation+=FVector(0,40,0); Config->BlastTargetLocation+=FVector(0,40,0);
+				Config->BombAndLiftInstruction=FText::FromString(TEXT("Editable teaching instruction"));
+				Config->ResetFeedback=FText::FromString(TEXT("Editable reset feedback"));
+				const FVector ExpectedBomb=Config->BombLocation;
+				T->TestTrue(TEXT("Tutorial accepts an edited teaching config"),S->StartTutorial(Fixture.Get(),D,Config));
+				T->TestEqual(TEXT("Edited instruction is used"),S->GetInstruction().ToString(),Config->BombAndLiftInstruction.ToString());
+				Config->BombLocation+=FVector(0,500,0); Config->BombAndLiftInstruction=FText::FromString(TEXT("Changed source asset"));
+				auto* PreviousBomb=S->GetPracticeDevice(EDeviceKind::Bomb);
+				Cast<UButton>(UI->GetWidgetFromName(TEXT("RetryButton")))->OnClicked.Broadcast();
+				auto* ResetBomb=S->GetPracticeDevice(EDeviceKind::Bomb);
+				T->TestTrue(TEXT("Bound retry button replaces owned practice objects"),ResetBomb&&ResetBomb!=PreviousBomb);
+				if (ResetBomb) T->TestTrue(TEXT("Retry preserves the per-run position snapshot"),ResetBomb->GetActorLocation().Equals(ExpectedBomb,1.f));
+				T->TestEqual(TEXT("Source edits cannot change the current instruction"),S->GetInstruction().ToString(),FString(TEXT("Editable teaching instruction")));
+				T->TestEqual(TEXT("Bound retry reads editable feedback"),S->GetFeedback().ToString(),FString(TEXT("Editable reset feedback")));
 				if (auto* Lift=S->GetPracticeDevice(EDeviceKind::Launcher)) Lift->TryActivate(Shot(Fixture.Get(),Lift));
 				Wait=FPlatformTime::Seconds()+5; Stage=33; return false;
 			}
@@ -227,7 +246,9 @@ namespace MothTutorialRuntimeTest
 			if (Stage==0)
 			{
 				if (D->GetPhase()!=EMothFlowPhase::Ready) { PC->ReturnToTitle();Previous=W;Stage=-1;return false; }
-				PC->StartBattle();Previous=W;Stage=1;return false;
+				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("SecondaryButton")));
+				if (!T->TestNotNull(TEXT("Saved Designer secondary button"),Button)) return true;
+				Button->OnClicked.Broadcast();Previous=W;Stage=1;return false;
 			}
 			if (Stage==-1) { if (Previous.Get()==W) return false;Stage=0;return false; }
 			if (Stage==1&&W!=Previous.Get())

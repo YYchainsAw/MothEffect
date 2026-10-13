@@ -2,6 +2,8 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Feedback/MothFeedbackSubsystem.h"
+#include "GameFramework/Pawn.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -51,6 +53,12 @@ bool UHealthComponent::ApplyHit(const FHitContext& Context)
 	bHasDied = bFatal;
 	if (bFatal) OnDeathCommittedNative.Broadcast(GetOwner(), Context.SourceActor.Get());
 	if (bEndingPlay) return true;
+	const auto* VictimPawn = Cast<APawn>(GetOwner());
+	const auto* InstigatorPawn = Context.InstigatorPawn.Get();
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, Context.ImpactPoint, Context.ShotDirection,
+		IsValid(InstigatorPawn) && InstigatorPawn != VictimPawn && InstigatorPawn->IsPlayerControlled() && InstigatorPawn->IsLocallyControlled(), false);
+	if (VictimPawn && VictimPawn->IsPlayerControlled() && VictimPawn->IsLocallyControlled())
+		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Damage, Context.ImpactPoint, Context.ShotDirection, false, true);
 	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
 	if (bFatal && !bEndingPlay)
 	{

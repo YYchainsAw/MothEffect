@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Art/MothPrototypeArtProfile.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/BallisticReactive.h"
 #include "Interfaces/ImpulseReceiver.h"
@@ -19,6 +20,7 @@ class UExternalImpulseComponent;
 class ALaunchColumn;
 class UTextRenderComponent;
 class UDeviceLifecycleSubsystem;
+class UMothDeviceFeedbackComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FMothDeviceStateChanged,
 	ADeviceBase*, Device, EDeviceState, OldState, EDeviceState, NewState);
@@ -35,6 +37,12 @@ class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, pub
 
 public:
 	ADeviceBase();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art") bool bUsePrototypeAppearance = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art") TSoftObjectPtr<UMothPrototypeArtProfile> PrototypeArtProfile;
+	/** Shared by the device and its enemy's backpack, with a graybox fallback. */
+	UFUNCTION(BlueprintPure, Category="Device|Art") FMothPrototypeAppearance GetVisualAppearance() const;
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Device|Art") void RefreshPrototypeAppearance();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Device|Feedback") TObjectPtr<UMothDeviceFeedbackComponent> DefaultFeedback;
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual bool ReceiveBallisticHit_Implementation(const FHitContext& Context) override;
 	virtual void ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ, FGuid EventId) override;
@@ -224,6 +232,13 @@ protected:
 	bool bLogDeviceEvents = false;
 
 private:
+	bool bPrototypeApplied = false;
+	UPROPERTY(Transient) TObjectPtr<UStaticMesh> OriginalVisualMesh;
+	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInterface>> OriginalVisualMaterials;
+	FTransform OriginalVisualTransform;
+	UPROPERTY(Transient) TObjectPtr<UStaticMesh> AppliedVisualMesh;
+	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInterface>> AppliedVisualMaterials;
+	FTransform AppliedVisualTransform;
 	// T07 commits ownership only after pickup/release safety checks succeed.
 	friend class AMothEffectCharacter;
 	friend class ALaunchColumn;

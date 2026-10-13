@@ -2,6 +2,7 @@
 
 
 #include "Framework/MothEffectPlayerController.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "Framework/MothEffectGameMode.h"
 #include "Framework/MothWaveDirector.h"
 #include "Characters/MothEffectCharacter.h"
@@ -112,7 +113,7 @@ void AMothEffectPlayerController::StartTeaching()
 	if (bTravelRequested || !GetWorld() || GetWorld()->IsPaused()) return;
 	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
 	if (Mode && GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->StartTutorial(
-		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector()))
+		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector(), GameplayUI ? GameplayUI->GetTutorialConfig() : nullptr))
 	{
 		if (GameplayUI) GameplayUI->RefreshState(); SyncUIInput();
 	}
@@ -347,6 +348,16 @@ void AMothEffectPlayerController::MothFlowStats()
 			if (GEngine) GEngine->AddOnScreenDebugMessage(7112, 8, FColor::Cyan, Status);
 		}
 #endif
+}
+
+void AMothEffectPlayerController::MothFeedbackStats()
+{
+	const auto* Feedback=GetWorld()?GetWorld()->GetSubsystem<UMothFeedbackSubsystem>():nullptr;
+	if (!Feedback) return;
+	UE_LOG(LogMothEffect,Log,TEXT("Feedback profile=%s visuals=%d voices=%d hitAlpha=%.2f damageAlpha=%.2f"),
+		*GetNameSafe(Feedback->GetProfile()),Feedback->GetLiveVisualCount(),Feedback->GetLiveAudioCount(),Feedback->GetHitMarkerAlpha(),Feedback->GetDamageEdgeAlpha());
+	for (uint8 I=0; I<=static_cast<uint8>(EMothFeedbackCue::Failure); ++I)
+		UE_LOG(LogMothEffect,Log,TEXT("Feedback cue=%s committed=%llu"),*UEnum::GetValueAsString(static_cast<EMothFeedbackCue>(I)),Feedback->GetCueCount(static_cast<EMothFeedbackCue>(I)));
 }
 
 void AMothEffectPlayerController::MothStartEncounter()

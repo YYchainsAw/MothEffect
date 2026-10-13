@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.42 · 2026-10-12 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.43 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-13 T18编辑接口已接入：保存Designer基础树和25个控件绑定，菜单文案/页面预览在Class Defaults，教学说明与布置在DA_MothTutorial；具体UI由用户制作。Editor构建、2项编辑回归、主地图10项及扩充UI2项通过，当前硬件PIE待验收。本轮本地develop提交，未创建新PR；原PR #46已合并。编辑入口见[UI_Setup](05_Development_Guide/UI_Setup.md)，结果见[T18报告](06_Test_Doc/T18_Report_2026-10-12.md)。以下段落保留历史。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 

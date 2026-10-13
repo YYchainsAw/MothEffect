@@ -49,7 +49,7 @@ void AMothFeedbackVisual::UpdateShape()
 	{
 		const auto& Mesh=Pieces[I]; Mesh->SetVisibility(I<Count);
 		if (I>=Count) continue;
-		FVector Position; FRotator Rotation; FVector Scale;
+		FVector Position; FRotator Rotation=FRotator::ZeroRotator; FVector Scale;
 		if (bRing)
 		{
 			const float Angle=I*UE_TWO_PI/Count, Radius=Size*(.2f+.8f*T);

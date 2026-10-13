@@ -7,6 +7,7 @@
 #include "MothEffectGameMode.generated.h"
 
 class AMothWaveDirector;
+class AMothPrototypeSceneArt;
 
 /**
  *  Simple GameMode for a third person game
@@ -20,12 +21,15 @@ public:
 	
 	/** Constructor */
 	AMothEffectGameMode();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Prototype") TSubclassOf<AMothPrototypeSceneArt> PrototypeSceneArtClass;
 	UFUNCTION(BlueprintPure, Category="Moth|Flow")
 	AMothWaveDirector* GetWaveDirector() const;
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow")
 	bool StartEncounter();
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow")
 	bool RestartEncounter();
+protected:
+	virtual void BeginPlay() override;
 };
 
 

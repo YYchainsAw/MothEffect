@@ -18,6 +18,7 @@
 
 ADeviceBase::ADeviceBase()
 {
+	PrototypeArtProfile = TSoftObjectPtr<UMothPrototypeArtProfile>(FSoftObjectPath(UMothPrototypeArtProfile::DefaultPath()));
 	PrimaryActorTick.bCanEverTick = false;
 	DefaultFeedback = CreateDefaultSubobject<UMothDeviceFeedbackComponent>(TEXT("DefaultFeedback"));
 	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
@@ -43,6 +44,8 @@ ADeviceBase::ADeviceBase()
 	DeviceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeviceMesh"));
 	DeviceMesh->SetupAttachment(PhysicsBody);
 	DeviceMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DeviceMesh->SetGenerateOverlapEvents(false);
+	DeviceMesh->SetCanEverAffectNavigation(false);
 
 	EmitterDirectionMarker = CreateDefaultSubobject<UArrowComponent>(TEXT("EmitterDirectionMarker"));
 	EmitterDirectionMarker->SetupAttachment(PhysicsBody);
@@ -79,6 +82,7 @@ void ADeviceBase::OnConstruction(const FTransform& Transform)
 	ShotCollider->SetSphereRadius(FMath::Max(BodyRadius, ShotRadiusCm));
 	EmitterDirectionMarker->SetAbsolute(false, true, false);
 	ApplyStateCollision();
+	RefreshPrototypeAppearance();
 }
 
 void ADeviceBase::BeginPlay()
@@ -90,6 +94,7 @@ void ADeviceBase::BeginPlay()
 	Super::BeginPlay();
 	if (!bAdmitted) { DestroyDevice(); return; }
 	if (bEndingPlay || IsActorBeingDestroyed()) return;
+	RefreshPrototypeAppearance();
 	PhysicsBody->SetMassOverrideInKg(NAME_None, FMath::Max(0.01f, PhysicsMassKg));
 	EmitterDirectionMarker->SetVisibility(false, true);
 	ApplyStateCollision();

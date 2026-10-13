@@ -149,16 +149,21 @@ bool FMothDropSaved::RunTest(const FString&)
 		auto* Bag = FindObject<UStaticMeshComponent>(E, TEXT("BackpackMesh"));
 		auto* Hint = FindObject<UTextRenderComponent>(E, TEXT("DropHintText"));
 		if (!TestNotNull(TEXT("Non-colliding backpack"), Bag) || !TestNotNull(TEXT("Type text independent of color"), Hint)) return false;
-		TestEqual(TEXT("Backpack predicts actual drop mesh"), Bag->GetStaticMesh(), Defaults->GetDeviceMesh()->GetStaticMesh());
-		const FVector VisualExtent = Defaults->GetDeviceMesh()->GetStaticMesh()->GetBounds().BoxExtent * Defaults->GetDeviceMesh()->GetRelativeScale3D();
+		const auto Appearance=Defaults->GetVisualAppearance();
+		UStaticMesh* VisualMesh=Appearance.Mesh.LoadSynchronous();
+		if (!TestNotNull(TEXT("Resolved saved drop appearance"),VisualMesh)) return false;
+		TestEqual(TEXT("Backpack predicts actual drop mesh"), Bag->GetStaticMesh().Get(), VisualMesh);
+		const FVector VisualExtent = VisualMesh->GetBounds().BoxExtent * Appearance.RelativeTransform.GetScale3D();
 		TestTrue(TEXT("Saved geometry remains pickup sized after OBJ unit conversion"), VisualExtent.GetMin() > 1 && VisualExtent.GetMax() <= 30);
-		TestEqual(TEXT("Backpack and drop share saved material"), Bag->GetMaterial(0), Defaults->GetDeviceMesh()->GetMaterial(0));
+		const int32 MetalSlot=Appearance.bNamedMaterialSlots ? Bag->GetMaterialIndex(TEXT("Metal")) : 0;
+		TestEqual(TEXT("Backpack and drop share saved material"), Bag->GetMaterial(MetalSlot), Appearance.Materials[0].LoadSynchronous());
+		const int32 ColorSlot=Appearance.bNamedMaterialSlots ? Bag->GetMaterialIndex(TEXT("Glow")) : 0;
 		FLinearColor Tint;
-		TestTrue(TEXT("Saved material reloads the actual cyan/orange/purple parameter"), Bag->GetMaterial(0)
-			&& Bag->GetMaterial(0)->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("Tint")), Tint) && Tint.Equals(Colors[I], .001f));
+		TestTrue(TEXT("Saved material reloads the actual cyan/orange/purple parameter"), Bag->GetMaterial(ColorSlot)
+			&& Bag->GetMaterial(ColorSlot)->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("Tint")), Tint) && Tint.Equals(Colors[I], .001f));
 		TestTrue(TEXT("Hint is visible and contains stable D01/D02/D03 code"), Hint->IsVisible() && Hint->Text.ToString().Contains(FString::Printf(TEXT("D0%d"), I+1)));
 		TestTrue(TEXT("Appearance cannot block shots or navigation"), Bag->GetCollisionEnabled() == ECollisionEnabled::NoCollision && !Bag->CanEverAffectNavigation());
-		Shapes.Add(Bag->GetStaticMesh()); Materials.Add(Bag->GetMaterial(0));
+		Shapes.Add(Bag->GetStaticMesh()); Materials.Add(Bag->GetMaterial(ColorSlot));
 	}
 	TestEqual(TEXT("Three distinct saved geometric shapes"), Shapes.Num(), 3);
 	TestEqual(TEXT("Three distinct color materials"), Materials.Num(), 3);

@@ -5,6 +5,8 @@
 #include "Devices/DeviceBase.h"
 #include "Devices/DeviceReleaseSafety.h"
 #include "Engine/World.h"
+#include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
 #include "EngineUtils.h"
 #include "MothEffect.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
@@ -18,15 +20,17 @@ void AEnemyBase::OnConstruction(const FTransform& Transform)
 void AEnemyBase::RefreshDropAppearance()
 {
 	const ADeviceBase* Defaults = DropDeviceClass ? DropDeviceClass.GetDefaultObject() : nullptr;
-	const UStaticMeshComponent* Visual = Defaults ? Defaults->GetDeviceMesh() : nullptr;
-	const bool bConfigured = Visual && Visual->GetStaticMesh() && Defaults->GetDeviceKind() == DropKind;
+	const FMothPrototypeAppearance Visual = Defaults ? Defaults->GetVisualAppearance() : FMothPrototypeAppearance();
+	UStaticMesh* AppearanceMesh = Visual.Mesh.LoadSynchronous();
+	const bool bConfigured = AppearanceMesh && Defaults && Defaults->GetDeviceKind() == DropKind;
 	BackpackMesh->SetVisibility(bConfigured);
 	DropHintText->SetVisibility(bConfigured);
 	if (!bDropAttempted) DropResult = DropDeviceClass ? EEnemyDropResult::Ready : EEnemyDropResult::Unconfigured;
 	if (!bConfigured) return;
-	BackpackMesh->SetStaticMesh(Visual->GetStaticMesh());
-	BackpackMesh->SetRelativeScale3D(Visual->GetRelativeScale3D() * 1.4f);
-	for (int32 I = 0; I < Visual->GetNumMaterials(); ++I) BackpackMesh->SetMaterial(I, Visual->GetMaterial(I));
+	BackpackMesh->SetStaticMesh(AppearanceMesh);
+	BackpackMesh->SetRelativeScale3D(Visual.RelativeTransform.GetScale3D() * 1.4f);
+	BackpackMesh->SetRelativeRotation(Visual.RelativeTransform.Rotator());
+	UMothPrototypeArtProfile::ApplyMaterials(BackpackMesh,Visual);
 	const TCHAR* Hint = DropKind == EDeviceKind::Launcher ? TEXT("D01 / UP")
 		: DropKind == EDeviceKind::Bomb ? TEXT("D02 / BLAST") : TEXT("D03 / FIRE");
 	const FColor Color = DropKind == EDeviceKind::Launcher ? FColor::Cyan

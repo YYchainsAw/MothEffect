@@ -214,7 +214,7 @@ namespace
 			Source = ChainDevice(*F, bColumn ? FVector(-190.0, 0.0, 400.0) : FVector(0.0, 0.0, 20.0),
 				EDeviceKind::Emitter, Case == EChainCase::SavedBlueprints);
 			InitialTarget = bColumn ? FVector(250.0, Layout == 0 ? 0.0 : 300.0, 20.0)
-				: Case == EChainCase::BombCrossing ? FVector(250.0, Layout == 0 ? 280.0 : 900.0, 20.0)
+				: Case == EChainCase::BombCrossing ? FVector(250.0, Layout == 0 ? 280.0 : 1000.0, 20.0)
 				: FVector(250.0, 0.0, 20.0);
 			const EDeviceKind Kind = Case == EChainCase::DirectBomb || Case == EChainCase::SavedBlueprints
 				? EDeviceKind::Bomb : Case == EChainCase::DirectLauncher ? EDeviceKind::Launcher : EDeviceKind::Emitter;

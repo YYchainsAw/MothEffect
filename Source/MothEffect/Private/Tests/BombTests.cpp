@@ -251,6 +251,8 @@ namespace
 					Device->ActivationDelaySeconds = 0.3f; // Measure blast velocity before the triggered emitter changes its own gravity.
 					ADeviceBase* Bomb = SpawnDevice(*Fixture, Center, EDeviceKind::Bomb);
 					Test->TestTrue(TEXT("Blast schedules native movement"), Bomb->TryActivate(BombHit(Pawn)));
+					// Blast activation reapplies the production gravity policy; isolate velocity settlement here.
+					Device->GetPhysicsBody()->SetEnableGravity(false);
 				}
 				else if (Case == EImpulseCase::Merge)
 				{

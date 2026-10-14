@@ -136,6 +136,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Device")
 	USphereComponent* GetPhysicsBody() const { return PhysicsBody.Get(); }
+	/** Read the configured value on a BP CDO before construction has resized its component. */
+	float GetConfiguredBodyRadiusCm() const { return FMath::IsFinite(BodyRadiusCm) ? FMath::Max(1.0f, BodyRadiusCm) : 20.0f; }
 	/** The backpack copies only this visual; physical/query roots remain unchanged. */
 	UStaticMeshComponent* GetDeviceMesh() const { return DeviceMesh.Get(); }
 
@@ -252,6 +254,8 @@ protected:
 private:
 	bool bGrounded = false;
 	double GroundingAllowedAt = 0.0;
+	/** Saved with the mesh so repeated construction and reloads cannot multiply its size again. */
+	UPROPERTY()
 	float LastAppliedVisualScale = 1.0f;
 	void UpdateGrounding();
 	bool FindGroundSupport(FHitResult& Hit) const;

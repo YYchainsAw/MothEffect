@@ -52,7 +52,8 @@ bool AEnemyBase::FindDropTransform(const ADeviceBase* Defaults, const FVector& D
 	FCollisionObjectQueryParams Surfaces;
 	Surfaces.AddObjectTypesToQuery(ECC_WorldStatic); Surfaces.AddObjectTypesToQuery(ECC_WorldDynamic);
 	const float Clearance = FMath::Max(0.01f, DropClearanceCm);
-	const float Ring = FMath::Max(0.0f, DropSearchRadiusCm - Body->GetScaledSphereRadius() - Clearance);
+	const float Radius = Defaults->GetConfiguredBodyRadiusCm() * Body->GetShapeScale();
+	const float Ring = FMath::Max(0.0f, DropSearchRadiusCm - Radius - Clearance);
 	TArray<FVector> Offsets { FVector::ZeroVector };
 	for (float Factor : { 0.5f, 1.0f })
 		for (int32 I = 0; I < 8; ++I)
@@ -67,13 +68,13 @@ bool AEnemyBase::FindDropTransform(const ADeviceBase* Defaults, const FVector& D
 		if (!GetWorld()->LineTraceSingleByObjectType(Hit, Probe + FVector::UpVector * 50,
 			Probe - FVector::UpVector * FMath::Max(1.0f, DropGroundProbeDistanceCm), Surfaces, Ground)
 			|| Hit.ImpactNormal.Z < FMath::Clamp(DropGroundUpNormalMin, 0.0f, 1.0f)) continue;
-		const FVector Position = Hit.ImpactPoint + Hit.ImpactNormal * (Body->GetScaledSphereRadius() + Clearance);
-		if (MothDeviceRelease::IsPathClear(GetWorld(), Body, DeathLocation, Position, Birth))
+		const FVector Position = Hit.ImpactPoint + Hit.ImpactNormal * (Radius + Clearance);
+		if (MothDeviceRelease::IsPathClear(GetWorld(), Body, DeathLocation, Position, Birth, Radius))
 		{ OutTransform = FTransform(FRotator::ZeroRotator, Position); return true; }
 	}
 	// A high airborne death may have no nearby support. A free physical birth falls normally;
 	// it must never be attached/frozen or relocated across an obstacle to find ground.
-	if (MothDeviceRelease::IsPathClear(GetWorld(), Body, DeathLocation, DeathLocation, Birth))
+	if (MothDeviceRelease::IsPathClear(GetWorld(), Body, DeathLocation, DeathLocation, Birth, Radius))
 	{ OutTransform = FTransform(FRotator::ZeroRotator, DeathLocation); return true; }
 	return false;
 }
@@ -94,7 +95,8 @@ void AEnemyBase::TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind,
 	{
 		FCollisionQueryParams Params(SCENE_QUERY_STAT(MothEnemyDropCommit), false, this);
 		return !bEndingPlay && !IsActorBeingDestroyed()
-			&& MothDeviceRelease::IsPathClear(GetWorld(), Defaults->GetPhysicsBody(), DeathLocation, Transform.GetLocation(), Params);
+			&& MothDeviceRelease::IsPathClear(GetWorld(), Defaults->GetPhysicsBody(), DeathLocation, Transform.GetLocation(), Params,
+				Defaults->GetConfiguredBodyRadiusCm() * Defaults->GetPhysicsBody()->GetShapeScale());
 	});
 	if (Device && (Device->GetDeviceKind() != Kind || Device->GetDeviceState() != EDeviceState::Dormant
 		|| (!Device->IsGrounded() && !Device->GetPhysicsBody()->IsSimulatingPhysics()))) { Device->DestroyDevice(); Device = nullptr; }

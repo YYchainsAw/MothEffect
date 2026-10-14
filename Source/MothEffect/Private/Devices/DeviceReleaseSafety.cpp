@@ -3,13 +3,13 @@
 #include "Engine/World.h"
 
 bool MothDeviceRelease::IsPathClear(UWorld* World, const USphereComponent* Body,
-	const FVector& Start, const FVector& End, const FCollisionQueryParams& Params)
+	const FVector& Start, const FVector& End, const FCollisionQueryParams& Params, float RadiusOverrideCm)
 {
 	if (!World || !IsValid(Body) || Start.ContainsNaN() || End.ContainsNaN())
 	{
 		return false;
 	}
-	const float Radius = Body->GetScaledSphereRadius();
+	const float Radius = RadiusOverrideCm > 0.0f ? RadiusOverrideCm : Body->GetScaledSphereRadius();
 	if (!FMath::IsFinite(Radius) || Radius <= 0.0f)
 	{
 		return false;

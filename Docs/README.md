@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.46 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.48 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-14 当前进入道具基础重构，入口为 [Device_Refactor_Setup](05_Development_Guide/Device_Refactor_Setup.md)：地面固定且保留查询、显式推力/弹射再起飞、D03 锁入射 XY 水平方向、共用激活延迟及 D02 爆炸触发无遮挡 Dormant。规则 v0.12、参数 v0.19 与 DEC41–DEC44 已同步；当前 `refactor` 分支，代码分段本地提交 `f6d6b2a` / `f91db81`。新建 [#48](https://github.com/YYchainsAw/MothEffect/issues/48)、[#49](https://github.com/YYchainsAw/MothEffect/issues/49)、[#50](https://github.com/YYchainsAw/MothEffect/issues/50)、[#51](https://github.com/YYchainsAw/MothEffect/issues/51)，均 Open / In Progress、YYchainsAw / M5，元数据已回读。收尾提交 0e5370a / 4934627，隔离 UE 构建、114 Editor / 12 主地图 Game 回归通过，见 [验证报告](06_Test_Doc/Device_Refactor_Report_2026-10-14.md)；硬件 PIE、手感和独立包仍待验收；历史记录保留原验证范围，本轮未推送或创建 PR。
+
+原工程补充验证：确认编辑器关闭后，Editor 常规构建 56.79 秒 Succeeded，新 DLL 的六项 Foundation 全通过；重新打开项目即可加载。该构建包含当前用户未提交控制器代码，未将这些改动纳入本轮提交。
 
 2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 以下段落保留历史。
 
@@ -76,6 +80,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Murdock_Setup.md](05_Development_Guide/Murdock_Setup.md) | Murdock 官方 ABP 复用、单 Jog、一体枪口、开火/换弹及交互迁移与待执行验证 |
 | 05_Development_Guide/ | [Weapon_Setup.md](05_Development_Guide/Weapon_Setup.md) | T05 步枪/输入/测试靶/上半身动画配置与分支验收 |
 | 05_Development_Guide/ | [Device_Setup.md](05_Development_Guide/Device_Setup.md) | T06 原生机关状态、灰盒资产、重复命中与当前验收步骤 |
+| 05_Development_Guide/ | [Device_Refactor_Setup.md](05_Development_Guide/Device_Refactor_Setup.md) | 当前道具基础重构、可编辑尺寸/延迟、水平射向、爆炸连锁及待执行验证 |
 | 05_Development_Guide/ | [Device_Interaction_Setup.md](05_Development_Guide/Device_Interaction_Setup.md) | T07 挂点、持物表现、安全释放、输入与已通过范围 |
 | 05_Development_Guide/ | [Emitter_Setup.md](05_Development_Guide/Emitter_Setup.md) | T08 D03/P01 灰盒 BP、方向提示、Automation 和空中启动验收 |
 | 05_Development_Guide/ | [Bomb_Setup.md](05_Development_Guide/Bomb_Setup.md) | T10 爆炸灰盒、统一推力与当前 PIE 验收 |

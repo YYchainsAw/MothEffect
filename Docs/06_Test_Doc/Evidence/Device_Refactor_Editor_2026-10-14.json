@@ -1,0 +1,2544 @@
+{
+  "devices": [
+    {
+      "deviceName": "YYCHAINSAW",
+      "instance": "4B9D18B1490AA40C1C55838AC3F8CCBA",
+      "instanceName": "YYCHAINSAW-1984",
+      "platform": "WindowsEditor",
+      "oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+      "model": "Default",
+      "gPU": "AMD Radeon 780M Graphics",
+      "cPUModel": "AMD Ryzen 7 8845H w/ Radeon 780M Graphics",
+      "rAMInGB": 32,
+      "renderMode": "SM6",
+      "rHI": "",
+      "appInstanceLog": ""
+    }
+  ],
+  "reportCreatedOn": "2026.10.14-13.23.45",
+  "succeeded": 113,
+  "succeededWithWarnings": 1,
+  "failed": 0,
+  "notRun": 0,
+  "inProcess": 0,
+  "totalDuration": 171.0423126220703,
+  "comparisonExported": false,
+  "comparisonExportDirectory": "",
+  "tests": [
+    {
+      "testDisplayName": "AppearanceSwitchPreservesPhysicsAndUserEdits",
+      "fullTestPath": "MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.029494598507881165,
+      "dateTime": "2026.10.14-13.20.52",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ReversibleCoverLayerPreservesBlocking",
+      "fullTestPath": "MothEffect.Art.ReversibleCoverLayerPreservesBlocking",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02423129975795746,
+      "dateTime": "2026.10.14-13.20.53",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedMeshesMaterialsAndUnits",
+      "fullTestPath": "MothEffect.Art.SavedMeshesMaterialsAndUnits",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.013816401362419128,
+      "dateTime": "2026.10.14-13.20.53",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BombActivatesNeighborAndLayoutControl",
+      "fullTestPath": "MothEffect.Chains.BombActivatesNeighborAndLayoutControl",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 4.39028787612915,
+      "dateTime": "2026.10.14-13.20.53",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=3 layout=0 activations=1 targetImpacts=0 impulseStart=X=250.000 Y=280.000 Z=20.000 activatedAt=X=250.000 Y=280.000 Z=20.250 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.20.55"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=3 layout=1 activations=0 targetImpacts=0 impulseStart=X=250.000 Y=1000.000 Z=20.000 activatedAt=X=0.000 Y=0.000 Z=0.000 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.20.57"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ColumnIntoFirelineAndLayoutControl",
+      "fullTestPath": "MothEffect.Chains.ColumnIntoFirelineAndLayoutControl",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 4.383898735046387,
+      "dateTime": "2026.10.14-13.20.57",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=4 layout=0 activations=1 targetImpacts=1 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=250.000 Y=0.000 Z=394.603 peakZ=743.0",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.20.59"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=4 layout=1 activations=0 targetImpacts=0 impulseStart=X=250.000 Y=300.000 Z=20.000 activatedAt=X=0.000 Y=0.000 Z=0.000 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.21.01"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DirectBomb",
+      "fullTestPath": "MothEffect.Chains.DirectBomb",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 11.716714859008789,
+      "dateTime": "2026.10.14-13.21.01",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=1 layout=0 activations=1 targetImpacts=1 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=250.000 Y=0.000 Z=20.250 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.21.13"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DirectEmitter",
+      "fullTestPath": "MothEffect.Chains.DirectEmitter",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 11.716629981994629,
+      "dateTime": "2026.10.14-13.21.13",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=0 layout=0 activations=1 targetImpacts=12 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=250.000 Y=0.000 Z=20.250 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.21.25"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DirectLauncher",
+      "fullTestPath": "MothEffect.Chains.DirectLauncher",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 11.716721534729004,
+      "dateTime": "2026.10.14-13.21.25",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=2 layout=0 activations=1 targetImpacts=1 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=250.000 Y=0.000 Z=20.250 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.21.37"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PausedFlightAndIndependentLifetime",
+      "fullTestPath": "MothEffect.Chains.PausedFlightAndIndependentLifetime",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 5.366570472717285,
+      "dateTime": "2026.10.14-13.21.37",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedBlueprintNaturalChain",
+      "fullTestPath": "MothEffect.Chains.SavedBlueprintNaturalChain",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 11.71682357788086,
+      "dateTime": "2026.10.14-13.21.42",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=8 layout=0 activations=1 targetImpacts=2 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=250.000 Y=0.000 Z=20.250 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.21.54"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedRangeConfiguration",
+      "fullTestPath": "MothEffect.Chains.SavedRangeConfiguration",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.022662699222564697,
+      "dateTime": "2026.10.14-13.21.54",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SourceExclusionAndAttributionDamage",
+      "fullTestPath": "MothEffect.Chains.SourceExclusionAndAttributionDamage",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.7432485222816467,
+      "dateTime": "2026.10.14-13.21.54",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ThinWallConsumesFirstImpact",
+      "fullTestPath": "MothEffect.Chains.ThinWallConsumesFirstImpact",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 11.71686840057373,
+      "dateTime": "2026.10.14-13.21.55",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Chain case=6 layout=0 activations=0 targetImpacts=0 impulseStart=X=250.000 Y=0.000 Z=20.000 activatedAt=X=0.000 Y=0.000 Z=0.000 peakZ=20.2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.22.06"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FrameMergeAndClamp",
+      "fullTestPath": "MothEffect.Combat.Impulse.FrameMergeAndClamp",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.10381750017404556,
+      "dateTime": "2026.10.14-13.22.06",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "InvalidAndDuplicateEvents",
+      "fullTestPath": "MothEffect.Combat.Impulse.InvalidAndDuplicateEvents",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.020419102162122726,
+      "dateTime": "2026.10.14-13.22.06",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PauseAndCancellation",
+      "fullTestPath": "MothEffect.Combat.Impulse.PauseAndCancellation",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.15007029473781586,
+      "dateTime": "2026.10.14-13.22.06",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BlueprintDefaultsAndActivation",
+      "fullTestPath": "MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.6167042851448059,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CancelBeforeEffect",
+      "fullTestPath": "MothEffect.Devices.Bomb.CancelBeforeEffect",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021640300750732422,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "HeldAndNonBallisticStates",
+      "fullTestPath": "MothEffect.Devices.Bomb.HeldAndNonBallisticStates",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.027033500373363495,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PhysicalMovement",
+      "fullTestPath": "MothEffect.Devices.Bomb.PhysicalMovement",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.06666769832372665,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SingleUseAndFrozenCenter",
+      "fullTestPath": "MothEffect.Devices.Bomb.SingleUseAndFrozenCenter",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.028620600700378418,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "StaticCoverAndRadius",
+      "fullTestPath": "MothEffect.Devices.Bomb.StaticCoverAndRadius",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.027807097882032394,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BlockedBirthAndExpiry",
+      "fullTestPath": "MothEffect.Devices.Emitter.BlockedBirthAndExpiry",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.8000847101211548,
+      "dateTime": "2026.10.14-13.22.07",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CancellationStopsTimers",
+      "fullTestPath": "MothEffect.Devices.Emitter.CancellationStopsTimers",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.7999014854431152,
+      "dateTime": "2026.10.14-13.22.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "WorldDirectionAndLifetime",
+      "fullTestPath": "MothEffect.Devices.Emitter.WorldDirectionAndLifetime",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 5.216655254364014,
+      "dateTime": "2026.10.14-13.22.11",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DefaultDelayForAllThreeEffects",
+      "fullTestPath": "MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 5.6331071853637695,
+      "dateTime": "2026.10.14-13.22.16",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EditableSizesKeepQueryAndVisualIndependent",
+      "fullTestPath": "MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021598801016807556,
+      "dateTime": "2026.10.14-13.22.22",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ExplosionsActivateIndependentDelayedBombs",
+      "fullTestPath": "MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.716740608215332,
+      "dateTime": "2026.10.14-13.22.22",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "GroundQueryCharacterPassageAndForceWake",
+      "fullTestPath": "MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 3.7668282985687256,
+      "dateTime": "2026.10.14-13.22.24",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "HorizontalProjectionAndVerticalFallback",
+      "fullTestPath": "MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021531999111175537,
+      "dateTime": "2026.10.14-13.22.28",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PendingPauseCancellationAndSessionShutdown",
+      "fullTestPath": "MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.7509721517562866,
+      "dateTime": "2026.10.14-13.22.28",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BombColumnOrderIndependent",
+      "fullTestPath": "MothEffect.Devices.Launcher.BombColumnOrderIndependent",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.12086120247840881,
+      "dateTime": "2026.10.14-13.22.29",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Order=0 pawn=X=-550.000 Y=200.000 Z=1000.000 expected=X=-550.000 Y=200.000 Z=1000.000 device=X=-926.680 Y=200.000 Z=1200.000 expected=X=-926.680 Y=200.000 Z=1200.000 affected=2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.22.29"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Order=1 pawn=X=-550.000 Y=200.000 Z=1000.000 expected=X=-550.000 Y=200.000 Z=1000.000 device=X=-926.680 Y=200.000 Z=1200.000 expected=X=-926.680 Y=200.000 Z=1200.000 affected=2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.22.30"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FullStaticVolumeAndContact",
+      "fullTestPath": "MothEffect.Devices.Launcher.FullStaticVolumeAndContact",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.049410901963710785,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "InvalidGroundConsumesSeed",
+      "fullTestPath": "MothEffect.Devices.Launcher.InvalidGroundConsumesSeed",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.04681050032377243,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "OccupiedUntilExpiry",
+      "fullTestPath": "MothEffect.Devices.Launcher.OccupiedUntilExpiry",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.022567100822925568,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "OncePerTargetAndLateEntrants",
+      "fullTestPath": "MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.024713199585676193,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PauseCancellationAndEndPlay",
+      "fullTestPath": "MothEffect.Devices.Launcher.PauseCancellationAndEndPlay",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0482788011431694,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PhysicalMovementAndStandingSupport",
+      "fullTestPath": "MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.5329170227050781,
+      "dateTime": "2026.10.14-13.22.30",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Order=0 pawn=X=100.000 Y=200.000 Z=1000.000 expected=X=100.000 Y=200.000 Z=1000.000 device=X=100.000 Y=200.000 Z=1200.000 expected=X=100.000 Y=200.000 Z=1200.000 affected=2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.22.30"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedBlueprintIntegration",
+      "fullTestPath": "MothEffect.Devices.Launcher.SavedBlueprintIntegration",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.6166518926620483,
+      "dateTime": "2026.10.14-13.22.31",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SlopeAndPlatformEdge",
+      "fullTestPath": "MothEffect.Devices.Launcher.SlopeAndPlatformEdge",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.04616880044341087,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "WaitForClearanceAndBlockProjectiles",
+      "fullTestPath": "MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.023612797260284424,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "WorldDownAndFrozenAnchor",
+      "fullTestPath": "MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.022116899490356445,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EndpointOccupancy",
+      "fullTestPath": "MothEffect.Devices.ReleaseSafety.EndpointOccupancy",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02200930193066597,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PawnAndIgnoredActors",
+      "fullTestPath": "MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021573398262262344,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ThinWall",
+      "fullTestPath": "MothEffect.Devices.ReleaseSafety.ThinWall",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021547500044107437,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ActivationIsSingleUse",
+      "fullTestPath": "MothEffect.Devices.ActivationIsSingleUse",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.020581699907779694,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CancelDuringActivationCallback",
+      "fullTestPath": "MothEffect.Devices.CancelDuringActivationCallback",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.020388800650835037,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RejectInvalidAndDisabledHits",
+      "fullTestPath": "MothEffect.Devices.RejectInvalidAndDisabledHits",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0209680013358593,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ActualWorldPauseFreezesWarning",
+      "fullTestPath": "MothEffect.Enemies.ActualWorldPauseFreezesWarning",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.549974799156189,
+      "dateTime": "2026.10.14-13.22.32",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CallbackDisableTargetChangeAndDeathCancel",
+      "fullTestPath": "MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 4.088021755218506,
+      "dateTime": "2026.10.14-13.22.34",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CoverCancelsWarningAndReacquires",
+      "fullTestPath": "MothEffect.Enemies.CoverCancelsWarningAndReacquires",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 5.667403221130371,
+      "dateTime": "2026.10.14-13.22.38",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DeathIdempotenceConfigAndBomb",
+      "fullTestPath": "MothEffect.Enemies.DeathIdempotenceConfigAndBomb",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02911119908094406,
+      "dateTime": "2026.10.14-13.22.44",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EyeSightDoesNotBypassMuzzleCover",
+      "fullTestPath": "MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.2173775434494019,
+      "dateTime": "2026.10.14-13.22.44",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "NormalRifleKillsOnce",
+      "fullTestPath": "MothEffect.Enemies.NormalRifleKillsOnce",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.133512258529663,
+      "dateTime": "2026.10.14-13.22.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RealP01ActivatesDormantDevice",
+      "fullTestPath": "MothEffect.Enemies.RealP01ActivatesDormantDevice",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.7189302444458008,
+      "dateTime": "2026.10.14-13.22.46",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RealP01FriendlyDamageAndSourceExclusion",
+      "fullTestPath": "MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.0504794120788574,
+      "dateTime": "2026.10.14-13.22.48",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedBlueprintAndRange",
+      "fullTestPath": "MothEffect.Enemies.SavedBlueprintAndRange",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02830659970641136,
+      "dateTime": "2026.10.14-13.22.49",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SharedProjectileQuotaAndNormalSlotRecovery",
+      "fullTestPath": "MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 3.2935805320739746,
+      "dateTime": "2026.10.14-13.22.49",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "TelegraphCadenceAndRealPlayerImpact",
+      "fullTestPath": "MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 5.440028667449951,
+      "dateTime": "2026.10.14-13.22.52",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CapacityCallbacksRevalidateBirthplace",
+      "fullTestPath": "MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.041953202337026596,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DeathObserversResetOrDestroyCancel",
+      "fullTestPath": "MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.04230659827589989,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FullHeldCapacityRejectsWithoutRetry",
+      "fullTestPath": "MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.05505179986357689,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "IdempotentDeathAndFixedClass",
+      "fullTestPath": "MothEffect.EnemyDrops.IdempotentDeathAndFixedClass",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.025216300040483475,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "InvalidClassAndBlockedOriginDoNotEvict",
+      "fullTestPath": "MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.07526189833879471,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "NormalW01KillsAllVariants",
+      "fullTestPath": "MothEffect.EnemyDrops.NormalW01KillsAllVariants",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 3.316718101501465,
+      "dateTime": "2026.10.14-13.22.58",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=0 variant=0 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Launcher count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.22.59"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=0 variant=1 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Bomb count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.00"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=0 variant=2 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Emitter count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.01"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RealD02KillsAllVariants",
+      "fullTestPath": "MothEffect.EnemyDrops.RealD02KillsAllVariants",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.05416810140013695,
+      "dateTime": "2026.10.14-13.23.01",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RealP01KillsAllVariants",
+      "fullTestPath": "MothEffect.EnemyDrops.RealP01KillsAllVariants",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 3.318608045578003,
+      "dateTime": "2026.10.14-13.23.01",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=1 variant=0 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Launcher count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.03"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=1 variant=1 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Bomb count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.04"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=1 variant=2 position=X=600.000 Y=0.000 Z=20.250 type=EDeviceKind::Emitter count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.05"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RealPhysicsAndPickupOnFloorWallSlopeAir",
+      "fullTestPath": "MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 3.817207098007202,
+      "dateTime": "2026.10.14-13.23.05",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=2 variant=0 position=X=64.000 Y=-120.000 Z=110.250 type=EDeviceKind::Launcher count=2",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.06"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=2 variant=1 position=X=-0.250 Y=-120.000 Z=110.250 type=EDeviceKind::Bomb count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.07"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=2 variant=2 position=X=-9.298 Y=-120.000 Z=130.050 type=EDeviceKind::Emitter count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.08"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Drop case=2 variant=3 position=X=0.000 Y=0.000 Z=2843.894 type=EDeviceKind::Launcher count=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.09"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RecyclesOldestDormant",
+      "fullTestPath": "MothEffect.EnemyDrops.RecyclesOldestDormant",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.04272489994764328,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedVariantsAppearanceAndRange",
+      "fullTestPath": "MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0265485979616642,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BoundedPauseAndSessionCleanup",
+      "fullTestPath": "MothEffect.Feedback.BoundedPauseAndSessionCleanup",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.04241509735584259,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "CommittedEventsAndLockedArrow",
+      "fullTestPath": "MothEffect.Feedback.CommittedEventsAndLockedArrow",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02109679952263832,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DamageAndProjectileAreSingleUse",
+      "fullTestPath": "MothEffect.Feedback.DamageAndProjectileAreSingleUse",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021990500390529633,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DefaultAssetsLoad",
+      "fullTestPath": "MothEffect.Feedback.DefaultAssetsLoad",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02000739797949791,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ExpiryHeldDropAndSpent",
+      "fullTestPath": "MothEffect.Feedback.ExpiryHeldDropAndSpent",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.44980889558792114,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SpawnObserverCannotResurrectClearedPresentation",
+      "fullTestPath": "MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.032474201172590256,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BoundsCleansHeldActiveAndProjectile",
+      "fullTestPath": "MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.14138980209827423,
+      "dateTime": "2026.10.14-13.23.09",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ColumnLimitRetractsAndClosesSupport",
+      "fullTestPath": "MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.486517995595932,
+      "dateTime": "2026.10.14-13.23.10",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DeferredProjectileCancellationReleasesQuota",
+      "fullTestPath": "MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.020683500915765762,
+      "dateTime": "2026.10.14-13.23.10",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DisabledIdleClockResumes",
+      "fullTestPath": "MothEffect.Lifecycle.DisabledIdleClockResumes",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 6.866625785827637,
+      "dateTime": "2026.10.14-13.23.10",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EmitterActivationOrderAndReentrancy",
+      "fullTestPath": "MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.032419800758361816,
+      "dateTime": "2026.10.14-13.23.17",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FullCapacityProtectsHeld",
+      "fullTestPath": "MothEffect.Lifecycle.FullCapacityProtectsHeld",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.055094100534915924,
+      "dateTime": "2026.10.14-13.23.17",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "IdleWarningHeldDropThrowAndPause",
+      "fullTestPath": "MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 12.117473602294922,
+      "dateTime": "2026.10.14-13.23.17",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ProjectileAdmissionAndImmediateImpactRelease",
+      "fullTestPath": "MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.06109889969229698,
+      "dateTime": "2026.10.14-13.23.29",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ResetInvalidatesInFlightDropAdmission",
+      "fullTestPath": "MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.03449380025267601,
+      "dateTime": "2026.10.14-13.23.29",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ResetRejectsCallbacksAndIsolatesWorlds",
+      "fullTestPath": "MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.036077599972486496,
+      "dateTime": "2026.10.14-13.23.29",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SaturatedEmitterConsumesSlotsAndResumes",
+      "fullTestPath": "MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 10.476818084716797,
+      "dateTime": "2026.10.14-13.23.29",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedBlueprintsAndDebugController",
+      "fullTestPath": "MothEffect.Lifecycle.SavedBlueprintsAndDebugController",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021268200129270554,
+      "dateTime": "2026.10.14-13.23.40",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "TotalRecyclesOldestDormant",
+      "fullTestPath": "MothEffect.Lifecycle.TotalRecyclesOldestDormant",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0507362000644207,
+      "dateTime": "2026.10.14-13.23.40",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "BlockedReleaseRetainsHeld",
+      "fullTestPath": "MothEffect.Player.T09.BlockedReleaseRetainsHeld",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.20019519329071045,
+      "dateTime": "2026.10.14-13.23.40",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DeathAndEndPlayCleanup",
+      "fullTestPath": "MothEffect.Player.T09.DeathAndEndPlayCleanup",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.5350810885429382,
+      "dateTime": "2026.10.14-13.23.40",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FocusAndPhysicalRelease",
+      "fullTestPath": "MothEffect.Player.T09.FocusAndPhysicalRelease",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.36667680740356445,
+      "dateTime": "2026.10.14-13.23.41",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "HeldInvalidationAndDamage",
+      "fullTestPath": "MothEffect.Player.T09.HeldInvalidationAndDamage",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.20258550345897675,
+      "dateTime": "2026.10.14-13.23.41",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PausePreservesTimers",
+      "fullTestPath": "MothEffect.Player.T09.PausePreservesTimers",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 1.050705909729004,
+      "dateTime": "2026.10.14-13.23.41",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PickupReloadCompetition",
+      "fullTestPath": "MothEffect.Player.T09.PickupReloadCompetition",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.5665876269340515,
+      "dateTime": "2026.10.14-13.23.42",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RoundCancellationRejectsOldTasks",
+      "fullTestPath": "MothEffect.Player.T09.RoundCancellationRejectsOldTasks",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.5355476140975952,
+      "dateTime": "2026.10.14-13.23.43",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SinglePressAndRecovery",
+      "fullTestPath": "MothEffect.Player.T09.SinglePressAndRecovery",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.36779749393463135,
+      "dateTime": "2026.10.14-13.23.44",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "UnpossessedStopsFire",
+      "fullTestPath": "MothEffect.Player.T09.UnpossessedStopsFire",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.6663867235183716,
+      "dateTime": "2026.10.14-13.23.44",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FirstImpactIsSingleUse",
+      "fullTestPath": "MothEffect.Projectiles.FirstImpactIsSingleUse",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02504279837012291,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "RejectionAndSourceExclusion",
+      "fullTestPath": "MothEffect.Projectiles.RejectionAndSourceExclusion",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.027796898037195206,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SweptThinWall",
+      "fullTestPath": "MothEffect.Projectiles.SweptThinWall",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02400129660964012,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ActivationObserverCannotReopenClosedGameplay",
+      "fullTestPath": "MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0215224027633667,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DesignerBindingsPreservePresentationAndReparenting",
+      "fullTestPath": "MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.17117449641227722,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HUD\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"Menu\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TeachingPanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HealthText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HealthBar\" of type  Progress Bar  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AmmoText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"ReloadBar\" of type  Progress Bar  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"WaveText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HeldText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HeldIcon\" of type  Moth Device Icon  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AimText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"CrosshairText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TutorialText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"NoticeText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"NoticePanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AimPanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"MenuTitle\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"MenuDescription\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"PrimaryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"PrimaryLabel\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"SecondaryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"SecondaryLabel\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"QuitButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"RetryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TutorialStepText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HUD\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"Menu\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TeachingPanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HealthText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HealthBar\" of type  Progress Bar  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AmmoText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"ReloadBar\" of type  Progress Bar  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"WaveText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HeldText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"HeldIcon\" of type  Moth Device Icon  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AimText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"CrosshairText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TutorialText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"NoticeText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"NoticePanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"AimPanel\" of type  Widget  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"MenuTitle\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"MenuDescription\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"PrimaryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"PrimaryLabel\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"SecondaryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"SecondaryLabel\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"QuitButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"RetryButton\" of type  Button  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] /Engine/Transient.T18DesignerProbe_0: [Compiler] A required widget binding \"TutorialStepText\" of type  Text  was not found.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.23.45"
+        }
+      ],
+      "warnings": 50,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DesignerPreviewDoesNotBindGameplay",
+      "fullTestPath": "MothEffect.UI.DesignerPreviewDoesNotBindGameplay",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.015884198248386383,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "MissingFontSourceRestoredWithoutChangingUserStyle",
+      "fullTestPath": "MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.01607780158519745,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DeathClosesDamageSpawnsAndReentrantCallbacks",
+      "fullTestPath": "MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.022539999336004257,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "DuplicateDirectorCannotCloseActiveSession",
+      "fullTestPath": "MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.0224917009472847,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "FatalHealthPresentationObservesClosedSession",
+      "fullTestPath": "MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02152249962091446,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PlayerBoundsFailWithoutWaitingForHealthDeath",
+      "fullTestPath": "MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.021548297256231308,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PlayerRemovalAndDirectorTeardownClearBindings",
+      "fullTestPath": "MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02113249897956848,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "TerminalDamageGateIsWorldLocal",
+      "fullTestPath": "MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.025134198367595673,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "TutorialResetBeforePreparation",
+      "fullTestPath": "MothEffect.WaveFlow.TutorialResetBeforePreparation",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02248229831457138,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ExternalSourceFollowsMovement",
+      "fullTestPath": "MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02079790085554123,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "InvalidSourceFailsClosed",
+      "fullTestPath": "MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4B9D18B1490AA40C1C55838AC3F8CCBA"
+      ],
+      "duration": 0.02127300202846527,
+      "dateTime": "2026.10.14-13.23.45",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    }
+  ]
+}

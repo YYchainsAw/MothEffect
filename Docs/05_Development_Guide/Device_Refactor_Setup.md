@@ -1,0 +1,61 @@
+# Moth Effect（飞蛾效应）：道具基础重构接入
+
+版本 v0.2 · 2026-10-14 · 状态：隔离构建、114 Editor / 12 Game 回归通过；硬件 PIE、调优与独立包待验收
+
+当前 `refactor` 分支记录用户确认的四项道具改动：[#48 地面固定与尺寸](https://github.com/YYchainsAw/MothEffect/issues/48)、[#49 水平发射方向](https://github.com/YYchainsAw/MothEffect/issues/49)、[#50 统一激活延迟](https://github.com/YYchainsAw/MothEffect/issues/50)、[#51 爆炸激活](https://github.com/YYchainsAw/MothEffect/issues/51)。负责人 YYchainsAw、现有标签、M5 · 试玩与候选包验收与 Project / In Progress 均已回读；四项保持 Open，运行验收完成后再推进状态。
+
+接口见 [DeviceBase.h](../../Source/MothEffect/Public/Devices/DeviceBase.h)，运动见 [DeviceMotion.cpp](../../Source/MothEffect/Private/Devices/DeviceMotion.cpp)，爆炸见 [DeviceBomb.cpp](../../Source/MothEffect/Private/Devices/DeviceBomb.cpp)。现行行为只在 [交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 维护，数值只在 [参数账本](../02_Design_Doc/GDD/Gameplay_Parameters.json) 维护。旧 Device/Emitter/Bomb/自然连锁接入中的历史验收保留，涉及本轮行为时以此文及现行契约为准。
+
+## 1. 蓝图与实例配置
+
+现有 BP_DeviceLauncher、BP_DeviceBomb、BP_DeviceEmitter 继续使用 ADeviceBase，不新增道具类型或生命周期枚举。编译新源码后，在 Class Defaults 或场景实例 Details 搜索以下分类；已保存 BP/实例的覆盖值需逐项核对，不假定原生默认值覆盖已有资产。
+
+| 编辑入口 | 属性 / 函数 | 含义与参数来源 |
+|---|---|---|
+| Device / Activation | ActivationDelaySeconds | 三类型共用非负延迟；默认来自 device.activationDelaySeconds。可为专项测试显式设零，生产默认保留统一等待 |
+| Device / Activation | IsActivationPending | 只读等待标记；等待已属 Active，不是 Dormant，也没有新增 Pending 生命周期 |
+| Device / Size | VisualScale | 只调整显示倍数，范围来自 device.visualScaleMin/Max；不连带改变根或射击球 |
+| Device / Size | BodyRadiusCm | 飞行碰撞、支持查询与安全释放体积；来自 device.bodyRadiusCm |
+| Device / Size | ShotRadiusCm | 命中扫描/P01 查询球；默认仍来自 throw.deviceShotColliderRadiusCm，实际半径不小于 Body |
+| Device / Size | RefreshDeviceSize | 编辑器可调用，运行时修改尺寸后显式调用；更新球体与显示并重新检查承托 |
+| Device / Motion | GroundSnapDistanceCm / GroundUpNormalMin | 支持短 Sweep 距离与法线阈值，来自 device 参数组；独立于 D01 起柱探地/标签规则 |
+| Device / Motion | IsGrounded | 只读运动状态，独立于 Dormant/Held/Active/Spent |
+
+调大小时分别决定视觉、飞行体积和射击判定，不把 Actor 总体缩放当作唯一入口。先刷新，再检查持物挂点、投掷释放空间、墙边净空、P01 枪口出生和射击遮挡。Shot 球较大可以帮助命中，但不能让墙后的设备绕过实际枪口/静态遮挡规则。
+
+## 2. 地面固定与受力起飞
+
+Dormant 与 Active D03 受到实际支持面承托时，停止物理、清速度、校正为直立显示，PhysicsBody 根使用 NoCollision；ShotCollider 继续 QueryOnly，所以角色穿行而 W01/P01/E 查询仍工作。投掷以及合法机关外力通过真实空中物理运动，飞行根忽略 Pawn，仍受场景阻挡。
+
+柱子与爆炸须从查询球找到固定设备，用 CanReceiveExternalImpulse 过滤后经共用外力入口唤醒，再在帧末合并速度；不能仅用 IsSimulatingPhysics 或实体根重叠判断设备是否可作用。受力离地后再次承托会固定；原支持消失也会恢复下落。Held、Spent、Active D01 的已消耗种子不单独接受设备外力。EnemyDrops 接纳合法 grounded 出生，死亡幂等/容量/近邻搜索等原边界继续生效。生成/释放净空独立检查已有固定道具的实际根球体积，避免无碰撞道具重叠而挡住拾取；这不会恢复实体碰撞，也不用较大的射击球扩大出生占用。
+
+运动支持只要求实际阻挡设备根、合格向上法线且不是角色/道具/查询触发体，不要求 MothColumnSurface；D01 生成柱子仍另需 WorldStatic 与 MothColumnSurface 标签及最终静态净空。
+
+## 3. 接纳、延迟与水平火线
+
+TryActivate 成功时先预占容量、保存首次 HitId/方向/命中点并进入 Active，随后广播状态与激活证据。IsActivationPending 为 true 时不得拾取，重复命中不刷新方向/寿命/延迟。World Timer 到时复核状态、来源弱引用与世界许可，再执行一次核心效果；暂停冻结，FinishActivation/禁用/Destroy/EndPlay/重开取消旧等待。
+
+D01 LauncherOrigin 和 D02 ExplosionCenter 在接纳时捕获；延迟期即使设备移动，本次原点/爆心仍使用该快照。D01 种子立即消耗并关物理/查询，柱子延迟后生成。D03 接纳时对真实入射方向取归一化 XY 投影，Z=0；纯竖直合法命中回退世界 +X，完整零方向命中仍无效。方向提示、弹丸和出生点读取同一世界水平向量，滚动或玩家转向不改变射向。
+
+统一激活延迟结束才开始 D03 工作寿命，随后仍等待 emitter.firstShotDelaySeconds 才首发；默认命中至首发时长为两段延迟之和，见参数 v0.19 调参记录。工作有效期不包含统一等待，严格早于到期的发射时刻才可生成；受阻、容量满额和迟帧均不补发或续期。
+
+## 4. 爆炸连锁
+
+D02 延迟结束时使用固定爆心，先按 Actor 去重并快照范围内代表点、静态遮挡与径向，再对角色结算伤害、向合法设备提交推力。无静态掩体遮挡的 Dormant 通过同一 TryActivate 接纳，随后等待该目标自身 ActivationDelaySeconds；Held 不激活，Active 不重启。范围以设备根中心判定，不以较大的 Shot 球边缘放大。
+
+每个下游激活使用新 Guid，连锁炸弹以各自独立 ActivationHitId 结算本次伤害与推力；同一爆炸同一 Actor 只处理一次，后续爆炸不会被整个链共用的 ID 去重吞掉。方向从爆心指向目标；重合时采用本次激活方向水平投影，仍零则世界 +X。来源在回调中被结束/销毁时停止传播，死亡回调才新增的掉落不自动加入当前查询快照。
+
+默认非零延迟把传播分成世界计时任务；零延迟配置也先提交 Active，已激活设备不可能沿回路再激活，因此传播受有限设备和幂等状态约束。暂停/结算/重开仍需取消全部世界任务和计数。
+
+## 5. 原生验证与待执行验收
+
+| 验证组 | 操作与可观察结果 | 当前状态 |
+|---|---|---|
+| 地面与飞行 | 三类型掉落/放下后固定，角色穿行；W01/P01 与 E 仍命中/拾取；投掷有真实飞行，柱子/爆炸可重新起飞、再落地固定，支持移除恢复下落 | 原生适用分支通过；硬件 PIE 待验收 |
+| 尺寸与遮挡 | 分别修改 VisualScale、BodyRadiusCm、ShotRadiusCm 后刷新；安全释放和枪口出生按真实体积，Shot 不小于 Body，墙体继续阻挡射击/拾取 | 原生适用分支通过；硬件 PIE 待验收 |
+| 水平射向 | 从四侧、斜向上/下和竖直命中 D03；输出 Z=0/竖直 +X，移动镜头与机身不改方向；P01 与表现一致 | 原生适用分支通过；硬件 PIE 待验收 |
+| 延迟及取消 | 三类型效果在配置延迟后起动；重复命中不续等待；D03 验证两段首发时序；暂停、Finish、禁用、销毁、结算和重开不留下迟到效果 | 原生适用分支通过；硬件 PIE 待验收 |
+| 爆炸链 | 布置无遮挡 D01/D02/D03 与掩体阴性对照；Held/Active 保护、下游延迟、多个炸弹对同一角色分别伤害但单次多组件去重；环状布局和显式零延迟不重复启动 | 原生适用分支通过；硬件 PIE 待验收 |
+| 容量与流程 | 等待期计 Active，满额策略/闲置寿命/跨波/界外/重开仍一致；教学、方向反馈和主竞技场完整流程按新时序回归 | 原生适用分支通过；硬件 PIE 待验收 |
+
+本地代码提交 `f6d6b2a`（Refs #48/#49/#50）和 `f91db81`（Refs #51/#48）只代表源码交付。收尾代码为 0e5370a / 4934627，实际隔离构建、114 Editor 与 12 主地图 Game 均通过，失败修正及告警保留在 [验证报告](../06_Test_Doc/Device_Refactor_Report_2026-10-14.md)。当前用户硬件 PIE、不同尺寸保存重载与手感、独立包分别继续验收；后续确认编辑器关闭，原工程 Editor 常规构建及六项 Foundation 复测通过，新 DLL 已就绪，重新打开项目即可加载。受影响测试为 TC03/04/05/06/07/08/10/11/12/13/14/15/16/18/19/20/23/31/32，完整测试计划由对应分工更新。

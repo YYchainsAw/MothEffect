@@ -1,6 +1,19 @@
 # Moth Effect（飞蛾效应）：开发任务与排期
 
-版本：v0.47｜更新日期：2026-10-13｜时间：香港时间（UTC+8）
+版本：v0.49｜更新日期：2026-10-14｜时间：香港时间（UTC+8）
+
+2026-10-14 当前工作为用户确认的道具基础重构，在当前 `refactor` 分支分段本地提交。`f6d6b2a` 接入地面固定/尺寸、D03 水平投影与共用激活延迟，`f91db81` 接入爆炸激活和固定设备的显式外力。新规则、参数 v0.19、DEC41–DEC44 及 [重构接入](Device_Refactor_Setup.md) 已同步；收尾提交 0e5370a / 4934627，隔离 UE 构建、114 Editor 与 12 主地图 Game 回归通过；当前硬件 PIE / 手感及独立包待验收，见 [验证报告](../06_Test_Doc/Device_Refactor_Report_2026-10-14.md)。GitHub 四项均 Open / In Progress，负责人 YYchainsAw、M5 · 试玩与候选包验收和现有标签均已回读；不以本地代码提交关闭待验收任务。
+
+原工程补充验证：确认编辑器关闭后，Editor 常规构建 56.79 秒 Succeeded，新 DLL 的六项 Foundation 全通过；重新打开项目即可加载。该构建包含当前用户未提交控制器代码，未将这些改动纳入本轮提交。
+
+| 本轮工作 | Issue | 已实现范围与待验收目标 | 当前状态 |
+|---|---|---|---|
+| 地面道具固定与尺寸 | [#48](https://github.com/YYchainsAw/MothEffect/issues/48) | 地面根停止模拟/NoCollision，ShotCollider 保留查询；VisualScale 与 Body/Shot 半径独立可调；显式推力/弹射起飞，再落地固定，支持移除恢复下落；掉落/拾取/释放/容量回归 | 原生回归通过；硬件 PIE 待验收 |
+| D03 水平射向 | [#49](https://github.com/YYchainsAw/MothEffect/issues/49) | 入射 XY 投影归一化、Z=0，合法竖直命中回退世界 +X；方向显示、四向/斜向/空中与真实 P01 联调 | 原生回归通过；硬件 PIE 待验收 |
+| 三机关共用激活延迟 | [#50](https://github.com/YYchainsAw/MothEffect/issues/50) | 接纳即 Active/占容量，统一延迟后效果；等待期幂等、暂停冻结、结束/销毁/重开取消；D03 工作寿命与首发延迟从效果起动计 | 原生回归通过；硬件 PIE 待验收 |
+| 爆炸激活连锁 | [#51](https://github.com/YYchainsAw/MothEffect/issues/51) | 无遮挡 Dormant 经 TryActivate 等待自身延迟；Held/Active 保护，下游独立 Guid、各炸弹伤害/外力去重；遮挡、回路、零延迟和清理回归 | 原生回归通过；硬件 PIE 待验收 |
+
+新工作不重排 T01–T28，不把旧规则专项的通过结论套到新规则。下方 T08/T10/T12 等任务与证据保留其原版本历史；当前“地面持续物理、三维方向、立即效果、爆炸不启动”的行为已由以上四项取代。阅读快照与本轮实际测试随后记录。
 
 2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 以下段落保留历史。
 

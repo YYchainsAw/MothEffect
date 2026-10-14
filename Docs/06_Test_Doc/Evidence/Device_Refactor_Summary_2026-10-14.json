@@ -1,0 +1,64 @@
+{
+  "sourceCommit": "4934627d81aaaa7bc468ac0920da1f1346b417b8",
+  "checkedFiles": 180,
+  "mismatches": [],
+  "excludedUncommittedControllerChanges": true,
+  "dllSha256": "19088f65d568455e1fac442a6149a7964afaf13230ee63932e646bb1bc344a16",
+  "reports": {
+    "Foundation first": {
+      "reportCreatedOn": "2026.10.14-07.11.48",
+      "succeeded": 3,
+      "succeededWithWarnings": 2,
+      "failed": 1,
+      "notRun": 0,
+      "totalDuration": 13.293839454650879
+    },
+    "Editor first": {
+      "reportCreatedOn": "2026.10.14-07.19.38",
+      "succeeded": 109,
+      "succeededWithWarnings": 2,
+      "failed": 3,
+      "notRun": 0,
+      "totalDuration": 190.59072875976562
+    },
+    "Editor final": {
+      "reportCreatedOn": "2026.10.14-13.23.45",
+      "succeeded": 113,
+      "succeededWithWarnings": 1,
+      "failed": 0,
+      "notRun": 0,
+      "totalDuration": 171.0423126220703
+    },
+    "Game final": {
+      "reportCreatedOn": "2026.10.14-13.27.39",
+      "succeeded": 3,
+      "succeededWithWarnings": 9,
+      "failed": 0,
+      "notRun": 0,
+      "totalDuration": 126.16705322265625
+    }
+  },
+  "reportSha256": {
+    "Device_Refactor_Editor_2026-10-14.json": "291eafcb22087ccfcdb10e5c6b7d81887897b77cd8eb8c79ec2e8d08bbf9d5f3",
+    "Device_Refactor_Game_2026-10-14.json": "8fc8763a400c8b81c51210e76c1e88617d4849cbb76ca1240d52bb3636aca9b8",
+    "Device_Refactor_Original_2026-10-14.json": "900506a83af426b01e402d9068cea3c2e220498e48b6dbdd2514f154c30e2c27"
+  },
+  "originalProject": {
+    "buildResult": "Succeeded",
+    "buildSeconds": 56.79,
+    "editorClosedBeforeBuild": true,
+    "dllSha256": "94e07bfeda99522f875ec26d6394f334b8f8d7afca8b553660a3ac24b2e99145",
+    "uncommittedSourceFiles": [
+      "Source/MothEffect/Private/Framework/MothEffectPlayerController.cpp",
+      "Source/MothEffect/Public/Framework/MothEffectPlayerController.h"
+    ],
+    "foundation": {
+      "reportCreatedOn": "2026.10.14-13.51.59",
+      "succeeded": 5,
+      "succeededWithWarnings": 1,
+      "failed": 0,
+      "notRun": 0,
+      "totalDuration": 12.920392990112305
+    }
+  }
+}

@@ -1,0 +1,860 @@
+SOURCE LOG: DeviceFoundation-EditorBuild-2026-10-14.log
+Creating makefile for MothEffectEditor (no existing makefile)
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[7/102] Compile [x64] BombTests.cpp
+[25/102] Compile [x64] DeviceActivationTests.cpp
+[26/102] Compile [x64] DeviceAppearance.cpp
+[27/102] Compile [x64] DeviceBase.cpp
+[28/102] Compile [x64] DeviceBomb.cpp
+[29/102] Compile [x64] DeviceLauncher.cpp
+[30/102] Compile [x64] DeviceFoundationTests.cpp
+[31/102] Compile [x64] DeviceLifecycleSubsystem.cpp
+[32/102] Compile [x64] DeviceMotion.cpp
+[33/102] Compile [x64] DeviceReleaseSafety.cpp
+[34/102] Compile [x64] DeviceLifecycleTests.cpp
+[35/102] Compile [x64] DeviceReleaseSafetyTests.cpp
+C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[69/102] Compile [x64] NaturalChainTests.cpp
+[95/102] Compile [x64] WaveFlowObserver.cpp
+[98/102] Compile [x64] WaveFlowTests.cpp
+[99/102] Compile [x64] WaveFlowRuntimeTests.cpp
+[100/102] Link [x64] UnrealEditor-MothEffect.lib
+[101/102] Link [x64] UnrealEditor-MothEffect.dll
+Result: Succeeded
+Total execution time: 281.61 seconds
+
+SOURCE LOG: DeviceFoundation-EditorBuild-Final-2026-10-14.log
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/5] Compile [x64] DeviceFoundationTests.cpp
+[2/5] Compile [x64] WaveFlowRuntimeTests.cpp
+[3/5] Link [x64] UnrealEditor-MothEffect.lib
+[4/5] Link [x64] UnrealEditor-MothEffect.dll
+Result: Succeeded
+Total execution time: 16.10 seconds
+
+SOURCE LOG: BuildFixConsole.log
+Using Visual Studio 14.50.35728 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[1/5] Compile [x64] DeviceLifecycleSubsystem.cpp
+[2/5] Compile [x64] DeviceBase.cpp
+[3/5] Link [x64] UnrealEditor-MothEffect.lib
+[4/5] Link [x64] UnrealEditor-MothEffect.dll
+Result: Succeeded
+Total execution time: 10.49 seconds
+
+SOURCE LOG: BuildFinalConsole.log
+Invalidating makefile for MothEffectEditor (cl.exe deleted)
+Available x64 toolchains (1):
+Visual Studio compiler version 14.51.36260 is newer than latest preferred version 14.50.35717. Please use caution as this compiler has not been heavily tested
+Using Visual Studio 14.51.36260 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4314,31): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4341,43): warning C4996: 'UStruct::ActivateTrackingPropertyValueFlag': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4342,43): warning C4996: 'UStruct::IsTrackingPropertyValueFlag': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4343,43): warning C4996: 'UStruct::HasPropertyValueFlag': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4344,43): warning C4996: 'UStruct::SetPropertyValueFlag': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4345,43): warning C4996: 'UStruct::ResetPropertyValueFlags': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\CoreUObject\Public\UObject\Class.h(4346,43): warning C4996: 'UStruct::SerializePropertyValueFlags': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\BlueprintGeneratedClass.h(590,42): warning C4996: 'UObjectBaseUtility::GetVersePath': This API is internal to the engine. As such, there is no guarantee that it won't change or be removed in future releases. Please use at your own risk.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Public\Animation\AnimCurveMetadata.h(211,15): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Public\Animation\AnimCompressionTypes.h(518,26): warning C4996: 'ICompressedAnimData::SerializeCompressedData': SerializeCompressedData now accepts the DataOwner as an argument - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Curves\CurveFloat.h(48,53): warning C4996: 'UCurveBase::GetCurves': Use version taking a TAdderReserverRef - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Public\Materials\MaterialExpressionMaterialFunctionCall.h(126,51): warning C4996: 'UMaterialExpression::GetInputsView': Use FExpressionInputIterator instead or GetInput() directly. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Public\Subsystems\WorldSubsystem.h(90,26): warning C4996: 'FTickableObjectBase::IsAllowedToTick': Use IsTickable for conditional ticks and SetTickableTickType to change the tick type after initial registration - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Components\SkeletalMeshComponent.h(2190,15): warning C4996: 'USkinnedMeshComponent::UpdateSlaveComponent': This method has been deprecated. Please use UpdateFollowerComponent instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Components\SkeletalMeshComponent.h(2198,26): warning C4996: 'USkinnedMeshComponent::SetSkeletalMesh': Use USkeletalMeshComponent::SetSkeletalMesh() or SetSkinnedAssetAndUpdate() instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\Texture.h(2069,26): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\EdGraph\EdGraphSchema.h(631,26): warning C4996: 'FGraphActionListBuilderBase::AddAction': Overriding the schema action category is no longer supported, set the category via CosmeticUpdateRootCategory or CosmeticUpdateCategory - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\EdGraph\EdGraphSchema.h(633,26): warning C4996: 'FGraphActionListBuilderBase::AddActionList': Collections of Action lists were ambiguous and unused - make a compound FEdGraphSchemaAction and Add it - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\ChildConnection.h(75,16): warning C4996: 'UNetConnection::IsNetReady': Replaced with a version that doesn't have a saturate option. Call Saturate() directly if passing true before. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\SkeletalMesh.h(2606,26): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\SkeletalMesh.h(3015,57): warning C4996: 'USkinnedAsset::GetLODInfoArray': Use GetLODInfo and GetLODNum instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\SkeletalMesh.h(3009,51): warning C4996: 'USkinnedAsset::GetLODInfoArray': Use GetLODInfo and GetLODNum instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\StaticMesh.h(2005,26): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Engine\Texture2D.h(125,15): warning C4996: 'UTexture::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Sound\SoundWave.h(1189,26): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Box.h(104,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\ImplicitObjectTransformed.h(174,16): warning C4996: 'Chaos::FImplicitObject::GetMargin': Please use GetMarginf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\ImplicitObjectTransformed.h(180,16): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Editor\UnrealEd\Public\Toolkits\AssetEditorToolkit.h(168,28): warning C4996: 'IAssetEditorInstance::CloseWindow': Use CloseWindow that takes in an EAssetEditorCloseReason instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[8/102] Compile [x64] BombTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[23/102] Compile [x64] DeviceAppearance.cpp
+[24/102] Compile [x64] DeviceActivationTests.cpp
+[25/102] Compile [x64] DeviceBase.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[26/102] Compile [x64] DeviceBomb.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[28/102] Compile [x64] DeviceLauncher.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[30/102] Compile [x64] DeviceFoundationTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[31/102] Compile [x64] DeviceLifecycleSubsystem.cpp
+[32/102] Compile [x64] DeviceMotion.cpp
+[33/102] Compile [x64] DeviceLifecycleTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[34/102] Compile [x64] DeviceReleaseSafety.cpp
+C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Devices\DeviceReleaseSafety.cpp(34,44): warning C4996: 'FCollisionQueryParams::GetIgnoredActors': Use GetIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[35/102] Compile [x64] DeviceReleaseSafetyTests.cpp
+C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[68/102] Compile [x64] NaturalChainTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Sphere.h(74,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(207,17): warning C4996: 'Chaos::FImplicitObject::GetMargin': Please use GetMarginf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(212,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Plane.h(42,16): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Box.h(104,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[93/102] Compile [x64] WaveFlowObserver.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[98/102] Compile [x64] WaveFlowTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[99/102] Compile [x64] WaveFlowRuntimeTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+[100/102] Link [x64] UnrealEditor-MothEffect.lib
+[101/102] Link [x64] UnrealEditor-MothEffect.dll
+Result: Succeeded
+Total execution time: 108.76 seconds
+
+SOURCE LOG: Foundation.log
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+[2026.10.14-07.10.28:511][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.10.28:512][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.10.28:512][  0]LogZenServiceInstance: Found local data cache path=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.10.31:666][  0]LogZenServiceInstance: Found existing instance running on port 8558 matching our settings, no actions needed
+[2026.10.14-07.10.32:403][  0]LogDerivedDataCache: Local: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.11.02:528][  0]LogProjectBrowser: Found Engine Installation "5.8"(D:/Program Files/Epic/UE_5.8)
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-07.11.02:530][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-07.10.54)" in recently opened files
+[2026.10.14-07.11.02:532][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.11.02:532][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.11.02:533][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.11.02:533][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:534][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.11.02:535][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:536][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.11.02:536][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:536][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.11.02:538][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.11.02:538][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.11.02:539][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.11.02:539][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.11.02:540][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:540][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.11.02:540][  0]LogProjectBrowser: Found Engine Installation "5.7"(E:/Unreal5/UE_5.7)
+[2026.10.14-07.11.02:544][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.11.02:544][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.11.02:544][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject",LastOpenTime=2026.03.13-03.07.16)" in recently opened files
+[2026.10.14-07.11.02:544][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject",LastOpenTime=2026.06.01-08.16.58)" in recently opened files
+[2026.10.14-07.11.02:544][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/虚幻学习工具包/UnrealLearningKit_54.uproject",LastOpenTime=2026.06.01-11.53.06)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UE_Learn/UE_Learn.uproject",LastOpenTime=2026.06.01-12.14.06)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject",LastOpenTime=2026.06.11-12.26.29)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject",LastOpenTime=2026.06.11-13.35.06)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.06.17-15.18.57)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject",LastOpenTime=2026.09.08-11.03.56)" in recently opened files
+[2026.10.14-07.11.02:545][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.11.02:546][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.11.02:547][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.11.02:548][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:548][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.11.02:548][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:549][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.11.02:549][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:550][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.11.02:550][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.11.02:551][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.11.02:551][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.11.02:552][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.11.02:552][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:553][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.11.02:646][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.11.02:646][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-07.11.02:647][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-07.10.54)" in recently opened files
+[2026.10.14-07.11.02:648][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.11.02:648][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.11.02:648][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.11.02:649][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:649][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.11.02:649][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.11.02:649][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.11.02:650][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:650][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.11.02:651][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.11.02:651][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.11.02:651][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.11.02:651][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.11.02:652][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.11.02:652][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.11.29:890][347]LogSourceControl: Uncontrolled asset discovery finished in 1.010974 seconds (Found 11667 uncontrolled assets)
+[2026.10.14-07.11.34:641][590]LogAutomationCommandLine: Display: Found 6 automation tests based on 'MothEffect.Devices.Foundation'
+[2026.10.14-07.11.40:562][929]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultDelayForAllThreeEffects} Path={MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects}
+[2026.10.14-07.11.40:617][932]LogAutomationController: Display: Test Completed. Result={Success} Name={EditableSizesKeepQueryAndVisualIndependent} Path={MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent}
+[2026.10.14-07.11.40:983][952]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.40:983][952]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.40:983][952]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.41:503][984]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.41:503][984]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.41:503][984]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.42:033][ 15]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.42:035][ 15]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.42:035][ 15]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.42:400][ 37]LogAutomationController: Display: Test Completed. Result={Success} Name={ExplosionsActivateIndependentDelayedBombs} Path={MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs}
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase1.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.42:406][ 37]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase2.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.43:292][ 90]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.43:292][ 90]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.43:292][ 90]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.46:167][263]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.46:167][263]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.46:167][263]LogPhysics: Warning: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible
+[2026.10.14-07.11.46:200][265]LogAutomationController: Display: Test Completed. Result={Success} Name={GroundQueryCharacterPassageAndForceWake} Path={MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake}
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:200][265]LogAutomationController: Warning: LogPhysics: Invalid Simulate Options: Body (DeviceBase0.PhysicsBody) is set to simulate physics but Collision Enabled is incompatible [log]
+[2026.10.14-07.11.46:258][268]LogAutomationController: Display: Test Completed. Result={Success} Name={HorizontalProjectionAndVerticalFallback} Path={MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback}
+[2026.10.14-07.11.48:223][375]LogAutomationController: Error: Test Completed. Result={Fail} Name={PendingPauseCancellationAndSessionShutdown} Path={MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown}
+[2026.10.14-07.11.48:223][375]LogAutomationController: Error: Expected 'Closing the session immediately cancels every pending effect' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\DeviceFoundationTests.cpp(265)]
+[2026.10.14-07.11.48:223][375]LogAutomationController: Error: Expected 'Closing the session immediately cancels every pending effect' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\DeviceFoundationTests.cpp(265)]
+[2026.10.14-07.11.48:223][375]LogAutomationController: Error: Expected 'Closing the session immediately cancels every pending effect' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\DeviceFoundationTests.cpp(265)]
+[2026.10.14-07.11.48:251][375]LogAutomationController: Writing reports to D:\YYchainsaw\Unreal-Projects\MothEffect\Saved\Automation\DeviceFoundation\Foundation...
+
+SOURCE LOG: EditorFull.log
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+[2026.10.14-07.15.59:453][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.15.59:453][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.15.59:454][  0]LogZenServiceInstance: Found local data cache path=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.16.02:492][  0]LogZenServiceInstance: Found existing instance running on port 8558 matching our settings, no actions needed
+[2026.10.14-07.16.02:804][  0]LogDerivedDataCache: Local: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-07.16.17:710][  0]LogProjectBrowser: Found Engine Installation "5.8"(D:/Program Files/Epic/UE_5.8)
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-07.16.17:711][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-07.16.12)" in recently opened files
+[2026.10.14-07.16.17:712][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.16.17:712][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.16.17:712][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.16.17:712][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:713][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.16.17:713][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:713][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.16.17:714][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:714][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.16.17:714][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.16.17:714][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.16.17:714][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.16.17:715][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.16.17:715][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:715][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.16.17:715][  0]LogProjectBrowser: Found Engine Installation "5.7"(E:/Unreal5/UE_5.7)
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject",LastOpenTime=2026.03.13-03.07.16)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject",LastOpenTime=2026.06.01-08.16.58)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/虚幻学习工具包/UnrealLearningKit_54.uproject",LastOpenTime=2026.06.01-11.53.06)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UE_Learn/UE_Learn.uproject",LastOpenTime=2026.06.01-12.14.06)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject",LastOpenTime=2026.06.11-12.26.29)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject",LastOpenTime=2026.06.11-13.35.06)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.06.17-15.18.57)" in recently opened files
+[2026.10.14-07.16.17:717][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject",LastOpenTime=2026.09.08-11.03.56)" in recently opened files
+[2026.10.14-07.16.17:718][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.16.17:718][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.16.17:718][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.16.17:719][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:719][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.16.17:719][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:719][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.16.17:720][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:720][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.16.17:720][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.16.17:720][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.16.17:720][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.16.17:721][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.16.17:721][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:721][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.16.17:738][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-07.16.17:738][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-07.16.17:738][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-07.16.17:738][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-07.16.17:738][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-07.16.12)" in recently opened files
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-07.16.17:739][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-07.16.17:740][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-07.16.17:740][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:740][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-07.16.17:740][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-07.16.17:740][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-07.16.17:741][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:741][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-07.16.17:742][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-07.16.17:742][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-07.16.17:742][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-07.16.17:742][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-07.16.17:742][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-07.16.17:743][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-07.16.21:752][ 76]LogSourceControl: Uncontrolled asset discovery finished in 1.456532 seconds (Found 11667 uncontrolled assets)
+[2026.10.14-07.16.25:708][295]LogAutomationCommandLine: Display: Found 114 automation tests based on 'MothEffect'
+[2026.10.14-07.16.25:779][297]LogAutomationController: Display: Test Completed. Result={Success} Name={AppearanceSwitchPreservesPhysicsAndUserEdits} Path={MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits}
+[2026.10.14-07.16.25:839][299]LogAutomationController: Display: Test Completed. Result={Success} Name={ReversibleCoverLayerPreservesBlocking} Path={MothEffect.Art.ReversibleCoverLayerPreservesBlocking}
+[2026.10.14-07.16.25:889][302]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedMeshesMaterialsAndUnits} Path={MothEffect.Art.SavedMeshesMaterialsAndUnits}
+[2026.10.14-07.16.30:503][567]LogAutomationController: Error: Test Completed. Result={Fail} Name={BombActivatesNeighborAndLayoutControl} Path={MothEffect.Chains.BombActivatesNeighborAndLayoutControl}
+[2026.10.14-07.16.30:503][567]LogAutomationController: Error: Only in-radius Dormant is activated by the real explosion: The two values are not equal. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\NaturalChainTests.cpp(240)]
+[2026.10.14-07.16.30:503][567]LogAutomationController: Error: Expected 'Placement changes the ordinary ballistic activation outcome' to be 0, but it was 1. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\NaturalChainTests.cpp(151)]
+[2026.10.14-07.16.34:962][832]LogAutomationController: Display: Test Completed. Result={Success} Name={ColumnIntoFirelineAndLayoutControl} Path={MothEffect.Chains.ColumnIntoFirelineAndLayoutControl}
+[2026.10.14-07.16.46:704][536]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectBomb} Path={MothEffect.Chains.DirectBomb}
+[2026.10.14-07.16.58:461][240]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectEmitter} Path={MothEffect.Chains.DirectEmitter}
+[2026.10.14-07.17.10:226][945]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectLauncher} Path={MothEffect.Chains.DirectLauncher}
+[2026.10.14-07.17.15:613][268]LogAutomationController: Display: Test Completed. Result={Success} Name={PausedFlightAndIndependentLifetime} Path={MothEffect.Chains.PausedFlightAndIndependentLifetime}
+[2026.10.14-07.17.27:376][972]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintNaturalChain} Path={MothEffect.Chains.SavedBlueprintNaturalChain}
+[2026.10.14-07.17.27:443][975]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedRangeConfiguration} Path={MothEffect.Chains.SavedRangeConfiguration}
+[2026.10.14-07.17.28:268][ 20]LogAutomationController: Display: Test Completed. Result={Success} Name={SourceExclusionAndAttributionDamage} Path={MothEffect.Chains.SourceExclusionAndAttributionDamage}
+[2026.10.14-07.17.40:021][724]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWallConsumesFirstImpact} Path={MothEffect.Chains.ThinWallConsumesFirstImpact}
+[2026.10.14-07.17.40:147][731]LogAutomationController: Display: Test Completed. Result={Success} Name={FrameMergeAndClamp} Path={MothEffect.Combat.Impulse.FrameMergeAndClamp}
+[2026.10.14-07.17.40:182][733]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidAndDuplicateEvents} Path={MothEffect.Combat.Impulse.InvalidAndDuplicateEvents}
+[2026.10.14-07.17.40:342][743]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseAndCancellation} Path={MothEffect.Combat.Impulse.PauseAndCancellation}
+[2026.10.14-07.17.40:975][781]LogAutomationController: Display: Test Completed. Result={Success} Name={BlueprintDefaultsAndActivation} Path={MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation}
+[2026.10.14-07.17.41:042][783]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelBeforeEffect} Path={MothEffect.Devices.Bomb.CancelBeforeEffect}
+[2026.10.14-07.17.41:107][785]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldAndNonBallisticStates} Path={MothEffect.Devices.Bomb.HeldAndNonBallisticStates}
+[2026.10.14-07.17.41:215][791]LogAutomationController: Error: Test Completed. Result={Fail} Name={PhysicalMovement} Path={MothEffect.Devices.Bomb.PhysicalMovement}
+[2026.10.14-07.17.41:215][791]LogAutomationController: Error: Expected 'Physics root receives the 1100cm/s radial velocity' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\BombTests.cpp(296)]
+[2026.10.14-07.17.41:298][793]LogAutomationController: Display: Test Completed. Result={Success} Name={SingleUseAndFrozenCenter} Path={MothEffect.Devices.Bomb.SingleUseAndFrozenCenter}
+[2026.10.14-07.17.41:349][795]LogAutomationController: Display: Test Completed. Result={Success} Name={StaticCoverAndRadius} Path={MothEffect.Devices.Bomb.StaticCoverAndRadius}
+[2026.10.14-07.17.43:158][904]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.14-07.17.44:996][ 14]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.14-07.17.50:230][328]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.14-07.17.55:918][668]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultDelayForAllThreeEffects} Path={MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects}
+[2026.10.14-07.17.55:962][670]LogAutomationController: Display: Test Completed. Result={Success} Name={EditableSizesKeepQueryAndVisualIndependent} Path={MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent}
+[2026.10.14-07.17.57:711][774]LogAutomationController: Display: Test Completed. Result={Success} Name={ExplosionsActivateIndependentDelayedBombs} Path={MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs}
+[2026.10.14-07.18.01:515][  2]LogAutomationController: Display: Test Completed. Result={Success} Name={GroundQueryCharacterPassageAndForceWake} Path={MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake}
+[2026.10.14-07.18.01:589][  5]LogAutomationController: Display: Test Completed. Result={Success} Name={HorizontalProjectionAndVerticalFallback} Path={MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback}
+[2026.10.14-07.18.03:454][112]LogAutomationController: Display: Test Completed. Result={Success} Name={PendingPauseCancellationAndSessionShutdown} Path={MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown}
+[2026.10.14-07.18.03:698][121]LogAutomationController: Display: Test Completed. Result={Success} Name={BombColumnOrderIndependent} Path={MothEffect.Devices.Launcher.BombColumnOrderIndependent}
+[2026.10.14-07.18.03:831][123]LogAutomationController: Display: Test Completed. Result={Success} Name={FullStaticVolumeAndContact} Path={MothEffect.Devices.Launcher.FullStaticVolumeAndContact}
+[2026.10.14-07.18.03:939][125]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidGroundConsumesSeed} Path={MothEffect.Devices.Launcher.InvalidGroundConsumesSeed}
+[2026.10.14-07.18.03:989][127]LogAutomationController: Display: Test Completed. Result={Success} Name={OccupiedUntilExpiry} Path={MothEffect.Devices.Launcher.OccupiedUntilExpiry}
+[2026.10.14-07.18.04:044][129]LogAutomationController: Display: Test Completed. Result={Success} Name={OncePerTargetAndLateEntrants} Path={MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants}
+[2026.10.14-07.18.04:157][131]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseCancellationAndEndPlay} Path={MothEffect.Devices.Launcher.PauseCancellationAndEndPlay}
+[2026.10.14-07.18.05:804][225]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovementAndStandingSupport} Path={MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport}
+[2026.10.14-07.18.06:520][263]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintIntegration} Path={MothEffect.Devices.Launcher.SavedBlueprintIntegration}
+[2026.10.14-07.18.06:702][266]LogAutomationController: Display: Test Completed. Result={Success} Name={SlopeAndPlatformEdge} Path={MothEffect.Devices.Launcher.SlopeAndPlatformEdge}
+[2026.10.14-07.18.06:779][268]LogAutomationController: Display: Test Completed. Result={Success} Name={WaitForClearanceAndBlockProjectiles} Path={MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles}
+[2026.10.14-07.18.06:837][270]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDownAndFrozenAnchor} Path={MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor}
+[2026.10.14-07.18.06:917][272]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.14-07.18.07:023][274]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.14-07.18.07:084][276]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.14-07.18.07:136][278]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.14-07.18.07:170][280]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.14-07.18.07:229][283]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.14-07.18.08:835][378]LogAutomationController: Display: Test Completed. Result={Success} Name={ActualWorldPauseFreezesWarning} Path={MothEffect.Enemies.ActualWorldPauseFreezesWarning}
+[2026.10.14-07.18.13:106][624]LogAutomationController: Display: Test Completed. Result={Success} Name={CallbackDisableTargetChangeAndDeathCancel} Path={MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel}
+[2026.10.14-07.18.20:411][966]LogAutomationController: Display: Test Completed. Result={Success} Name={CoverCancelsWarningAndReacquires} Path={MothEffect.Enemies.CoverCancelsWarningAndReacquires}
+[2026.10.14-07.18.20:506][968]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathIdempotenceConfigAndBomb} Path={MothEffect.Enemies.DeathIdempotenceConfigAndBomb}
+[2026.10.14-07.18.22:109][ 42]LogAutomationController: Display: Test Completed. Result={Success} Name={EyeSightDoesNotBypassMuzzleCover} Path={MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover}
+[2026.10.14-07.18.23:756][112]LogAutomationController: Display: Test Completed. Result={Success} Name={NormalRifleKillsOnce} Path={MothEffect.Enemies.NormalRifleKillsOnce}
+[2026.10.14-07.18.26:017][216]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01ActivatesDormantDevice} Path={MothEffect.Enemies.RealP01ActivatesDormantDevice}
+[2026.10.14-07.18.27:472][281]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01FriendlyDamageAndSourceExclusion} Path={MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion}
+[2026.10.14-07.18.27:562][284]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintAndRange} Path={MothEffect.Enemies.SavedBlueprintAndRange}
+[2026.10.14-07.18.32:161][479]LogAutomationController: Display: Test Completed. Result={Success} Name={SharedProjectileQuotaAndNormalSlotRecovery} Path={MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery}
+[2026.10.14-07.18.38:260][803]LogAutomationController: Display: Test Completed. Result={Success} Name={TelegraphCadenceAndRealPlayerImpact} Path={MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact}
+[2026.10.14-07.18.38:364][805]LogAutomationController: Display: Test Completed. Result={Success} Name={CapacityCallbacksRevalidateBirthplace} Path={MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace}
+[2026.10.14-07.18.38:449][807]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathObserversResetOrDestroyCancel} Path={MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel}
+[2026.10.14-07.18.38:610][810]LogAutomationController: Display: Test Completed. Result={Success} Name={FullHeldCapacityRejectsWithoutRetry} Path={MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry}
+[2026.10.14-07.18.38:683][812]LogAutomationController: Display: Test Completed. Result={Success} Name={IdempotentDeathAndFixedClass} Path={MothEffect.EnemyDrops.IdempotentDeathAndFixedClass}
+[2026.10.14-07.18.38:897][814]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidClassAndBlockedOriginDoNotEvict} Path={MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict}
+[2026.10.14-07.18.42:240][ 14]LogAutomationController: Display: Test Completed. Result={Success} Name={NormalW01KillsAllVariants} Path={MothEffect.EnemyDrops.NormalW01KillsAllVariants}
+[2026.10.14-07.18.42:354][ 17]LogAutomationController: Display: Test Completed. Result={Success} Name={RealD02KillsAllVariants} Path={MothEffect.EnemyDrops.RealD02KillsAllVariants}
+[2026.10.14-07.18.45:817][218]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01KillsAllVariants} Path={MothEffect.EnemyDrops.RealP01KillsAllVariants}
+[2026.10.14-07.18.50:259][448]LogAutomationController: Error: Test Completed. Result={Fail} Name={RealPhysicsAndPickupOnFloorWallSlopeAir} Path={MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir}
+[2026.10.14-07.18.50:259][448]LogAutomationController: Error: Expected 'Existing device forces a free neighboring birthplace' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\EnemyDropTests.cpp(104)]
+[2026.10.14-07.18.50:259][448]LogAutomationController: Error: Expected 'Actual player pickup works after physical settling on floor/wall/slope' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\EnemyDropTests.cpp(81)]
+[2026.10.14-07.18.50:259][448]LogAutomationController: Error: Expected 'Pickup commits real Held ownership' to be true. [C:\Users\YYchainsaw\AppData\Local\Temp\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\HEADSnapshot\Source\MothEffect\Private\Tests\EnemyDropTests.cpp(84)]
+[2026.10.14-07.18.50:372][451]LogAutomationController: Display: Test Completed. Result={Success} Name={RecyclesOldestDormant} Path={MothEffect.EnemyDrops.RecyclesOldestDormant}
+[2026.10.14-07.18.50:457][453]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedVariantsAppearanceAndRange} Path={MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange}
+[2026.10.14-07.18.50:570][455]LogAutomationController: Display: Test Completed. Result={Success} Name={BoundedPauseAndSessionCleanup} Path={MothEffect.Feedback.BoundedPauseAndSessionCleanup}
+[2026.10.14-07.18.50:621][457]LogAutomationController: Display: Test Completed. Result={Success} Name={CommittedEventsAndLockedArrow} Path={MothEffect.Feedback.CommittedEventsAndLockedArrow}
+[2026.10.14-07.18.50:678][459]LogAutomationController: Display: Test Completed. Result={Success} Name={DamageAndProjectileAreSingleUse} Path={MothEffect.Feedback.DamageAndProjectileAreSingleUse}
+[2026.10.14-07.18.50:715][461]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultAssetsLoad} Path={MothEffect.Feedback.DefaultAssetsLoad}
+[2026.10.14-07.18.51:315][490]LogAutomationController: Display: Test Completed. Result={Success} Name={ExpiryHeldDropAndSpent} Path={MothEffect.Feedback.ExpiryHeldDropAndSpent}
+[2026.10.14-07.18.51:398][493]LogAutomationController: Display: Test Completed. Result={Success} Name={SpawnObserverCannotResurrectClearedPresentation} Path={MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation}
+[2026.10.14-07.18.51:625][502]LogAutomationController: Display: Test Completed. Result={Success} Name={BoundsCleansHeldActiveAndProjectile} Path={MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile}
+[2026.10.14-07.18.52:358][532]LogAutomationController: Display: Test Completed. Result={Success} Name={ColumnLimitRetractsAndClosesSupport} Path={MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport}
+[2026.10.14-07.18.52:421][534]LogAutomationController: Display: Test Completed. Result={Success} Name={DeferredProjectileCancellationReleasesQuota} Path={MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota}
+[2026.10.14-07.19.01:315][947]LogAutomationController: Display: Test Completed. Result={Success} Name={DisabledIdleClockResumes} Path={MothEffect.Lifecycle.DisabledIdleClockResumes}
+[2026.10.14-07.19.01:423][949]LogAutomationController: Display: Test Completed. Result={Success} Name={EmitterActivationOrderAndReentrancy} Path={MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy}
+[2026.10.14-07.19.01:556][951]LogAutomationController: Display: Test Completed. Result={Success} Name={FullCapacityProtectsHeld} Path={MothEffect.Lifecycle.FullCapacityProtectsHeld}
+[2026.10.14-07.19.16:186][679]LogAutomationController: Display: Test Completed. Result={Success} Name={IdleWarningHeldDropThrowAndPause} Path={MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause}
+[2026.10.14-07.19.16:404][681]LogAutomationController: Display: Test Completed. Result={Success} Name={ProjectileAdmissionAndImmediateImpactRelease} Path={MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease}
+[2026.10.14-07.19.16:538][684]LogAutomationController: Display: Test Completed. Result={Success} Name={ResetInvalidatesInFlightDropAdmission} Path={MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission}
+[2026.10.14-07.19.16:671][687]LogAutomationController: Display: Test Completed. Result={Success} Name={ResetRejectsCallbacksAndIsolatesWorlds} Path={MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds}
+[2026.10.14-07.19.30:448][312]LogAutomationController: Display: Test Completed. Result={Success} Name={SaturatedEmitterConsumesSlotsAndResumes} Path={MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes}
+[2026.10.14-07.19.30:494][314]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintsAndDebugController} Path={MothEffect.Lifecycle.SavedBlueprintsAndDebugController}
+[2026.10.14-07.19.30:620][316]LogAutomationController: Display: Test Completed. Result={Success} Name={TotalRecyclesOldestDormant} Path={MothEffect.Lifecycle.TotalRecyclesOldestDormant}
+[2026.10.14-07.19.30:907][329]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.14-07.19.31:705][362]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.14-07.19.32:214][385]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.14-07.19.32:573][399]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.14-07.19.34:003][464]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.14-07.19.34:830][499]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.14-07.19.35:621][533]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.14-07.19.36:224][557]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.14-07.19.37:337][599]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.14-07.19.37:389][601]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.14-07.19.37:434][603]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.14-07.19.37:469][605]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.14-07.19.37:502][607]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationObserverCannotReopenClosedGameplay} Path={MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay}
+[2026.10.14-07.19.37:829][610]LogAutomationController: Display: Test Completed. Result={Success} Name={DesignerBindingsPreservePresentationAndReparenting} Path={MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting}
+[2026.10.14-07.19.37:892][613]LogAutomationController: Display: Test Completed. Result={Success} Name={DesignerPreviewDoesNotBindGameplay} Path={MothEffect.UI.DesignerPreviewDoesNotBindGameplay}
+[2026.10.14-07.19.37:936][615]LogAutomationController: Display: Test Completed. Result={Success} Name={MissingFontSourceRestoredWithoutChangingUserStyle} Path={MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle}
+[2026.10.14-07.19.37:992][617]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathClosesDamageSpawnsAndReentrantCallbacks} Path={MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks}
+[2026.10.14-07.19.38:024][619]LogAutomationController: Display: Test Completed. Result={Success} Name={DuplicateDirectorCannotCloseActiveSession} Path={MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession}
+[2026.10.14-07.19.38:058][621]LogAutomationController: Display: Test Completed. Result={Success} Name={FatalHealthPresentationObservesClosedSession} Path={MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession}
+[2026.10.14-07.19.38:091][623]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerBoundsFailWithoutWaitingForHealthDeath} Path={MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath}
+[2026.10.14-07.19.38:122][625]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerRemovalAndDirectorTeardownClearBindings} Path={MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings}
+[2026.10.14-07.19.38:173][628]LogAutomationController: Display: Test Completed. Result={Success} Name={TerminalDamageGateIsWorldLocal} Path={MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal}
+[2026.10.14-07.19.38:253][630]LogAutomationController: Display: Test Completed. Result={Success} Name={TutorialResetBeforePreparation} Path={MothEffect.WaveFlow.TutorialResetBeforePreparation}
+[2026.10.14-07.19.38:286][632]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.14-07.19.38:326][634]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.14-07.19.38:331][634]LogAutomationController: Writing reports to D:\YYchainsaw\Unreal-Projects\MothEffect\Saved\Automation\DeviceFoundation\EditorFull...
+
+SOURCE LOG: EditorFinal.log
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+[2026.10.14-13.20.03:730][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.20.03:730][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.20.03:735][  0]LogZenServiceInstance: Found local data cache path=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.20.15:550][  0]LogDerivedDataCache: Local: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.20.45:085][  0]LogProjectBrowser: Found Engine Installation "5.8"(D:/Program Files/Epic/UE_5.8)
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-13.20.45:085][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-13.20.45:086][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-13.20.40)" in recently opened files
+[2026.10.14-13.20.45:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.20.45:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.20.45:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.20.45:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.20.45:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.20.45:088][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:088][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.20.45:088][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.20.45:089][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.20.45:089][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.20.45:089][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.20.45:090][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:090][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.20.45:090][  0]LogProjectBrowser: Found Engine Installation "5.7"(E:/Unreal5/UE_5.7)
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject",LastOpenTime=2026.03.13-03.07.16)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject",LastOpenTime=2026.06.01-08.16.58)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/虚幻学习工具包/UnrealLearningKit_54.uproject",LastOpenTime=2026.06.01-11.53.06)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UE_Learn/UE_Learn.uproject",LastOpenTime=2026.06.01-12.14.06)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject",LastOpenTime=2026.06.11-12.26.29)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject",LastOpenTime=2026.06.11-13.35.06)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.06.17-15.18.57)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject",LastOpenTime=2026.09.08-11.03.56)" in recently opened files
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.20.45:098][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:099][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.20.45:141][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.20.45:141][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.20.45:141][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-06.18.32)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-13.20.40)" in recently opened files
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.20.45:142][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.20.45:143][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.20.45:143][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.20.45:143][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.20.48:464][ 57]LogSourceControl: Uncontrolled asset discovery finished in 0.981627 seconds (Found 11667 uncontrolled assets)
+[2026.10.14-13.20.52:920][302]LogAutomationCommandLine: Display: Found 114 automation tests based on 'MothEffect'
+[2026.10.14-13.20.53:018][304]LogAutomationController: Display: Test Completed. Result={Success} Name={AppearanceSwitchPreservesPhysicsAndUserEdits} Path={MothEffect.Art.AppearanceSwitchPreservesPhysicsAndUserEdits}
+[2026.10.14-13.20.53:056][306]LogAutomationController: Display: Test Completed. Result={Success} Name={ReversibleCoverLayerPreservesBlocking} Path={MothEffect.Art.ReversibleCoverLayerPreservesBlocking}
+[2026.10.14-13.20.53:084][308]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedMeshesMaterialsAndUnits} Path={MothEffect.Art.SavedMeshesMaterialsAndUnits}
+[2026.10.14-13.20.57:491][572]LogAutomationController: Display: Test Completed. Result={Success} Name={BombActivatesNeighborAndLayoutControl} Path={MothEffect.Chains.BombActivatesNeighborAndLayoutControl}
+[2026.10.14-13.21.01:907][837]LogAutomationController: Display: Test Completed. Result={Success} Name={ColumnIntoFirelineAndLayoutControl} Path={MothEffect.Chains.ColumnIntoFirelineAndLayoutControl}
+[2026.10.14-13.21.13:641][541]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectBomb} Path={MothEffect.Chains.DirectBomb}
+[2026.10.14-13.21.25:374][245]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectEmitter} Path={MothEffect.Chains.DirectEmitter}
+[2026.10.14-13.21.37:108][949]LogAutomationController: Display: Test Completed. Result={Success} Name={DirectLauncher} Path={MothEffect.Chains.DirectLauncher}
+[2026.10.14-13.21.42:508][273]LogAutomationController: Display: Test Completed. Result={Success} Name={PausedFlightAndIndependentLifetime} Path={MothEffect.Chains.PausedFlightAndIndependentLifetime}
+[2026.10.14-13.21.54:241][977]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintNaturalChain} Path={MothEffect.Chains.SavedBlueprintNaturalChain}
+[2026.10.14-13.21.54:280][979]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedRangeConfiguration} Path={MothEffect.Chains.SavedRangeConfiguration}
+[2026.10.14-13.21.55:035][ 23]LogAutomationController: Display: Test Completed. Result={Success} Name={SourceExclusionAndAttributionDamage} Path={MothEffect.Chains.SourceExclusionAndAttributionDamage}
+[2026.10.14-13.22.06:768][727]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWallConsumesFirstImpact} Path={MothEffect.Chains.ThinWallConsumesFirstImpact}
+[2026.10.14-13.22.06:902][735]LogAutomationController: Display: Test Completed. Result={Success} Name={FrameMergeAndClamp} Path={MothEffect.Combat.Impulse.FrameMergeAndClamp}
+[2026.10.14-13.22.06:939][737]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidAndDuplicateEvents} Path={MothEffect.Combat.Impulse.InvalidAndDuplicateEvents}
+[2026.10.14-13.22.07:118][748]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseAndCancellation} Path={MothEffect.Combat.Impulse.PauseAndCancellation}
+[2026.10.14-13.22.07:751][786]LogAutomationController: Display: Test Completed. Result={Success} Name={BlueprintDefaultsAndActivation} Path={MothEffect.Devices.Bomb.BlueprintDefaultsAndActivation}
+[2026.10.14-13.22.07:790][788]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelBeforeEffect} Path={MothEffect.Devices.Bomb.CancelBeforeEffect}
+[2026.10.14-13.22.07:828][790]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldAndNonBallisticStates} Path={MothEffect.Devices.Bomb.HeldAndNonBallisticStates}
+[2026.10.14-13.22.07:904][795]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovement} Path={MothEffect.Devices.Bomb.PhysicalMovement}
+[2026.10.14-13.22.07:949][797]LogAutomationController: Display: Test Completed. Result={Success} Name={SingleUseAndFrozenCenter} Path={MothEffect.Devices.Bomb.SingleUseAndFrozenCenter}
+[2026.10.14-13.22.07:989][800]LogAutomationController: Display: Test Completed. Result={Success} Name={StaticCoverAndRadius} Path={MothEffect.Devices.Bomb.StaticCoverAndRadius}
+[2026.10.14-13.22.09:806][909]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedBirthAndExpiry} Path={MothEffect.Devices.Emitter.BlockedBirthAndExpiry}
+[2026.10.14-13.22.11:639][ 19]LogAutomationController: Display: Test Completed. Result={Success} Name={CancellationStopsTimers} Path={MothEffect.Devices.Emitter.CancellationStopsTimers}
+[2026.10.14-13.22.16:889][334]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDirectionAndLifetime} Path={MothEffect.Devices.Emitter.WorldDirectionAndLifetime}
+[2026.10.14-13.22.22:540][673]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultDelayForAllThreeEffects} Path={MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects}
+[2026.10.14-13.22.22:578][675]LogAutomationController: Display: Test Completed. Result={Success} Name={EditableSizesKeepQueryAndVisualIndependent} Path={MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent}
+[2026.10.14-13.22.24:323][780]LogAutomationController: Display: Test Completed. Result={Success} Name={ExplosionsActivateIndependentDelayedBombs} Path={MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs}
+[2026.10.14-13.22.28:106][  7]LogAutomationController: Display: Test Completed. Result={Success} Name={GroundQueryCharacterPassageAndForceWake} Path={MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake}
+[2026.10.14-13.22.28:144][  9]LogAutomationController: Display: Test Completed. Result={Success} Name={HorizontalProjectionAndVerticalFallback} Path={MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback}
+[2026.10.14-13.22.29:907][115]LogAutomationController: Display: Test Completed. Result={Success} Name={PendingPauseCancellationAndSessionShutdown} Path={MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown}
+[2026.10.14-13.22.30:045][123]LogAutomationController: Display: Test Completed. Result={Success} Name={BombColumnOrderIndependent} Path={MothEffect.Devices.Launcher.BombColumnOrderIndependent}
+[2026.10.14-13.22.30:110][125]LogAutomationController: Display: Test Completed. Result={Success} Name={FullStaticVolumeAndContact} Path={MothEffect.Devices.Launcher.FullStaticVolumeAndContact}
+[2026.10.14-13.22.30:160][127]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidGroundConsumesSeed} Path={MothEffect.Devices.Launcher.InvalidGroundConsumesSeed}
+[2026.10.14-13.22.30:184][129]LogAutomationController: Display: Test Completed. Result={Success} Name={OccupiedUntilExpiry} Path={MothEffect.Devices.Launcher.OccupiedUntilExpiry}
+[2026.10.14-13.22.30:229][132]LogAutomationController: Display: Test Completed. Result={Success} Name={OncePerTargetAndLateEntrants} Path={MothEffect.Devices.Launcher.OncePerTargetAndLateEntrants}
+[2026.10.14-13.22.30:294][134]LogAutomationController: Display: Test Completed. Result={Success} Name={PauseCancellationAndEndPlay} Path={MothEffect.Devices.Launcher.PauseCancellationAndEndPlay}
+[2026.10.14-13.22.31:848][228]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalMovementAndStandingSupport} Path={MothEffect.Devices.Launcher.PhysicalMovementAndStandingSupport}
+[2026.10.14-13.22.32:498][267]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintIntegration} Path={MothEffect.Devices.Launcher.SavedBlueprintIntegration}
+[2026.10.14-13.22.32:562][269]LogAutomationController: Display: Test Completed. Result={Success} Name={SlopeAndPlatformEdge} Path={MothEffect.Devices.Launcher.SlopeAndPlatformEdge}
+[2026.10.14-13.22.32:587][271]LogAutomationController: Display: Test Completed. Result={Success} Name={WaitForClearanceAndBlockProjectiles} Path={MothEffect.Devices.Launcher.WaitForClearanceAndBlockProjectiles}
+[2026.10.14-13.22.32:620][273]LogAutomationController: Display: Test Completed. Result={Success} Name={WorldDownAndFrozenAnchor} Path={MothEffect.Devices.Launcher.WorldDownAndFrozenAnchor}
+[2026.10.14-13.22.32:653][275]LogAutomationController: Display: Test Completed. Result={Success} Name={EndpointOccupancy} Path={MothEffect.Devices.ReleaseSafety.EndpointOccupancy}
+[2026.10.14-13.22.32:686][277]LogAutomationController: Display: Test Completed. Result={Success} Name={PawnAndIgnoredActors} Path={MothEffect.Devices.ReleaseSafety.PawnAndIgnoredActors}
+[2026.10.14-13.22.32:719][279]LogAutomationController: Display: Test Completed. Result={Success} Name={ThinWall} Path={MothEffect.Devices.ReleaseSafety.ThinWall}
+[2026.10.14-13.22.32:751][281]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationIsSingleUse} Path={MothEffect.Devices.ActivationIsSingleUse}
+[2026.10.14-13.22.32:785][283]LogAutomationController: Display: Test Completed. Result={Success} Name={CancelDuringActivationCallback} Path={MothEffect.Devices.CancelDuringActivationCallback}
+[2026.10.14-13.22.32:831][286]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectInvalidAndDisabledHits} Path={MothEffect.Devices.RejectInvalidAndDisabledHits}
+[2026.10.14-13.22.34:398][380]LogAutomationController: Display: Test Completed. Result={Success} Name={ActualWorldPauseFreezesWarning} Path={MothEffect.Enemies.ActualWorldPauseFreezesWarning}
+[2026.10.14-13.22.38:503][626]LogAutomationController: Display: Test Completed. Result={Success} Name={CallbackDisableTargetChangeAndDeathCancel} Path={MothEffect.Enemies.CallbackDisableTargetChangeAndDeathCancel}
+[2026.10.14-13.22.44:186][967]LogAutomationController: Display: Test Completed. Result={Success} Name={CoverCancelsWarningAndReacquires} Path={MothEffect.Enemies.CoverCancelsWarningAndReacquires}
+[2026.10.14-13.22.44:232][969]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathIdempotenceConfigAndBomb} Path={MothEffect.Enemies.DeathIdempotenceConfigAndBomb}
+[2026.10.14-13.22.45:459][ 43]LogAutomationController: Display: Test Completed. Result={Success} Name={EyeSightDoesNotBypassMuzzleCover} Path={MothEffect.Enemies.EyeSightDoesNotBypassMuzzleCover}
+[2026.10.14-13.22.46:608][112]LogAutomationController: Display: Test Completed. Result={Success} Name={NormalRifleKillsOnce} Path={MothEffect.Enemies.NormalRifleKillsOnce}
+[2026.10.14-13.22.48:360][217]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01ActivatesDormantDevice} Path={MothEffect.Enemies.RealP01ActivatesDormantDevice}
+[2026.10.14-13.22.49:428][281]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01FriendlyDamageAndSourceExclusion} Path={MothEffect.Enemies.RealP01FriendlyDamageAndSourceExclusion}
+[2026.10.14-13.22.49:473][283]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintAndRange} Path={MothEffect.Enemies.SavedBlueprintAndRange}
+[2026.10.14-13.22.52:795][478]LogAutomationController: Display: Test Completed. Result={Success} Name={SharedProjectileQuotaAndNormalSlotRecovery} Path={MothEffect.Enemies.SharedProjectileQuotaAndNormalSlotRecovery}
+[2026.10.14-13.22.58:252][802]LogAutomationController: Display: Test Completed. Result={Success} Name={TelegraphCadenceAndRealPlayerImpact} Path={MothEffect.Enemies.TelegraphCadenceAndRealPlayerImpact}
+[2026.10.14-13.22.58:310][804]LogAutomationController: Display: Test Completed. Result={Success} Name={CapacityCallbacksRevalidateBirthplace} Path={MothEffect.EnemyDrops.CapacityCallbacksRevalidateBirthplace}
+[2026.10.14-13.22.58:355][806]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathObserversResetOrDestroyCancel} Path={MothEffect.EnemyDrops.DeathObserversResetOrDestroyCancel}
+[2026.10.14-13.22.58:411][808]LogAutomationController: Display: Test Completed. Result={Success} Name={FullHeldCapacityRejectsWithoutRetry} Path={MothEffect.EnemyDrops.FullHeldCapacityRejectsWithoutRetry}
+[2026.10.14-13.22.58:439][810]LogAutomationController: Display: Test Completed. Result={Success} Name={IdempotentDeathAndFixedClass} Path={MothEffect.EnemyDrops.IdempotentDeathAndFixedClass}
+[2026.10.14-13.22.58:523][813]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidClassAndBlockedOriginDoNotEvict} Path={MothEffect.EnemyDrops.InvalidClassAndBlockedOriginDoNotEvict}
+[2026.10.14-13.23.01:858][ 13]LogAutomationController: Display: Test Completed. Result={Success} Name={NormalW01KillsAllVariants} Path={MothEffect.EnemyDrops.NormalW01KillsAllVariants}
+[2026.10.14-13.23.01:929][ 15]LogAutomationController: Display: Test Completed. Result={Success} Name={RealD02KillsAllVariants} Path={MothEffect.EnemyDrops.RealD02KillsAllVariants}
+[2026.10.14-13.23.05:249][215]LogAutomationController: Display: Test Completed. Result={Success} Name={RealP01KillsAllVariants} Path={MothEffect.EnemyDrops.RealP01KillsAllVariants}
+[2026.10.14-13.23.09:083][445]LogAutomationController: Display: Test Completed. Result={Success} Name={RealPhysicsAndPickupOnFloorWallSlopeAir} Path={MothEffect.EnemyDrops.RealPhysicsAndPickupOnFloorWallSlopeAir}
+[2026.10.14-13.23.09:143][447]LogAutomationController: Display: Test Completed. Result={Success} Name={RecyclesOldestDormant} Path={MothEffect.EnemyDrops.RecyclesOldestDormant}
+[2026.10.14-13.23.09:171][449]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedVariantsAppearanceAndRange} Path={MothEffect.EnemyDrops.SavedVariantsAppearanceAndRange}
+[2026.10.14-13.23.09:234][452]LogAutomationController: Display: Test Completed. Result={Success} Name={BoundedPauseAndSessionCleanup} Path={MothEffect.Feedback.BoundedPauseAndSessionCleanup}
+[2026.10.14-13.23.09:284][455]LogAutomationController: Display: Test Completed. Result={Success} Name={CommittedEventsAndLockedArrow} Path={MothEffect.Feedback.CommittedEventsAndLockedArrow}
+[2026.10.14-13.23.09:322][457]LogAutomationController: Display: Test Completed. Result={Success} Name={DamageAndProjectileAreSingleUse} Path={MothEffect.Feedback.DamageAndProjectileAreSingleUse}
+[2026.10.14-13.23.09:354][459]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultAssetsLoad} Path={MothEffect.Feedback.DefaultAssetsLoad}
+[2026.10.14-13.23.09:834][488]LogAutomationController: Display: Test Completed. Result={Success} Name={ExpiryHeldDropAndSpent} Path={MothEffect.Feedback.ExpiryHeldDropAndSpent}
+[2026.10.14-13.23.09:887][491]LogAutomationController: Display: Test Completed. Result={Success} Name={SpawnObserverCannotResurrectClearedPresentation} Path={MothEffect.Feedback.SpawnObserverCannotResurrectClearedPresentation}
+[2026.10.14-13.23.10:046][500]LogAutomationController: Display: Test Completed. Result={Success} Name={BoundsCleansHeldActiveAndProjectile} Path={MothEffect.Lifecycle.BoundsCleansHeldActiveAndProjectile}
+[2026.10.14-13.23.10:549][529]LogAutomationController: Display: Test Completed. Result={Success} Name={ColumnLimitRetractsAndClosesSupport} Path={MothEffect.Lifecycle.ColumnLimitRetractsAndClosesSupport}
+[2026.10.14-13.23.10:586][531]LogAutomationController: Display: Test Completed. Result={Success} Name={DeferredProjectileCancellationReleasesQuota} Path={MothEffect.Lifecycle.DeferredProjectileCancellationReleasesQuota}
+[2026.10.14-13.23.17:466][944]LogAutomationController: Display: Test Completed. Result={Success} Name={DisabledIdleClockResumes} Path={MothEffect.Lifecycle.DisabledIdleClockResumes}
+[2026.10.14-13.23.17:514][946]LogAutomationController: Display: Test Completed. Result={Success} Name={EmitterActivationOrderAndReentrancy} Path={MothEffect.Lifecycle.EmitterActivationOrderAndReentrancy}
+[2026.10.14-13.23.17:579][948]LogAutomationController: Display: Test Completed. Result={Success} Name={FullCapacityProtectsHeld} Path={MothEffect.Lifecycle.FullCapacityProtectsHeld}
+[2026.10.14-13.23.29:699][676]LogAutomationController: Display: Test Completed. Result={Success} Name={IdleWarningHeldDropThrowAndPause} Path={MothEffect.Lifecycle.IdleWarningHeldDropThrowAndPause}
+[2026.10.14-13.23.29:776][678]LogAutomationController: Display: Test Completed. Result={Success} Name={ProjectileAdmissionAndImmediateImpactRelease} Path={MothEffect.Lifecycle.ProjectileAdmissionAndImmediateImpactRelease}
+[2026.10.14-13.23.29:824][680]LogAutomationController: Display: Test Completed. Result={Success} Name={ResetInvalidatesInFlightDropAdmission} Path={MothEffect.Lifecycle.ResetInvalidatesInFlightDropAdmission}
+[2026.10.14-13.23.29:872][682]LogAutomationController: Display: Test Completed. Result={Success} Name={ResetRejectsCallbacksAndIsolatesWorlds} Path={MothEffect.Lifecycle.ResetRejectsCallbacksAndIsolatesWorlds}
+[2026.10.14-13.23.40:352][306]LogAutomationController: Display: Test Completed. Result={Success} Name={SaturatedEmitterConsumesSlotsAndResumes} Path={MothEffect.Lifecycle.SaturatedEmitterConsumesSlotsAndResumes}
+[2026.10.14-13.23.40:390][308]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedBlueprintsAndDebugController} Path={MothEffect.Lifecycle.SavedBlueprintsAndDebugController}
+[2026.10.14-13.23.40:453][310]LogAutomationController: Display: Test Completed. Result={Success} Name={TotalRecyclesOldestDormant} Path={MothEffect.Lifecycle.TotalRecyclesOldestDormant}
+[2026.10.14-13.23.40:671][324]LogAutomationController: Display: Test Completed. Result={Success} Name={BlockedReleaseRetainsHeld} Path={MothEffect.Player.T09.BlockedReleaseRetainsHeld}
+[2026.10.14-13.23.41:240][358]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathAndEndPlayCleanup} Path={MothEffect.Player.T09.DeathAndEndPlayCleanup}
+[2026.10.14-13.23.41:640][382]LogAutomationController: Display: Test Completed. Result={Success} Name={FocusAndPhysicalRelease} Path={MothEffect.Player.T09.FocusAndPhysicalRelease}
+[2026.10.14-13.23.41:859][395]LogAutomationController: Display: Test Completed. Result={Success} Name={HeldInvalidationAndDamage} Path={MothEffect.Player.T09.HeldInvalidationAndDamage}
+[2026.10.14-13.23.42:925][459]LogAutomationController: Display: Test Completed. Result={Success} Name={PausePreservesTimers} Path={MothEffect.Player.T09.PausePreservesTimers}
+[2026.10.14-13.23.43:509][494]LogAutomationController: Display: Test Completed. Result={Success} Name={PickupReloadCompetition} Path={MothEffect.Player.T09.PickupReloadCompetition}
+[2026.10.14-13.23.44:078][528]LogAutomationController: Display: Test Completed. Result={Success} Name={RoundCancellationRejectsOldTasks} Path={MothEffect.Player.T09.RoundCancellationRejectsOldTasks}
+[2026.10.14-13.23.44:479][552]LogAutomationController: Display: Test Completed. Result={Success} Name={SinglePressAndRecovery} Path={MothEffect.Player.T09.SinglePressAndRecovery}
+[2026.10.14-13.23.45:161][593]LogAutomationController: Display: Test Completed. Result={Success} Name={UnpossessedStopsFire} Path={MothEffect.Player.T09.UnpossessedStopsFire}
+[2026.10.14-13.23.45:217][596]LogAutomationController: Display: Test Completed. Result={Success} Name={FirstImpactIsSingleUse} Path={MothEffect.Projectiles.FirstImpactIsSingleUse}
+[2026.10.14-13.23.45:261][598]LogAutomationController: Display: Test Completed. Result={Success} Name={RejectionAndSourceExclusion} Path={MothEffect.Projectiles.RejectionAndSourceExclusion}
+[2026.10.14-13.23.45:309][601]LogAutomationController: Display: Test Completed. Result={Success} Name={SweptThinWall} Path={MothEffect.Projectiles.SweptThinWall}
+[2026.10.14-13.23.45:361][604]LogAutomationController: Display: Test Completed. Result={Success} Name={ActivationObserverCannotReopenClosedGameplay} Path={MothEffect.Tutorial.ActivationObserverCannotReopenClosedGameplay}
+[2026.10.14-13.23.45:546][606]LogAutomationController: Display: Test Completed. Result={Success} Name={DesignerBindingsPreservePresentationAndReparenting} Path={MothEffect.UI.DesignerBindingsPreservePresentationAndReparenting}
+[2026.10.14-13.23.45:594][609]LogAutomationController: Display: Test Completed. Result={Success} Name={DesignerPreviewDoesNotBindGameplay} Path={MothEffect.UI.DesignerPreviewDoesNotBindGameplay}
+[2026.10.14-13.23.45:626][611]LogAutomationController: Display: Test Completed. Result={Success} Name={MissingFontSourceRestoredWithoutChangingUserStyle} Path={MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle}
+[2026.10.14-13.23.45:665][613]LogAutomationController: Display: Test Completed. Result={Success} Name={DeathClosesDamageSpawnsAndReentrantCallbacks} Path={MothEffect.WaveFlow.DeathClosesDamageSpawnsAndReentrantCallbacks}
+[2026.10.14-13.23.45:699][615]LogAutomationController: Display: Test Completed. Result={Success} Name={DuplicateDirectorCannotCloseActiveSession} Path={MothEffect.WaveFlow.DuplicateDirectorCannotCloseActiveSession}
+[2026.10.14-13.23.45:731][617]LogAutomationController: Display: Test Completed. Result={Success} Name={FatalHealthPresentationObservesClosedSession} Path={MothEffect.WaveFlow.FatalHealthPresentationObservesClosedSession}
+[2026.10.14-13.23.45:765][619]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerBoundsFailWithoutWaitingForHealthDeath} Path={MothEffect.WaveFlow.PlayerBoundsFailWithoutWaitingForHealthDeath}
+[2026.10.14-13.23.45:798][621]LogAutomationController: Display: Test Completed. Result={Success} Name={PlayerRemovalAndDirectorTeardownClearBindings} Path={MothEffect.WaveFlow.PlayerRemovalAndDirectorTeardownClearBindings}
+[2026.10.14-13.23.45:835][623]LogAutomationController: Display: Test Completed. Result={Success} Name={TerminalDamageGateIsWorldLocal} Path={MothEffect.WaveFlow.TerminalDamageGateIsWorldLocal}
+[2026.10.14-13.23.45:866][625]LogAutomationController: Display: Test Completed. Result={Success} Name={TutorialResetBeforePreparation} Path={MothEffect.WaveFlow.TutorialResetBeforePreparation}
+[2026.10.14-13.23.45:898][627]LogAutomationController: Display: Test Completed. Result={Success} Name={ExternalSourceFollowsMovement} Path={MothEffect.Weapons.Muzzle.ExternalSourceFollowsMovement}
+[2026.10.14-13.23.45:933][629]LogAutomationController: Display: Test Completed. Result={Success} Name={InvalidSourceFailsClosed} Path={MothEffect.Weapons.Muzzle.InvalidSourceFailsClosed}
+[2026.10.14-13.23.45:938][629]LogAutomationController: Writing reports to D:\YYchainsaw\Unreal-Projects\MothEffect\Saved\Automation\DeviceFoundation\EditorFinal...
+
+SOURCE LOG: GameFinal.log
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+LogPluginManager: Found matching target receipt: C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/Binaries/Win64/MothEffectEditor.target
+[2026.10.14-13.25.06:016][  0]LogRHI: Using Default RHI: D3D12
+[2026.10.14-13.25.06:723][  0]LogD3D12RHI: Found D3D12 adapter 0: NVIDIA GeForce RTX 4060 Laptop GPU (VendorId: 10de, DeviceId: 28a0, SubSysId: 13941d05, Revision: 00a1
+[2026.10.14-13.25.06:724][  0]LogD3D12RHI: Found D3D12 adapter 1: AMD Radeon 780M Graphics (VendorId: 1002, DeviceId: 1900, SubSysId: 13941d05, Revision: 00c5
+[2026.10.14-13.25.06:724][  0]LogD3D12RHI: Found D3D12 adapter 2: Microsoft Basic Render Driver (VendorId: 1414, DeviceId: 008c, SubSysId: 0000, Revision: 0000
+[2026.10.14-13.25.06:724][  0]LogD3D12RHI: Found D3D12 adapter 3: AMD Radeon 780M Graphics (VendorId: 1002, DeviceId: 1900, SubSysId: 13941d05, Revision: 00c5
+[2026.10.14-13.25.06:785][  0]LogWindows: Found 2 attached monitors.
+[2026.10.14-13.25.06:786][  0]LogRHI: RHI Adapter Info:
+[2026.10.14-13.25.08:332][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.25.08:332][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.25.08:332][  0]LogZenServiceInstance: Found local data cache path=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.25.13:701][  0]LogDerivedDataCache: Local: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.25.19:714][  0]LogAudioMixer: Display: bUseRenderScheduler set to true.
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2026.10.14-13.25.19:715][  0]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2026.10.14-13.25.19:835][  0]LogAudioMixer: Display: Initializing audio mixer using platform API: 'WASAPIMixer'
+[2026.10.14-13.25.19:916][  0]LogAudioMixer: Display: FAudioMixerWasapi initialized: SampleRate=48000 NumChannels=2 NumDirectOutChannels=0 bIsAggregateDevice=0 StreamParams.Num()=1
+[2026.10.14-13.25.19:916][  0]LogAudioMixer: Display: Using Audio Hardware Device 扬声器 (DARKRIM SHADOW)
+[2026.10.14-13.25.19:918][  0]LogAudioMixer: Display: Initializing Sound Submixes...
+[2026.10.14-13.25.19:951][  0]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2026.10.14-13.25.19:952][  0]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2026.10.14-13.25.19:955][  0]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=1
+[2026.10.14-13.25.19:957][  0]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=1
+[2026.10.14-13.25.33:295][544]LogAutomationCommandLine: Display: Found 12 automation tests based on 'MothEffect.ArtRuntime+MothEffect.FeedbackRuntime+MothEffect.UIRuntime+MothEffect.ArenaRuntime+MothEffect.WaveFlowRuntime'
+[2026.10.14-13.25.41:316][841]LogAutomationController: Display: Test Completed. Result={Success} Name={BothRampsPhysicalWalking} Path={MothEffect.ArenaRuntime.BothRampsPhysicalWalking}
+[2026.10.14-13.25.41:738][910]LogAutomationController: Display: Test Completed. Result={Success} Name={PhysicalProjectilesAgainstCover} Path={MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover}
+[2026.10.14-13.25.41:752][912]LogAutomationController: Display: Test Completed. Result={Success} Name={SavedRoutesSupportAndCameraCollision} Path={MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision}
+[2026.10.14-13.25.45:713][394]LogAutomationController: Display: Test Completed. Result={Success} Name={ArenaLayerAndVisualGallery} Path={MothEffect.ArtRuntime.ArenaLayerAndVisualGallery}
+[2026.10.14-13.25.51:339][ 82]LogAutomationController: Display: Test Completed. Result={Success} Name={ActualActionsPauseAndCleanup} Path={MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup}
+[2026.10.14-13.26.05:845][ 41]LogAutomationController: Display: Test Completed. Result={Success} Name={ActionDrivenTutorialAndPause} Path={MothEffect.UIRuntime.ActionDrivenTutorialAndPause}
+[2026.10.14-13.26.10:711][200]LogAutomationController: Display: Test Completed. Result={Success} Name={StartBattleDefeatAndRestart} Path={MothEffect.UIRuntime.StartBattleDefeatAndRestart}
+[2026.10.14-13.26.17:262][102]LogAutomationController: Display: Test Completed. Result={Success} Name={EnemyPlayerObjectBoundsAndPause} Path={MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause}
+[2026.10.14-13.26.23:845][843]LogAutomationController: Display: Test Completed. Result={Success} Name={ResultDuringDeferredWorldSpawnCallback} Path={MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback}
+[2026.10.14-13.26.31:593][749]LogAutomationController: Display: Test Completed. Result={Success} Name={SpawnWarningInterruptedByPhysicalBlocker} Path={MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker}
+[2026.10.14-13.27.14:640][ 66]LogAutomationController: Display: Test Completed. Result={Success} Name={TenActualMapRestartsWithHazards} Path={MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards}
+[2026.10.14-13.27.39:688][766]LogAutomationController: Display: Test Completed. Result={Success} Name={ThreeWavesBatchGapBlockedBirthVictory} Path={MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory}
+[2026.10.14-13.27.39:692][766]LogAutomationController: Writing reports to D:\YYchainsaw\Unreal-Projects\MothEffect\Saved\Automation\DeviceFoundation\GameFinal...
+
+SOURCE LOG: OriginalProjectBuildConsole.log
+[7/9] Link [x64] UnrealEditor-MothEffect.lib
+[8/9] Link [x64] UnrealEditor-MothEffect.dll
+Result: Succeeded
+Total execution time: 56.79 seconds
+
+SOURCE LOG: OriginalFoundation.log
+LogPluginManager: Found matching target receipt: ../../../../../../YYchainsaw/Unreal-Projects/MothEffect/Binaries/Win64/MothEffectEditor.target
+LogPluginManager: Found matching target receipt: ../../../../../../YYchainsaw/Unreal-Projects/MothEffect/Binaries/Win64/MothEffectEditor.target
+[2026.10.14-13.51.30:188][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.51.30:188][  0]LogZenServiceInstance: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.51.30:188][  0]LogZenServiceInstance: Found local data cache path=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.51.35:540][  0]LogDerivedDataCache: Local: Found registry key GlobalDataCachePath UE-LocalDataCachePath=E:/Unreal5/UE_PaiSheng DDC
+[2026.10.14-13.51.40:075][  0]LogProjectBrowser: Found Engine Installation "5.8"(D:/Program Files/Epic/UE_5.8)
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-13.20.40)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-13.51.38)" in recently opened files
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:076][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.51.40:077][  0]LogProjectBrowser: Found Engine Installation "5.7"(E:/Unreal5/UE_5.7)
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject",LastOpenTime=2026.03.13-03.07.16)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject",LastOpenTime=2026.06.01-08.16.58)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/虚幻学习工具包/UnrealLearningKit_54.uproject",LastOpenTime=2026.06.01-11.53.06)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UE_Learn/UE_Learn.uproject",LastOpenTime=2026.06.01-12.14.06)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject",LastOpenTime=2026.06.11-12.26.29)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject",LastOpenTime=2026.06.11-13.35.06)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.06.17-15.18.57)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject",LastOpenTime=2026.09.08-11.03.56)" in recently opened files
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.51.40:078][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.51.40:079][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.51.40:079][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.51.40:079][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:079][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal Projects"
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found directory: "D:/YYchainsaw/Unreal-Projects"
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject",LastOpenTime=2026.06.16-13.56.50)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject",LastOpenTime=2026.06.17-09.16.31)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject",LastOpenTime=2026.07.28-08.28.48)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject",LastOpenTime=2026.09.25-14.52.45)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject",LastOpenTime=2026.09.28-03.42.06)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/_AesirWarden_Recovery_20260929_2130/AesirWarden.uproject",LastOpenTime=2026.09.29-13.46.50)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject",LastOpenTime=2026.09.30-02.27.23)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject",LastOpenTime=2026.09.30-08.57.20)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="C:/Users/YYchainsaw/AppData/Local/Temp/MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281/HEADSnapshot/MothEffect.uproject",LastOpenTime=2026.10.14-13.20.40)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "(ProjectName="D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject",LastOpenTime=2026.10.14-13.51.38)" in recently opened files
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirAnimSandbox/AesirAnimSandbox.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirCombatPrototype/AesirCombatPrototype.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/AesirWarden/AesirWarden.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/DarkRuinsMegascansSample/DarkRuinsMegascansSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/EnemyCoordinationLab/EnemyCoordinationLab.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/GameAnimationSample/GameAnimationSample.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MothEffect/MothEffect.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPP/MyCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyCPPFPSLearing/MyCPPFPSLearing.uproject" in previously created project directory
+[2026.10.14-13.51.40:086][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/MyThirdGameMode/MyThirdGameMode.uproject" in previously created project directory
+[2026.10.14-13.51.40:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/My_FPS/My_FPS.uproject" in previously created project directory
+[2026.10.14-13.51.40:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/ShooterAssetPack.uproject" in previously created project directory
+[2026.10.14-13.51.40:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/ToonTanks/ToonTanks.uproject" in previously created project directory
+[2026.10.14-13.51.40:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/UELearingCPP/UELearingCPP.uproject" in previously created project directory
+[2026.10.14-13.51.40:087][  0]LogDesktopPlatform: Found project "D:/YYchainsaw/Unreal-Projects/WarehouseWreckage/WarehouseWreckage.uproject" in previously created project directory
+[2026.10.14-13.51.41:467][ 14]LogSourceControl: Uncontrolled asset discovery finished in 0.25881 seconds (Found 11667 uncontrolled assets)
+[2026.10.14-13.51.46:386][302]LogAutomationCommandLine: Display: Found 6 automation tests based on 'MothEffect.Devices.Foundation'
+[2026.10.14-13.51.52:041][641]LogAutomationController: Display: Test Completed. Result={Success} Name={DefaultDelayForAllThreeEffects} Path={MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects}
+[2026.10.14-13.51.52:078][643]LogAutomationController: Display: Test Completed. Result={Success} Name={EditableSizesKeepQueryAndVisualIndependent} Path={MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent}
+[2026.10.14-13.51.53:808][747]LogAutomationController: Display: Test Completed. Result={Success} Name={ExplosionsActivateIndependentDelayedBombs} Path={MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs}
+[2026.10.14-13.51.57:595][974]LogAutomationController: Display: Test Completed. Result={Success} Name={GroundQueryCharacterPassageAndForceWake} Path={MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake}
+[2026.10.14-13.51.57:625][976]LogAutomationController: Display: Test Completed. Result={Success} Name={HorizontalProjectionAndVerticalFallback} Path={MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback}
+[2026.10.14-13.51.59:396][ 82]LogAutomationController: Display: Test Completed. Result={Success} Name={PendingPauseCancellationAndSessionShutdown} Path={MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown}
+[2026.10.14-13.51.59:397][ 82]LogAutomationController: Writing reports to D:\YYchainsaw\Unreal-Projects\MothEffect\Saved\Automation\DeviceFoundation\OriginalFoundation...

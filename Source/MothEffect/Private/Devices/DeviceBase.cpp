@@ -19,7 +19,8 @@
 ADeviceBase::ADeviceBase()
 {
 	PrototypeArtProfile = TSoftObjectPtr<UMothPrototypeArtProfile>(FSoftObjectPath(UMothPrototypeArtProfile::DefaultPath()));
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
 	DefaultFeedback = CreateDefaultSubobject<UMothDeviceFeedbackComponent>(TEXT("DefaultFeedback"));
 	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	PhysicsBody = CreateDefaultSubobject<USphereComponent>(TEXT("PhysicsBody"));
@@ -29,6 +30,7 @@ ADeviceBase::ADeviceBase()
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Ignore);
+	PhysicsBody->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	PhysicsBody->SetGenerateOverlapEvents(false);
 	PhysicsBody->BodyInstance.bUseCCD = true;
 
@@ -77,12 +79,9 @@ ADeviceBase::ADeviceBase()
 void ADeviceBase::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	const float BodyRadius = FMath::Max(1.0f, BodyRadiusCm);
-	PhysicsBody->SetSphereRadius(BodyRadius);
-	ShotCollider->SetSphereRadius(FMath::Max(BodyRadius, ShotRadiusCm));
 	EmitterDirectionMarker->SetAbsolute(false, true, false);
+	RefreshDeviceSize();
 	ApplyStateCollision();
-	RefreshPrototypeAppearance();
 }
 
 void ADeviceBase::BeginPlay()
@@ -98,6 +97,7 @@ void ADeviceBase::BeginPlay()
 	PhysicsBody->SetMassOverrideInKg(NAME_None, FMath::Max(0.01f, PhysicsMassKg));
 	EmitterDirectionMarker->SetVisibility(false, true);
 	ApplyStateCollision();
+	UpdateGrounding();
 }
 
 void ADeviceBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -121,7 +121,9 @@ bool ADeviceBase::ReceiveBallisticHit_Implementation(const FHitContext& Context)
 
 bool ADeviceBase::CanReceiveExternalImpulse() const
 {
-	return bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed()
+	const auto* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	return HasActorBegunPlay() && bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed()
+		&& GetWorld() && !GetWorld()->IsPaused() && Lifecycle && Lifecycle->IsGameplayEnabled()
 		&& (DeviceState == EDeviceState::Dormant
 			|| (DeviceState == EDeviceState::Active && DeviceKind == EDeviceKind::Emitter));
 }
@@ -151,6 +153,7 @@ bool ADeviceBase::CommitHeld(AMothEffectCharacter* NewHolder, USceneComponent* H
 		return false;
 	}
 	Holder = NewHolder;
+	bGrounded = false;
 	TransitionTo(EDeviceState::Held, false);
 	if (!AttachToComponent(HoldPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale))
 	{
@@ -171,10 +174,13 @@ bool ADeviceBase::CommitReleased(AMothEffectCharacter* ReleasingHolder, const FV
 		return false;
 	}
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	bGrounded = false;
+	GroundingAllowedAt = GetWorld()->GetTimeSeconds() + (Velocity.IsNearlyZero() ? 0.0 : 0.05);
 	SetActorLocation(Location, false, nullptr, ETeleportType::TeleportPhysics);
 	TransitionTo(EDeviceState::Dormant, false);
 	PhysicsBody->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 	PhysicsBody->SetPhysicsLinearVelocity(Velocity);
+	if (Velocity.IsNearlyZero()) UpdateGrounding();
 	return true;
 }
 
@@ -183,16 +189,23 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	if (bEndingPlay || !HasActorBegunPlay() || !bGameplayEnabled || !GetWorld()
 		|| GetWorld()->IsPaused() || DeviceState != EDeviceState::Dormant
 		|| IsActorBeingDestroyed() || !Context.HitId.IsValid() || Context.ImpactPoint.ContainsNaN()
-		|| Context.ShotDirection.ContainsNaN() || !FMath::IsFinite(Context.Damage) || Context.Damage < 0.0f)
+		|| Context.ShotDirection.ContainsNaN() || !FMath::IsFinite(Context.Damage) || Context.Damage < 0.0f
+		|| !FMath::IsFinite(ActivationDelaySeconds) || ActivationDelaySeconds < 0.0f)
 	{
 		LogHit(Context, false);
 		return false;
 	}
-	const FVector Direction = Context.ShotDirection.GetSafeNormal();
+	FVector Direction = Context.ShotDirection.GetSafeNormal();
 	if (Direction.ContainsNaN() || Direction.IsNearlyZero())
 	{
 		LogHit(Context, false);
 		return false;
+	}
+	if (DeviceKind == EDeviceKind::Emitter)
+	{
+		Direction = Direction.GetSafeNormal2D();
+		// A vertical hit has no horizontal heading; use a stable world direction.
+		if (Direction.IsNearlyZero()) Direction = FVector::ForwardVector;
 	}
 	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	if (GetRemainingIdleSeconds() <= 0.0f || !Lifecycle || !Lifecycle->ReserveActivation(this))
@@ -214,10 +227,15 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	if (DeviceKind == EDeviceKind::Launcher) LauncherOrigin = GetActorLocation();
 	FHitContext ActivationContext = Context;
 	ActivationContext.ShotDirection = Direction;
+	PendingActivationSource = Context.SourceActor.Get();
+	PendingActivationInstigator = Context.InstigatorPawn.Get();
+	PendingActivationDamage = Context.Damage;
+	bActivationPending = true;
 
 	// Commit before delegates or effects can re-enter the ballistic interface.
 	if (!TransitionTo(EDeviceState::Active))
 	{
+		StopActiveEffect();
 		Lifecycle->CommitDeviceState(this);
 		LogHit(ActivationContext, false);
 		return false;
@@ -225,13 +243,22 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	LogHit(ActivationContext, true);
 	if (!bEndingPlay && bGameplayEnabled && DeviceState == EDeviceState::Active)
 	{
+		if (DeviceKind == EDeviceKind::Emitter)
+		{
+			EmitterDirectionMarker->SetWorldRotation(ActivationDirection.Rotation());
+			EmitterDirectionMarker->SetVisibility(true, true);
+		}
 		OnActivatedNative.Broadcast(this, ActivationContext);
 		if (!bEndingPlay && !IsActorBeingDestroyed() && bGameplayEnabled && DeviceState == EDeviceState::Active)
 		{
 			GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, ActivationImpactPoint, ActivationDirection,
 				IsValid(Context.InstigatorPawn) && Context.InstigatorPawn->IsPlayerControlled() && Context.InstigatorPawn->IsLocallyControlled());
-			bEffectRunning = true;
-			ActivateEffect(ActivationContext);
+			if (ActivationDelaySeconds > 0.0f)
+			{
+				GetWorldTimerManager().SetTimer(ActivationDelayTimer, this,
+					&ADeviceBase::BeginActivationEffect, ActivationDelaySeconds, false);
+			}
+			else BeginActivationEffect();
 		}
 	}
 	return true;
@@ -372,9 +399,10 @@ void ADeviceBase::ApplyStateCollision()
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	if (bPhysical)
 	{
-		PhysicsBody->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		PhysicsBody->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		PhysicsBody->SetCollisionEnabled(bGrounded ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
 		PhysicsBody->SetEnableGravity(true);
-		PhysicsBody->SetSimulatePhysics(HasActorBegunPlay());
+		PhysicsBody->SetSimulatePhysics(HasActorBegunPlay() && !bGrounded);
 		ShotCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	}
 	else
@@ -387,11 +415,40 @@ void ADeviceBase::ApplyStateCollision()
 
 void ADeviceBase::StopActiveEffect()
 {
+	GetWorldTimerManager().ClearTimer(ActivationDelayTimer);
+	bActivationPending = false;
+	PendingActivationSource.Reset();
+	PendingActivationInstigator.Reset();
+	EmitterDirectionMarker->SetVisibility(false, true);
 	if (bEffectRunning)
 	{
 		bEffectRunning = false;
 		StopEffect();
 	}
+}
+
+void ADeviceBase::BeginActivationEffect()
+{
+	GetWorldTimerManager().ClearTimer(ActivationDelayTimer);
+	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!bActivationPending || bEndingPlay || IsActorBeingDestroyed() || !bGameplayEnabled
+		|| DeviceState != EDeviceState::Active || !Lifecycle || !Lifecycle->IsGameplayEnabled())
+	{
+		StopActiveEffect();
+		return;
+	}
+	FHitContext Context;
+	Context.HitId = ActivationHitId;
+	Context.SourceActor = PendingActivationSource.Get();
+	Context.InstigatorPawn = PendingActivationInstigator.Get();
+	Context.ImpactPoint = ActivationImpactPoint;
+	Context.ShotDirection = ActivationDirection;
+	Context.Damage = PendingActivationDamage;
+	bActivationPending = false;
+	PendingActivationSource.Reset();
+	PendingActivationInstigator.Reset();
+	bEffectRunning = true;
+	ActivateEffect(Context);
 }
 
 void ADeviceBase::ActivateEffect(const FHitContext& Context)

@@ -16,7 +16,9 @@ bool MothDeviceRelease::IsPathClear(UWorld* World, const USphereComponent* Body,
 	}
 	const FCollisionShape Shape = FCollisionShape::MakeSphere(Radius);
 	const ECollisionChannel Channel = Body->GetCollisionObjectType();
-	const FCollisionResponseParams Responses(Body->GetCollisionResponseToChannels());
+	FCollisionResponseParams Responses(Body->GetCollisionResponseToChannels());
+	// Airborne bodies ignore Pawn contact, but releases still need a clear birth volume.
+	Responses.CollisionResponse.SetResponse(ECC_Pawn, ECR_Block);
 	FHitResult Hit;
 	return !World->OverlapBlockingTestByChannel(Start, FQuat::Identity, Channel, Shape, Params, Responses)
 		&& !World->SweepSingleByChannel(Hit, Start, End, FQuat::Identity, Channel, Shape, Params, Responses)

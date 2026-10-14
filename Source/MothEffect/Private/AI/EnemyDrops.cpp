@@ -97,7 +97,7 @@ void AEnemyBase::TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind,
 			&& MothDeviceRelease::IsPathClear(GetWorld(), Defaults->GetPhysicsBody(), DeathLocation, Transform.GetLocation(), Params);
 	});
 	if (Device && (Device->GetDeviceKind() != Kind || Device->GetDeviceState() != EDeviceState::Dormant
-		|| !Device->GetPhysicsBody()->IsSimulatingPhysics())) { Device->DestroyDevice(); Device = nullptr; }
+		|| (!Device->IsGrounded() && !Device->GetPhysicsBody()->IsSimulatingPhysics()))) { Device->DestroyDevice(); Device = nullptr; }
 	DroppedDevice = Device;
 	DropResult = Device ? EEnemyDropResult::Spawned
 		: (!Lifecycle->IsGenerationCurrent(Generation) || bEndingPlay || IsActorBeingDestroyed()) ? EEnemyDropResult::Cancelled : EEnemyDropResult::Rejected;

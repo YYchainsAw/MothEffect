@@ -3,6 +3,7 @@
 #include "Characters/MothEffectCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/HealthComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/OverlapResult.h"
@@ -14,6 +15,22 @@
 #include "Interfaces/ImpulseReceiver.h"
 #include "Types/MothCollisionChannels.h"
 #include "UObject/ConstructorHelpers.h"
+
+namespace
+{
+	bool DeviceBodyIntersectsBox(const ADeviceBase* Device, const UBoxComponent* Box)
+	{
+		const USphereComponent* Body = Device ? Device->GetPhysicsBody() : nullptr;
+		if (!IsValid(Body) || !IsValid(Box)) return false;
+		const FVector Offset = Body->GetComponentLocation() - Box->GetComponentLocation();
+		const FVector Extent = Box->GetUnscaledBoxExtent();
+		const FVector Outside(
+			FMath::Max(0.0, FMath::Abs(Offset.X) - Extent.X),
+			FMath::Max(0.0, FMath::Abs(Offset.Y) - Extent.Y),
+			FMath::Max(0.0, FMath::Abs(Offset.Z) - Extent.Z));
+		return Outside.SizeSquared() <= FMath::Square(Body->GetScaledSphereRadius());
+	}
+}
 
 ALaunchColumn::ALaunchColumn()
 {
@@ -110,6 +127,11 @@ bool ALaunchColumn::HasDynamicClearance() const
 		Objects, FCollisionShape::MakeBox(SolidCollider->GetUnscaledBoxExtent()), Params);
 	for (const FOverlapResult& Overlap : Overlaps)
 	{
+		const ADeviceBase* Device = Cast<ADeviceBase>(Overlap.GetActor());
+		// A frozen root is absent from collision queries, but must not be enclosed by support.
+		if (IsValid(Device) && !Device->IsActorBeingDestroyed() && Device->IsGrounded()
+			&& Device->CanReceiveExternalImpulse() && DeviceBodyIntersectsBox(Device, SolidCollider))
+			return false;
 		const UPrimitiveComponent* Component = Overlap.GetComponent();
 		if (IsValid(Component) && Component->GetCollisionResponseToChannel(ECC_WorldDynamic) == ECR_Block)
 			return false;
@@ -134,10 +156,16 @@ void ALaunchColumn::QueryLaunchTargets(float Height)
 	{
 		AActor* Target = Overlap.GetActor();
 		if (!IsValid(Target) || Target->IsActorBeingDestroyed() || AffectedActors.Contains(Target)
-			|| !Target->Implements<UImpulseReceiver>() || Overlap.GetComponent() != Target->GetRootComponent()) continue;
+			|| !Target->Implements<UImpulseReceiver>()) continue;
 		const ACharacter* Character = Cast<ACharacter>(Target);
 		const ADeviceBase* Device = Cast<ADeviceBase>(Target);
 		const UPrimitiveComponent* Root = Cast<UPrimitiveComponent>(Target->GetRootComponent());
+		// Grounded devices are found by their shot sphere; settle range against the real body.
+		if (Device)
+		{
+			if (!Device->CanReceiveExternalImpulse() || !DeviceBodyIntersectsBox(Device, RiseQuery)) continue;
+		}
+		else if (Overlap.GetComponent() != Root) continue;
 		if (Character)
 		{
 			const UHealthComponent* Health = Target->FindComponentByClass<UHealthComponent>();
@@ -145,7 +173,7 @@ void ALaunchColumn::QueryLaunchTargets(float Height)
 			if (Character->GetCharacterMovement()->MovementMode == MOVE_None || (Health && !Health->IsAlive())
 				|| (Player && !Player->IsGameplayEnabled())) continue;
 		}
-		else if (!Root || !Root->IsSimulatingPhysics() || (Device && !Device->CanReceiveExternalImpulse())) continue;
+		else if (!Device && (!Root || !Root->IsSimulatingPhysics())) continue;
 		AffectedActors.Add(Target);
 		IImpulseReceiver::Execute_ReceiveImpulse(Target,
 			FVector(0.0, 0.0, FMath::Max(0.0f, Character ? CharacterUpVelocityCmPerSec : DeviceUpVelocityCmPerSec)),

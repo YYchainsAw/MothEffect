@@ -43,12 +43,16 @@ bool UExternalImpulseComponent::CanReceive() const
 	}
 	const ADeviceBase* Device = Cast<ADeviceBase>(Owner);
 	const UPrimitiveComponent* Body = Cast<UPrimitiveComponent>(Owner->GetRootComponent());
-	return Body && Body->IsSimulatingPhysics() && (!Device || Device->CanReceiveExternalImpulse());
+	return Body && (Body->IsSimulatingPhysics() || (Device && Device->IsGrounded()))
+		&& (!Device || Device->CanReceiveExternalImpulse());
 }
 
 bool UExternalImpulseComponent::QueueImpulse(const FVector& Velocity, bool bOverrideZ, const FGuid& EventId)
 {
 	if (!CanReceive() || !EventId.IsValid() || Velocity.ContainsNaN() || AcceptedEvents.Contains(EventId))
+		return false;
+	// Validate and deduplicate before a grounded device can resume physical flight.
+	if (ADeviceBase* Device = Cast<ADeviceBase>(GetOwner()); Device && !Device->WakeForExternalImpulse())
 		return false;
 	AcceptedEvents.Add(EventId);
 	if (bOverrideZ)

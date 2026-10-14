@@ -30,6 +30,7 @@ namespace
 		ADeviceBase* Result = F.World->SpawnActorDeferred<ADeviceBase>(ADeviceBase::StaticClass(), Transform,
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!Result) return nullptr;
+		Result->ActivationDelaySeconds = 0.0f; // Test column geometry/settlement independently of the shared delay.
 		FEnumProperty* KindProperty = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		KindProperty->GetUnderlyingProperty()->SetIntPropertyValue(KindProperty->ContainerPtrToValuePtr<void>(Result), static_cast<int64>(Kind));
 		Result->FinishSpawning(Transform);
@@ -431,7 +432,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothLauncherBlueprintTest, "MothEffect.Devices
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FMothLauncherBlueprintTest::RunTest(const FString& Parameters)
 {
-	FMothCombatTestWorld F;
+	auto SharedFixture = MakeShared<FMothCombatTestWorld>();
+	auto& F = *SharedFixture;
 	if (!F.World) return false;
 	Floor(F);
 	UClass* Class = LoadClass<ADeviceBase>(nullptr, TEXT("/Game/MothEffect/Devices/BP_DeviceLauncher.BP_DeviceLauncher_C"));
@@ -439,16 +441,23 @@ bool FMothLauncherBlueprintTest::RunTest(const FString& Parameters)
 	FActorSpawnParameters Spawn;
 	Spawn.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	ADeviceBase* S = F.World->SpawnActor<ADeviceBase>(Class, FVector(0.0, 0.0, 900.0), FRotator::ZeroRotator, Spawn);
-	ALaunchColumn* C = Activate(this, S);
-	if (!C) return false;
+	if (!TestNotNull(TEXT("Saved seed"), S)) return false;
 	TestTrue(TEXT("Seed retains Launcher kind"), S->GetDeviceKind() == EDeviceKind::Launcher);
-	TestEqual(TEXT("Saved seed spawns the saved column Blueprint"), C->GetClass()->GetPathName(), FString(TEXT("/Game/MothEffect/Devices/BP_LaunchColumn.BP_LaunchColumn_C")));
-	TestEqual(TEXT("Column defaults retain baseline height"), C->GetColumnHeightCm(), 350.0f);
-	TestEqual(TEXT("Column defaults retain baseline half-width"), C->GetColumnRadiusCm(), 70.0f);
-	C->Tick(0.21f);
-	TestTrue(TEXT("Saved Blueprint uses native clear support phase"), C->IsSolidSupportEnabled());
-	S->FinishActivation();
-	TestFalse(TEXT("Saved Blueprint retracts safely"), C->IsSolidSupportEnabled());
+	TestEqual(TEXT("Saved seed inherits the shared .3s activation delay"), S->ActivationDelaySeconds, 0.3f);
+	TestTrue(TEXT("Saved seed commits its accepted hit"), S->TryActivate(LauncherHit()));
+	TestNull(TEXT("No column exists before the default delay"), S->GetLaunchColumn());
+	ADD_LATENT_AUTOMATION_COMMAND(FMothTickWorldUntil(SharedFixture, 0.35f, [this, S]()
+	{
+		auto* C = S->GetLaunchColumn();
+		if (!TestNotNull(TEXT("Delayed saved seed creates a column"), C)) return;
+		TestEqual(TEXT("Saved seed spawns the saved column Blueprint"), C->GetClass()->GetPathName(), FString(TEXT("/Game/MothEffect/Devices/BP_LaunchColumn.BP_LaunchColumn_C")));
+		TestEqual(TEXT("Column defaults retain baseline height"), C->GetColumnHeightCm(), 350.0f);
+		TestEqual(TEXT("Column defaults retain baseline half-width"), C->GetColumnRadiusCm(), 70.0f);
+		C->Tick(0.21f);
+		TestTrue(TEXT("Saved Blueprint uses native clear support phase"), C->IsSolidSupportEnabled());
+		S->FinishActivation();
+		TestFalse(TEXT("Saved Blueprint retracts safely"), C->IsSolidSupportEnabled());
+	}));
 	return true;
 }
 

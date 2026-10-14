@@ -120,7 +120,7 @@ bool FMothDeviceActivationTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Original impact point stays locked"),
 		Device->GetActivationImpactPoint().Equals(FirstHit.ImpactPoint));
 	TestEqual(TEXT("Repeated and re-entrant hits emit one activation"), ActiveTransitions, 1);
-	TestTrue(TEXT("Active device keeps simulating physics"), Device->GetPhysicsBody()->IsSimulatingPhysics());
+	TestTrue(TEXT("Unsupported airborne Active device keeps simulating physics"), !Device->IsGrounded() && Device->GetPhysicsBody()->IsSimulatingPhysics());
 	TestTrue(TEXT("First completion commits Spent"), Device->FinishActivation());
 	TestFalse(TEXT("Completion is idempotent"), Device->FinishActivation());
 	TestFalse(TEXT("Spent cannot activate"), Device->TryActivate(LaterHit));

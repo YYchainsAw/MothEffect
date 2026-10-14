@@ -5,6 +5,8 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/WorldSettings.h"
+#include "Misc/AutomationTest.h"
+#include "TimerManager.h"
 
 /** No game mode, engine tick or asset dependencies. World-level BeginPlay/EndPlay are paired. */
 struct FMothCombatTestWorld
@@ -56,4 +58,28 @@ struct FMothCombatTestWorld
 		}
 		return Actor;
 	}
+};
+
+/** Keep an isolated fixture alive while real World ticks run its timers and physics. */
+class FMothTickWorldUntil final : public IAutomationLatentCommand
+{
+public:
+	FMothTickWorldUntil(TSharedPtr<FMothCombatTestWorld> InFixture, float Duration, TFunction<void()> InCheck)
+		: Fixture(MoveTemp(InFixture)), Check(MoveTemp(InCheck))
+	{
+		Until = Fixture->World->GetTimeSeconds() + Duration;
+	}
+	bool Update() override
+	{
+		UWorld* World = Fixture->World;
+		if (World->GetTimerManager().HasBeenTickedThisFrame()) return false;
+		World->Tick(LEVELTICK_All, 0.01f);
+		if (World->GetTimeSeconds() < Until) return false;
+		Check();
+		return true;
+	}
+private:
+	TSharedPtr<FMothCombatTestWorld> Fixture;
+	TFunction<void()> Check;
+	double Until = 0;
 };

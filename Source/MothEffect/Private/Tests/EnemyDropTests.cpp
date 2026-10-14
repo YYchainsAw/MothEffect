@@ -67,7 +67,9 @@ namespace MothDropTest
 			if (T->TestNotNull(TEXT("Actual Dormant physical drop survives enemy feedback cleanup"), D))
 			{
 				T->TestTrue(TEXT("Drop type matches fixed variant"), D->GetDeviceKind() == static_cast<EDeviceKind>(Index % 3));
-				T->TestTrue(TEXT("Fresh drop remains Dormant and physically simulated"), D->GetDeviceState() == EDeviceState::Dormant && D->GetPhysicsBody()->IsSimulatingPhysics());
+				T->TestTrue(TEXT("Fresh drop remains Dormant"), D->GetDeviceState() == EDeviceState::Dormant);
+				if (Case != ECase::Terrain || Index != 3)
+					T->TestTrue(TEXT("Supported drop settles without physical simulation"), D->IsGrounded() && !D->GetPhysicsBody()->IsSimulatingPhysics());
 				if (Case == ECase::Terrain)
 				{
 					if (Index == 3) { T->TestTrue(TEXT("Unsupported airborne birth falls under real gravity"), D->GetActorLocation().Z < 2960 && D->GetPhysicsBody()->GetPhysicsLinearVelocity().Z < -100); }
@@ -199,6 +201,7 @@ bool FMothDropBomb::RunTest(const FString&)
 		auto* E = MothDropTest::Enemy(F, I); if (!TestNotNull(TEXT("Variant for actual bomb"), E)) return false;
 		auto* Bomb = MothDropTest::Manager(F)->SpawnDevice(MothDropTest::DeviceClass(1), FTransform(FVector(150, 0, 25)));
 		if (!TestNotNull(TEXT("Real configured D02"), Bomb)) return false;
+		Bomb->ActivationDelaySeconds = 0.0f; // Isolate death/drop snapshot semantics; saved default delay is covered separately.
 		TestTrue(TEXT("Ordinary D02 activated"), Bomb->TryActivate(MothDropTest::Hit(0)));
 		TestEqual(TEXT("D02 actually kills full 60HP enemy"), E->GetHealthComponent()->GetCurrentHealth(), 0.0f);
 		if (!TestNotNull(TEXT("Bomb kill drops a normal Dormant"), E->GetDroppedDevice())) return false;

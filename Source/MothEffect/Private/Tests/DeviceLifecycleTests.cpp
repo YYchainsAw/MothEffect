@@ -22,7 +22,7 @@ namespace
 	{
 		FHitContext Hit;
 		Hit.HitId = FGuid::NewGuid();
-		Hit.ShotDirection = FVector::UpVector;
+		Hit.ShotDirection = FVector::ForwardVector;
 		return Hit;
 	}
 	UDeviceLifecycleSubsystem* Manager(FMothCombatTestWorld& F) { return F.World->GetSubsystem<UDeviceLifecycleSubsystem>(); }
@@ -32,6 +32,7 @@ namespace
 		ADeviceBase* D = F.World->SpawnActorDeferred<ADeviceBase>(ADeviceBase::StaticClass(), Transform, nullptr, nullptr,
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!D) return nullptr;
+		D->ActivationDelaySeconds = 0.0f; // Isolate capacity and idle clocks from effect startup delay.
 		FEnumProperty* P = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		P->GetUnderlyingProperty()->SetIntPropertyValue(P->ContainerPtrToValuePtr<void>(D), static_cast<int64>(Kind));
 		D->FinishSpawning(Transform);

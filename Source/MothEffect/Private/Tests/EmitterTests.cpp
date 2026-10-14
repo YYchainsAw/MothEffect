@@ -39,6 +39,7 @@ namespace
 				{
 					return true;
 				}
+				Emitter->ActivationDelaySeconds = 0.0f; // This suite isolates the emitter's own .1+n*.25 schedule.
 				FHitContext Hit;
 				Hit.HitId = FGuid::NewGuid();
 				Hit.ShotDirection = Case == EEmitterCase::BlockedBirth
@@ -64,7 +65,7 @@ namespace
 				}
 				Test->TestTrue(TEXT("Activate D03 once"), Emitter->TryActivate(Hit));
 				Test->TestTrue(TEXT("Active keeps gravity"), Emitter->GetPhysicsBody()->IsGravityEnabled());
-				Test->TestTrue(TEXT("Active keeps physical simulation"), Emitter->GetPhysicsBody()->IsSimulatingPhysics());
+				Test->TestTrue(TEXT("Unsupported airborne Active keeps physical simulation"), !Emitter->IsGrounded() && Emitter->GetPhysicsBody()->IsSimulatingPhysics());
 				Test->TestTrue(TEXT("Direction cue is visible before the first shot"),
 					Emitter->GetEmitterDirectionMarker()->IsVisible());
 				Test->TestEqual(TEXT("Startup delay prevents an immediate shot"), Emitter->GetEmitterShotAttempts(), 0);
@@ -76,6 +77,7 @@ namespace
 						return true;
 					}
 					Hit.HitId = FGuid::NewGuid();
+					SecondEmitter->ActivationDelaySeconds = 0.0f;
 					Test->TestTrue(TEXT("Activate second emitter"), SecondEmitter->TryActivate(Hit));
 				}
 				return false;

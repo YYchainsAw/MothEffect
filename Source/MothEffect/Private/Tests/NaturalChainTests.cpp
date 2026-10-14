@@ -59,6 +59,7 @@ namespace
 		ADeviceBase* Device = F.World->SpawnActorDeferred<ADeviceBase>(Class, Transform, nullptr, nullptr,
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!Device) return nullptr;
+		if (!bSaved) Device->ActivationDelaySeconds = 0.0f; // Isolate physical chain paths; saved assets retain the real default.
 		if (!bSaved)
 		{
 			FEnumProperty* Property = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
@@ -127,7 +128,7 @@ namespace
 			const bool bLayoutPair = Case == EChainCase::BombCrossing || Case == EChainCase::ColumnCrossing;
 			// A blast can move the emitter away from the backstop. Its final projectile
 			// may legitimately live until 2.85 + 3 seconds, independently of the source.
-			const float FinishAt = bLayoutPair ? 0.9f : 6.2f;
+			const float FinishAt = bLayoutPair ? 1.3f : 7.0f;
 			if (Elapsed < FinishAt) return false;
 			Test->AddInfo(FString::Printf(TEXT("Chain case=%d layout=%d activations=%d targetImpacts=%d impulseStart=%s activatedAt=%s peakZ=%.1f"),
 				static_cast<int32>(Case), Layout, TargetActivations, TargetImpactCount, *InitialTarget.ToString(), *ActivationPosition.ToString(), MaxTargetZ));
@@ -135,9 +136,14 @@ namespace
 			Test->TestEqual(TEXT("Placement changes the ordinary ballistic activation outcome"), TargetActivations, bExpectedHit ? 1 : 0);
 			if (bExpectedHit)
 			{
-				Test->TestTrue(TEXT("Target was activated by a real projectile with its unique HitId"), bMatchingImpact);
-				Test->TestTrue(TEXT("Chain activation locks the actual world trajectory"), ActivationDirection.Equals(FVector::ForwardVector));
-				if (bLayoutPair)
+				if (Case == EChainCase::BombCrossing)
+					Test->TestTrue(TEXT("Explosion activation has an independent accepted hit ID"), ActivationId.IsValid() && ActivationId != MoverId);
+				else
+				{
+					Test->TestTrue(TEXT("Target was activated by a real projectile with its unique HitId"), bMatchingImpact);
+					Test->TestTrue(TEXT("Chain activation locks the actual horizontal trajectory"), ActivationDirection.Equals(FVector::ForwardVector));
+				}
+				if (Case == EChainCase::ColumnCrossing)
 					Test->TestTrue(TEXT("Impulse physically moved target before the ballistic activation"), !ActivationPosition.Equals(InitialTarget, 50.0));
 				if (Case == EChainCase::DirectLauncher)
 					Test->TestTrue(TEXT("P01 activation created an actual column"), bColumnCreated);
@@ -208,7 +214,7 @@ namespace
 			Source = ChainDevice(*F, bColumn ? FVector(-190.0, 0.0, 400.0) : FVector(0.0, 0.0, 20.0),
 				EDeviceKind::Emitter, Case == EChainCase::SavedBlueprints);
 			InitialTarget = bColumn ? FVector(250.0, Layout == 0 ? 0.0 : 300.0, 20.0)
-				: Case == EChainCase::BombCrossing ? FVector(250.0, Layout == 0 ? 280.0 : 600.0, 20.0)
+				: Case == EChainCase::BombCrossing ? FVector(250.0, Layout == 0 ? 280.0 : 900.0, 20.0)
 				: FVector(250.0, 0.0, 20.0);
 			const EDeviceKind Kind = Case == EChainCase::DirectBomb || Case == EChainCase::SavedBlueprints
 				? EDeviceKind::Bomb : Case == EChainCase::DirectLauncher ? EDeviceKind::Launcher : EDeviceKind::Emitter;
@@ -228,8 +234,10 @@ namespace
 				ADeviceBase* Mover = ChainDevice(*F, bColumn ? FVector(250.0, 0.0, 800.0) : FVector(250.0, 500.0, 20.0),
 					bColumn ? EDeviceKind::Launcher : EDeviceKind::Bomb);
 				if (!Test->TestNotNull(TEXT("Spawn ordinary impulse source"), Mover)) return true;
-				Test->TestTrue(TEXT("Ballistic starter activates only the impulse source"), Mover->TryActivate(StarterHit()));
-				Test->TestTrue(TEXT("Blast/column do not directly activate the target"), Target->GetDeviceState() == EDeviceState::Dormant);
+				const FHitContext MoverHit = StarterHit(); MoverId = MoverHit.HitId;
+				Test->TestTrue(TEXT("Ballistic starter activates the effect source"), Mover->TryActivate(MoverHit));
+				if (bColumn) Test->TestTrue(TEXT("Column only applies external motion before a projectile arrives"), Target->GetDeviceState() == EDeviceState::Dormant);
+				else Test->TestEqual(TEXT("Only in-radius Dormant is activated by the real explosion"), Target->GetDeviceState(), Layout == 0 ? EDeviceState::Active : EDeviceState::Dormant);
 			}
 			return false;
 		}
@@ -275,6 +283,7 @@ namespace
 		AMothPlayerAutomationCharacter* Victim = nullptr;
 		TSet<FGuid> Seen;
 		FGuid ActivationId;
+		FGuid MoverId;
 		FVector InitialTarget = FVector::ZeroVector, ActivationPosition = FVector::ZeroVector;
 		FVector ActivationDirection = FVector::ZeroVector, PausedPosition = FVector::ZeroVector;
 		int32 Layout = 0, TargetActivations = 0, TargetImpactCount = 0, ImpactCount = 0, SourceAttempts = 0, PauseFrames = 0;
@@ -291,7 +300,7 @@ namespace
 MOTH_CHAIN_TEST(FMothChainEmitter, "DirectEmitter", DirectEmitter)
 MOTH_CHAIN_TEST(FMothChainBomb, "DirectBomb", DirectBomb)
 MOTH_CHAIN_TEST(FMothChainLauncher, "DirectLauncher", DirectLauncher)
-MOTH_CHAIN_TEST(FMothChainBlast, "BombIntoFirelineAndLayoutControl", BombCrossing)
+MOTH_CHAIN_TEST(FMothChainBlast, "BombActivatesNeighborAndLayoutControl", BombCrossing)
 MOTH_CHAIN_TEST(FMothChainColumn, "ColumnIntoFirelineAndLayoutControl", ColumnCrossing)
 MOTH_CHAIN_TEST(FMothChainDamage, "SourceExclusionAndAttributionDamage", PawnDamage)
 MOTH_CHAIN_TEST(FMothChainThinWall, "ThinWallConsumesFirstImpact", ThinWall)

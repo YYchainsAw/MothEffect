@@ -232,6 +232,7 @@ bool FMothEnemyDeathAndDefaults::RunTest(const FString&)
 	auto* Kind = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 	Kind->GetUnderlyingProperty()->SetIntPropertyValue(Kind->ContainerPtrToValuePtr<void>(Bomb), static_cast<int64>(EDeviceKind::Bomb));
 	Bomb->FinishSpawning(Transform);
+	Bomb->ActivationDelaySeconds = 0.0f; // This test isolates the shared health/death contract.
 	TestTrue(TEXT("Actual D02 effect can kill the enemy through shared health"), Bomb->TryActivate(MothEnemyTest::Damage(0)));
 	TestEqual(TEXT("Bomb causes one death"), Deaths, 1);
 	E->OnEnemyDiedNative.Clear();

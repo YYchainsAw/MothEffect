@@ -447,7 +447,14 @@ namespace MothFlowRuntimeTest
 				T->TestTrue(TEXT("Actual held device before result"), P->TryPickupDevice(Held));
 				auto* Emitter = Device(W, 2, FVector(0,0,100)); Emitter->TryActivate(Hit());
 				auto* Column = Device(W, 0, FVector(1000,0,30)); Column->TryActivate(Hit());
-				T->TestNotNull(TEXT("Actual active column"), Column->GetLaunchColumn());
+				RestartColumn = Column;
+				T->TestTrue(TEXT("Saved cleanup hazards retain their default pending delay"), Emitter->IsActivationPending() && Column->IsActivationPending());
+				WaitUntil = W->GetTimeSeconds()+FMath::Max(Emitter->ActivationDelaySeconds, Column->ActivationDelaySeconds)+.05;
+				Stage = 11; return false;
+			}
+			if (Stage == 11 && W->GetTimeSeconds() >= WaitUntil)
+			{
+				T->TestTrue(TEXT("Actual delayed active column exists before result"), RestartColumn.IsValid() && RestartColumn->GetLaunchColumn()!=nullptr);
 				W->SpawnActor<ARuleProjectile>(FVector(2000,0,400), FRotator::ZeroRotator);
 				T->TestTrue(TEXT("Actual live projectile before result"), W->GetSubsystem<UDeviceLifecycleSubsystem>()->GetProjectileCount() > 0);
 				T->TestTrue(TEXT("Lethal hit commits result"), P->GetHealthComponent()->ApplyHit(Hit(10000)));
@@ -476,6 +483,7 @@ namespace MothFlowRuntimeTest
 		TWeakObjectPtr<AMothEffectCharacter> OldPlayer;
 		TWeakObjectPtr<AMothPlayerAutomationCharacter> P;
 		TWeakObjectPtr<AMothWaveDirector> CurrentDirector;
+		TWeakObjectPtr<ADeviceBase> RestartColumn;
 	};
 }
 

@@ -399,10 +399,12 @@ void ADeviceBase::ApplyStateCollision()
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	if (bPhysical)
 	{
+		// Stop the body before removing physics collision; Chaos must never see incompatible options.
+		if (bGrounded) PhysicsBody->SetSimulatePhysics(false);
 		PhysicsBody->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 		PhysicsBody->SetCollisionEnabled(bGrounded ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
 		PhysicsBody->SetEnableGravity(true);
-		PhysicsBody->SetSimulatePhysics(HasActorBegunPlay() && !bGrounded);
+		if (!bGrounded) PhysicsBody->SetSimulatePhysics(HasActorBegunPlay());
 		ShotCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	}
 	else

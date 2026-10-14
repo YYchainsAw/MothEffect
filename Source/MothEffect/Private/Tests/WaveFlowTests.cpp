@@ -20,7 +20,7 @@
 
 namespace MothFlowTest
 {
-	FHitContext Hit(float Damage = 100) { FHitContext H; H.HitId = FGuid::NewGuid(); H.Damage = Damage; H.ShotDirection = FVector::UpVector; return H; }
+	FHitContext Hit(float Damage = 100) { FHitContext H; H.HitId = FGuid::NewGuid(); H.Damage = Damage; H.ShotDirection = FVector::ForwardVector; return H; }
 	struct FFixture
 	{
 		FMothCombatTestWorld F;
@@ -41,7 +41,9 @@ namespace MothFlowTest
 	{
 		const TCHAR* Names[] { TEXT("Launcher"), TEXT("Bomb"), TEXT("Emitter") };
 		auto* Class = LoadClass<ADeviceBase>(nullptr, *FString::Printf(TEXT("/Game/MothEffect/Devices/Drops/BP_Drop%s.BP_Drop%s_C"), Names[Kind], Names[Kind]));
-		return F.Manager->SpawnDevice(Class, FTransform(Position));
+		auto* Result = F.Manager->SpawnDevice(Class, FTransform(Position));
+		if (Result) Result->ActivationDelaySeconds = 0.0f; // Isolate transition cleanup with an already-created effect.
+		return Result;
 	}
 	void Floor(FFixture& F)
 	{

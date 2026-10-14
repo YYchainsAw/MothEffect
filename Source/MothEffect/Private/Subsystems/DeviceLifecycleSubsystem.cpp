@@ -236,7 +236,14 @@ bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
 	if (bResetting) return false;
 	if (bGameplayEnabled && !bEnabled) ++LifecycleGeneration;
 	bGameplayEnabled = bEnabled;
-	if (!bEnabled) if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
+	if (!bEnabled)
+	{
+		if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
+		// Cancel accepted waits now, so re-enabling the session cannot revive their timers or quota.
+		const auto Snapshot = Devices;
+		for (const auto& Record : Snapshot)
+			if (IsLive(Record.Device.Get()) && Record.Device->IsActivationPending()) Record.Device->FinishActivation();
+	}
 	return true;
 }
 

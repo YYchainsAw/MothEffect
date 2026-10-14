@@ -50,6 +50,7 @@ public:
 	void MothEnemyStats();
 	UFUNCTION(Exec)
 	void MothFlowStats();
+	UFUNCTION(Exec) void MothFeedbackStats();
 	UFUNCTION(Exec)
 	void MothStartEncounter();
 	UFUNCTION(Exec)

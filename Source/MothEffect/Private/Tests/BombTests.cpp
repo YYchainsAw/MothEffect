@@ -205,9 +205,11 @@ bool FMothBombBlueprintTest::RunTest(const FString& Parameters)
 	if (!Bomb || !Pawn) { AddError(TEXT("Spawn saved Blueprint and native target")); return false; }
 	TestTrue(TEXT("Saved Blueprint retains Bomb kind"), Bomb->GetDeviceKind() == EDeviceKind::Bomb);
 	const UStaticMeshComponent* Mesh = Bomb->FindComponentByClass<UStaticMeshComponent>();
-	if (!TestNotNull(TEXT("Saved graybox has its visual mesh"), Mesh)) return false;
-	TestNotNull(TEXT("Engine sphere persists across editor processes"), Mesh->GetStaticMesh().Get());
-	TestTrue(TEXT("Graybox has 40cm visual diameter"), Mesh->GetRelativeScale3D().Equals(FVector(0.4), 0.001));
+	if (!TestNotNull(TEXT("Saved device has its visual mesh"), Mesh)) return false;
+	if (!TestNotNull(TEXT("Resolved visual persists across editor processes"), Mesh->GetStaticMesh().Get())) return false;
+	const FVector VisualExtent=Mesh->GetStaticMesh()->GetBoundingBox().GetExtent()*Mesh->GetRelativeScale3D();
+	TestTrue(TEXT("Replaceable visual stays within the shot envelope"),VisualExtent.GetMin()>1&&VisualExtent.GetMax()<=25);
+	TestEqual(TEXT("Visual replacement retains the native physical radius"),Bomb->GetPhysicsBody()->GetUnscaledSphereRadius(),20.f);
 	TestTrue(TEXT("Saved asset uses native ballistic activation"), IBallisticReactive::Execute_ReceiveBallisticHit(Bomb, BombHit(Pawn)));
 	TestEqual(TEXT("Saved asset applies baseline fixed damage"), Pawn->GetHealthComponent()->GetCurrentHealth(), 40.0f);
 	TestTrue(TEXT("Saved asset reaches Spent once"), Bomb->GetDeviceState() == EDeviceState::Spent);

@@ -1,0 +1,70 @@
+{
+  "author": "YYchainsAw/MothEffect project; synthesized for T19",
+  "source": "scripts/generate_t19_audio.py; no third-party recordings or samples",
+  "sounds": [
+    {
+      "name": "S_Rifle",
+      "seconds": 0.09,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "fcb9fd524d7217db3ff8eb705d62fd88c1bd86b90399988400f48dc3dc90c5e1"
+    },
+    {
+      "name": "S_Hit",
+      "seconds": 0.07,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "fb26c6382f638b62b3544f2c0073a82f383b3516a9cffdc10ceefcdc212828a9"
+    },
+    {
+      "name": "S_Damage",
+      "seconds": 0.16,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "b70a47c81e530b610c8fa2e49e558c86cef48881b50d19bad87b559a3bc789b4"
+    },
+    {
+      "name": "S_Launcher",
+      "seconds": 0.28,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "36b9d053b0512550a1973ea502bbfbd130c0ed92b396ad90585aed1263b82385"
+    },
+    {
+      "name": "S_Bomb",
+      "seconds": 0.36,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "77bc11e120541353ff8c09f7e04566a256185c13c412287eea0a787660acc09c"
+    },
+    {
+      "name": "S_Emitter",
+      "seconds": 0.22,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "6e12cd932dfee4a277fc0aa066ee36f4bf24c85c6d6dd5522654cfb284165f52"
+    },
+    {
+      "name": "S_Pulse",
+      "seconds": 0.08,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "1f8b1fd587dc7d885e82504c8225d5fee6d5e3bc30d83ffdfc7295238b1da626"
+    },
+    {
+      "name": "S_Warning",
+      "seconds": 0.26,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak": 0.7,
+      "sha256": "a9a0a1b17e61306ddbe0d16716615f9637d292e71af73119805d8ba295c99307"
+    }
+  ]
+}

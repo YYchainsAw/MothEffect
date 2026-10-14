@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.42 · 2026-10-12 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.45 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-13 T20：PrototypeArtProfile独立提供显示模型/材料/局部Transform；设备与背包直接共用解析入口，材质按语义槽名适配OBJ重排。开关保留原外观与用户替换；场景层仅主竞技场生成一次，识别T17标签/材质/尺寸，排除大围墙，关闭/销毁恢复原渲染。原掩体承担碰撞/导航，新网格与灯饰无玩法查询；资产软引用目录纳入Cook。接口与改造步骤见[Prototype_Art_Setup](../../05_Development_Guide/Prototype_Art_Setup.md)，实际验证见[T20报告](../../06_Test_Doc/T20_Report_2026-10-13.md)。用户后续机制/UI改造按新规则更新权威文档、配置与测试。
+
+2026-10-13 T19：新增世界内FeedbackSubsystem、可编辑Profile、瞬时Visual Actor和DeviceFeedback组件。命中/效果从提交后的原生入口触发；真实几何无碰撞/Overlap/导航/阴影，箭头使用缓存世界方向。声音、网格效果与屏幕Alpha按游戏时间暂停；生命周期关闭/重置先清记录再结束实例，出生回调返回复核玩法与表现世代。枪口、命中、三类型启动和过期声音均有默认资产；独立包资产纳入AlwaysCook，但本轮不声称完成打包。接口见[默认配置](../../../Source/MothEffect/Public/Feedback/MothFeedbackProfile.h)、[世界反馈](../../../Source/MothEffect/Public/Feedback/MothFeedbackSubsystem.h)，制作与替换见[Feedback_Setup](../../05_Development_Guide/Feedback_Setup.md)，结果见[T19报告](../../06_Test_Doc/T19_Report_2026-10-13.md)。
 
 2026-10-12 T18 PR记录：按用户要求已推送 codex/t18-hud-tutorial → main 并创建 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46)。创建期间核对到 T16/T17 PR #45 已合并至 main 8481463，因此 T18 直接面向 main；合并本身不扩大前轮手动验收范围。PR 的 Assignee 为 YYchainsAw，Labels 为 feature / area:ui，Project 为 MothEffect · 首版开发（Status In Progress），Milestone 为 M4 · 三波可玩闭环，均继承 #20 并在 GitHub 回读核对。使用 Refs #20，Issue 继续 Open / In Progress、六项完整验收框未勾选、五组当前硬件 PIE 待验收。实现阶段96项 Editor/主地图10项 Game 和最终三分辨率 UI 沿用已归档证据，本次 PR/元数据/文档未重复 UE；独立 PR 工作树297文件/50UE资产、44节阅读版、diff与LFS fsck通过。原开发与PR初始交付的完整 Git tree 相同，用户玩家蓝图未纳入。本地继续 develop；最终 head 的 Repository checks 另按实际 GitHub 运行核对。 以下段落保留历史。
 
@@ -249,7 +253,9 @@ T08 发射调度：从激活时间计算 `firstShotDelay + n * shotInterval`，�
 
 ## 7. T18 HUD、教学与菜单
 
-`UMothHUDWidget` 在本地控制器拥有正式 Pawn/Rifle/Director 后构造原生 WidgetTree，保存的 WBP_MothHUD 仅作入口。初始 getter + AddUniqueDynamic 事件订阅，NativeTick 读取倒计时/换弹进度/准星/短提示；来源变更与 NativeDestruct 解绑。E 的提示遵循 T07 首次准星阻挡命中与完整拾取条件，受伤/弹药/动作/波次显示来自生产对象。
+`UMothHUDWidget` 在本地控制器拥有正式 Pawn/Rifle/Director 后读取保存的 WBP_MothHUD Designer 树，以 25 个必需 BindWidget 绑定数据控件与按钮；原生 WidgetTree 只作无 WBP 时的后备。布局、字体、普通颜色、容器层级由 Designer 管理；教学面板使用命名绑定，准星候选色结束后恢复 Designer 基色。菜单文案/页面预览在 Class Defaults，BlueprintPure GetHUDState 提供扩展读接口。初始 getter + AddUniqueDynamic 事件订阅，NativeTick 读取倒计时/换弹进度/准星/短提示；来源变更与 NativeDestruct 解绑，四按钮同样按构造/销毁绑定和解绑。E 的提示遵循 T07 首次准星阻挡命中与完整拾取条件，受伤/弹药/动作/波次显示来自生产对象。
+
+2026-10-13 编辑接入：`DA_MothTutorial` 提供说明/反馈和世界布置；控制器从 HUD 选择的配置开始教学，Subsystem 复制为非 Standalone 的 Transient 本轮快照，结束清引用。预览只读取配置/示例数值，不绑定玩法来源或生成对象。默认位置、教学阈值及战斗参数沿用上一版；UI 具体制作由用户完成。Editor-only UMGEditor/UnrealEd/KismetCompiler 仅在 Editor 目标链接，初始化桥接只填空树，已有树保留并检查绑定；操作说明见 [UI_Setup](../../05_Development_Guide/UI_Setup.md)。
 
 `UMothTutorialSubsystem` 持有世界内弱引用与一次 CheckTimer；激活/释放/靶死亡观察只记录来源与证据，计时器再转换步骤/清理自有对象。目标死亡必须来自该步 D02；D01 实际高度达标后独立保留；第二步必须曾真正投出且 W01 在空中启动，错误启动或落地自动补充；第三步 P01 的 SourceActor 保留源 D03，因此可区分 W01 直接启动。Ready 教学界外复用导演 Defeat 清理，世界结束清所有自有靶/标记/绑定。
 

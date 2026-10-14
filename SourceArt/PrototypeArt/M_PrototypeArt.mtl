@@ -1,0 +1,26 @@
+# Original MothEffect T20 material hints; no external textures.
+# Fixed slot order: Metal, Copper, Glow. Unreal materials may replace these hints.
+newmtl Metal
+Ka 0.025 0.035 0.050
+Kd 0.120 0.160 0.200
+Ks 0.550 0.550 0.550
+Ns 70
+d 1.0
+illum 2
+
+newmtl Copper
+Ka 0.080 0.040 0.015
+Kd 0.580 0.280 0.080
+Ks 0.500 0.320 0.160
+Ns 55
+d 1.0
+illum 2
+
+newmtl Glow
+Ka 0.000 0.140 0.180
+Kd 0.020 0.700 0.900
+Ke 0.020 0.700 0.900
+Ks 0.100 0.100 0.100
+Ns 15
+d 1.0
+illum 2

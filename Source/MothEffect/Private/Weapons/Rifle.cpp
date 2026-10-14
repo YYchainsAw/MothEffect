@@ -1,4 +1,5 @@
 #include "Weapons/Rifle.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -236,6 +237,8 @@ void ARifle::TryFireOneShot()
 	{
 		return;
 	}
+	World->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Shot, MuzzleLocation, ShotDirection);
+	if (bHit) World->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Impact, ShotHit.ImpactPoint + ShotHit.ImpactNormal*2, ShotHit.ImpactNormal);
 	OnAmmoChanged.Broadcast(AmmoInMagazine, MagazineSize);
 	if (!bEndingPlay)
 	{

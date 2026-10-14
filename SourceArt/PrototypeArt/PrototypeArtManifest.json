@@ -1,0 +1,223 @@
+{
+  "generator": "scripts/generate_t20_art.py",
+  "generator_version": "1.0",
+  "generator_sha256": "980b1763775c496d1469dfe490f62d6d88ccc554c9e7ad7498b588f81cd8571b",
+  "authorship": "Original code-generated geometry for YYchainsAw/MothEffect T20",
+  "third_party_assets": [],
+  "licensing": "No separate asset license declared; repository has no LICENSE file.",
+  "coordinates": {
+    "units": "centimeters",
+    "up": "+Z",
+    "forward": "+X",
+    "embedded_transform": "none",
+    "unreal_import": "Legacy FBX OBJ mirrors Y to convert handedness; X and Z unchanged"
+  },
+  "device_constraint": "Every vertex within a radius-20 cm sphere at origin",
+  "cover_constraint": "Exact axis bounds [-50,50] cm; preserve T17 gameplay cube",
+  "shading": "Flat normals; per-face planar UVs; outward triangle winding",
+  "material_slots": [
+    "Metal",
+    "Copper",
+    "Glow"
+  ],
+  "shared_material_file": "M_PrototypeArt.mtl",
+  "shared_material_sha256": "3caf12abdf6db34f84efc0c2c216e230e9a9ec4f4befdec3e035d3a9b1351c0e",
+  "regeneration": "Explicit run overwrites only generated files; copy user edits first",
+  "meshes": [
+    {
+      "name": "SM_D01Launcher",
+      "source_file": "SM_D01Launcher.obj",
+      "source_sha256": "df8d5c44798b66c489fc785f246ab70590f3237b769724a7213a4c723a8579ac",
+      "material_slots": [
+        "Metal",
+        "Copper",
+        "Glow"
+      ],
+      "purpose": "Upward launch pedestal and triangular arrow prism",
+      "collision_policy": "visual_only; device gameplay sphere remains authoritative",
+      "bounds_cm": {
+        "min": [
+          -11.9,
+          -11.9,
+          -14.0
+        ],
+        "max": [
+          11.9,
+          11.9,
+          15.5
+        ]
+      },
+      "size_cm": [
+        23.8,
+        23.8,
+        29.5
+      ],
+      "max_vertex_radius_cm": 18.117671,
+      "vertex_count": 384,
+      "triangle_count": 128,
+      "normal_count": 128,
+      "uv_count": 384,
+      "triangles_per_material": {
+        "Metal": 48,
+        "Copper": 52,
+        "Glow": 28
+      }
+    },
+    {
+      "name": "SM_D02Bomb",
+      "source_file": "SM_D02Bomb.obj",
+      "source_sha256": "e503e42c6f6aecc1963f8172745e5598b061dda8debbb88b2cb134ac0142b92c",
+      "material_slots": [
+        "Metal",
+        "Copper",
+        "Glow"
+      ],
+      "purpose": "Orange faceted core, crossed sealing rings, copper seal",
+      "collision_policy": "visual_only; device gameplay sphere remains authoritative",
+      "bounds_cm": {
+        "min": [
+          -17.3,
+          -14.55,
+          -15.4
+        ],
+        "max": [
+          17.3,
+          14.55,
+          15.4
+        ]
+      },
+      "size_cm": [
+        34.6,
+        29.1,
+        30.8
+      ],
+      "max_vertex_radius_cm": 17.529689,
+      "vertex_count": 984,
+      "triangle_count": 328,
+      "normal_count": 328,
+      "uv_count": 984,
+      "triangles_per_material": {
+        "Metal": 120,
+        "Copper": 148,
+        "Glow": 60
+      }
+    },
+    {
+      "name": "SM_D03Emitter",
+      "source_file": "SM_D03Emitter.obj",
+      "source_sha256": "4d1dd9e4924892affcd5414fec566aa2879f9e8c9f75f51cb10433d367e639a2",
+      "material_slots": [
+        "Metal",
+        "Copper",
+        "Glow"
+      ],
+      "purpose": "Directional rectangular body with +X muzzle",
+      "collision_policy": "visual_only; device gameplay sphere remains authoritative",
+      "bounds_cm": {
+        "min": [
+          -13.0,
+          -6.5,
+          -8.0
+        ],
+        "max": [
+          16.3,
+          6.5,
+          6.8
+        ]
+      },
+      "size_cm": [
+        29.3,
+        13.0,
+        14.8
+      ],
+      "max_vertex_radius_cm": 16.542068,
+      "vertex_count": 480,
+      "triangle_count": 160,
+      "normal_count": 160,
+      "uv_count": 480,
+      "triangles_per_material": {
+        "Metal": 52,
+        "Copper": 52,
+        "Glow": 56
+      }
+    },
+    {
+      "name": "SM_CoverModule",
+      "source_file": "SM_CoverModule.obj",
+      "source_sha256": "f869cb7feeeb73e90445a2872f57b8e049d1e97207ecdc1bb56be519ae0595a4",
+      "material_slots": [
+        "Metal",
+        "Copper",
+        "Glow"
+      ],
+      "purpose": "Faceted metal barricade, framed feet and luminous chevron",
+      "collision_policy": "retains original T17 cube collision at exact [-50,50] cm bounds",
+      "bounds_cm": {
+        "min": [
+          -50.0,
+          -50.0,
+          -50.0
+        ],
+        "max": [
+          50.0,
+          50.0,
+          50.0
+        ]
+      },
+      "size_cm": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "max_vertex_radius_cm": 86.60254,
+      "vertex_count": 636,
+      "triangle_count": 212,
+      "normal_count": 212,
+      "uv_count": 636,
+      "triangles_per_material": {
+        "Metal": 68,
+        "Copper": 96,
+        "Glow": 48
+      }
+    },
+    {
+      "name": "SM_RuneBeacon",
+      "source_file": "SM_RuneBeacon.obj",
+      "source_sha256": "26a5df5a4bfa38683b065790397cfb7f6955d2ee2ac834d77e861f50a01e02d8",
+      "material_slots": [
+        "Metal",
+        "Copper",
+        "Glow"
+      ],
+      "purpose": "Switchable decoration: floating rune crystal and four-post frame",
+      "collision_policy": "NoCollision; no navigation relevance; actor visibility may be disabled",
+      "bounds_cm": {
+        "min": [
+          -15.4,
+          -15.7,
+          0.0
+        ],
+        "max": [
+          15.4,
+          15.4,
+          44.2
+        ]
+      },
+      "size_cm": [
+        30.8,
+        31.1,
+        44.2
+      ],
+      "max_vertex_radius_cm": 46.304211,
+      "vertex_count": 600,
+      "triangle_count": 200,
+      "normal_count": 200,
+      "uv_count": 600,
+      "triangles_per_material": {
+        "Metal": 76,
+        "Copper": 104,
+        "Glow": 20
+      }
+    }
+  ]
+}

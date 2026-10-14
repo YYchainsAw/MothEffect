@@ -6,6 +6,7 @@
 #include "Engine/OverlapResult.h"
 #include "GameFramework/Character.h"
 #include "MothEffect.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 
 void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 {
@@ -97,6 +98,8 @@ void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 	}
 	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active) return;
 	FinishActivation();
+	if (!bEndingPlay && !IsActorBeingDestroyed())
+		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Bomb, ExplosionCenter, FVector::UpVector, false, false, Radius);
 #if !UE_BUILD_SHIPPING
 	if (bLogDeviceEvents)
 		UE_LOG(LogMothEffect, Log, TEXT("Bomb %s hit=%s center=%s radius=%.1f resolvedTargets=%d"),

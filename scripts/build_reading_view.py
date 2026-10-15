@@ -48,6 +48,7 @@ DOCS = [
     ('doc-enemy-setup', 'T14 射击 AI 与导航接入', 'Docs/05_Development_Guide/Enemy_Setup.md'),
     ('doc-wave-flow', 'T16 三波、胜负与重开接入', 'Docs/05_Development_Guide/Wave_Flow_Setup.md'),
     ('doc-ui', 'T18 HUD、教学与共用菜单接入', 'Docs/05_Development_Guide/UI_Setup.md'),
+    ('doc-crosshair', '自定义准星、敌人命中与击杀反馈接入', 'Docs/05_Development_Guide/Crosshair_Setup.md'),
     ('doc-feedback', 'T19 默认反馈与替换入口', 'Docs/05_Development_Guide/Feedback_Setup.md'),
     ('doc-prototype-art', 'T20 原型外观与替换入口', 'Docs/05_Development_Guide/Prototype_Art_Setup.md'),
     ('doc-arena', 'T17 主竞技场灰盒接入', 'Docs/05_Development_Guide/Arena_Setup.md'),

@@ -1,6 +1,24 @@
 # Moth Effect：T18 HUD、教学与菜单接入
 
-版本 v0.3 · 2026-10-13 · 状态：编辑接口已接入；具体 UI 制作由用户完成，当前硬件 PIE 待验收
+版本 v0.6 · 2026-10-14 · 状态：旧 UI 自动创建已恢复；贴图准星 C++ 接口已写入，待用户编译和制作蓝图
+
+## 2026-10-14：贴图准星、命中与击杀接口
+
+用户已导入 `/Game/MothEffect/UI/Textures` 下的 `T_CH001`、`T_HM_002`、`T_KI_001`。C++ 在敌人实际伤害提交后提供 `OnEnemyHitConfirmed` 快照，以 `bKilled` 区分普通命中和击杀，归属本地玩家的机关与连锁伤害共用此入口；重复、无效或非敌人命中不会生成此通知。`UMothHUDWidget` 按实际拥有玩家转发，并提供重置、暂停和页面变化事件，蓝图负责图层、动画和显隐。
+
+新增 `bDrawDefaultHitMarker` 可单独关闭原生白色命中 X，保留原有受伤边框。保留并隐藏必需绑定的 `CrosshairText`，在根容器中加入准星子控件；详细步骤见 [自定义准星接入](Crosshair_Setup.md)。按用户选择，本轮只交付 C++ 和说明，没有运行 UE、编译或保存蓝图；新增反射接口需关闭编辑器完整编译后加载。
+
+## 2026-10-14：恢复旧 UI 自动创建
+
+用户在暂时关闭后要求恢复旧 UI。当前控制器的 `moth.UI.LegacyEnabled` 默认值恢复为 `1`，按原有条件自动创建 `WBP_MothHUD`、标题/暂停/结果面板及平台需要的触控控件；原生后备布局仍可用。旧资产、Designer 树、玩法接口及显式编辑器生成工具保留，本次没有清空或保存用户蓝图。
+
+当前会话若仍使用之前关闭的开关值，在控制台执行 `moth.UI.LegacyEnabled 1` 即可恢复 HUD 与菜单；触控控件在新 World 的 BeginPlay 创建。需要再次临时关闭时使用 `moth.UI.LegacyEnabled 0`。关闭时只移除控制器持有的旧控件，并在旧界面曾接管输入时恢复 GameOnly、视口焦点及移动/视角输入；旧暂停页会解除暂停，胜负终态仍保持玩法禁用。开关关闭且没有旧实例时，不会持续覆盖用户蓝图的输入模式或移除其控件。
+
+没有旧菜单时，战斗仍可通过 GameMode 的 `StartEncounter` 或调试命令 `MothStartEncounter` 启动；教学入口 `StartTeaching` 保留。跨地图的一次开战意图在控制器 Tick 中处理，不再依赖 HUD 创建。旧控制器的 `StartBattle` 和 `ToggleMenuPause` 仍属于旧菜单流程，新蓝图菜单可直接接现有 GameMode/暂停接口。
+
+恢复步骤仅恢复旧 UI 的自动创建；随后补入贴图准星的 C++ 通知接口，蓝图表现由用户按 [自定义准星接入](Crosshair_Setup.md) 制作。以下内容保留 T18 的接入与验收记录，自动显示流程重新作为默认行为。
+
+此前临时关闭时，UE 5.8 Win64 Development Editor 控制器单文件编译通过（`-SingleFile` / `-NoLink`，31.39s）。首次独立编译发现依赖 Unity 合并文件的 `UInputComponent` 头文件缺失，补为直接包含后通过。恢复步骤只把 CVar 默认值改回 `1`，没有修改反射字段；当前已运行编辑器中的开关值可通过上述控制台命令修改，源码默认值需完整编译并重新加载模块后生效。
 
 打开 `/Game/MothEffect/Maps/L_Arena_01` 后 Play，从标题页选择“开始教学”或“直接进入竞技场”。标题、暂停、教学完成、胜利和失败使用同一套面板；不需要输入控制台命令。[PR #45](https://github.com/YYchainsAw/MothEffect/pull/45) 与 [PR #46](https://github.com/YYchainsAw/MothEffect/pull/46) 已合并 main，先前手动待校验范围继续保留。2026-10-13 补齐 Designer 控件树和绑定，按用户要求只提供代码接口与基础骨架，排版、配色和美术由用户制作。
 

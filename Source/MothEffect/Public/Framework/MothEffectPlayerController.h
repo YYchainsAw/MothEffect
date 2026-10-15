@@ -93,6 +93,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Moth|UI") TSoftClassPtr<UMothHUDWidget> GameplayUIClass;
 	bool bTravelRequested = false;
 	int32 AppliedUIPage = -1;
+	int32 LegacyInputPage = -1;
 	void InitializeGameplayUI();
+	void RemoveLegacyGameplayUI();
 
 };

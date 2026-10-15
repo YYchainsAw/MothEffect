@@ -18,12 +18,21 @@
 #include "AI/EnemyBase.h"
 #include "EngineUtils.h"
 #include "Components/HealthComponent.h"
+#include "Components/InputComponent.h"
 #include "Engine/World.h"
 #include "Framework/MothGameInstance.h"
 #include "Tutorial/MothTutorialSubsystem.h"
 #include "UI/MothHUDWidget.h"
 #include "Weapons/Rifle.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "HAL/IConsoleManager.h"
+
+namespace
+{
+	TAutoConsoleVariable<int32> CVarMothLegacyUIEnabled(
+		TEXT("moth.UI.LegacyEnabled"), 1,
+		TEXT("Automatically create the legacy HUD, menus and touch controls. 0: disabled; 1: enabled."));
+}
 
 AMothEffectPlayerController::AMothEffectPlayerController()
 {
@@ -34,7 +43,7 @@ AMothEffectPlayerController::AMothEffectPlayerController()
 
 void AMothEffectPlayerController::InitializeGameplayUI()
 {
-	if (bTravelRequested || GameplayUI || !IsLocalPlayerController() || !GetWorld()
+	if (!CVarMothLegacyUIEnabled.GetValueOnGameThread() || bTravelRequested || GameplayUI || !IsLocalPlayerController() || !GetWorld()
 		|| (GetWorld()->WorldType != EWorldType::Game && GetWorld()->WorldType != EWorldType::PIE)) return;
 	auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn());
 	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
@@ -47,14 +56,59 @@ void AMothEffectPlayerController::InitializeGameplayUI()
 	GameplayUI = CreateWidget<UMothHUDWidget>(this, Class ? Class : UMothHUDWidget::StaticClass());
 	if (!GameplayUI) return;
 	GameplayUI->AddToPlayerScreen(10);
-	if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel()
-		&& Mode->StartEncounter()) Instance->ConsumeBattleAfterTravel();
 	GameplayUI->RefreshState(); SyncUIInput();
+}
+
+void AMothEffectPlayerController::RemoveLegacyGameplayUI()
+{
+	const bool bRestoreInput = GameplayUI && LegacyInputPage != -1;
+	const EMothUIPage PreviousPage = bRestoreInput ? static_cast<EMothUIPage>(LegacyInputPage) : EMothUIPage::Gameplay;
+	const bool bWasMenu = PreviousPage != EMothUIPage::Gameplay && PreviousPage != EMothUIPage::Tutorial;
+	UMothHUDWidget* PreviousUI = GameplayUI;
+	GameplayUI = nullptr;
+	AppliedUIPage = -1;
+	LegacyInputPage = -1;
+	if (PreviousUI) PreviousUI->RemoveFromParent();
+	if (MobileControlsWidget) MobileControlsWidget->RemoveFromParent();
+	MobileControlsWidget = nullptr;
+
+	// Restore input only when removing a legacy UI that actually took ownership.
+	// With no legacy widget, leave the user's Blueprint UI and input mode alone.
+	if (!bRestoreInput || bTravelRequested || !GetWorld()) return;
+	if (PreviousPage == EMothUIPage::Pause && GetWorld()->IsPaused()) SetPause(false);
+	if (!bWasMenu) return;
+	if (auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn()))
+	{
+		ControlledCharacter->CancelCombatInput();
+		ControlledCharacter->ResetMovementInput();
+		const auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+		auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+		auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
+		if ((!Director || Director->GetPlayer() == ControlledCharacter) && PreviousPage != EMothUIPage::Pause
+			&& Lifecycle && Lifecycle->IsGameplayEnabled()
+			&& ControlledCharacter->GetHealthComponent()->IsAlive()) ControlledCharacter->SetGameplayEnabled(true);
+	}
+	SetIgnoreMoveInput(false); SetIgnoreLookInput(false);
+	bShowMouseCursor = false;
+	FInputModeGameOnly InputMode;
+	InputMode.SetConsumeCaptureMouseDown(true);
+	SetInputMode(InputMode);
+	UWidgetBlueprintLibrary::SetFocusToGameViewport();
 }
 
 void AMothEffectPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	// Travel intent belongs to the encounter, even while the legacy UI is disabled.
+	if (!bTravelRequested)
+		if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel())
+			if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()); Mode && Mode->StartEncounter())
+				Instance->ConsumeBattleAfterTravel();
+	if (!CVarMothLegacyUIEnabled.GetValueOnGameThread())
+	{
+		RemoveLegacyGameplayUI();
+		return;
+	}
 	InitializeGameplayUI();
 	if (GameplayUI && !bTravelRequested) { GameplayUI->RefreshState(); SyncUIInput(); }
 }
@@ -106,6 +160,7 @@ void AMothEffectPlayerController::SyncUIInput()
 		FInputModeGameOnly InputMode; InputMode.SetConsumeCaptureMouseDown(true); SetInputMode(InputMode);
 		UWidgetBlueprintLibrary::SetFocusToGameViewport();
 	}
+	LegacyInputPage = AppliedUIPage;
 }
 
 void AMothEffectPlayerController::StartTeaching()
@@ -153,7 +208,7 @@ void AMothEffectPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	// only spawn touch controls on local player controllers
-	if (IsLocalPlayerController() && ShouldUseTouchControls())
+	if (CVarMothLegacyUIEnabled.GetValueOnGameThread() && IsLocalPlayerController() && ShouldUseTouchControls())
 	{
 		// spawn the mobile controls widget
 		MobileControlsWidget = CreateWidget<UUserWidget>(this, MobileControlsWidgetClass);

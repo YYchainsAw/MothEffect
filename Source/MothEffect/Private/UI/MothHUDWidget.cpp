@@ -14,6 +14,7 @@
 #include "MothHUDLayout.h"
 #include "Tutorial/MothTutorialConfig.h"
 #include "Feedback/MothFeedbackSubsystem.h"
+#include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Rendering/DrawElements.h"
 #include "Styling/CoreStyle.h"
 
@@ -126,7 +127,7 @@ int32 UMothHUDWidget::NativePaint(const FPaintArgs& Args, const FGeometry& Geome
 		TArray<FVector2D> Points{A,B};
 		FSlateDrawElement::MakeLines(Elements,Layer,Geometry.ToPaintGeometry(),Points,ESlateDrawEffect::None,Color,true,Width);
 	};
-	if (Hit>0)
+	if (bDrawDefaultHitMarker && Hit>0)
 	{
 		FVector2D Center=Size*.5f;
 		if (CrosshairText) { const auto& G=CrosshairText->GetCachedGeometry(); Center=Geometry.AbsoluteToLocal(G.LocalToAbsolute(G.GetLocalSize()*.5f)); }
@@ -160,7 +161,11 @@ void UMothHUDWidget::UnbindSources()
 	}
 	if (Director.IsValid()) Director->OnFlowChanged.RemoveDynamic(this,&UMothHUDWidget::HandleFlow);
 	if (Tutorial.IsValid()) Tutorial->OnStepChanged.RemoveDynamic(this,&UMothHUDWidget::HandleTutorial);
-	Player.Reset(); Rifle.Reset(); Director.Reset(); Tutorial.Reset();
+	if (CombatFeedback.IsValid()) CombatFeedback->OnEnemyHitConfirmedNative.RemoveAll(this);
+	Player.Reset(); Rifle.Reset(); Director.Reset(); Tutorial.Reset(); CombatFeedback.Reset();
+	bCrosshairPageAnnounced = false;
+	bCrosshairPaused = false;
+	OnCrosshairFeedbackReset();
 }
 
 void UMothHUDWidget::BindSources()
@@ -170,8 +175,10 @@ void UMothHUDWidget::BindSources()
 	auto* NewDirector=Mode?Mode->GetWaveDirector():nullptr;
 	auto* NewRifle=NewPlayer?NewPlayer->GetRifle():nullptr;
 	auto* NewTutorial=GetWorld()?GetWorld()->GetSubsystem<UMothTutorialSubsystem>():nullptr;
-	if (Player.Get()==NewPlayer && Director.Get()==NewDirector && Rifle.Get()==NewRifle && Tutorial.Get()==NewTutorial) return;
-	UnbindSources(); Player=NewPlayer; Director=NewDirector; Rifle=NewRifle; Tutorial=NewTutorial;
+	auto* NewFeedback=GetWorld()?GetWorld()->GetSubsystem<UMothFeedbackSubsystem>():nullptr;
+	if (Player.Get()==NewPlayer && Director.Get()==NewDirector && Rifle.Get()==NewRifle
+		&& Tutorial.Get()==NewTutorial && CombatFeedback.Get()==NewFeedback) return;
+	UnbindSources(); Player=NewPlayer; Director=NewDirector; Rifle=NewRifle; Tutorial=NewTutorial; CombatFeedback=NewFeedback;
 	if (Player.IsValid())
 	{
 		Player->GetHealthComponent()->OnHealthChanged.AddUniqueDynamic(this,&UMothHUDWidget::HandleHealth);
@@ -186,12 +193,25 @@ void UMothHUDWidget::BindSources()
 	}
 	if (Director.IsValid()) Director->OnFlowChanged.AddUniqueDynamic(this,&UMothHUDWidget::HandleFlow);
 	if (Tutorial.IsValid()) Tutorial->OnStepChanged.AddUniqueDynamic(this,&UMothHUDWidget::HandleTutorial);
+	if (CombatFeedback.IsValid())
+		CombatFeedback->OnEnemyHitConfirmedNative.AddUObject(this,&UMothHUDWidget::HandleEnemyHitConfirmed);
+}
+
+void UMothHUDWidget::HandleEnemyHitConfirmed(APawn* InstigatorPawn, const FMothEnemyHitFeedback& Feedback)
+{
+	if (IsDesignTime() || !IsValid(InstigatorPawn) || InstigatorPawn != GetOwningPlayerPawn()) return;
+	UWorld* World = GetWorld();
+	const auto* Session = World ? World->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	if (!World || World->IsPaused() || !CombatFeedback.IsValid() || CombatFeedback->GetWorld() != World
+		|| !Session || !Session->IsGenerationCurrent(Feedback.LifecycleGeneration)) return;
+	OnEnemyHitConfirmed(Feedback);
 }
 
 void UMothHUDWidget::RefreshState()
 {
 	if (bRendering || IsDesignTime()) return;
 	TGuardValue<bool> Guard(bRendering,true); BindSources();
+	const EMothUIPage PreviousPage = State.Page;
 	State.Health=Player.IsValid()?Player->GetHealthComponent()->GetCurrentHealth():0;
 	State.MaxHealth=Player.IsValid()?Player->GetHealthComponent()->GetMaxHealth():0;
 	State.Ammo=Rifle.IsValid()?Rifle->GetAmmoInMagazine():0;
@@ -212,6 +232,19 @@ void UMothHUDWidget::RefreshState()
 	else if (Tutorial.IsValid()&&Tutorial->IsRunning()) State.Page=EMothUIPage::Tutorial;
 	else State.Page=EMothUIPage::Title;
 	if (bControlsReady) RenderState();
+	const bool bPaused = GetWorld() && GetWorld()->IsPaused();
+	if (bCrosshairPaused != bPaused)
+	{
+		bCrosshairPaused = bPaused;
+		OnCrosshairPauseChanged(bPaused);
+	}
+	if (!bCrosshairPageAnnounced || PreviousPage != State.Page)
+	{
+		bCrosshairPageAnnounced = true;
+		if (State.Page == EMothUIPage::Title || State.Page == EMothUIPage::Defeat
+			|| State.Page == EMothUIPage::TutorialComplete) OnCrosshairFeedbackReset();
+		OnCrosshairPageChanged(State.Page);
+	}
 }
 
 bool UMothHUDWidget::IsMenuVisible() const { return State.Page!=EMothUIPage::Gameplay&&State.Page!=EMothUIPage::Tutorial; }
@@ -292,7 +325,12 @@ void UMothHUDWidget::HandleHealth(float,float) { RefreshState(); }
 void UMothHUDWidget::HandleAmmo(int32,int32) { RefreshState(); }
 void UMothHUDWidget::HandleAction(EPlayerActionState,EPlayerActionState) { RefreshState(); }
 void UMothHUDWidget::HandleFlow(EMothFlowPhase,int32,int32,int32) { RefreshState(); }
-void UMothHUDWidget::HandleTutorial(EMothTutorialStep) { RefreshState(); }
+void UMothHUDWidget::HandleTutorial(EMothTutorialStep)
+{
+	// Retrying the same step keeps the Tutorial page, so page changes cannot clear it.
+	OnCrosshairFeedbackReset();
+	RefreshState();
+}
 void UMothHUDWidget::HandleEmpty(ARifle*) { ShowInteractionNotice(FText::FromString(TEXT("弹匣已空，按 R 换弹。"))); }
 void UMothHUDWidget::HandleBlocked(ARifle*) { ShowInteractionNotice(FText::FromString(TEXT("枪口被遮挡，移开后再射击。"))); }
 

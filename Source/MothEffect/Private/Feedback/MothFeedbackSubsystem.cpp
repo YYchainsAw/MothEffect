@@ -9,6 +9,9 @@
 #include "Devices/DeviceBase.h"
 #include "Feedback/MothDeviceFeedbackComponent.h"
 #include "EngineUtils.h"
+#include "AI/EnemyBase.h"
+#include "GameFramework/Pawn.h"
+#include "Types/HitContext.h"
 
 bool UMothFeedbackSubsystem::DoesSupportWorldType(EWorldType::Type Type) const { return Type==EWorldType::Game||Type==EWorldType::PIE; }
 void UMothFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -19,8 +22,23 @@ void UMothFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Profile=DefaultProfile.LoadSynchronous();
 	if (!Profile) Profile=NewObject<UMothFeedbackProfile>(this);
 }
-void UMothFeedbackSubsystem::Deinitialize() { bClosed=true; ClearFeedback(); Super::Deinitialize(); }
-void UMothFeedbackSubsystem::OnWorldEndPlay(UWorld& World) { bClosed=true; ClearFeedback(); Super::OnWorldEndPlay(World); }
+void UMothFeedbackSubsystem::Deinitialize()
+{
+	bClosed = true;
+	OnEnemyHitConfirmedNative.Clear();
+	OnEnemyHitConfirmed.Clear();
+	ClearFeedback();
+	Super::Deinitialize();
+}
+
+void UMothFeedbackSubsystem::OnWorldEndPlay(UWorld& World)
+{
+	bClosed = true;
+	OnEnemyHitConfirmedNative.Clear();
+	OnEnemyHitConfirmed.Clear();
+	ClearFeedback();
+	Super::OnWorldEndPlay(World);
+}
 TStatId UMothFeedbackSubsystem::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_STAT(UMothFeedbackSubsystem,STATGROUP_Tickables); }
 
 void UMothFeedbackSubsystem::Tick(float)
@@ -89,6 +107,50 @@ void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVect
 			}
 		}
 	}
+}
+
+void UMothFeedbackSubsystem::ReportConfirmedEnemyHit(AActor* Victim, const FHitContext& Context,
+	float AppliedDamage, float RemainingHealth, bool bKilled, uint64 LifecycleGeneration)
+{
+	UWorld* World = GetWorld();
+	APawn* Instigator = Context.InstigatorPawn.Get();
+	if (bClosed || !World || World->IsPaused() || !IsValid(Victim)
+		|| !Victim->IsA<AEnemyBase>() || Victim->IsActorBeingDestroyed() || Victim->GetWorld() != World
+		|| !IsValid(Instigator) || Instigator == Victim
+		|| Instigator->IsActorBeingDestroyed() || Instigator->GetWorld() != World
+		|| !Instigator->IsPlayerControlled() || !Instigator->IsLocallyControlled()
+		|| !Context.HitId.IsValid() || Context.ImpactPoint.ContainsNaN()
+		|| !FMath::IsFinite(AppliedDamage) || AppliedDamage <= 0.0f
+		|| !FMath::IsFinite(RemainingHealth) || RemainingHealth < 0.0f)
+	{
+		return;
+	}
+
+	const auto* Session = World->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!Session || !Session->IsGenerationCurrent(LifecycleGeneration)) return;
+
+	FMothEnemyHitFeedback Feedback;
+	Feedback.HitId = Context.HitId;
+	Feedback.VictimId = static_cast<int32>(Victim->GetUniqueID());
+	Feedback.AppliedDamage = AppliedDamage;
+	Feedback.RemainingHealth = RemainingHealth;
+	Feedback.bKilled = bKilled;
+	Feedback.ImpactPoint = Context.ImpactPoint;
+	Feedback.LifecycleGeneration = LifecycleGeneration;
+	OnEnemyHitConfirmedNative.Broadcast(Instigator, Feedback);
+
+	// A native observer can finish/reset the run or destroy either actor while reading the result.
+	// Do not deliver the old result again to Blueprint after that transition.
+	if (bClosed || GetWorld() != World || !IsValid(World) || World->IsPaused()
+		|| !IsValid(Session) || !Session->IsGenerationCurrent(LifecycleGeneration)
+		|| !IsValid(Victim) || Victim->IsActorBeingDestroyed() || Victim->GetWorld() != World
+		|| !IsValid(Instigator) || Instigator == Victim
+		|| Instigator->IsActorBeingDestroyed() || Instigator->GetWorld() != World
+		|| !Instigator->IsPlayerControlled() || !Instigator->IsLocallyControlled())
+	{
+		return;
+	}
+	OnEnemyHitConfirmed.Broadcast(Instigator, Feedback);
 }
 
 void UMothFeedbackSubsystem::ClearFeedback()

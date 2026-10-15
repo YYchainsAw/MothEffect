@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.48 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.49 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-14 贴图准星：用户已导入 `T_CH001`、`T_HM_002`、`T_KI_001`，C++ 已补入敌人实际命中/击杀快照和 HUD 蓝图通知，旧 HUD 与菜单继续默认创建。蓝图图层、动画及接线由用户制作，步骤见 [自定义准星接入](05_Development_Guide/Crosshair_Setup.md)。按用户选择先交付源码和说明，完整编译、九项新增专项执行及 PIE 仍待进行，未修改用户资产；此前道具重构的验证范围保持原记录。
 
 2026-10-14 当前进入道具基础重构，入口为 [Device_Refactor_Setup](05_Development_Guide/Device_Refactor_Setup.md)：地面固定且保留查询、显式推力/弹射再起飞、D03 锁入射 XY 水平方向、共用激活延迟及 D02 爆炸触发无遮挡 Dormant。规则 v0.12、参数 v0.19 与 DEC41–DEC44 已同步；当前 `refactor` 分支，代码分段本地提交 `f6d6b2a` / `f91db81`。新建 [#48](https://github.com/YYchainsAw/MothEffect/issues/48)、[#49](https://github.com/YYchainsAw/MothEffect/issues/49)、[#50](https://github.com/YYchainsAw/MothEffect/issues/50)、[#51](https://github.com/YYchainsAw/MothEffect/issues/51)，均 Open / In Progress、YYchainsAw / M5，元数据已回读。收尾提交 0e5370a / 4934627，隔离 UE 构建、114 Editor / 12 主地图 Game 回归通过，见 [验证报告](06_Test_Doc/Device_Refactor_Report_2026-10-14.md)；硬件 PIE、手感和独立包仍待验收；历史记录保留原验证范围，本轮未推送或创建 PR。
 
@@ -91,6 +93,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
+| 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 自定义准星、敌人命中/击杀事件、三图层 UMG 动画与暂停/重开接入；待用户编译和制作蓝图 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |

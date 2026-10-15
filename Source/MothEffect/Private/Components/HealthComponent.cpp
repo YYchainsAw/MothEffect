@@ -47,18 +47,38 @@ bool UHealthComponent::ApplyHit(const FHitContext& Context)
 		return false;
 	}
 
+	const uint64 LifecycleGeneration = Session ? Session->GetLifecycleGeneration() : 0;
+	const float PreviousHealth = CurrentHealth;
 	AcceptedHits.Add(Context.HitId);
 	CurrentHealth = FMath::Max(0.0f, CurrentHealth - Context.Damage);
+	const float RemainingHealth = CurrentHealth;
 	const bool bFatal = CurrentHealth <= 0.0f;
 	bHasDied = bFatal;
 	if (bFatal) OnDeathCommittedNative.Broadcast(GetOwner(), Context.SourceActor.Get());
 	if (bEndingPlay) return true;
+	if (UMothFeedbackSubsystem* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+	{
+		Feedback->ReportConfirmedEnemyHit(GetOwner(), Context, PreviousHealth - RemainingHealth,
+			RemainingHealth, bFatal, LifecycleGeneration);
+	}
+	if (bEndingPlay) return true;
 	const auto* VictimPawn = Cast<APawn>(GetOwner());
 	const auto* InstigatorPawn = Context.InstigatorPawn.Get();
-	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, Context.ImpactPoint, Context.ShotDirection,
-		IsValid(InstigatorPawn) && InstigatorPawn != VictimPawn && InstigatorPawn->IsPlayerControlled() && InstigatorPawn->IsLocallyControlled(), false);
-	if (VictimPawn && VictimPawn->IsPlayerControlled() && VictimPawn->IsLocallyControlled())
-		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Damage, Context.ImpactPoint, Context.ShotDirection, false, true);
+	// Feedback observers may reset the run without destroying this health owner.
+	// Finish the committed damage/death below, but never emit old effects in the new run.
+	if (Session && Session->IsGenerationCurrent(LifecycleGeneration))
+	{
+		UMothFeedbackSubsystem* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>();
+		const bool bLocalConfirmedHit = IsValid(InstigatorPawn) && InstigatorPawn != VictimPawn
+			&& InstigatorPawn->IsPlayerControlled() && InstigatorPawn->IsLocallyControlled();
+		Feedback->Emit(EMothFeedbackCue::Hit, Context.ImpactPoint, Context.ShotDirection,
+			bLocalConfirmedHit, false);
+		if (Session->IsGenerationCurrent(LifecycleGeneration)
+			&& VictimPawn && VictimPawn->IsPlayerControlled() && VictimPawn->IsLocallyControlled())
+		{
+			Feedback->Emit(EMothFeedbackCue::Damage, Context.ImpactPoint, Context.ShotDirection, false, true);
+		}
+	}
 	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
 	if (bFatal && !bEndingPlay)
 	{

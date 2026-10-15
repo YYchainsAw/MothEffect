@@ -5,10 +5,12 @@
 #include "Framework/MothWaveDirector.h"
 #include "Tutorial/MothTutorialSubsystem.h"
 #include "Types/PlayerActionState.h"
+#include "Types/EnemyHitFeedback.h"
 #include "MothHUDWidget.generated.h"
 
 class UTextBlock; class UProgressBar; class UMothTutorialConfig;
 class UButton; class UMothDeviceIcon; class AMothEffectCharacter; class ARifle; class UHealthComponent;
+class UMothFeedbackSubsystem; class APawn;
 
 UENUM(BlueprintType)
 enum class EMothUIPage : uint8 { Title, Gameplay, Tutorial, Pause, TutorialComplete, Victory, Defeat };
@@ -54,6 +56,18 @@ public:
 	UWidget* GetMenuFocusTarget() const;
 	bool IsMenuVisible() const;
 	void ShowInteractionNotice(const FText& Message);
+	/** One accepted enemy damage result for this HUD's player; a kill replaces a normal hit. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
+	void OnEnemyHitConfirmed(const FMothEnemyHitFeedback& Feedback);
+	/** Clear user-owned crosshair animations/timers when the player/session changes. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
+	void OnCrosshairFeedbackReset();
+	/** Pause or resume user-owned widget animations without resetting their progress. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
+	void OnCrosshairPauseChanged(bool bPaused);
+	/** Hide the base crosshair on menus; a final kill can finish over the victory page. */
+	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
+	void OnCrosshairPageChanged(EMothUIPage Page);
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual void NativePreConstruct() override;
@@ -69,11 +83,16 @@ private:
 	TWeakObjectPtr<ARifle> Rifle;
 	TWeakObjectPtr<AMothWaveDirector> Director;
 	TWeakObjectPtr<UMothTutorialSubsystem> Tutorial;
+	TWeakObjectPtr<UMothFeedbackSubsystem> CombatFeedback;
+	bool bCrosshairPageAnnounced = false;
+	bool bCrosshairPaused = false;
 	bool bControlsReady = false;
 	FSlateColor DefaultAimColor, DefaultCrosshairColor;
 protected:
 	/** Disable when replacing these two screen cues in your Widget Blueprint. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultCombatFeedback = true;
+	/** Disable for a texture hit marker while retaining the native damage edges. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultHitMarker = true;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Teaching") TSoftObjectPtr<UMothTutorialConfig> TutorialConfig;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy TitleCopy;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy PauseCopy;
@@ -121,6 +140,7 @@ private:
 	void BindButtons(bool bBind);
 	void BindSources();
 	void UnbindSources();
+	void HandleEnemyHitConfirmed(APawn* InstigatorPawn, const FMothEnemyHitFeedback& Feedback);
 	void RenderState();
 	UFUNCTION() void HandleHealth(float Current, float Max);
 	UFUNCTION() void HandleAmmo(int32 Current, int32 Max);

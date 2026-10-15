@@ -1,12 +1,14 @@
 # Moth Effect（飞蛾效应）：变更日志
 
-版本 v0.53 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.54 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+CHG058（2026-10-14）：按用户已导入贴图并自行制作蓝图的分工，补入敌人真实命中/击杀快照、世界内原生与蓝图通知、HUD 拥有玩家筛选和重置/暂停/页面事件；普通命中与致死共用 `bKilled` 分支。新增独立的原生命中 X 开关，保留受伤边框及已恢复的旧 UI 默认创建（`moth.UI.LegacyEnabled=1`）。新增九项 Automation 测试源码，覆盖实际伤害、去重、归属、世代重入、关闭/暂停与跨世界隔离；详见 [准星接入](Crosshair_Setup.md)。用户选择“先完成 C++ 和说明，我稍后自行编译”，本轮未编译、未运行 UE/Automation、未保存或修改 `.uasset`，不以旧构建/测试记录作为本轮通过证据；未提交、推送或创建 PR。
 
 CHG057（2026-10-14）：收尾提交 0e5370a / 4934627 修复延迟会话关闭立即取消、落地关闭模拟顺序及无碰撞道具的重叠掉落/拾取；新增六项 Foundation 并适配既有专项、保存蓝图与真实主地图时序。隔离 UE 5.8 构建通过；首轮 Foundation 5 成功/1 失败、首轮全量 111 成功/3 失败如实保留，最终 114 Editor 与 12 D3D12/音频主地图 Game 全部通过。Editor errors=0 / warnings=50（DesignerProbe），Game errors=0 / warnings=232（导航/第三方 Rig/旧输入/动画/夹具配置/Notify）。180 件源码/配置与 4934627 一致，用户并行玩家/控制器/UI/Build 改动未纳入。后续确认编辑器已关闭，原工程常规构建56.79秒Succeeded，新DLL六项Foundation复测通过，包含用户当前未提交控制器源码但未纳入本轮提交。见 [验证报告](../06_Test_Doc/Device_Refactor_Report_2026-10-14.md) 与原始证据；硬件 PIE、尺寸/手感调优与独立包待验收，四项 Issue 保持 Open / In Progress，未推送/创建 PR。
 
 CHG056（2026-10-14）：用户开始道具基础重构，使用当前 `refactor` 分支、逐项本地提交。新建 [#48](https://github.com/YYchainsAw/MothEffect/issues/48) 地面固定/尺寸配置、[#49](https://github.com/YYchainsAw/MothEffect/issues/49) D03 水平入射投影、[#50](https://github.com/YYchainsAw/MothEffect/issues/50) 三机关共用延迟及 [#51](https://github.com/YYchainsAw/MothEffect/issues/51) 爆炸激活；负责人 YYchainsAw、既有标签、M5 和 Project / In Progress 均已回读，四项保持 Open。落地实体根停止模拟/NoCollision，独立 ShotCollider 保留查询；显式推力/弹射可再次起飞，落地重新固定。D03 锁世界 XY 投影，竖直命中回退 +X；共用延迟后才起效果，D03 原首发延迟及工作寿命继续从效果起动计。D02 开放无遮挡 Dormant 的延迟连锁，Held/Active 保护及独立伤害/激活 HitId 保留。新增 DEC41–DEC44、参数 v0.19 与 [重构接入](Device_Refactor_Setup.md)，同步现行规则/TDD/计划/入口；本轮 UE 编译、原生执行、当前 PIE 与独立包先记未运行，不把此前测试结果移作新规则验收。未创建 PR、推送或关闭任务，用户玩家资产与 Build/ 不纳入本轮。
 
-本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.48，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
+本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.49，开发状态见 [开发计划](Development_Plan.md)，修改顺序见 [文档维护流程](Documentation_Workflow.md)。
 
 ## 1. 变更记录
 

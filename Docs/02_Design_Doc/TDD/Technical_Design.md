@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.47 · 2026-10-14 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.48 · 2026-10-14 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-14 贴图准星接口：`UHealthComponent` 在真实伤害与致死状态提交后，经 `UMothFeedbackSubsystem` 发出 `FMothEnemyHitFeedback`，快照包含命中 ID、目标 ID、实际伤害、剩余生命、致死标志和世界命中位置，不持有敌人引用。仅本地玩家归属的敌人伤害有效，原生死亡提交仍先于表现通知；回调返回复核生命周期世代，防止旧命中进入重置后的新会话。`UMothHUDWidget` 按拥有玩家筛选并向蓝图提供命中、重置、暂停和页面事件；单独关闭原生命中 X 时仍可保留受伤边框。表现由用户制作，详见 [自定义准星接入](../../05_Development_Guide/Crosshair_Setup.md)。本轮源码及九项专项测试已写入，按用户选择未编译、未运行 UE/Automation、未修改资产。
 
 2026-10-14 道具基础重构：`refactor` 本地提交 `f6d6b2a`（Refs #48/#49/#50）与 `f91db81`（Refs #51/#48）接入地面固定/独立尺寸、D03 水平入射投影、共用激活延迟及 D02 爆炸激活。现行规则见 [道具与交互规则](../GDD/Device_Interaction_Rules.md)，字段和迁移见 [重构接入](../../05_Development_Guide/Device_Refactor_Setup.md)。代码收尾至 4934627，隔离 UE 构建及 114 Editor / 12 主地图 Game 回归通过；当前硬件 PIE 和独立包仍待验收，见 [本轮报告](../../06_Test_Doc/Device_Refactor_Report_2026-10-14.md)。旧记录保持当时验证范围。
 

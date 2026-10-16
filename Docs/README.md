@@ -1,6 +1,16 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.49 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.57 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-16 敌人外观统一为 Drongo：保留三类敌人、固定掉落及当前射击 AI，项目动画蓝图复用原包移动/跳跃/上半身开火，移除演示玩家依赖并接入死亡动画。资产、验证与重载步骤见 [Drongo_Enemy_Setup](05_Development_Guide/Drongo_Enemy_Setup.md)。
+
+2026-10-16 选定资源导入：Slate / Kenney 的 3,234 张贴图与 Wraith 已导入；用户后补的 Niagara Examples Pack、Drongo 也已核对，Minions 按用户要求暂缓。两包 2,582 件原文件经隔离检查保持 SHA 一致，Drongo 两件动画蓝图内存编译通过，15 个 Niagara 系统加载通过。导入阶段未改 HUD、玩家或敌人外观；后续 Drongo 接入见上段。具体位置、原包警告与验证边界见 [Asset_Import_Setup](05_Development_Guide/Asset_Import_Setup.md)，选型依据见 [资源清单](05_Development_Guide/Asset_Shortlist_2026-10-16.md)。
+
+2026-10-16 新增 [本期开发者日志](05_Development_Guide/Developer_Log_2026-10-16.md)：整理10月14日至16日的道具重构、SoulCity战场和正式准星进展，记录击杀反馈、实际战斗、资源与性能风险，并列出下一期UI收尾、整局试玩及Windows候选包计划。日志引用已有验证，不新增玩法通过结论。
+
+2026-10-15 SoulCity紧凑街区：`L_Arena_SoulCity` 在原多层战场内增加七栋封闭建筑，形成街巷、转角和高台遮挡；四面连续外围楼群配合城市远景卡片收住视野。地图打开与编辑见 [SoulCity_Arena_Setup](05_Development_Guide/SoulCity_Arena_Setup.md)，实际碰撞、导航、三波与八视角结果见 [报告](06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md)。原HUD和玩家资产保留，手动战斗、实际AI追击与性能待验收。
+
+2026-10-15 Soul City 场内原生资产替换：`L_Arena_SoulCity` 保留84×72m、-2.4/0/3.6/7.2m四层与六条连接，场内主体改为原生通风设备、法兰管材、金属墙、完整楼板、台阶与护栏。17组掩体的位置保留，设备/管材/护栏碰撞按实际网格匹配；外观沿用原材质，独立检查主体可见方块替换。打开见 [SoulCity_Arena_Setup](05_Development_Guide/SoulCity_Arena_Setup.md)，资产/20导航/21支持/脚本三波及五视角证据见 [报告](06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md)。用户HUD和原地图保留，手动战斗与性能待验收。
 
 2026-10-14 贴图准星：用户已导入 `T_CH001`、`T_HM_002`、`T_KI_001`，C++ 已补入敌人实际命中/击杀快照和 HUD 蓝图通知，旧 HUD 与菜单继续默认创建。蓝图图层、动画及接线由用户制作，步骤见 [自定义准星接入](05_Development_Guide/Crosshair_Setup.md)。按用户选择先交付源码和说明，完整编译、九项新增专项执行及 PIE 仍待进行，未修改用户资产；此前道具重构的验证范围保持原记录。
 
@@ -93,6 +103,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
+| 05_Development_Guide/ | [SoulCity_Arena_Setup.md](05_Development_Guide/SoulCity_Arena_Setup.md) | Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围 |
 | 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 自定义准星、敌人命中/击杀事件、三图层 UMG 动画与暂停/重开接入；待用户编译和制作蓝图 |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |

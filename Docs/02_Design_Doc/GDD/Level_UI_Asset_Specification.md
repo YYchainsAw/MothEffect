@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：关卡、界面与资源规格
 
-游戏名：Moth Effect（飞蛾效应）｜v0.15｜2026-10-12。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见[JSON源](../../../SourceArt/Levels/T17_Arena_Layout.json)。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见[T17报告](../../06_Test_Doc/T17_Report_2026-10-12.md)，验收见[Arena_Setup](../../05_Development_Guide/Arena_Setup.md)。
+游戏名：Moth Effect（飞蛾效应）｜v0.20｜2026-10-16。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为**建议基线，待原型验证**。交互以 [道具与交互规则](Device_Interaction_Rules.md) 为权威，战斗与机关数值以 [玩法参数基线](Gameplay_Parameters.json) 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见[JSON源](../../../SourceArt/Levels/T17_Arena_Layout.json)。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见[T17报告](../../06_Test_Doc/T17_Report_2026-10-12.md)，验收见[Arena_Setup](../../05_Development_Guide/Arena_Setup.md)。
+
+2026-10-16 资源选定为 Colorosse Slate UI、Kenney Input Prompts 与 Niagara Examples Pack；相关资源及 Wraith / Drongo 均已导入，Minions 暂缓。用户随后决定首版三类敌人统一使用 Drongo，沿用现有射击 AI 与青蓝/橙/紫固定掉落，项目动画蓝图接入移动、开火与死亡；具体变更和验证见 [Drongo 接入](../../05_Development_Guide/Drongo_Enemy_Setup.md)。Slate UI 与 Niagara 尚未绑定运行时，位置、许可和原包验证见 [导入说明](../../05_Development_Guide/Asset_Import_Setup.md)。
+
+2026-10-15 独立 SoulCity 工业街区 `L_Arena_SoulCity` 为84×72m、-2.4/0/3.6/7.2m四层战场，六条登高连接与17组原生通风机/管材掩体。v4增加七栋场内封闭建筑形成紧凑街巷，外围连续楼群和城市远景卡收住角色与高台视野；功能碰撞共213件（原202、建筑7、外围4）。沿用现有玩家、波次和UI，原图与默认入口保留。实际检查与待验收范围见 [SoulCity报告](../../06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md)，打开与修改见 [接入说明](../../05_Development_Guide/SoulCity_Arena_Setup.md)。下文60×50m方案用于原图/历史对照，新图以 `SoulCity_Combat_Layout.json` 为准。
 
 2026-10-13 T20已生成并接入三原创外壳、掩体和符文灯饰，共17件材质/配置/网格资产；主场地九块掩体保留原碰撞/导航。外观与UI均作为用户后续改造基线，调节见[Prototype_Art_Setup](../../05_Development_Guide/Prototype_Art_Setup.md)，来源见[制作清单](../../../SourceArt/PrototypeArt/PrototypeArtManifest.json)。自动化/图形证据见[T20报告](../../06_Test_Doc/T20_Report_2026-10-13.md)，五组当前用户验收、外部依赖恢复和独立包未完成。
 
@@ -14,7 +18,7 @@
 | D01 弹射装置 | 青蓝三角棱柱、竖直符文，激活地脉机械柱 | 地面落点与向上箭头清楚，净空后实体阶段变化可见 |
 | D02 爆炸装置 | 橙色球形晶核、环形封印破裂 | 爆心、危险范围和推力方向可理解 |
 | D03 发射装置 | 紫色长方咒印枪管、箭头符文 | 锁定世界方向可见，飞行机身与直线弹道区分 |
-| 敌人 | 模板角色加魔导构装背包 | 一套 AI，三种背包预告固定掉落 |
+| 敌人 | Drongo 加机关类型背包/标记 | 一套 AI，青蓝/橙/紫预告三类固定掉落 |
 
 灰盒阶段只需模板人物、基础几何体、一套统一材质、三种自发光色和少量反馈。魔法朋克风格不增加新技能、召唤、蛾群 AI 或飞行系统；资源制作仍按原 P0/P1 优先级执行。
 

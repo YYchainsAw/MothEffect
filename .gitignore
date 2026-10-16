@@ -11,6 +11,7 @@
 /Plugins/**/DerivedDataCache/
 
 # Local IDE state and engine-generated solutions.
+/scripts/__pycache__/
 /.vs/
 /.idea/
 /.vscode/

@@ -24,11 +24,19 @@ struct FMothHUDState
 	UPROPERTY(BlueprintReadOnly) int32 Ammo = 0;
 	UPROPERTY(BlueprintReadOnly) int32 MagazineSize = 0;
 	UPROPERTY(BlueprintReadOnly) bool bReloading = false;
+	UPROPERTY(BlueprintReadOnly) float ReloadProgress = 0;
 	UPROPERTY(BlueprintReadOnly) bool bHeld = false;
 	UPROPERTY(BlueprintReadOnly) EDeviceKind HeldKind = EDeviceKind::Launcher;
 	UPROPERTY(BlueprintReadOnly) int32 Wave = 0;
 	UPROPERTY(BlueprintReadOnly) int32 Alive = 0;
 	UPROPERTY(BlueprintReadOnly) int32 Pending = 0;
+	UPROPERTY(BlueprintReadOnly) float PreparationRemaining = 0;
+	UPROPERTY(BlueprintReadOnly) bool bAimingAtDevice = false;
+	UPROPERTY(BlueprintReadOnly) bool bCanPickup = false;
+	UPROPERTY(BlueprintReadOnly) EDeviceKind AimedKind = EDeviceKind::Launcher;
+	UPROPERTY(BlueprintReadOnly) FText InteractionPrompt;
+	UPROPERTY(BlueprintReadOnly) FText Notice;
+	UPROPERTY(BlueprintReadOnly) float DamageEdgeAlpha = 0;
 	UPROPERTY(BlueprintReadOnly) EMothUIPage Page = EMothUIPage::Title;
 	UPROPERTY(BlueprintReadOnly) EMothTutorialStep Tutorial = EMothTutorialStep::Inactive;
 };
@@ -69,13 +77,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
 	void OnCrosshairPageChanged(EMothUIPage Page);
 protected:
-	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	virtual void NativeTick(const FGeometry& Geometry, float DeltaSeconds) override;
-	virtual int32 NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& CullingRect,
-		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bParentEnabled) const override;
 	virtual FReply NativeOnKeyDown(const FGeometry& Geometry, const FKeyEvent& Event) override;
 private:
 	FMothHUDState State;
@@ -86,13 +91,10 @@ private:
 	TWeakObjectPtr<UMothFeedbackSubsystem> CombatFeedback;
 	bool bCrosshairPageAnnounced = false;
 	bool bCrosshairPaused = false;
-	bool bControlsReady = false;
-	FSlateColor DefaultAimColor, DefaultCrosshairColor;
 protected:
-	/** Disable when replacing these two screen cues in your Widget Blueprint. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultCombatFeedback = true;
-	/** Disable for a texture hit marker while retaining the native damage edges. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback") bool bDrawDefaultHitMarker = true;
+	/** Serialized compatibility only. All combat visuals belong to the Designer. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback", meta=(DeprecatedProperty, DeprecationMessage="Use Designer feedback widgets.")) bool bDrawDefaultCombatFeedback = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Feedback", meta=(DeprecatedProperty, DeprecationMessage="Use your crosshair Widget Blueprint.")) bool bDrawDefaultHitMarker = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Teaching") TSoftObjectPtr<UMothTutorialConfig> TutorialConfig;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy TitleCopy;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Moth|Menu Copy") FMothMenuCopy PauseCopy;
@@ -112,10 +114,15 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> AmmoText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UProgressBar> ReloadBar;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> WaveText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> WaveDetailText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> HeldText;
-	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UMothDeviceIcon> HeldIcon;
-	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> AimText;
-	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> CrosshairText;
+	/** Optional legacy fields retained for existing Blueprint graph references; never updated natively. */
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UMothDeviceIcon> HeldIcon;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> AimText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> CrosshairText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> InteractionText;
+	/** Designer supplies the texture, tint and position; native state supplies only its opacity. */
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> DamageOverlay;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> TutorialText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> NoticeText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UWidget> NoticePanel;
@@ -135,12 +142,11 @@ private:
 	EMothUIPage RenderedPage = EMothUIPage::Defeat;
 	bool bMenuRendered = false;
 	bool bRendering = false;
-	void BuildLayout();
-	void ResolveControls();
 	void BindButtons(bool bBind);
 	void BindSources();
 	void UnbindSources();
 	void HandleEnemyHitConfirmed(APawn* InstigatorPawn, const FMothEnemyHitFeedback& Feedback);
+	void RefreshInteractionState();
 	void RenderState();
 	UFUNCTION() void HandleHealth(float Current, float Max);
 	UFUNCTION() void HandleAmmo(int32 Current, int32 Max);

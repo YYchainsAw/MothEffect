@@ -15,6 +15,8 @@ class UTextRenderComponent;
 class UArrowComponent;
 class AEnemyBase;
 class ADeviceBase;
+class UWidgetComponent;
+class UMothEnemyHealthWidget;
 
 UENUM(BlueprintType)
 enum class EEnemyCombatPhase : uint8 { Idle, Pursuing, Telegraphing, Cooldown, Disabled, Dead };
@@ -88,6 +90,13 @@ protected:
 	TObjectPtr<UStaticMeshComponent> BackpackMesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UTextRenderComponent> DropHintText;
+	/** Screen-space content is authored in WBP_EnemyHealth, never built natively. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UWidgetComponent> EnemyHealthWidget;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|UI")
+	TSubclassOf<UMothEnemyHealthWidget> HealthWidgetClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|UI", meta=(ClampMin="0.0", Units="cm"))
+	float HealthWidgetMaxDistanceCm = 2500.0f;
 	/** Null keeps the T14 base shooter drop-free. Three child BPs provide fixed classes. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|Drop")
 	TSubclassOf<ADeviceBase> DropDeviceClass;
@@ -145,6 +154,9 @@ private:
 	FVector AimPoint() const;
 	void LogEvent(const TCHAR* Event) const;
 	void RefreshDropAppearance();
+	void InitializeEnemyHealthWidget();
+	void UpdateEnemyHealthWidgetVisibility();
+	void ReleaseEnemyHealthWidget();
 	void TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation);
 	bool FindDropTransform(const ADeviceBase* Defaults, const FVector& DeathLocation, FTransform& OutTransform) const;
 	TWeakObjectPtr<ADeviceBase> DroppedDevice;
@@ -172,4 +184,5 @@ private:
 	bool bGameplayEnabled = true;
 	bool bDeathProcessed = false;
 	bool bEndingPlay = false;
+	double NextHealthWidgetVisibilityAt = 0.0;
 };

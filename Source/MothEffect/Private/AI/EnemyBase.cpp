@@ -9,14 +9,19 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "Framework/MothEffectPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "MothEffect.h"
 #include "NavigationSystem.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Types/MothCollisionChannels.h"
+#include "UI/MothEnemyHealthWidget.h"
+#include "UI/MothHUDWidget.h"
 #include "UObject/ConstructorHelpers.h"
 
 AEnemyBase::AEnemyBase()
@@ -74,6 +79,20 @@ AEnemyBase::AEnemyBase()
 	DropHintText->SetWorldSize(22);
 	DropHintText->SetVisibility(false);
 	DropHintText->SetCanEverAffectNavigation(false);
+	// Retain legacy components for existing BP references; Designer widgets own UI.
+	BodyMesh->SetHiddenInGame(true);
+	TelegraphText->SetHiddenInGame(true);
+	DropHintText->SetHiddenInGame(true);
+	EnemyHealthWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthWidget"));
+	EnemyHealthWidget->SetupAttachment(GetCapsuleComponent());
+	EnemyHealthWidget->SetRelativeLocation(FVector(0, 0, 145));
+	EnemyHealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	EnemyHealthWidget->SetDrawSize(FVector2D(160, 30));
+	EnemyHealthWidget->SetPivot(FVector2D(0.5f, 1.0f));
+	EnemyHealthWidget->SetDrawAtDesiredSize(false);
+	EnemyHealthWidget->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	EnemyHealthWidget->SetCanEverAffectNavigation(false);
+	EnemyHealthWidget->SetHiddenInGame(true);
 }
 
 void AEnemyBase::PostInitializeComponents()
@@ -93,7 +112,76 @@ void AEnemyBase::BeginPlay()
 	LastProgressAt = GetWorld()->GetTimeSeconds();
 	NextFireAt = LastProgressAt + FMath::Max(0.01f, TelegraphSeconds);
 	RefreshDropAppearance();
+	// Old BP defaults can override constructor visibility, so enforce this per instance.
+	BodyMesh->SetHiddenInGame(true);
+	TelegraphText->SetHiddenInGame(true);
+	DropHintText->SetHiddenInGame(true);
+	InitializeEnemyHealthWidget();
+	UpdateEnemyHealthWidgetVisibility();
 	LogEvent(TEXT("begin"));
+}
+
+void AEnemyBase::InitializeEnemyHealthWidget()
+{
+	if (!EnemyHealthWidget || !GetWorld() || !GetWorld()->IsGameWorld() || GetNetMode() == NM_DedicatedServer) return;
+	if (HealthWidgetClass && EnemyHealthWidget->GetWidgetClass() != HealthWidgetClass)
+		EnemyHealthWidget->SetWidgetClass(HealthWidgetClass);
+	EnemyHealthWidget->InitWidget();
+	if (auto* Widget = Cast<UMothEnemyHealthWidget>(EnemyHealthWidget->GetUserWidgetObject()))
+		Widget->SetObservedEnemy(this);
+}
+
+void AEnemyBase::UpdateEnemyHealthWidgetVisibility()
+{
+	if (!EnemyHealthWidget || !GetWorld()) return;
+	// Pause freezes the last presentation; it does not tear down and rebuild bindings.
+	if (GetWorld()->IsPaused()) return;
+	const auto Hide = [this]() { EnemyHealthWidget->SetHiddenInGame(true); };
+	const auto* Session = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (bEndingPlay || bDeathProcessed || !bGameplayEnabled || !HealthComponent->IsAlive()
+		|| (Session && !Session->IsGameplayEnabled())) { Hide(); return; }
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	if (!PlayerController || !PlayerController->IsLocalController() || !PlayerController->GetLocalPlayer()) { Hide(); return; }
+	if (const auto* MothController = Cast<AMothEffectPlayerController>(PlayerController))
+	{
+		const UMothHUDWidget* HUD = MothController->GetGameplayUI();
+		if (!HUD) { Hide(); return; }
+		const EMothUIPage Page = HUD->GetHUDState().Page;
+		if (Page == EMothUIPage::Pause) return;
+		if (Page != EMothUIPage::Gameplay && Page != EMothUIPage::Tutorial) { Hide(); return; }
+	}
+	EnemyHealthWidget->SetOwnerPlayer(PlayerController->GetLocalPlayer());
+	if (!EnemyHealthWidget->GetUserWidgetObject()) InitializeEnemyHealthWidget();
+	auto* Widget = Cast<UMothEnemyHealthWidget>(EnemyHealthWidget->GetUserWidgetObject());
+	if (!Widget) { Hide(); return; }
+	if (Widget->GetObservedEnemy() != this) Widget->SetObservedEnemy(this);
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	const FVector Location = EnemyHealthWidget->GetComponentLocation();
+	if (HealthWidgetMaxDistanceCm <= 0 || FVector::DistSquared(CameraLocation, Location) > FMath::Square(HealthWidgetMaxDistanceCm))
+	{ Hide(); return; }
+	FVector2D Screen;
+	int32 Width = 0, Height = 0;
+	PlayerController->GetViewportSize(Width, Height);
+	if (Width <= 0 || Height <= 0 || !PlayerController->ProjectWorldLocationToScreen(Location, Screen, true)
+		|| Screen.X < 80 || Screen.X > Width - 80 || Screen.Y < 30 || Screen.Y > Height)
+	{ Hide(); return; }
+	// Screen-space widgets otherwise reveal enemies through every wall.
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(MothEnemyHealthSight), true, this);
+	if (PlayerController->GetPawn()) Params.AddIgnoredActor(PlayerController->GetPawn());
+	FHitResult Hit;
+	const bool bBlocked = GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, GetPawnViewLocation(), ECC_Visibility, Params);
+	EnemyHealthWidget->SetHiddenInGame(bBlocked);
+}
+
+void AEnemyBase::ReleaseEnemyHealthWidget()
+{
+	if (!EnemyHealthWidget) return;
+	EnemyHealthWidget->SetHiddenInGame(true);
+	if (auto* Widget = Cast<UMothEnemyHealthWidget>(EnemyHealthWidget->GetUserWidgetObject()))
+		Widget->ClearObservedEnemy();
+	EnemyHealthWidget->SetWidget(nullptr);
 }
 
 bool AEnemyBase::IsCombatEnabled() const
@@ -146,8 +234,8 @@ bool AEnemyBase::HasTargetSight() const
 
 void AEnemyBase::SetTelegraph(bool bVisible)
 {
-	TelegraphText->SetVisibility(bVisible);
-	AimArrow->SetHiddenInGame(!bVisible);
+	TelegraphText->SetHiddenInGame(true);
+	AimArrow->SetHiddenInGame(true);
 	if (bTelegraphVisible == bVisible) return;
 	bTelegraphVisible = bVisible;
 	LogEvent(bVisible ? TEXT("telegraph") : TEXT("telegraph_end"));
@@ -176,11 +264,17 @@ void AEnemyBase::SetGameplayEnabled(bool bEnabled)
 	LastProgressAt = GetWorld()->GetTimeSeconds();
 	ProgressLocation = GetActorLocation();
 	SetTelegraph(false);
+	UpdateEnemyHealthWidgetVisibility();
 }
 
 void AEnemyBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	if (GetWorld() && GetWorld()->GetTimeSeconds() >= NextHealthWidgetVisibilityAt)
+	{
+		NextHealthWidgetVisibilityAt = GetWorld()->GetTimeSeconds() + 0.1;
+		UpdateEnemyHealthWidgetVisibility();
+	}
 	if (!IsCombatEnabled()) return;
 	if (DropDeviceClass && CombatTarget.IsValid()) DropHintText->SetWorldRotation((AimPoint() - DropHintText->GetComponentLocation()).Rotation());
 	if (!IsUsableTarget(CombatTarget.Get()))
@@ -311,6 +405,7 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 {
 	if (Victim != this || bDeathProcessed || bEndingPlay) return;
 	bDeathProcessed = true;
+	ReleaseEnemyHealthWidget();
 	// Snapshot before any presentation/death observer can reset the world or destroy us.
 	const auto FixedDropClass = DropDeviceClass;
 	const EDeviceKind FixedDropKind = DropKind;
@@ -328,7 +423,7 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetTelegraph(false);
 	TelegraphText->SetText(FText::FromString(TEXT("DEAD")));
-	TelegraphText->SetVisibility(true);
+	TelegraphText->SetHiddenInGame(true);
 	SetLifeSpan(FMath::Max(0.01f, DeathVisualSeconds));
 	LogEvent(TEXT("death"));
 	if (!bEndingPlay && !IsActorBeingDestroyed()) OnEnemyDiedNative.Broadcast(this, Source);
@@ -339,6 +434,7 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 void AEnemyBase::EndPlay(const EEndPlayReason::Type Reason)
 {
 	bEndingPlay = true;
+	ReleaseEnemyHealthWidget();
 	bGameplayEnabled = false;
 	++CombatGeneration;
 	CombatPhase = bDeathProcessed ? EEnemyCombatPhase::Dead : EEnemyCombatPhase::Disabled;

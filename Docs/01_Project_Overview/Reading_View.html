@@ -1,7 +1,12 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.49</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.57</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.49<br>2026-10-14 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-14 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="579953cdaa6bcf95a85fda38b1e4183fc0d8eddb860203e3f5319c8a6d317a5e"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p dir="auto">版本 v0.49 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.57<br>2026-10-16 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-devlog-20261016">10/16 开发者日志</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-drongo-enemy">Drongo 敌人模型与动画接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-asset-import">选定第三方资源导入</a><a href="#doc-asset-shortlist">敌人、UI 与特效资源选型</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-soulcity-arena">Soul City 独立工业竞技场</a><a href="#doc-soulcity-report">Soul City 竞技场搭建与验证</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-16 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="5d06fcd10e658f0ff49111b56b9d7eff673e681ad26ef17361e8e7bdf9adae3b"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p dir="auto">版本 v0.57 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">2026-10-16 敌人外观统一为 Drongo：保留三类敌人、固定掉落及当前射击 AI，项目动画蓝图复用原包移动/跳跃/上半身开火，移除演示玩家依赖并接入死亡动画。资产、验证与重载步骤见 <a href="#doc-drongo-enemy">Drongo_Enemy_Setup</a>。</p>
+<p dir="auto">2026-10-16 选定资源导入：Slate / Kenney 的 3,234 张贴图与 Wraith 已导入；用户后补的 Niagara Examples Pack、Drongo 也已核对，Minions 按用户要求暂缓。两包 2,582 件原文件经隔离检查保持 SHA 一致，Drongo 两件动画蓝图内存编译通过，15 个 Niagara 系统加载通过。导入阶段未改 HUD、玩家或敌人外观；后续 Drongo 接入见上段。具体位置、原包警告与验证边界见 <a href="#doc-asset-import">Asset_Import_Setup</a>，选型依据见 <a href="#doc-asset-shortlist">资源清单</a>。</p>
+<p dir="auto">2026-10-16 新增 <a href="#doc-devlog-20261016">本期开发者日志</a>：整理10月14日至16日的道具重构、SoulCity战场和正式准星进展，记录击杀反馈、实际战斗、资源与性能风险，并列出下一期UI收尾、整局试玩及Windows候选包计划。日志引用已有验证，不新增玩法通过结论。</p>
+<p dir="auto">2026-10-15 SoulCity紧凑街区：<code class="notranslate">L_Arena_SoulCity</code> 在原多层战场内增加七栋封闭建筑，形成街巷、转角和高台遮挡；四面连续外围楼群配合城市远景卡片收住视野。地图打开与编辑见 <a href="#doc-soulcity-arena">SoulCity_Arena_Setup</a>，实际碰撞、导航、三波与八视角结果见 <a href="#doc-soulcity-report">报告</a>。原HUD和玩家资产保留，手动战斗、实际AI追击与性能待验收。</p>
+<p dir="auto">2026-10-15 Soul City 场内原生资产替换：<code class="notranslate">L_Arena_SoulCity</code> 保留84×72m、-2.4/0/3.6/7.2m四层与六条连接，场内主体改为原生通风设备、法兰管材、金属墙、完整楼板、台阶与护栏。17组掩体的位置保留，设备/管材/护栏碰撞按实际网格匹配；外观沿用原材质，独立检查主体可见方块替换。打开见 <a href="#doc-soulcity-arena">SoulCity_Arena_Setup</a>，资产/20导航/21支持/脚本三波及五视角证据见 <a href="#doc-soulcity-report">报告</a>。用户HUD和原地图保留，手动战斗与性能待验收。</p>
 <p dir="auto">2026-10-14 贴图准星：用户已导入 <code class="notranslate">T_CH001</code>、<code class="notranslate">T_HM_002</code>、<code class="notranslate">T_KI_001</code>，C++ 已补入敌人实际命中/击杀快照和 HUD 蓝图通知，旧 HUD 与菜单继续默认创建。蓝图图层、动画及接线由用户制作，步骤见 <a href="#doc-crosshair">自定义准星接入</a>。按用户选择先交付源码和说明，完整编译、九项新增专项执行及 PIE 仍待进行，未修改用户资产；此前道具重构的验证范围保持原记录。</p>
 <p dir="auto">2026-10-14 当前进入道具基础重构，入口为 <a href="#doc-device-refactor">Device_Refactor_Setup</a>：地面固定且保留查询、显式推力/弹射再起飞、D03 锁入射 XY 水平方向、共用激活延迟及 D02 爆炸触发无遮挡 Dormant。规则 v0.12、参数 v0.19 与 DEC41–DEC44 已同步；当前 <code class="notranslate">refactor</code> 分支，代码分段本地提交 <code class="notranslate">f6d6b2a</code> / <code class="notranslate">f91db81</code>。新建 <a href="https://github.com/YYchainsAw/MothEffect/issues/48" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/48/hovercard">#48</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/49" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/49/hovercard">#49</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/50" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/50/hovercard">#50</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/51" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/51/hovercard">#51</a>，均 Open / In Progress、YYchainsAw / M5，元数据已回读。收尾提交 0e5370a / 4934627，隔离 UE 构建、114 Editor / 12 主地图 Game 回归通过，见 <a href="#doc-device-refactor-report">验证报告</a>；硬件 PIE、手感和独立包仍待验收；历史记录保留原验证范围，本轮未推送或创建 PR。</p>
 <p dir="auto">原工程补充验证：确认编辑器关闭后，Editor 常规构建 56.79 秒 Succeeded，新 DLL 的六项 Foundation 全通过；重新打开项目即可加载。该构建包含当前用户未提交控制器代码，未将这些改动纳入本轮提交。</p>
@@ -185,6 +190,11 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <td>05_Development_Guide/</td>
 <td><a href="#doc-arena">Arena_Setup.md</a></td>
 <td>T17主竞技场、保存导航及四组图形PIE清单</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-soulcity-arena">SoulCity_Arena_Setup.md</a></td>
+<td>Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围</td>
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
@@ -945,8 +955,10 @@ Dormant 过期 → Spent → Destroyed
 <li><a href="#doc-level">关卡、界面与资源规格</a>：获取或掉落方式、外观辨识、操作与方向提示。</li>
 <li><a href="#doc-parameters">玩法参数基线</a>、<a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>：原型数值、实际工时与可观察验收项。</li>
 </ol>
-<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="913dfc8779ed62934aed792b850d7a4460dc2950aa98b9a37303b71d455107ce"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
-<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.15｜2026-10-12。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见<a href="../../SourceArt/Levels/T17_Arena_Layout.json">JSON源</a>。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见<a href="#doc-t17-report">T17报告</a>，验收见<a href="#doc-arena">Arena_Setup</a>。</p>
+<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="97a5fb74cec6e62d5705d64037e658211df9a541d343920e187ee66db3ebcd21"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
+<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.20｜2026-10-16。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见<a href="../../SourceArt/Levels/T17_Arena_Layout.json">JSON源</a>。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见<a href="#doc-t17-report">T17报告</a>，验收见<a href="#doc-arena">Arena_Setup</a>。</p>
+<p dir="auto">2026-10-16 资源选定为 Colorosse Slate UI、Kenney Input Prompts 与 Niagara Examples Pack；相关资源及 Wraith / Drongo 均已导入，Minions 暂缓。用户随后决定首版三类敌人统一使用 Drongo，沿用现有射击 AI 与青蓝/橙/紫固定掉落，项目动画蓝图接入移动、开火与死亡；具体变更和验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>。Slate UI 与 Niagara 尚未绑定运行时，位置、许可和原包验证见 <a href="#doc-asset-import">导入说明</a>。</p>
+<p dir="auto">2026-10-15 独立 SoulCity 工业街区 <code class="notranslate">L_Arena_SoulCity</code> 为84×72m、-2.4/0/3.6/7.2m四层战场，六条登高连接与17组原生通风机/管材掩体。v4增加七栋场内封闭建筑形成紧凑街巷，外围连续楼群和城市远景卡收住角色与高台视野；功能碰撞共213件（原202、建筑7、外围4）。沿用现有玩家、波次和UI，原图与默认入口保留。实际检查与待验收范围见 <a href="#doc-soulcity-report">SoulCity报告</a>，打开与修改见 <a href="#doc-soulcity-arena">接入说明</a>。下文60×50m方案用于原图/历史对照，新图以 <code class="notranslate">SoulCity_Combat_Layout.json</code> 为准。</p>
 <p dir="auto">2026-10-13 T20已生成并接入三原创外壳、掩体和符文灯饰，共17件材质/配置/网格资产；主场地九块掩体保留原碰撞/导航。外观与UI均作为用户后续改造基线，调节见<a href="#doc-prototype-art">Prototype_Art_Setup</a>，来源见<a href="../../SourceArt/PrototypeArt/PrototypeArtManifest.json">制作清单</a>。自动化/图形证据见<a href="#doc-t20-report">T20报告</a>，五组当前用户验收、外部依赖恢复和独立包未完成。</p>
 <span id="doc-level-section"></span><h2 id="doc-level-0-魔法朋克表现方向">0. 魔法朋克表现方向</h2>
 <p dir="auto">建议场景为灵光工坊：粗糙金属框架、铜色连接件、管线与发光符文并置，魔法能量具有可见传导方向。蛾翼轮廓用于徽记、机关外壳和界面图标，光点沿弹道传递，机关接续点亮，呼应名称与连锁主题。具体世界观、色板和道具称呼尚未冻结。</p>
@@ -981,8 +993,8 @@ Dormant 过期 → Spent → Destroyed
 </tr>
 <tr>
 <td>敌人</td>
-<td>模板角色加魔导构装背包</td>
-<td>一套 AI，三种背包预告固定掉落</td>
+<td>Drongo 加机关类型背包/标记</td>
+<td>一套 AI，青蓝/橙/紫预告三类固定掉落</td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
@@ -3084,7 +3096,77 @@ Reloading --拾取成功，取消未完成换弹--&gt; Carrying
 <p dir="auto">单篇粗估 0.5–1 小时，避免额外拍摄一套素材。未完成门槛时，日志写真实问题与尝试，不能为了日期写成已成功。本文档只安排日志，不对外发布任何内容。</p>
 <span id="doc-plan-section-7"></span><h2 id="doc-plan-8-每日结束时保存的最小记录">8. 每日结束时保存的最小记录</h2>
 <p dir="auto">每天保存：当日构建/提交标识、完成任务、未通过测试、最重要的一条发现、次日第一个任务。规则发生变化时按 <a href="#doc-workflow">文档维护与变更流程</a> 在 <a href="#doc-decisions">设计决策</a> 与 <a href="#doc-changelog">变更日志</a> 中记录原因、关联任务/测试，并让 <a href="#doc-rules">道具与交互规则</a>、<a href="#doc-technical">技术设计</a>、<a href="#doc-level">关卡、界面与资源规格</a>、<a href="#doc-parameters">玩法参数基线</a> 保持一致。重复出现的未知问题进入缺陷记录，不另写一套与代码脱节的长文档。</p>
-<p dir="auto">当前进度快照见本文件开头和任务表；<a href="#doc-audit-20261007">10/7 进度核查</a> 为历史。T13容量/闲置/清理的原生与用户当前PIE证据已归档，#15为Closed / Done；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。</p></section><section class="document" id="doc-audit-20261007" data-source-sha256="f52f578dc4f7129ba08be898030fbd17e8a576862f91f7d221a790cd0059823c"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Progress_Audit_2026-10-07.md">05_Development_Guide/Progress_Audit_2026-10-07.md</a></div><h1 id="doc-audit-20261007-moth-effect2026-10-07-进度核查">Moth Effect：2026-10-07 进度核查</h1>
+<p dir="auto">当前进度快照见本文件开头和任务表；<a href="#doc-audit-20261007">10/7 进度核查</a> 为历史。T13容量/闲置/清理的原生与用户当前PIE证据已归档，#15为Closed / Done；既有环境与完整门槛的缺失记录继续补档。完整 TC 与 G0–G4 不因 Issue 关闭或静态 CI 成功而自动通过；候选包、性能、外部试玩和平台状态仍需实际结果。</p></section><section class="document" id="doc-devlog-20261016" data-source-sha256="b01ebf8e2541da0e5b459243410915c64445994a088bdea9a98703be66ec1c43"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Developer_Log_2026-10-16.md">05_Development_Guide/Developer_Log_2026-10-16.md</a></div><h1 id="doc-devlog-20261016-moth-effect飞蛾效应开发者日志2026-10-16">Moth Effect（飞蛾效应）开发者日志｜2026-10-16</h1>
+<p>版本 v0.1 · 记录日期：2026-10-16（香港时间）· 本期范围：2026-10-14—2026-10-16</p>
+<p>本期主题：整理机关规则，搭建完整战场，推进正式 UI。当前进入玩法、场景和反馈的整合阶段，下一步重点是完成真实试玩与独立包验证。</p>
+<h2 id="doc-devlog-20261016-本期进展">本期进展</h2>
+<h3 id="doc-devlog-20261016-1-重构三种机关的基础规则">1. 重构三种机关的基础规则</h3>
+<p>这一期先整理了道具落地、受力和激活之间的关系。道具落地后固定，受到明确推力或弹射时再起飞；显示大小、物理尺寸和射击判定也有了独立调整入口，方便后续按真实操作手感调节。</p>
+<p>发射装置改为锁定水平方向，三种机关共用激活延迟，爆炸可以继续启动无遮挡的闲置道具。暂停时冻结延迟，结束和重开时取消旧等待并清理对象。调整的目标是让机关状态和连锁时序更容易理解，并为后续组合玩法保留稳定基础。</p>
+<p>这部分已完成构建与自动化回归：10 月 14 日的记录包含 <strong>114 项 Editor 测试、12 项原主地图 Game 测试通过</strong>，之后原工程构建和六项基础专项复测也通过。尺寸、瞄准难度和连锁手感仍需要实际操作确认。</p>
+<h3 id="doc-devlog-20261016-2-将战斗场地改造成多层工业街区">2. 将战斗场地改造成多层工业街区</h3>
+<p>使用已导入的 <strong>SoulCity</strong> 素材，搭建了独立地图 <code>L_Arena_SoulCity</code>。场地为 <strong>84×72 米</strong>，包含下沉区、地面、中台和高架，最大高差 <strong>9.6 米</strong>；六条登高连接和十七组高低掩体提供不同的移动与交战路线。</p>
+<p>本轮进一步将 <strong>七栋封闭建筑引入场内及边缘</strong>，形成街巷、转角和楼前通道，让场地更紧凑。周边加入连续楼群、二十四栋原生建筑立面和城市远景卡，遮住角色视角中的场外空地；照明采用暖色主光、冷色补光与局部灯光，建立工业街区的氛围。</p>
+<p>场内机器、管材、台阶和护栏也换成了对应资产。制作过程中修正了外围墙面遮住楼房细节、独立窗框悬空等问题，并核对了外观与真实碰撞的对应关系。原地图和默认启动入口保留，当前新图需要单独打开。</p>
+<h3 id="doc-devlog-20261016-3-推进正式准星与命中反馈">3. 推进正式准星与命中反馈</h3>
+<p>准星素材方案已经确定：常驻使用 <code>T_CH001</code>，普通命中叠加白色 <code>T_HM_002</code>，击杀时使用红色命中标记，并在下方显示保留原色的 <code>T_KI_001</code>。</p>
+<p>C++ 命中、击杀通知，以及暂停、页面显隐和重置的蓝图接口已补入，具体蓝图布局和动画由我继续制作。<strong>击杀反馈曾出现不播放的问题，目前仍待定位与复验</strong>；完整编译、新增专项测试和最终蓝图表现尚未形成完整验收记录。</p>
+<h2 id="doc-devlog-20261016-当前验证情况">当前验证情况</h2>
+<p>新地图已完成保存与重载检查，<strong>二十四条导航路线</strong>通过，承托高度、掩体阻挡及建筑核心完成检查；入口和高台的二十四个朝外采样方向有静态遮挡。脚本通过真实伤害接口清敌，验证了三波按 <strong>4／6／8</strong> 个敌人自然生成并进入胜利状态；八个视角的实际渲染截图已核对。</p>
+<p>这些记录覆盖保存地图、静态通路与生成流程。玩家完整手动通关、AI 在遮挡和高差中的实际追击、机关连锁体验及帧率，需要继续单独验收。道具重构、新准星和新地图的测试范围分别记录。</p>
+<h2 id="doc-devlog-20261016-问题与风险">问题与风险</h2>
+<table>
+<thead>
+<tr>
+<th>问题或风险</th>
+<th>当前影响</th>
+<th>下一步处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>击杀反馈尚未闭环</td>
+<td>击杀确认可能缺失，正式 UI 体验不完整</td>
+<td>复查命中／击杀分支、动画互斥和计时器，覆盖末个敌人死亡、暂停与重开</td>
+</tr>
+<tr>
+<td>新图实战节奏待验证</td>
+<td>街巷和高差可能使敌人难以发现玩家、追击中断，或让掉落难以取得</td>
+<td>在各层实际完成三波，记录卡点、视线与机关落点，再调整布局和出生位置</td>
+</tr>
+<tr>
+<td>可达性与操作体验仍有差距</td>
+<td>静态导航通过后，角色镜头、枪口、投掷和弹射仍可能受局部空间影响</td>
+<td>实测窄巷、转角、坡道、栏杆与栈道下方，检查移动和射击净空</td>
+</tr>
+<tr>
+<td>资源、性能与独立运行待验证</td>
+<td>新场景增加了渲染负担，第三方资源依赖也需要随包检查</td>
+<td>尽早制作 Windows 候选包，检查资源完整性，并记录帧率、卡顿和加载表现</td>
+</tr>
+<tr>
+<td>收尾时间紧</td>
+<td>原排期已进入候选包与提交阶段，尚有整局试玩、外部测试和物料整理</td>
+<td>优先保障现有地图、三种机关和三波流程的完整交付，按阻断程度安排修复</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doc-devlog-20261016-下期计划">下期计划</h2>
+<ol>
+<li><strong>收尾准星与 HUD。</strong> 优先解决击杀反馈，完成普通命中、击杀、连续命中、暂停恢复、页面切换和重开的联调，并检查不同分辨率下的布局。</li>
+<li><strong>验证新图的完整实战。</strong> 使用真实输入走完各层路线并完成三波，检查 AI 追击、敌人掉落、三种机关连锁，以及胜利、失败、暂停和重新开始。</li>
+<li><strong>尽早产出可独立启动的 Windows 候选包。</strong> 先做最小打包与启动检查，再用该包回归完整流程，确认新地图、角色、UI 和场景依赖齐全。</li>
+<li><strong>根据试玩记录做必要调整。</strong> 重点处理通路、镜头遮挡、敌人入场、机关手感和性能问题，再邀请一位不了解操作的玩家盲玩，补齐引导与反馈。</li>
+<li><strong>整理交付材料。</strong> 保存候选包版本、已知问题和验收结果，更新截图、操作说明及资源来源记录。</li>
+</ol>
+<p>下期希望达到的结果：玩家可以在关闭编辑器后启动游戏，理解基础操作，在新场景中完成三波，并正常经历胜负、暂停与重开流程。</p>
+<h2 id="doc-devlog-20261016-记录依据">记录依据</h2>
+<p>本日志依据当前本地文档、验证证据及本次开发对话整理；本次撰写未重新运行 UE，也未查询远程任务或投稿平台状态。</p>
+<ul>
+<li><a href="#doc-device-refactor">道具基础重构与待验收清单</a> · <a href="#doc-device-refactor-report">10 月 14 日验证报告</a></li>
+<li><a href="#doc-soulcity-arena">SoulCity 地图接入</a> · <a href="#doc-soulcity-report">10 月 15 日地图验证与截图</a></li>
+<li><a href="#doc-crosshair">准星接入与蓝图分工</a> · <a href="#doc-plan">开发任务与原排期</a></li>
+</ul></section><section class="document" id="doc-audit-20261007" data-source-sha256="f52f578dc4f7129ba08be898030fbd17e8a576862f91f7d221a790cd0059823c"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Progress_Audit_2026-10-07.md">05_Development_Guide/Progress_Audit_2026-10-07.md</a></div><h1 id="doc-audit-20261007-moth-effect2026-10-07-进度核查">Moth Effect：2026-10-07 进度核查</h1>
 <p dir="auto">版本 v0.1 · 2026-10-07 · 香港时间（UTC+8）</p>
 <p dir="auto">本次核对 GitHub main/develop 的 <code class="notranslate">d589765</code>、本机 develop 的 <code class="notranslate">7f009c9</code>、27 条 Issue 与 Project 状态，并静态检查本机资产和现有编辑器日志。未执行 UE 编译、运行或打包。这里将“源码/资产已有”“任务验收完成”和“可复用模板”分别记录。</p>
 <p dir="auto">本文件保留当次审计的历史结果。同日后续 T05 已完成、PR <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5740467930" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/34" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/34/hovercard" href="https://github.com/YYchainsAw/MothEffect/pull/34">#34</a> 已合并，T06 原生基础已推进；当前状态见 <a href="#doc-plan">开发计划</a>，机关接入与待测试步骤见 <a href="#doc-device-setup">Device_Setup</a>。</p>
@@ -4682,8 +4764,9 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>弹丸与清理</strong>：观察 P01 结束后数量下降；检查已 Spent 的短效果不占道具/Active 名额。飞行 64 发的饱和和恢复分支由原生测试覆盖，不为测试修改游戏射速或寿命。</li>
 <li><strong>重复清理</strong>：携带一件、启动发射器/柱子并让 P01 飞行，调用 MothResetDevices，计数应全部归零，持物引用和柱子实体清除；重复调用仍为零，再生成正常登记。重新 PIE 后恢复地图初始布局，不携带上一轮计数。显式安全盒已有原生测试；默认世界 KillZ/边界 fallback 已实现但未单列场景，最终竞技场的安全盒/玩家判负/敌人注销随 T14/T16/T17 接入后补验收。</li>
 </ol>
-<p dir="auto">保留操作、参数覆盖、LogMothEffect 计数、状态/警告日志及构建版本。容量拒绝会广播 <code class="notranslate">OnCapacityRejected</code>，Development 提供短屏幕提示与日志；正式 HUD 接入属于 T18。原生结果与失败历史见 <a href="#doc-t13-report">T13 报告</a>。完整 TC19 的敌人数量、TC23 整局重开和 TC32 跨波分支不由本清单自动通过。</p></section><section class="document" id="doc-enemy-drops" data-source-sha256="7ab593ac6bbaab5798063cf28de8dccb168b0db6c2fdee6407a1221744723adb"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Drops_Setup.md">05_Development_Guide/Enemy_Drops_Setup.md</a></div><h1 id="doc-enemy-drops-moth-effect飞蛾效应t15-三外观与固定掉落接入">Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入</h1>
-<p dir="auto">版本 v0.4 · 2026-10-12 · 状态：原生验证通过；保存关卡实例不掉落已修复，用户确认本次掉落/拾取复测通过；其他完整PIE项目按清单核对</p>
+<p dir="auto">保留操作、参数覆盖、LogMothEffect 计数、状态/警告日志及构建版本。容量拒绝会广播 <code class="notranslate">OnCapacityRejected</code>，Development 提供短屏幕提示与日志；正式 HUD 接入属于 T18。原生结果与失败历史见 <a href="#doc-t13-report">T13 报告</a>。完整 TC19 的敌人数量、TC23 整局重开和 TC32 跨波分支不由本清单自动通过。</p></section><section class="document" id="doc-enemy-drops" data-source-sha256="5bfc24cebbd1f63e4b39e2606f633e173366151916f1a940e1056e5328c357c2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Drops_Setup.md">05_Development_Guide/Enemy_Drops_Setup.md</a></div><h1 id="doc-enemy-drops-moth-effect飞蛾效应t15-三外观与固定掉落接入">Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入</h1>
+<p dir="auto">版本 v0.5 · 2026-10-16 · 状态：原固定掉落实现与历史验证保留，当前外观见 Drongo 接入</p>
+<p dir="auto">2026-10-16：用户将三类敌人统一为 Drongo；青蓝 D01、橙 D02、紫 D03 背包、三件固定掉落类及原生结算保持。模型、配套动画与本次专项验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>，下文原三外观的历史实现不代表当前角色模型。</p>
 <p dir="auto">Refs <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5728805126" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/17" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/17/hovercard" href="https://github.com/YYchainsAw/MothEffect/issues/17">#17</a>，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用<a href="#doc-enemy-setup">T14射击AI</a>和<a href="#doc-lifecycle-setup">T13生命周期</a>，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；2026-10-12按用户要求创建<a href="https://github.com/YYchainsAw/MothEffect/pull/43" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/43/hovercard">T15 PR #43</a>（codex/t15-enemy-drops → codex/t14-shooting-ai），当前Open；待T14合并后再改为main。用户要求保持待验收，#17保持Open / In Progress，当前四项PIE不记通过。</p>
 <h2 id="doc-enemy-drops-1-预告与固定映射">1. 预告与固定映射</h2>
 <markdown-accessiblity-table><table role="table">
@@ -4759,8 +4842,9 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 </ol>
 <p dir="auto">2026-10-12用户在不掉落修复后确认“测试通过 创建pr”，按上一轮复测步骤记录三类敌人W01击杀后的对应掉落与拾取通过。该确认不扩展为其他伤害来源、全部地形/容量/暂停项目、T14或T16验收；完整TC20、T17最终竞技场和独立包/G3继续按实际范围验收。原生夹具隔离AI移动与玩家输入，使用真实武器命中、Chaos、拾取和生命周期，不代替图形PIE或录像。</p>
 <h2 id="doc-enemy-drops-4-自动化与证据">4. 自动化与证据</h2>
-<p dir="auto">Editor中运行<code class="notranslate">Automation RunTests MothEffect.EnemyDrops</code>：新增11项首轮及最终复测全部Success，导出errors/warnings=0；生产实现全量88项Editor通过，测试夹具修正后2项Game导航也通过。原工程Editor Win64 Development构建成功，最终构建14.98s。覆盖保存类/颜色/形状与尺寸重载、W01/P01/D02对全部三类实际击杀、死亡重入、实际物理落地/拾取/空中落体、满额回收/全Held拒绝、回调重置与出生位置复核。完整范围和失败修正另见<a href="#doc-t15-report">T15报告</a>与<a href="../06_Test_Doc/Evidence/T15_Verification_2026-10-12.log">验证摘录</a>。</p></section><section class="document" id="doc-enemy-setup" data-source-sha256="0028814316d76dbf0d4cb959369c647461ae20af2cc9c7783a7c7634887eb42d"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Setup.md">05_Development_Guide/Enemy_Setup.md</a></div><h1 id="doc-enemy-setup-moth-effect飞蛾效应t14-射击-ai-与导航接入">Moth Effect（飞蛾效应）：T14 射击 AI 与导航接入</h1>
-<p dir="auto">版本 v0.2 · 2026-10-12 · 状态：Editor构建、77项Editor Automation与2项Game导航测试通过；当前Murdock图形PIE待验收</p>
+<p dir="auto">Editor中运行<code class="notranslate">Automation RunTests MothEffect.EnemyDrops</code>：新增11项首轮及最终复测全部Success，导出errors/warnings=0；生产实现全量88项Editor通过，测试夹具修正后2项Game导航也通过。原工程Editor Win64 Development构建成功，最终构建14.98s。覆盖保存类/颜色/形状与尺寸重载、W01/P01/D02对全部三类实际击杀、死亡重入、实际物理落地/拾取/空中落体、满额回收/全Held拒绝、回调重置与出生位置复核。完整范围和失败修正另见<a href="#doc-t15-report">T15报告</a>与<a href="../06_Test_Doc/Evidence/T15_Verification_2026-10-12.log">验证摘录</a>。</p></section><section class="document" id="doc-enemy-setup" data-source-sha256="ec8b2699d4b17bb17f8ec82955e83a7b62d44095f37815655a55443de6280c89"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Setup.md">05_Development_Guide/Enemy_Setup.md</a></div><h1 id="doc-enemy-setup-moth-effect飞蛾效应t14-射击-ai-与导航接入">Moth Effect（飞蛾效应）：T14 射击 AI 与导航接入</h1>
+<p dir="auto">版本 v0.3 · 2026-10-16 · 状态：原 T14 AI 与导航验证保留；当前敌人外观见下述 Drongo 接入</p>
+<p dir="auto">2026-10-16：按用户选择，三个机关掉落类型统一使用 Drongo 模型与配套动画，父/子蓝图保持原类路径。灰盒外观由新版替换，当前动画、死亡展示时长和验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>；以下 T14 历史记录中的 Cube 与 0.5 秒反馈描述不代表当前 Drongo 表现。</p>
 <p dir="auto">实现e201be2，场景/测试1ad8496，导航修正f68badf，动画夹具预期警告修正与UE验证源码678dc66，Refs <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5728803752" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/16" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/16/hovercard" href="https://github.com/YYchainsAw/MothEffect/issues/16">#16</a>；依据DEC33、TC21及<a href="#doc-parameters">参数v0.15</a>。2026-10-11开发验证当次仅本地提交；2026-10-12按用户要求推送codex/t14-shooting-ai → main并创建<a href="https://github.com/YYchainsAw/MothEffect/pull/42" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/42/hovercard">T14 PR #42</a>，当前Open。T13 PR #41已合并，本地继续develop。用户确认“尚未完成，保留待验收”，下列当前PIE检查继续待验收。</p>
 <h2 id="doc-enemy-setup-1-运行时与保存资产">1. 运行时与保存资产</h2>
 <p dir="auto"><code class="notranslate">AEnemyBase</code> 使用内建AIController与CharacterMovement，复用HealthComponent、ExternalImpulseComponent和正式P01，不依赖模板Combat的近战StateTree。Config/DefaultGame.ini是参数账本enemy的运行时副本。保存<code class="notranslate">/Game/MothEffect/Enemies/BP_EnemyBase</code>引用已有<code class="notranslate">BP_RuleProjectile</code>，原生灰盒Cube、红色FIRING文字和方向箭头提供最低预警；角色Capsule唯一接收命中，装饰网格无碰撞且不影响导航。</p>
@@ -4802,7 +4886,25 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>击杀</strong>：正常W01三次有效命中应击杀60HP敌人，立即停止移动/预警/新发射，DEAD短反馈后消失。当前不掉落机关，T15接入固定掉落；生前已飞的P01按原寿命/首次阻挡结束。</li>
 <li><strong>暂停与重复进入</strong>：预警期用PIE工具栏暂停/恢复，暂停期间不发射、恢复继续剩余预警；结束PIE后重新进入，敌人回到初始位置和60HP，没有上一轮延迟射击或控制器残留。再次生成/删除敌人应正常，无崩溃。</li>
 </ol>
-<p dir="auto">保留<code class="notranslate">LogMothEffect</code>中Enemy event/phase/health/shots/spawned/paths/stalls/time及P01 HitId记录。原生覆盖、首轮失败和导航构建边界见<a href="#doc-t14-report">T14报告</a>。本清单通过后才补齐#16当前PIE验收；完整TC21、正式场地、独立包与G3仍按后续证据验证。</p></section><section class="document" id="doc-wave-flow" data-source-sha256="482d591fb22114a5099b42818d50bb5fc882718538435b69ac26519ce27271ec"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Wave_Flow_Setup.md">05_Development_Guide/Wave_Flow_Setup.md</a></div><h1 id="doc-wave-flow-moth-effect飞蛾效应三波胜负与重开接入">Moth Effect（飞蛾效应）：三波、胜负与重开接入</h1>
+<p dir="auto">保留<code class="notranslate">LogMothEffect</code>中Enemy event/phase/health/shots/spawned/paths/stalls/time及P01 HitId记录。原生覆盖、首轮失败和导航构建边界见<a href="#doc-t14-report">T14报告</a>。本清单通过后才补齐#16当前PIE验收；完整TC21、正式场地、独立包与G3仍按后续证据验证。</p></section><section class="document" id="doc-drongo-enemy" data-source-sha256="0ecbfbe740bb851ee49b696c38db0f23ee63f873f08ac5ab73438e8bbb883bf2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Drongo_Enemy_Setup.md">05_Development_Guide/Drongo_Enemy_Setup.md</a></div><h1 id="doc-drongo-enemy-moth-effectdrongo-敌人接入">Moth Effect：Drongo 敌人接入</h1>
+<p dir="auto">版本 v0.1 · 2026-10-16 · 状态：五件资产已写回；隔离 PIE 移动/射击/死亡/掉落与 D3D12 外观预览通过</p>
+<p dir="auto">用户选择首版三类敌人统一使用 Drongo。<code class="notranslate">BP_EnemyBase</code>、<code class="notranslate">BP_EnemyLauncher</code>、<code class="notranslate">BP_EnemyBomb</code>、<code class="notranslate">BP_EnemyEmitter</code> 的 Character Mesh 改为 <code class="notranslate">/Game/ParagonDrongo/Characters/Heroes/Drongo/Meshes/Drongo_GDC</code>，使用项目动画蓝图 <code class="notranslate">/Game/MothEffect/Enemies/Animations/ABP_EnemyDrongo</code>。沿用 <code class="notranslate">AEnemyBase</code>，地图和波次继续引用原有敌人类。</p>
+<h2 id="doc-drongo-enemy-模型与动画">模型与动画</h2>
+<p dir="auto">Mesh 相对位置 <code class="notranslate">(0,0,-90)</code> cm、Yaw <code class="notranslate">-90°</code>、缩放 1；隐藏并清空灰盒 <code class="notranslate">BodyMesh</code>。Capsule 保留半径 35 / 半高 90 cm；模型无碰撞，不参与导航。青蓝 D01、橙 D02、紫 D03 背包与固定掉落保持，头顶类型标记移至角色中心上方 145 cm。</p>
+<p dir="auto"><code class="notranslate">ABP_EnemyDrongo</code> 复制自官方 <code class="notranslate">Drongo_AnimBlueprint</code>，保留 AnimGraph、待机/移动/跳跃、UpperBody Slot 和原 <code class="notranslate">AnimBP_Drongo_Rigging</code>。移除 18 个演示玩家 Cast、攻击/连击委托和出生摆姿节点，以及未使用的演示角色变量。速度、方向、腾空仍读取实际 Pawn/Character；原 <code class="notranslate">IsAccelerating</code> 转换条件改为实际 Speed &gt; 3 cm/s，兼容 AI 导航没有玩家输入加速度的情况；转身速率计算对 DeltaTime 使用最小 0.0001 秒，避免编辑器初始化时除零。使用 Drongo 原骨架，无跨骨架重定向。</p>
+<p dir="auto">父蓝图 BeginPlay 只绑定一次表现回调：</p>
+<ul dir="auto">
+<li><code class="notranslate">OnTelegraphChanged</code> 发生且 CombatPhase 为 Cooldown 时，播放原 <code class="notranslate">Primary_Fire_Montage</code> 的 UpperBody 动画。这表示完成完整预警后的射击尝试；弹丸容量或枪口阻挡仍可能拒绝实际生成。</li>
+<li><code class="notranslate">OnEnemyDied</code> 播放一次原 <code class="notranslate">Animations/Death</code>，隐藏调试死亡文字，将该尸体寿命设为动画时长 1.5 秒 + 0.15 秒。敌人死亡计数、碰撞关闭和固定掉落仍在原 C++ 流程结算，不等待动画。</li>
+</ul>
+<p dir="auto">表现蓝图不产生弹丸、伤害或掉落。弹丸继续使用原视点及前偏移的净空检测起点；本次没有改成武器 Socket 发射，也没有接入 Niagara 枪口特效。</p>
+<h2 id="doc-drongo-enemy-验证与恢复">验证与恢复</h2>
+<p dir="auto">生成脚本：<a href="../../scripts/replace_enemies_with_drongo.py">replace_enemies_with_drongo.py</a>。仅在独立 stage 编辑、编译及保存上述五件包，不保存供应商资产、地图或用户 UI。写回前检查原文件 SHA，旧四件敌人蓝图备份保留在 <code class="notranslate">Saved/Automation/Drongo/Backup/Content/MothEffect/Enemies</code>。</p>
+<p dir="auto">隔离生成、验证与截图进程退出码均为 0，五件蓝图均为 UpToDate。两次重载真实 <code class="notranslate">L_T15Drops</code> 的三个保存实例，模型、动画类与固定掉落配置一致。实际 ticking PIE 中，三个敌人分别通过：真实 CharacterMovement 位移约 245 cm、Speed 与实际速度同步且腿/脚骨骼变化；完整预警后 UpperBody Montage 推进并实际生成一发 P01；60 伤害死亡后原 Death 动画播放至末帧、约 1.65 秒清理尸体；三类固定 Dormant 掉落各一件，重复致死命中不再生成掉落。测试不写 Speed、不强播动画、不延长测试实例寿命。</p>
+<p dir="auto">D3D12 无保存临时场景预览已人工查看，三类 Drongo 直立、材质和类型标记可见；这张图是编辑器动画预览，不是实际战斗截图。验证期间 123 个 stage 文件不变，写回仅五件包，118 个其他保护文件和 1,913 个 Drongo 原包文件 SHA 一致。初次旋转断言失败与除零修正前结果保留在本地日志；最终敌人 ABP 的零 DeltaTime 警告已修复，现有玩家/原包旧输入与 Rig 等警告仍保留。</p>
+<p dir="auto">汇总证据：<a href="../06_Test_Doc/Evidence/Drongo/Drongo_2026-10-16.json">Drongo_2026-10-16.json</a>；详细日志在 <code class="notranslate">Saved/Automation/Drongo</code>。手动战斗、导航追击、跳跃分支观感、三波整局、性能及 Windows 包仍需验收，未把本次受控动画检查扩展为这些项目已通过。</p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png"><img src="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png" alt="三类 Drongo 外观预览" style="max-width: 100%;"></a></p>
+<p dir="auto">写回时原编辑器锁住敌人蓝图；用户保存并关闭编辑器后，五件包已原子替换并核对 SHA。重新打开项目即可读取，无需编译 C++。第三方 <code class="notranslate">/Game/ParagonDrongo</code> 目录沿用原包路径，按既有 Git 忽略规则另行恢复。</p></section><section class="document" id="doc-wave-flow" data-source-sha256="482d591fb22114a5099b42818d50bb5fc882718538435b69ac26519ce27271ec"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Wave_Flow_Setup.md">05_Development_Guide/Wave_Flow_Setup.md</a></div><h1 id="doc-wave-flow-moth-effect飞蛾效应三波胜负与重开接入">Moth Effect（飞蛾效应）：三波、胜负与重开接入</h1>
 <p dir="auto">版本 v0.2 · 2026-10-12 · 状态：T16 原生/真实 Game 验证通过，当前图形 PIE 待验收</p>
 <p dir="auto">已创建<a href="https://github.com/YYchainsAw/MothEffect/pull/45" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/45/hovercard">T16/T17 PR #45</a>，codex/t16-t17-wave-arena → main。用户要求保持待校验；当前图形PIE清单未记通过，<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5728806006" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/18" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/18/hovercard" href="https://github.com/YYchainsAw/MothEffect/issues/18">#18</a>/#19继续Open，未自动关闭。</p>
 <p dir="auto">对应 <a href="https://github.com/YYchainsAw/MothEffect/issues/18" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/18/hovercard">T16 #18</a>。源码与资产已在本地 develop 提交；T14/T15 的图形验收保持待验收。完整证据见 <a href="#doc-t16-report">T16 报告</a>。</p>
@@ -4956,7 +5058,335 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>暂停与输入</strong>：按住开火、换弹中、投掷恢复中、持物中分别 Esc 暂停，等待超过任务时长。菜单可鼠标/键盘操作，世界冻结；继续不误射，换弹保留剩余时间，投掷仍需实际松键后新按压。切出窗口再回来同样不连射。</li>
 <li><strong>胜负与重开</strong>：教学完成后开始战斗，恢复 100HP/24 弹且无教学道具；直接开始竞技场同样正确。通关三波见胜利/重新开始；战斗死亡、教学死亡或越界见失败。暂停返回入口、胜负重开各反复执行，均回到干净标题，无旧波数/持物/对象或重复响应。</li>
 </ol>
-<p dir="auto">用户确认后按实际范围更新 <a href="#doc-t18-report">T18 报告</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a>。外部盲玩 TC26 留在 T22，独立包与完整 G3 留在 T21/后续门槛；原生测试和助手渲染检查不代替用户硬件输入验收。</p></section><section class="document" id="doc-crosshair" data-source-sha256="6eaf73f1579e5c197407dd05ebb857c0e1e8e893c5806a066d3477b001774be0"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
+<p dir="auto">用户确认后按实际范围更新 <a href="#doc-t18-report">T18 报告</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a>。外部盲玩 TC26 留在 T22，独立包与完整 G3 留在 T21/后续门槛；原生测试和助手渲染检查不代替用户硬件输入验收。</p></section><section class="document" id="doc-asset-import" data-source-sha256="68e3f8f9bf1cbe991eb502beeeadade42bec0f473cd438888dd07b41efece8e2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Asset_Import_Setup.md">05_Development_Guide/Asset_Import_Setup.md</a></div><h1 id="doc-asset-import-moth-effect选定第三方资源导入">Moth Effect：选定第三方资源导入</h1>
+<p dir="auto">版本 v0.3 · 2026-10-16 · 状态：选定资源已导入；三类敌人后续统一使用 Drongo；Minions 按用户要求暂缓</p>
+<p dir="auto">后续运行时接入：用户决定三类敌人统一使用 Drongo，父/子蓝图与项目动画图的实际变更见 <a href="#doc-drongo-enemy">Drongo_Enemy_Setup</a>。本页以下“未接入”描述限定资源导入阶段；Slate UI 与 Niagara 仍未绑定本作运行时界面/特效。</p>
+<h2 id="doc-asset-import-当前-content-browser-位置">当前 Content Browser 位置</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>资源</th>
+<th>Unreal 路径</th>
+<th>本轮实际结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Slate 全部 PNG</td>
+<td><code class="notranslate">/Game/ThirdParty/ColorosseSlate</code></td>
+<td>Panel UI Kit / HUD Bars / HUD Frames，共 150 张 Texture2D；保留 1×、2×、4×</td>
+</tr>
+<tr>
+<td>Slate 首版常用图</td>
+<td><code class="notranslate">/Game/MothEffect/UI/Textures/Slate</code></td>
+<td>15 张 2× Texture2D，名称与源清单一致</td>
+</tr>
+<tr>
+<td>Kenney Input Prompts 全部 PNG</td>
+<td><code class="notranslate">/Game/ThirdParty/KenneyInputPrompts</code></td>
+<td>3,056 张 Texture2D，按设备/主题/尺寸分类；含 48 张原包图集或预览</td>
+</tr>
+<tr>
+<td>Kenney 常用键鼠</td>
+<td><code class="notranslate">/Game/MothEffect/UI/Textures/InputPrompts</code></td>
+<td>13 张 128×128 Texture2D：E/R/Esc/WASD/Space 和鼠标按钮/滚轮</td>
+</tr>
+<tr>
+<td>Paragon Wraith</td>
+<td><code class="notranslate">/Game/ParagonWraith</code></td>
+<td>原包 1,595 个 uasset 与 2 个 umap，保持供应商原路径；与本机来源逐件 SHA 一致</td>
+</tr>
+<tr>
+<td>Niagara Examples Pack</td>
+<td><code class="notranslate">/Game/NiagaraExamples</code></td>
+<td>用户通过 Fab 添加；667 个 uasset 与 2 个 umap，共 669 文件；注册到 59 个 NiagaraSystem，选定的 15 个系统实际加载成功</td>
+</tr>
+<tr>
+<td>Paragon Drongo</td>
+<td><code class="notranslate">/Game/ParagonDrongo</code></td>
+<td>用户通过 Fab 添加；1,911 个 uasset 与 2 个 umap，共 1,913 文件；主模型、骨架、两件动画蓝图和动作已核对</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">首批助手导入为 3,234 张贴图与 Wraith，共 4,831 件包文件；随后用户添加上述两包，共 2,582 件包文件。资产库已就绪，Minions 暂缓。导入完成不等于运行时已换肤：本轮没有修改 HUD、敌人子蓝图、波次或机关反馈。</p>
+<h2 id="doc-asset-import-编辑器重启与依赖">编辑器重启与依赖</h2>
+<p dir="auto">为兼容 Wraith 原演示角色中的旧 <code class="notranslate">ResetOrientationAndPosition</code> 节点，已在 <code class="notranslate">MothEffect.uproject</code> 启用引擎自带 <strong>XRBase</strong> 插件。它是该包旧蓝图的依赖，不表示游戏新增 VR 玩法。</p>
+<p dir="auto">助手没有关闭或重新打开用户编辑器。若仍是修改 XRBase 配置之前的会话，保存工作后重启一次，让插件配置生效。Niagara 与 Drongo 的本轮检查沿用已有依赖，没有再修改项目配置；Content Browser 可在上表路径找到资源。未更改主地图、玩家或输入映射。</p>
+<h2 id="doc-asset-import-已完成的验证">已完成的验证</h2>
+<ul dir="auto">
+<li>在无代码的独立 UE 5.8 工程中导入 PNG，全部设置为 UI 纹理组、UserInterface2D (RGBA)、NoMipmaps、sRGB、Never Stream，仅保存新纹理。</li>
+<li>第二个 UE 进程从磁盘回读 3,234 张纹理并核对属性；命令行进程退出码为 0。</li>
+<li>全量检查此次资产的 <code class="notranslate">/Game</code> 包引用，缺失运行时硬引用为 0。</li>
+<li>实际加载 Wraith 主 SkeletalMesh、Skeleton、原 AnimBlueprint、原 Character Blueprint 和 <code class="notranslate">Fire_A_Slow_Montage</code>，类型均符合预期。</li>
+<li>写回原工程前逐件检查目标是否冲突，使用不覆盖的文件发布；写回后 4,831 件包文件与隔离工程 SHA 一致。</li>
+<li>导入前后 94 件既有游戏资产/配置/工程文件的 SHA 一致；随后仅为 XRBase 依赖有意修改了 uproject。原 HUD 和其他游戏资产未保存或覆盖。</li>
+</ul>
+<p dir="auto">首轮隔离检查曾因缺少 XRBase 触发 Wraith 原角色蓝图编译错误，补齐插件后重新加载通过。完整过程和首轮失败保存在 <code class="notranslate">Saved/Automation/SelectedAssets</code>，不是把首轮失败记为通过。</p>
+<h2 id="doc-asset-import-来源包已有的提示与验证边界">来源包已有的提示与验证边界</h2>
+<p dir="auto">Wraith 的两件物理资产仍保存旧 <code class="notranslate">PreviewSkeletalMesh</code> 软路径 <code class="notranslate">/Game/Characters/Heroes/Ghost/Meshes/Ghost</code>；该预览引用在来源中就不存在。本轮没有重存第三方资产，主模型、骨架、动画蓝图均加载成功。</p>
+<p dir="auto">原演示角色在隔离工程中会提示旧输入 Action/Axis 没有项目映射；本轮没有把旧输入映射写入本作 Enhanced Input。这些演示输入不替代现有敌人 AI，原 ABP 的玩家类 Cast 和攻击触发还需要后续适配。</p>
+<p dir="auto">本轮使用 NullRHI 验证资产序列化/注册/依赖，没有验证模型材质观感、动画追击、UI 布局、Niagara 渲染、实际帧率或 Windows 打包。</p>
+<h2 id="doc-asset-import-用户补入的两包实际检查">用户补入的两包：实际检查</h2>
+<p dir="auto">用户于 2026-10-16 确认 Niagara Examples Pack 与 Drongo 已添加到 Content。助手把原目录复制到单独的 UE 5.8 内容工程，以原路径检查；对 Drongo 蓝图做内存编译，不保存或写回供应商资源。</p>
+<ul dir="auto">
+<li>两包全量注册，缺失 <code class="notranslate">/Game</code> 运行时硬引用为 0；关键 23 件对象加载与类型检查通过。</li>
+<li>Drongo 主 ABP 与 Rigging 子 ABP 内存编译成功，均为 <code class="notranslate">BS_UP_TO_DATE</code>；原 Character 编译成功但有旧输入映射警告。</li>
+<li>日志为 0 errors、17 warning 事件（不重复计末尾摘要），进程退出码为 0。警告来自旧输入映射和原包 <code class="notranslate">Orion_Proto_Retarget</code> 的旧 Rig 类；该辅助重定向资产不能加载，不影响此次主 ABP / Rigging ABP 编译结果。</li>
+<li>保留原包 3 个旧 Shrapnel 预览网格软引用缺失，没有修改供应商资产以隐藏警告。</li>
+<li>两包原目录和隔离副本的 2,582 个文件 SHA256 均未变；快照保护范围内 122 个既有游戏资产/配置/工程文件也未变。这不代表项目中其他文件没有用户改动。</li>
+<li>59 个 NiagaraSystem 来自资产注册类型统计，15 个经过实际对象加载；尚未验证 Niagara 编译、CPU/GPU 发射与画面。部分生成工具和演示素材引用可选插件，不能把上述关键系统的检查扩展为完整 Gallery 已可运行。</li>
+</ul>
+<h3 id="doc-asset-import-drongo-接入时应选择的资产">Drongo 接入时应选择的资产</h3>
+<p dir="auto">以下均位于 <code class="notranslate">/Game/ParagonDrongo/Characters/Heroes/Drongo/</code>：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>用途</th>
+<th>路径后缀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主 Skeletal Mesh</td>
+<td><code class="notranslate">Meshes/Drongo_GDC</code></td>
+</tr>
+<tr>
+<td>Skeleton</td>
+<td><code class="notranslate">Meshes/Drongo_Skeleton</code></td>
+</tr>
+<tr>
+<td>主动画蓝图</td>
+<td><code class="notranslate">Drongo_AnimBlueprint</code></td>
+</tr>
+<tr>
+<td>主 ABP 使用的 Rigging 子蓝图</td>
+<td><code class="notranslate">Animations/AnimBP_Drongo_Rigging</code></td>
+</tr>
+<tr>
+<td>开火 Montage</td>
+<td><code class="notranslate">Animations/Primary_Fire_Montage</code></td>
+</tr>
+<tr>
+<td>开火 / 死亡序列</td>
+<td><code class="notranslate">Animations/Primary_Fire</code> / <code class="notranslate">Animations/Death</code></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">原 ABP 仍有 <code class="notranslate">DrongoPlayerCharacter</code> 类 Cast 和 <code class="notranslate">Attacking</code> 等原角色委托，不能把“编译成功”等同于已经能驱动本作 <code class="notranslate">AEnemyBase</code>。优先复制项目版 ABP，保留原 AnimGraph，并适配当前敌人的移动/攻击数据；配对使用本包 Mesh、Skeleton、ABP，无需先重定向到 Murdock。</p>
+<h3 id="doc-asset-import-首版特效候选">首版特效候选</h3>
+<p dir="auto">以下都是本轮实际加载成功的 NiagaraSystem，位于 <code class="notranslate">/Game/NiagaraExamples/</code>；用途为接入建议，未绑定到本作动作。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>动作</th>
+<th>路径后缀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>枪口</td>
+<td><code class="notranslate">FX_Weapons/MuzzleFlashes/NS_MuzzleFlash</code></td>
+</tr>
+<tr>
+<td>金属 / 混凝土命中</td>
+<td><code class="notranslate">FX_Weapons/Impacts/NS_Impact_Metal</code> / <code class="notranslate">NS_Impact_Concrete</code></td>
+</tr>
+<tr>
+<td>D02 小爆炸</td>
+<td><code class="notranslate">FX_Explosions/NS_Explosion_Small</code></td>
+</tr>
+<tr>
+<td>弹道</td>
+<td><code class="notranslate">FX_Weapons/Trails/NS_BulletTracer</code> / <code class="notranslate">NS_SimpleRibbonTrail</code></td>
+</tr>
+<tr>
+<td>机关启动瞬间</td>
+<td><code class="notranslate">FX_Sparks/NS_Spark_Burst</code>、<code class="notranslate">FX_PickUp/NS_Pickup_Success</code></td>
+</tr>
+<tr>
+<td>出生 / 落点标记候选</td>
+<td><code class="notranslate">FX_PickUp/NS_Pickup_Spawn</code>、<code class="notranslate">FX_Markers/NS_Marker_Location</code></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">D01 上升动势可从火花或标记调整，D02 尺寸仍以真实爆炸范围为准，D03 弹道方向仍归原玩法逻辑。特效参数、循环停止、暂停与结算清理需要后续接线。</p>
+<h2 id="doc-asset-import-minions-暂缓">Minions 暂缓</h2>
+<p dir="auto">用户明确表示暂时不添加 <a href="https://www.fab.com/listings/039ea035-9360-4e76-ad06-5d3a92da6f65" rel="nofollow">Paragon: Minions</a>，因此它不属于当前待完成的导入项。原三类机关掉落保留；用户随后决定三个类型统一使用 Drongo，见本页顶部运行时接入说明。</p>
+<h2 id="doc-asset-import-来源署名与恢复">来源、署名与恢复</h2>
+<ul dir="auto">
+<li>Slate 原始许可与 <a href="../../SourceArt/UI/ThirdParty/ColorosseSlate/ATTRIBUTION.md">署名文案</a> 保留，CC BY 4.0；全部来源与文件 SHA 见 <a href="../../SourceArt/UI/ThirdParty/ColorosseSlate/Manifest.json">Manifest</a>。</li>
+<li>Kenney 为 CC0；原包、许可及 <a href="../../SourceArt/UI/ThirdParty/KenneyInputPrompts/manifest.json">来源清单</a> 保留。</li>
+<li>Wraith 来源为本机 <code class="notranslate">ShooterAssetPack/Content/ParagonWraith</code>，获取依据见 <a href="https://www.fab.com/listings/17e0840f-8651-4933-bd6d-211a34b1dd17" rel="nofollow">官方商品页</a>。本轮不将其声明为项目原创。</li>
+<li>Niagara 与 Drongo 由用户通过 Fab 添加，来源分别为 <a href="https://www.fab.com/listings/0e188eca-4e54-4fb2-a9ed-d8b8a565e600" rel="nofollow">Niagara Examples Pack</a> 和 <a href="https://www.fab.com/listings/40e3af76-9b2d-4680-81b6-606f6d9269ef" rel="nofollow">Paragon: Drongo</a>。</li>
+<li>既有 <code class="notranslate">.gitignore</code> 保持只跟踪 <code class="notranslate">Content/MothEffect</code> 的规则，所以 <code class="notranslate">/Game/ThirdParty</code>、<code class="notranslate">/Game/ParagonWraith</code>、<code class="notranslate">/Game/ParagonDrongo</code>、<code class="notranslate">/Game/NiagaraExamples</code> 的完整资源库不自动随 Git 分发；当前电脑磁盘中已导入。恢复其他电脑时补齐同路径资源。</li>
+</ul>
+<p dir="auto">汇总证据：<a href="../06_Test_Doc/Evidence/AssetImport/SelectedAssets_2026-10-16.json">SelectedAssets_2026-10-16.json</a>。实现为 <a href="../../scripts/stage_selected_asset_import.py">隔离准备/写回</a> 与 <a href="../../scripts/import_selected_assets_in_editor.py">UE 导入/校验</a>，不调用 SaveAll，不编译游戏 C++。</p>
+<p dir="auto">后补两包证据：<a href="../06_Test_Doc/Evidence/AssetImport/AddedPacks_2026-10-16.json">AddedPacks_2026-10-16.json</a>。隔离准备见 <a href="../../scripts/verify_added_asset_packs.py">verify_added_asset_packs.py</a>，详细日志保留于 <code class="notranslate">Saved/Automation/SelectedAssets/AddedPacks_20261016</code>。首批证据中的待下载清单为当时快照，当前状态以本指南及后补证据为准。</p></section><section class="document" id="doc-asset-shortlist" data-source-sha256="731d47f5eef3b9e49231c37fe31a65b4aeb4b1235970621cb1c13feeffe576ae"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Asset_Shortlist_2026-10-16.md">05_Development_Guide/Asset_Shortlist_2026-10-16.md</a></div><h1 id="doc-asset-shortlist-moth-effect敌人ui-与特效资产候选">Moth Effect：敌人、UI 与特效资产候选</h1>
+<p dir="auto">检索日期：2026-10-16（香港时间）。预算：用户确认免费优先，少量付费备选。</p>
+<p dir="auto">本清单依据当前 UE 5.8 工程、Paragon Murdock 玩家、Soul City 工业街区、现有射击 AI 与 UMG 制作。商品价格和内容已查发布者页面；Slate、Kenney、Wraith、Drongo 与 Niagara Examples Pack 已导入，Minions 暂缓，实际验证见 <a href="#doc-asset-import">导入记录</a>。适配判断是结合项目需求作出的建议，不代表性能或打包已验收。</p>
+<h2 id="doc-asset-shortlist-用户最新选择与接入优先级">用户最新选择与接入优先级</h2>
+<p dir="auto">用户已选定 <strong>Niagara Examples Pack</strong> 作为特效来源、<strong>Kenney Input Prompts</strong> 作为键位图标、<strong>Colorosse Slate 系列</strong>作为 UI 主皮肤；敌人已导入 <strong>Wraith、Drongo</strong>，原计划中的 <strong>Minions 由用户暂缓添加</strong>，优先复用原包动画蓝图。表现方向为 <strong>工业魔法朋克：深色金属、铜边、能量光</strong>。下文保留历史候选，当前选型以本段为准。</p>
+<p dir="auto">用户随后指定首版三类敌人<strong>统一使用 Drongo</strong>，共用现有射击 AI，用青蓝、橙、紫背包或标记提示固定机关掉落；Wraith 保留资源库，Minions 暂缓。Drongo 使用配对骨架与项目版原包动画图，具体变更与验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>。下列原始候选与工作量判断保留作选型记录。</p>
+<h2 id="doc-asset-shortlist-敌人资产">敌人资产</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>候选与官方页面</th>
+<th>当前获取费用 / 已核实内容</th>
+<th>适配建议与接入限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.fab.com/listings/039ea035-9360-4e76-ad06-5d3a92da6f65" rel="nofollow">Paragon: Minions — Epic Games</a></td>
+<td>免费；Unreal Engine 格式；含模型、动画、FX</td>
+<td>用户希望保留的普通兵外观。页面未列远程单位、武器、AnimBP 和具体骨架；领取后先核对，缺可用 ABP 时需补最小待机/移动动画图。工作量尚不确定。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/17e0840f-8651-4933-bd6d-211a34b1dd17" rel="nofollow">Paragon: Wraith — Epic Games</a></td>
+<td>免费；Unreal Engine 格式；明确含模型、动画、AnimBP、皮肤、FX</td>
+<td>用户已选择；与现有 Murdock 的科幻风统一。优先用自身骨架与配套动画，接移动变量和攻击表现；本机已有来源包。工作量中。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/40e3af76-9b2d-4680-81b6-606f6d9269ef" rel="nofollow">Paragon: Drongo — Epic Games</a></td>
+<td>免费；Unreal Engine 格式；明确含模型、动画、AnimBP、皮肤、FX；页面标注 Steampunk / Wasteland</td>
+<td>用户已选择；适合更脏、更夸张的工业废土外观，与另外两种共享当前射击 AI。工作量中。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/9fa88852-5711-42e1-94fa-2491498a64da" rel="nofollow">Paragon: Twinblast — Epic Games</a></td>
+<td>免费；Unreal Engine 格式；明确含模型、动画、动画蓝图、皮肤、FX</td>
+<td>次选。英雄辨识度较强，双枪表现与当前 P01 发射对齐需要额外处理，当前优先级低于前两项。工作量中偏高。</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">这些公开页面未提供可读取的具体引擎版本矩阵，不能据此宣称已支持 UE 5.8，也不能假设不同 Paragon 角色共享骨架。商品说明允许在 Unreal Engine 项目中使用，并禁止以 PARAGON 商标命名或宣传游戏；完整使用条款以领取时显示的协议为准。</p>
+<p dir="auto">工程接入依据：<a href="#doc-enemy-setup">Enemy_Setup.md</a>、<a href="#doc-enemy-drops">Enemy_Drops_Setup.md</a>。保留 <code class="notranslate">AEnemyBase</code> 的 AI、Capsule 命中、生命、掉落与导航，隐藏灰盒 BodyMesh，为继承的 Character Mesh 配角色及动画。当前敌人弹丸起点仍由角色视点与前偏移计算，没有绑定武器枪口 Socket；准确枪口闪光和射击动画需补表现适配。</p>
+<h3 id="doc-asset-shortlist-原包动画蓝图复用的实际核对">原包动画蓝图复用的实际核对</h3>
+<ul dir="auto">
+<li><strong>Wraith：本机已有配套资源。</strong> 来源为 <code class="notranslate">D:/YYchainsaw/Unreal-Projects/ShooterAssetPack/Content/ParagonWraith</code>；原 ABP 在 <code class="notranslate">Characters/Heroes/Wraith/Wraith_AnimBlueprint.uasset</code>，配对 Mesh、Skeleton、待机/移动/射击 Montage/死亡资源均存在，无需重新下载整包。静态读取检出 <code class="notranslate">TryGetPawnOwner</code>、<code class="notranslate">GetVelocity</code>、<code class="notranslate">GetCurrentAcceleration</code>，也检出 <code class="notranslate">WraithPlayerCharacter_C</code> 和三处不同名称的原玩家类 Cast 节点。攻击相关委托、Combo Notify 与原鼠标输入逻辑需要接到本作 AI。只指定 Anim Class 不能保证攻击自动工作。</li>
+<li><strong>Drongo：已导入并核对。</strong> 主模型为 <code class="notranslate">Meshes/Drongo_GDC</code>，主 ABP 与 <code class="notranslate">Animations/AnimBP_Drongo_Rigging</code> 在隔离 UE 5.8 中加载、内存编译均通过；原 ABP 仍有 <code class="notranslate">DrongoPlayerCharacter</code> Cast、原攻击委托，当前敌人驱动尚未接入。</li>
+<li><strong>Minions：用户暂缓添加。</strong> 官方只明确列出模型、动画、FX，目前没有确认可直接使用的原包 ABP，也未确认选定远程兵的完整动作；不将它视为当前导入阻断项。</li>
+</ul>
+<p dir="auto">首轮静态核对后，Wraith 已实际导入并完成隔离 UE 关键对象加载；Drongo 也已完成上述编译检查。复制项目版 ABP 后保留原 AnimGraph，仅适配当前 Pawn 数据与攻击事件。原 ABP 若以加速度判断移动，AI 滑行时检查 CharacterMovement 的 Use Acceleration for Paths；这是 <a href="https://forums.unrealengine.com/t/how-to-use-paragon-assets-for-ai-character/432314" rel="nofollow">Epic 论坛的一手排查线索</a>，不是本作 AI 动画的通过记录。</p>
+<h2 id="doc-asset-shortlist-ui-第二轮工业魔法朋克皮肤">UI 第二轮：工业魔法朋克皮肤</h2>
+<p dir="auto">用户已确定使用 <strong>Colorosse Slate 系列</strong>。Panel UI Kit、HUD Bars、HUD Frames 三包源素材已下载至 <a href="../../SourceArt/UI/ThirdParty/ColorosseSlate/README.md">ColorosseSlate</a>，全部 150 张 PNG 和 15 张 2× 常用副本已导入 Unreal；控件映射、九宫格边距、来源 SHA 和署名均已整理。现有 UMG 尚未换肤。下表其他资源仅保留历史比较。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>推荐与发布者页面</th>
+<th>2026-10-16 当前获取费用 / 内容</th>
+<th>适配判断与限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://taproot-solutions-llc.itch.io/steampunk-ui-kit-brassworks" rel="nofollow">Steampunk UI Kit - Brassworks — Taproot</a></td>
+<td><strong>US$4.99</strong>；当前 v3 页列 251 部件；SVG、1×/2×/4× PNG；38 按钮部件、24 状态条部件；按钮四态、独立血条边框与填充、九宫格切片参数</td>
+<td>铜框、深绿氧化金属、螺栓和琥珀玻璃最接近用户方向。可直接给现有按钮/ProgressBar 换 Brush，JSON 还有 Unreal Box 用的比例边距。页面允许多项目商用和修改、免署名；声明未用生成式 AI。不是原生 UMG Widget。</td>
+</tr>
+<tr>
+<td><a href="https://www.colorosse.com/packs/slate-ui-starter" rel="nofollow">Slate UI Starter — Colorosse</a></td>
+<td><strong>免费</strong>；按需分开下载。重点看 <a href="https://www.colorosse.com/assets/2d/ui/slate-panel-ui-kit" rel="nofollow">Panel UI Kit</a>、<a href="https://www.colorosse.com/assets/2d/ui/slate-hud-bars" rel="nofollow">HUD Bars</a> 和 <a href="https://colorosse.com/assets/2d/ui/slate-hud-frames" rel="nofollow">HUD Frames</a>；SVG 与透明 PNG</td>
+<td>深灰金属与暖金色边缘，工业感比纯蓝全息更适合当前场景。Panel 包有四态按钮与九宫格，Bars/Frames 补生命和弹药。三项为 CC BY 4.0，商用需署名。直接下载入口已开放，无需注册。能量光需用项目状态色点缀。</td>
+</tr>
+<tr>
+<td><a href="https://layerlab.itch.io/gui-matt-metal" rel="nofollow">GUI - Matt Metal — LAYERLAB</a></td>
+<td><strong>US$14.99</strong>；394 PNG、72 按钮图标、72 白色图标、20 PSD 与 1 Illustrator 源文件；1080p</td>
+<td>完整金属界面备选，适合标题/暂停/结算和厚边信息框。代码与动画不包含；页面许可为单用户，商用和修改可用，多用户/多项目需另询。页面禁止将该资源输入生成式 AI 工具，若选用只按常规 UMG/图像编辑流程处理。</td>
+</tr>
+<tr>
+<td><a href="https://wenrexa.itch.io/nesia01" rel="nofollow">UI Sci-Fi Minimalism #01 — Wenrexa</a></td>
+<td><strong>免费 / 自定价；CC0</strong>；50 透明 PNG、分组 PSD、1 JPG；声明未用生成式 AI</td>
+<td>应急免费底板。风格偏深灰半透明玻璃与细线，铜饰与金属感较弱；未确认可用的分层血条，优先级低于 Slate 与 Brassworks。</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Slate 三包建议署名包含具体包名、Oğuzhan Girgin、各资源链接与 CC BY 4.0；改色则注明。该系列与 Unreal Engine 的 Slate UI 系统只是同名，不代表原生引擎组件。</p>
+<p dir="auto">另核过原生 UMG 的 <a href="https://www.fab.com/listings/d6313b58-d9be-46fe-a507-3d945443b7c6" rel="nofollow">DARK SCI-FI UI — D.F.Y.</a>：官方说明独立 UMG Widgets、已配九宫格、可改色与尺寸。当前可读取商品页没有实时价格，UE 5.8 支持也未确认，因此不作为本次抢时间的优先购买建议。</p>
+<p dir="auto">筛除说明：FreeUI Sci-Fi Metal Panels / HUD Frames 仍显示下载尚未开放；Antahonist 54 Steampunk HUD 的预览与页面未承诺独立血条边框/填充，需额外裁图，故本轮降低优先级。没有为了凑免费名单把未开放下载的页面列作可用资源。</p>
+<h2 id="doc-asset-shortlist-ui-首轮候选历史比较当前主皮肤已选-slate">UI 首轮候选（历史比较，当前主皮肤已选 Slate）</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>候选与发布者页面</th>
+<th>当前获取费用 / 格式与许可</th>
+<th>本项目的用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://kenney.nl/assets/ui-pack-sci-fi" rel="nofollow">Kenney UI Pack - Sci-Fi</a></td>
+<td>免费；CC0；官网列 130 个基础元素，下载包含 PNG / SVG 等</td>
+<td>首轮皮肤候选，用户尚未采用。挑面板、按钮、进度条，配现有暗底和青蓝/橙/紫点缀；部分组件偏圆润。当前优先比较第二轮铜边金属资源。</td>
+</tr>
+<tr>
+<td><a href="https://kenney.nl/assets/input-prompts" rel="nofollow">Kenney Input Prompts</a></td>
+<td>免费；CC0；官网列 1500 个符号、64×64，覆盖键鼠与手柄；有 PNG / SVG</td>
+<td>最省事的补充。用 E、R、鼠标左键和 Esc 图示完善拾取、投掷、换弹和暂停教学，仅导入实际使用的键帽。</td>
+</tr>
+<tr>
+<td><a href="https://game-icons.net/" rel="nofollow">Game-icons.net</a></td>
+<td>免费；SVG / PNG；CC BY 3.0，需要署名</td>
+<td>补生命、弹药、设置等通用符号。建议维持单色和统一线条密度；现有三机关原创图标继续保留。</td>
+</tr>
+<tr>
+<td><a href="https://coffee-beans-studio.itch.io/futuristic-sci-fi-ui-pack-icons-buttons-panels" rel="nofollow">Futuristic Sci-Fi UI Pack — Coffee Beans Studio</a></td>
+<td>付费备选：整包当前 US$2.21 起，含源文件选项 US$4.24 起；300+ PNG；页面允许商用、修改，署名非强制</td>
+<td>科技按钮、面板图片皮肤。只有 Demo.png 免费；不是现成 UMG Widget，仍需把图片配置到当前控件。价格可能变化。</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Game-icons 可直接选：<a href="https://game-icons.net/1x1/sbed/health-normal.html" rel="nofollow">Health normal（sbed）</a>、<a href="https://game-icons.net/1x1/sbed/ammo-box.html" rel="nofollow">Ammo box（sbed）</a>、<a href="https://game-icons.net/1x1/lorc/return-arrow.html" rel="nofollow">Return arrow（Lorc）</a>。按实际使用项标注作者、来源、<a href="https://creativecommons.org/licenses/by/3.0/" rel="nofollow">CC BY 3.0</a> 与改色等变更；<a href="https://game-icons.net/faq.html" rel="nofollow">官网 FAQ</a>说明游戏菜单署名方式。</p>
+<p dir="auto">工程已有 <code class="notranslate">WBP_MothHUD</code> 和 25 个必需命名绑定，见 <a href="#doc-ui">UI_Setup.md</a>。保留控件名称和兼容类型，只替换 Brush、按钮样式及排版。现有 CrosshairFreePack 无需重复找准星；三机关已有原创矢量图标。首版用透明 PNG 最直接，不增加 SVG 导入依赖。这些图片包不能解决中文字体覆盖，继续使用已能显示中文的字体与回退设置。</p>
+<h2 id="doc-asset-shortlist-特效资产">特效资产</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>候选与官方页面</th>
+<th>当前获取费用 / 类型</th>
+<th>本项目的用途与限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.fab.com/listings/0e188eca-4e54-4fb2-a9ed-d8b8a565e600" rel="nofollow">Niagara Examples Pack — Epic Games</a></td>
+<td>免费；Unreal Engine / Niagara</td>
+<td>新下载首选。明确包含爆炸、子弹命中、弹道、火花、火烟、标记和闪电。D02 取紧凑爆炸，D03 取细弹道，D01 从标记/传送示例寻找上升动势。部分示例使用 Data Channels 和示例逻辑，应先挑独立系统。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/48e20eb7-0812-4670-b206-44d3b5aa8a01" rel="nofollow">Sparks Embers — CGHOW</a></td>
+<td>免费；Unreal Engine 5 / Niagara</td>
+<td>工业场景补充。包含子弹命中火花、短路、通用火花；明确开放颜色、尺寸、速度、方向、寿命等参数。适合机关启动和金属命中。循环的环境火花要改成短促单次效果或显式停止。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/2adf4e4e-5f1d-4543-9e8c-192fe3c9a8ed" rel="nofollow">Realistic Fire &amp; Explosion VFX Vol.1 - FREE Starter Pack — DeepBlues</a></td>
+<td>免费；Unreal Engine 5 / Niagara；10 个效果，其中 3 个爆炸</td>
+<td>D02 的备选。可调尺寸、强度、颜色；选小爆炸并压低余烟，避免遮住下一次瞄准。免费版不含完整版专属的模块火花、碎屑和 Texture Select。</td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/89ae5876-3350-432e-882b-7d617e8c7e6f" rel="nofollow">Paragon: Murdock — Epic Games</a></td>
+<td>免费，项目已存在；本地所查枪口系统为 Cascade</td>
+<td>最快可复用的枪口、等离子命中和弹道来源，与玩家外观一致。复制项目版本后精简；不是 Niagara 资源，不需要为复用而先做转换。</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Epic 的 <a href="https://dev.epicgames.com/community/learning/tutorials/v7z2/unreal-engine-niagara-examples-pack-introduction" rel="nofollow">Niagara Examples Pack 官方介绍</a>教程基于 UE 5.7；这里不把它等同于 UE 5.8 已实测。以上 Fab 页面的 <code class="notranslate">License terms</code> 在可读取文本中为空，未据此推定具体许可类型。</p>
+<p dir="auto">本地已找到的 Murdock 候选（Unreal Content Browser 路径）：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">/Game/ParagonMurdock/FX/Particles/Abilities/Primary/FX/P_Murdock_STD_MUZZLE
+/Game/ParagonMurdock/FX/Particles/Abilities/Primary/FX/P_PlasmaShot_Hit_World
+/Game/ParagonMurdock/FX/Particles/Abilities/Primary/FX/P_PlasmaShot_Hit_Player
+/Game/ParagonMurdock/FX/Particles/Abilities/Primary/FX/P_PlasmaShot_Projectile_Trail_2
+</code></pre>
+<p dir="auto">当前 <a href="#doc-feedback">Feedback_Setup.md</a> 的 <code class="notranslate">DA_DefaultFeedback</code> 只提供颜色、声音、时长、尺寸等配置，没有 Niagara / Cascade 系统槽。粒子接入需使用已有动作事件或增加反馈适配，不能仅把新系统拖进该 Data Asset。已有 <code class="notranslate">OnShotFired</code> 和 <code class="notranslate">OnBombExploded</code> 可用于对应表现；完整命中、弹射、发射器和清理链仍需核对接线。</p>
+<p dir="auto">枪口、命中、爆炸优先用单次短效果。弹道随弹丸，命中/销毁时停止，暂停、结算和重开时清理。保留已有三色轮廓、方向箭头与黄色过期预警；特效只补充真实动作结果。新建粒子实例也需纳入预算，当前原型视觉数量限制不会自动管理外部任意生成的粒子组件。</p>
+<h2 id="doc-asset-shortlist-首版选型顺序">首版选型顺序</h2>
+<ol dir="auto">
+<li>优先适配已导入的 Wraith 与 Drongo 原 ABP，继续共用现有 AI 与三种固定掉落规则；Minions 暂缓，第三外观先保留现状。</li>
+<li>键位固定使用 Kenney Input Prompts，只导入实际用到的键鼠图片。UI 主皮肤已确定 Slate；使用已准备的 15 张 PNG 给现有 UMG 换皮，保留当前绑定和中文字体。</li>
+<li>特效按用户选择使用 Niagara Examples Pack，先接枪口/命中、小爆炸与机关启动的短效果；保留现有机关方向与过期提示。</li>
+<li>在 Soul City 场地测试八敌人同屏、动画的待机/追踪/开火、准星附近可读性、暂停/重开清理及 Windows 打包。</li>
+</ol>
+<p dir="auto">现已导入 Slate / Kenney 的 3,234 张贴图、Wraith 整包及用户后补的 Drongo / Niagara Examples Pack，并保留来源、许可与 SHA；没有购买付费资源或修改现有 HUD、敌人、玩家资产。Minions 暂缓；动画与特效的运行时接入仍待进行，见 <a href="#doc-asset-import">实际导入记录</a>。</p></section><section class="document" id="doc-crosshair" data-source-sha256="6eaf73f1579e5c197407dd05ebb857c0e1e8e893c5806a066d3477b001774be0"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
 <p dir="auto">版本 v0.1 · 2026-10-14 · 状态：C++ 接口源码已写入，待用户自行编译、制作蓝图与 PIE 验收</p>
 <p dir="auto">本轮按用户要求先交付 C++ 和接入说明，不运行 UE、编译或修改 <code class="notranslate">.uasset</code>。<code class="notranslate">WBP_MothCrosshair</code> 由用户在编辑器制作；本文中的动画时长、尺寸和颜色是表现起点，不改战斗数值。现有 HUD、菜单、教学和按钮继续使用 <a href="#doc-ui">UI_Setup</a> 的接口。</p>
 <h2 id="doc-crosshair-1-先加载接口与保存贴图">1. 先加载接口与保存贴图</h2>
@@ -5440,7 +5870,243 @@ Event On Crosshair Page Changed(Page)
 -ExecCmds="Automation RunTests MothEffect.ArenaRuntime+MothEffect.WaveFlowRuntime"
 -TestExit="Automation Test Queue Empty" -ReportExportPath=&lt;Saved下绝对路径&gt;
 </code></pre>
-<p dir="auto">三项 ArenaRuntime 核对保存 NavMesh、出生/回转路线、相机通道/支持面/柱子净空、实际P01挡高掩体和越低掩体、真实角色分别步行两条坡道；五项 WaveFlowRuntime 复用实际关卡三波、物理占位/预警中断、界外/暂停、延迟出生回调与十次 OpenLevel 重开。NullRHI不提供画面证据。重新生成关卡使用 <code class="notranslate">-ExecutePythonScript=&lt;create_t17_arena.py绝对路径&gt;</code>，保持自然 Editor Tick，成功必须出现 <code class="notranslate">T17_ARENA_VERIFIED</code>，不能只看退出码。</p></section><section class="document" id="doc-github" data-source-sha256="3d3231c8a85a895e7e120a69a191c516f90f65a41d22e74388824d65491cce59"><div class="source">可编辑源文件：<a href="../05_Development_Guide/GitHub_Workflow.md">05_Development_Guide/GitHub_Workflow.md</a></div><h1 id="doc-github-moth-effect飞蛾效应github-开发流程">Moth Effect（飞蛾效应）：GitHub 开发流程</h1>
+<p dir="auto">三项 ArenaRuntime 核对保存 NavMesh、出生/回转路线、相机通道/支持面/柱子净空、实际P01挡高掩体和越低掩体、真实角色分别步行两条坡道；五项 WaveFlowRuntime 复用实际关卡三波、物理占位/预警中断、界外/暂停、延迟出生回调与十次 OpenLevel 重开。NullRHI不提供画面证据。重新生成关卡使用 <code class="notranslate">-ExecutePythonScript=&lt;create_t17_arena.py绝对路径&gt;</code>，保持自然 Editor Tick，成功必须出现 <code class="notranslate">T17_ARENA_VERIFIED</code>，不能只看退出码。</p></section><section class="document" id="doc-soulcity-arena" data-source-sha256="6912dbb3fe84d1db3db6805cf1438a30eccb17a02406ed5c02f3be14dea9c6e6"><div class="source">可编辑源文件：<a href="../05_Development_Guide/SoulCity_Arena_Setup.md">05_Development_Guide/SoulCity_Arena_Setup.md</a></div><h1 id="doc-soulcity-arena-moth-effectsoul-city-独立竞技场接入">Moth Effect：Soul City 独立竞技场接入</h1>
+<p>版本 v0.7 · 2026-10-15 · 状态：v4 建筑街巷、外围与远景已完成，隔离验证及八视角通过；手动战斗和性能待验收</p>
+<p>用户已授权使用工程中的 <code>/Game/SoulCity</code> 重构独立工业街区竞技场 <code>/Game/MothEffect/Maps/L_Arena_SoulCity</code>。地图为 <strong>84×72m、四档高度的多路线战场</strong>，保留 17 组原生通风机/管材掩体和 6 条登高连接。v4 将建筑引入战斗范围及其边缘，形成街巷和转角；四周补连续封闭楼群，并用 SoulCity 原生远景卡延续天际线，改善角色视角中场外空地露出的问题。</p>
+<p>当前执行范围与实际验证分开记录于 <a href="#doc-soulcity-report">SoulCity 报告</a>。v1/v2/v3 的结果属于各自交付记录，不能替代本轮新增建筑后的碰撞、导航和遮挡复验。</p>
+<h2 id="doc-soulcity-arena-1-打开与试玩">1. 打开与试玩</h2>
+<p>在 Content Browser 打开 <strong><code>/Game/MothEffect/Maps/L_Arena_SoulCity</code></strong>，对应工程文件 <code>Content/MothEffect/Maps/L_Arena_SoulCity.umap</code>，再按 Play 测试。原 <code>L_Arena_01</code> 保留，<strong>新图仍未设为默认启动地图</strong>；直接打开工程可能仍进入原地图。</p>
+<p>地图沿用现有 <code>BP_MothGameMode</code>、当前玩家/控制器、<code>BP_WaveDirector</code> 与 HUD。Play 后按既有标题/教学/直接进入竞技场的入口操作；<code>MothFlowStats</code>、<code>MothLifecycleStats</code> 等 Development 命令仍可用于辅助观察。暂停与重新开始使用现有菜单，重开应重新加载当前 Soul City 地图。</p>
+<p>用户正在编辑的 HUD、自定义准星、玩家和输入资产不在本轮场景保存范围内。场景改造不代替 <a href="#doc-ui">UI_Setup</a>、<a href="#doc-crosshair">Crosshair_Setup</a> 中尚未完成的编译、蓝图接线或验收。</p>
+<p>World Outliner 的 <code>SoulCity</code> 文件夹按玩法碰撞、地面、掩体、建筑、高台、背景、地标、灯光、视角及装饰分组。<code>SC_Collision_</code> 前缀表示真实功能碰撞；<code>SC_Interior_</code> 为场内原生资产，<code>SC_Urban_</code> 为本轮场内建筑外观。修改真实地形、掩体、栏杆或建筑遮挡后，须同步外观并重新构建导航。v4 在原五视角外增加 <code>SC_View_SouthStreet</code>、<code>SC_View_HighOutward</code> 和 <code>SC_View_WestOutward</code>，用于检查街巷及朝场外看的画面，可使用 Pilot 检查构图。</p>
+<h2 id="doc-soulcity-arena-2-布局与玩法边界">2. 布局与玩法边界</h2>
+<p>坐标单位为厘米，X 为横向、Y 为纵向，Z 为高度。功能布局来自 <a href="../../SourceArt/Levels/SoulCity_Combat_Layout.json">SoulCity_Combat_Layout.json</a>，地图、构图和检查配置来自 <a href="../../SourceArt/Levels/SoulCity_Arena_Layout.json">SoulCity_Arena_Layout.json</a>。原 <a href="../../SourceArt/Levels/T17_Arena_Layout.json">T17 布局</a> 仅用于原地图与历史对照。</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>当前布局</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>战斗范围</td>
+<td>84×72m，X±4200 / Y±3600cm；玩家起点 (-2200,-2400,100)</td>
+</tr>
+<tr>
+<td>地面与落差</td>
+<td>常规地面 Z=0；中央下沉机房 Z=-240；西侧工坊与东侧中继台 Z=360；东侧高台与北侧栈道 Z=720，最高最低相差 9.6m</td>
+</tr>
+<tr>
+<td>步行连接</td>
+<td>6 条登高连接（原生踏步外观、连续坡面通行碰撞）：西侧上行、西侧接北栈道、东侧上行、东侧接高台，以及下沉区东西双出口；宽 6–8m，水平长度 10–16m</td>
+</tr>
+<tr>
+<td>掩体与碰撞</td>
+<td>17 组通风机/管材掩体；v3 的 202 件碰撞保留，另加 7 件建筑核心与 4 件外围楼群核心，实际共 213 件</td>
+</tr>
+<tr>
+<td>场内建筑</td>
+<td>西南仓库、南侧工坊、东侧维修房、东南动力房、西侧临街楼、北侧站房、东侧高台控制楼；有封闭墙面和屋顶，不提供可进入室内</td>
+</tr>
+<tr>
+<td>路线</td>
+<td>保留南侧绕行、下沉区、东西上行、北侧高架及下穿；新增建筑将宽阔空地分成街巷和转角，保存导航与角色手动通行分别验收</td>
+</tr>
+<tr>
+<td>外围遮挡</td>
+<td>四条实体外围基底高 18m，正面为 24 栋从地面起的完整原生组合楼，等比缩放 0.85–1.1，形成错落屋顶；后方连续背景墙和顶部封闭；四方向各放一对正反远景卡，共 8 张，保留 SoulCity 原材质</td>
+</tr>
+<tr>
+<td>导演与出生</td>
+<td>仍为 8 个出生点，按新场地修改地图中导演实例的出生向量与安全体积；波次组成、敌人类别和玩法 C++ 不变</td>
+</tr>
+<tr>
+<td>安全体积</td>
+<td>中心 (0,0,800)、半尺寸 (4300,3700,2200)，即 Z=-1400 至 3000；不等同于可站立区域</td>
+</tr>
+<tr>
+<td>导航范围</td>
+<td>中心 (0,0,500)、半尺寸 (4400,3800,1700)，覆盖下沉区与高架；导航须重建并保存</td>
+</tr>
+</tbody>
+</table>
+<p>三波继续为 4 / 3+3 / 4+4。生成预警、存活与待生成计数、跨波机关寿命、胜负清理和整局重开仍由现有导演与 Subsystem 管理。本轮替换新地图实例的安全体积、出生点、玩家起点和导航范围，不修改 GameMode、导演类或波次规则。道具规则以当前 <a href="#doc-device-refactor">道具基础重构接入</a> 为准。</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容与接入边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>功能层</td>
+<td><code>SC_Collision_</code> 承担步行、遮挡和导航；设备/管材/护栏使用对应原生网格的碰撞，地面/楼梯沿用简单承托面，封闭楼房使用整块建筑核心。可承托表面保留 <code>MothColumnSurface</code> 标签</td>
+</tr>
+<tr>
+<td>外观层</td>
+<td>SoulCity 网格、地面表皮、管线、机器附件、灯饰和背景关闭碰撞、Overlap 与导航影响；外观须与功能碰撞对应</td>
+</tr>
+<tr>
+<td>建筑与远景</td>
+<td>场内建筑同时遮挡视线与通行，外围楼群封闭场外视野，远景卡只负责天际线；建筑屋顶、窗洞和远处道路不承诺可进入或可行走</td>
+</tr>
+<tr>
+<td>材质与光照</td>
+<td>自有材质存放于本作目录；周边和光照由独立模块生成，不覆盖 SoulCity 原材质或新增玩法能力</td>
+</tr>
+</tbody>
+</table>
+<p>v4 保留既有地基、周边工业设施和光照；东侧高台低掩体向南移动 200cm，为控制楼前通道留出空间。外围组合楼从地面起布置，完整原生楼板在楼群后方封顶，背景保留连续后墙及两端墙；悬空的独立窗、面板与管线装饰已清除，门窗和管线细节来自组合楼本身。场内 7 栋楼的主要组合结构也从地面起，顶部条带实心闭合。当前光照配置为 SkyLight 强度 1.05、冷色补光 0.65、局部灯强度 170/140；八视角已检查，实际角色镜头与用户机器性能仍需手动验收。</p>
+<p>现有敌人视距为 25m、攻击距离为 18m，必须先在视距内真实看见玩家，才会记录位置并沿导航追击；离开视线后只记忆 3 秒。扩大场地不等于敌人能从任意远处或完全遮挡的出生口主动搜寻玩家。需在实际战斗中确认每批敌人的视线、入场与上下坡追击，避免把静态完整路径误当作 AI 已主动通行。</p>
+<p>出生点向下探地使用该点 Z+500 至 Z-1500 的静态射线，多层区域必须保留正确出生高度与头顶净空，避免射线命中上层楼板。D01 仍向下探地 15m、柱高 3.5m，并要求支持标签与静态净空；栈道下方可走不代表该处一定可升柱。D03 仍锁定水平火线，高低层间的间接连锁需要实际摆放和投掷验证。装饰不能遮住出生预警、机关轮廓或形成看似可走的假通路。</p>
+<p>现有原型场景层的自动生成限定于 <code>L_Arena_01</code>；新图的 Soul City 外观由本次独立搭建负责，不依赖旧地图名触发 T20 掩体/符文层。</p>
+<h2 id="doc-soulcity-arena-3-资源依赖与恢复">3. 资源依赖与恢复</h2>
+<p>新地图继续引用现有 <code>/Game/MothEffect</code> 玩家、框架、AI、机关、反馈和 UI 资产，同时直接引用 <code>/Game/SoulCity</code> 的网格及其材质/纹理依赖。当前玩家自身的 ParagonMurdock 等外部依赖仍按 <a href="#doc-prototype-art">Prototype_Art_Setup</a> 的恢复约定准备；增加场景不能补齐原本缺失的角色/动画包。</p>
+<p>仓库 <a href="../../.gitignore"><code>.gitignore</code></a> 只保留 <code>Content/MothEffect</code>，所以 <strong><code>Content/SoulCity</code> 不随项目 Git 提交分发</strong>。另一台电脑或恢复工作区时，须从用户有权使用的 Epic/Fab 资源取得 Soul: City，并恢复到相同 <code>/Game/SoulCity/...</code> 路径；不要只复制新 <code>.umap</code> 就当作资源齐全。实际使用网格、摆放与引用检查结果见验证报告及其证据。</p>
+<p>本轮新增自有内容的复制范围仅为新地图与实际新建的自有材质。SoulCity、现有玩家/HUD、原地图均不重存。独立包仍需实际 Cook/启动核对新地图和外部资源依赖；编辑器中可见不代表独立包已经包含所有依赖。</p>
+<h2 id="doc-soulcity-arena-4-来源与使用范围">4. 来源与使用范围</h2>
+<ul>
+<li>来源为 Epic Games 的 <a href="https://www.fab.com/listings/dd77fee6-0ad2-41ce-b32c-09300c24c9f3">Soul: City Fab 商品页</a>。2026-10-15 回读时页面显示 Free、Unreal Engine 格式，描述说明可用于 Unreal Engine 项目；可读取的 License terms 字段为 <code>-</code>，不据此写成 Fab Standard License。</li>
+<li>Epic 于 2018-01-23 的 <a href="https://www.unrealengine.com/blog/soul-city-soul-cave-assets-released-for-free?lang=en-US">原始发布说明</a> 明确限定资源用于 Unreal Engine。这里按 <strong>UE-only 第三方资源</strong>记录，不将 SoulCity 网格、材质和纹理归为本项目原创资产。</li>
+<li>项目新增的场景摆放与自有材质不改变 SoulCity 原始资源的来源和使用范围。</li>
+</ul>
+<h2 id="doc-soulcity-arena-5-隔离生成与实际验证">5. 隔离生成与实际验证</h2>
+<p>v4 在 <code>Saved/Automation/SoulCity/Stage_20261015_04</code> 生成，复制范围限于地图及七件自有材质。任务前 88 件游戏资产备份在 <code>Saved/Automation/SoulCity/Archive_v3_DistrictStart</code>；原地图、HUD、玩家和其他 80 件非场景资产按 SHA 保护。第三方源包不重存，不改 C++ 或编译 DLL，隔离配置不复制回原工程。</p>
+<p>既有场内模块由 <a href="../../scripts/soul_city_interior.py">soul_city_interior.py</a> 负责；新增场内楼房由 <a href="../../scripts/soul_city_buildings.py">soul_city_buildings.py</a> 负责，外围楼群与远景卡由 <a href="../../scripts/soul_city_enclosure.py">soul_city_enclosure.py</a> 负责。<a href="../../scripts/create_soul_city_arena.py">地图构建</a> 负责接入、保存和导航，<a href="../../scripts/soul_city_dressing.py">周边与光照</a> 独立保留。功能配置见 <a href="../../SourceArt/Levels/SoulCity_Combat_Layout.json">战斗布局</a>，资产与新增街区检查配置见 <a href="../../SourceArt/Levels/SoulCity_Arena_Layout.json">地图配置</a>。</p>
+<table>
+<thead>
+<tr>
+<th>检查</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>保存地形和框架</td>
+<td>通过两次磁盘加载：213 件隐藏碰撞、导演/玩家/控制器、8 出生点、安全与导航范围均符合配置，地图 SHA 保持</td>
+</tr>
+<tr>
+<td>通行与承托</td>
+<td>原 20 条导航、21 条真实支持射线、高低掩体射线，以及 4 条新增街巷导航均通过</td>
+</tr>
+<tr>
+<td>建筑与外围</td>
+<td><a href="../../scripts/verify_soul_city_district.py">街区检查</a> 通过 7 栋核心包围盒及 28 条隔离盒面查询，另通过 24 条不忽略世界物体的入口/高台朝外遮挡射线；前者只核对单栋核心，后者和截图共同核对采样视野</td>
+</tr>
+<tr>
+<td>原生资产</td>
+<td><a href="../../scripts/verify_soul_city_interior.py">资产检查</a> 通过：2339 件外观中 2303 件引用 SoulCity，153 对设备/管材/护栏隐藏代理与可见模型网格及变换一致，资产策略失败为 0</td>
+</tr>
+<tr>
+<td>三波流程</td>
+<td>生产接口开始，实际生成 4/6/8 共 18 敌人，真实伤害清场至 Victory，高处出生支持高度 360/720cm 通过</td>
+</tr>
+<tr>
+<td>画面</td>
+<td>已捕获并核对 D3D12 八视角，包括街巷和朝外视角；实际 AI 追击、手动战斗、所有角色镜头角度及性能另验</td>
+</tr>
+</tbody>
+</table>
+<p>最终数量、逐件摆放、SHA 和实际运行结果见 <a href="#doc-soulcity-report">验证报告</a>。三份验证与八视角捕获对应同一份地图 SHA；脚本清场会清理其造成的掉落，实际掉落分布和连锁仍需手动检查。v3 的 202 件碰撞、1750 件外观、20 条路径和五视角结果归档保留为历史。</p>
+<h2 id="doc-soulcity-arena-6-用户-pie-清单">6. 用户 PIE 清单</h2>
+<ol>
+<li>打开 <code>L_Arena_SoulCity</code> 后 Play，核对标题、教学和战斗入口，以及现有 HUD、自定义准星和输入是否保持正常。</li>
+<li>从地面进入 -240cm 下沉区，分别走东西出口；再沿两侧坡道到 +360cm 和 +720cm，通过北侧栈道横穿，并走下层绕行路线。确认各路线无卡人、导航断点或假通路。</li>
+<li>沿新建筑转角、南侧街巷、高台控制楼前、掩体、栏杆和坡道接缝移动与转动越肩镜头，核对真实挡弹、枪口净空、投掷及外观对应；从入口、高台和西侧朝外转动，检查场外地面及楼群接缝。封闭楼房和外圈装饰不作为可进入室内测试目标。</li>
+<li>在各层测试 D01 支持面、升柱净空和抬升落点；观察 D03 水平火线与 D02 遮挡、爆炸和掉落，确认高差没有让机关落到不可取得的位置。</li>
+<li>完成全部三波，重点观察远处和高层出生敌人能否先看见玩家、沿坡道追击，并确认预警、固定掉落、清波和胜负正常。暂停与重开后应仍在本地图，无旧对象或重复场景残留。</li>
+<li>使用当前机器正常渲染记录过暗/过亮、材质缺失、远景遮挡、帧率和手感。手动通关、硬件性能与独立包分别记录，不能由截图或脚本伤害清场代替。</li>
+</ol></section><section class="document" id="doc-soulcity-report" data-source-sha256="4de9b1817673cae26bbdae7a9ef0870f2541610f70c5a3c45123ed225829bd7b"><div class="source">可编辑源文件：<a href="../06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md">06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md</a></div><h1 id="doc-soulcity-report-soul-city-战斗街区搭建与验证">Soul City 战斗街区搭建与验证</h1>
+<p>版本 v0.4 · 2026-10-15 · UE 5.8 Win64 · v4 建筑街巷与外围完成，隔离验证及八视角通过；用户硬件与手动战斗待验收</p>
+<h2 id="doc-soulcity-report-交付">交付</h2>
+<p><code>/Game/MothEffect/Maps/L_Arena_SoulCity</code> 已由上一版平地竞技场重构为 <strong>84×72m 的多层工业街区战场</strong>。最低 -2.4m、地面 0m、中台 3.6m、高架 7.2m，最大高差 9.6m；六条 6–8m 宽的坡道连接各层。场地有 17 组高低掩体、南侧绕行路、下沉庭院双出口、东西上行和北侧高架；下方保留服务通路。原 <code>L_Arena_01</code> 和默认启动地图保留。打开方法与编辑约定见 <a href="#doc-soulcity-arena">接入说明</a>。</p>
+<p>v4 保留 84×72m 布局、17 组掩体、6 条连接和 8 个出生点，新增 7 栋封闭建筑，把场内空地组织成街巷和转角：西南仓库、南侧工坊、东侧维修房、东南动力房、西侧临街楼、北侧站房、东侧高台控制楼。建筑有完整墙面和屋顶，不提供可进入室内；东侧高台低掩体向南移动 200cm，为楼前通道留出空间。现有 GameMode、玩家/控制器、波次、机关规则、HUD 和用户准星蓝图继续复用，没有改 C++ 或编译 DLL。</p>
+<p>四边新增实体外围，连续基底高 18m，正面用 24 栋完整原生组合楼形成错落街区：南北各 7 栋、东西各 5 栋，均从地面起布置，保留原材质和 0.85–1.1 的等比缩放。楼群后方保留连续不透背景墙、两端墙及完整原生楼板屋顶，原生楼房的完整立面朝向场内。悬空的独立窗、面板和管线装饰已清除，细节保留在原生组合楼中。场内 7 栋楼的主要组合结构也从地面起，顶部条带实心闭合。四方向各放一对正反 SoulCity Matte01 远景卡，共 8 张，延续天际线；远景卡不参与碰撞或导航。</p>
+<p>实际保存 <strong>213 件功能碰撞、2339 件静态外观</strong>：功能碰撞包含 v3 的 202 件、7 件场内建筑核心与 4 件外围核心；设备/管材/护栏的 153 对原生隐藏代理与可见网格、变换一致。外观中 2303 件引用 SoulCity，按配置中心范围计场内 1196 件，共 38 种可见网格；保留的 35 件可见 Engine Cube 为既定灯杆、基础与外景工业结构例外，资产策略失败为 0。中心范围统计只反映摆放位置分类，不表示所有这些实例均在画面中可见。逐件信息见 <a href="../06_Test_Doc/Evidence/SoulCity/BuildResult.json">生成结果</a>、<a href="../06_Test_Doc/Evidence/SoulCity/Placements.json">摆放清单</a> 和 <a href="../06_Test_Doc/Evidence/SoulCity/InteriorAssetVerification.json">资产检查</a>。</p>
+<p>照明沿用暖色落日主光、冷色天空与无阴影补光、8 盏局部灯及距离雾，共 11 个灯光 Actor，只有主太阳投影。自有内容复制范围限于地图与七件材质，共八包；路径和 SHA 见 <a href="../06_Test_Doc/Evidence/SoulCity/PromotionManifest.json">交付清单</a>，80 件非场景资产保持原 SHA，见 <a href="../06_Test_Doc/Evidence/SoulCity/AssetProtection.json">字节保护摘要</a>。SoulCity 源包不重存。</p>
+<h2 id="doc-soulcity-report-执行与检查">执行与检查</h2>
+<p>在 <code>Saved/Automation/SoulCity/Stage_20261015_04</code> 中使用现有 DLL 生成与验证，只复制拥有的八个包回原工程。构建不执行 Save All，只读验证器不保存资产、不重建导航。任务前 88 件游戏资产备份在 <code>Saved/Automation/SoulCity/Archive_v3_DistrictStart</code>；80 件非场景资产保持原 SHA。</p>
+<p>最终地图 SHA-256 为 <code>18774f1432f6e0619e55f020da2d473bd1d5c54b48951d64612523b7fe10e196</code>。三份验证与截图捕获的前后 SHA 均与该文件相同，下表对应这一版保存地图。</p>
+<table>
+<thead>
+<tr>
+<th>检查</th>
+<th>结果与范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成、保存、重载</td>
+<td>通过：213 件功能碰撞和 2339 件外观保存，导航构建后保存并重载</td>
+</tr>
+<tr>
+<td>独立磁盘加载</td>
+<td>通过：两次加载，中间离开到 Engine Entry，不保存；地图 SHA 前后相同</td>
+</tr>
+<tr>
+<td>碰撞与承托</td>
+<td>通过：BlockAll / WorldStatic / QueryAndPhysics；21 条支持射线检查高度、法线及支持标签，高掩体阻挡、低掩体上方清空</td>
+</tr>
+<tr>
+<td>原有静态导航</td>
+<td>20 路通过，覆盖 8 出生点、南侧绕行、北侧下穿、西侧服务道、四段登高、上层横穿、下沉区及高掩体绕行，登高峰值高度符合要求</td>
+</tr>
+<tr>
+<td>新增街巷导航</td>
+<td>4 路完整通过：仓库东侧街道、工坊南侧巷道、维修房北侧转角、高台控制楼西侧通道</td>
+</tr>
+<tr>
+<td>建筑核心</td>
+<td>7 栋包围盒及 28 条隔离盒面查询通过；查询忽略其他静态网格，仅核对单栋核心，不能据此认定四面外观或真实世界中的接近路线均已通过</td>
+</tr>
+<tr>
+<td>外围遮挡</td>
+<td>入口与高台各 12 方向，共 24 条抬升朝外射线通过；查询保留全部世界物体，无忽略 Actor，只证明这些采样方向的静态遮挡</td>
+</tr>
+<tr>
+<td>安全、导航范围与框架</td>
+<td>通过：导演安全体积、NavBounds、GameMode、玩家/控制器、唯一导演及三类敌人引用、8 出生点 XYZ 符合配置</td>
+</tr>
+<tr>
+<td>原生资产与碰撞对应</td>
+<td>通过：原材质逐槽一致，外观无碰撞/导航影响，缩放符合策略，153 对原生代理匹配；<a href="../06_Test_Doc/Evidence/SoulCity/InteriorAssetVerification.json">资产检查</a></td>
+</tr>
+<tr>
+<td>脚本 PIE 与三波</td>
+<td>通过：生产入口、玩家/HUD、100HP/24 弹，真实 Health.ApplyHit 清敌，自然生成 4/6/8 共 18 敌人至 Victory；中台两点支持高度 360cm，高架一点 720cm</td>
+</tr>
+<tr>
+<td>D3D12 画面</td>
+<td>已捕获并核对 8 张 1600×900 截图，包含南侧街巷、高台朝外和西侧朝外；不作为帧率、全部角色镜头或手动战斗证据</td>
+</tr>
+</tbody>
+</table>
+<p>路线、支持射线、出生观察、世界时间、类名及 SHA 见 <a href="../06_Test_Doc/Evidence/SoulCity/SoulCityArenaVerification.json">竞技场验证</a>，建筑核心、遮挡和街巷路径见 <a href="../06_Test_Doc/Evidence/SoulCity/DistrictVerification.json">街区验证</a>。源图实际控制器为继承本项目原生控制器的 <code>BP_ThirdPersonPlayerController</code>。</p>
+<p>全波检查通过唯一 HitContext 调用现有 Health.ApplyHit(1000)，不改导演计数或强行切波；清理脚本造成的掉落，避免挡住下一波复用出生点。位置记录为首次轮询观察，不是精确原生出生回调。它验证生成、支持与波次流程，<strong>不能替代玩家手动通关、AI 实际上下坡追击或机关连锁验收</strong>。</p>
+<h2 id="doc-soulcity-report-生成约定">生成约定</h2>
+<ul>
+<li>加载隔离地图，移除本轮 <code>SC_</code> 场景 Actor 后重建，保留框架与地图包路径。</li>
+<li>UE 5.8 的编辑器异步导航等待曾阻止构建，Stage 中关闭该等待；脚本仍先完成资源编译，再显式构建、保存并重载导航。该配置不复制回主工程，验证器不重建导航。</li>
+<li>原生网格按包围盒中心补偿资源枢轴；可见外观统一关闭碰撞、Overlap 与导航影响，真实碰撞独立保存。</li>
+<li>原生台阶外观沿用连续坡面承托；设备使用近景完整通风件和原材质，原生代理匹配规则继续保留。</li>
+<li>建筑占地、闭合墙面与核心阻挡须对应；保留教学区和出生点，不把远景薄片当成场内实体楼房。</li>
+</ul>
+<p>原始运行日志保留在本机任务目录，摘录见 <a href="../06_Test_Doc/Evidence/SoulCity/Execution_History.log">执行历史</a>。既有 ParagonShinbi LevelStart 依赖、旧输入/Rig 等告警不属于本轮修复范围；第三方旧包未自动保存。</p>
+<h2 id="doc-soulcity-report-场景截图">场景截图</h2>
+<p>截图来自同一份最终保存地图的编辑器场景相机，核对了街巷、楼群、外围采样视野和独立装饰悬空问题；不包含玩家操作/HUD 验收。<a href="../06_Test_Doc/Evidence/SoulCity/CaptureResult.json">捕获记录</a></p>
+<p><img alt="全场与周边" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_Overview.png"></p>
+<p><img alt="入口" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_Entrance.png"></p>
+<p><img alt="东侧高台" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_Platform.png"></p>
+<p><img alt="下沉庭院" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_SunkenCourt.png"></p>
+<p><img alt="西侧工坊" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_WestWorks.png"></p>
+<p><img alt="南侧街巷" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_SouthStreet.png"></p>
+<p><img alt="高台朝外" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_HighOutward.png"></p>
+<p><img alt="西侧朝外" src="../06_Test_Doc/Evidence/SoulCity/SoulCity_WestOutward.png"></p>
+<h2 id="doc-soulcity-report-历史与尚未覆盖">历史与尚未覆盖</h2>
+<p>v3 的 202 碰撞、1750 外观（其中 1714 SoulCity）、153 原生碰撞对、20 导航、21 支持及五视角保留于 <a href="../06_Test_Doc/Evidence/SoulCity/V3/SoulCityArenaVerification.json">v3 检查</a>。v2 的 71 碰撞/1353 外观及五视角保留在 <a href="../06_Test_Doc/Evidence/SoulCity/V2/SoulCityArenaVerification.json">v2 检查</a>；v1 的 60×50m、19 原功能几何、305 外观/268 SoulCity、15 导航/11 支持及首波检查保留在 <a href="../06_Test_Doc/Evidence/SoulCity/V1/SoulCityArenaVerification.json">v1 检查</a>。这些旧结果不能作为 v4 新增建筑后的验证证据。</p>
+<p>未验收真实键鼠手感、完整教学、手动三波胜负重开、实际 AI 追击上下坡、D01 弹射站立/净空、D03 水平连锁、准星动画、帧率或独立 Windows 包。敌人仍采用现有 25m 视距、18m 攻击距离及 3 秒视线记忆；静态路径可达不能替代实际追击。SoulCity 与角色等第三方资源仍须按现有依赖恢复约定准备。</p></section><section class="document" id="doc-github" data-source-sha256="3d3231c8a85a895e7e120a69a191c516f90f65a41d22e74388824d65491cce59"><div class="source">可编辑源文件：<a href="../05_Development_Guide/GitHub_Workflow.md">05_Development_Guide/GitHub_Workflow.md</a></div><h1 id="doc-github-moth-effect飞蛾效应github-开发流程">Moth Effect（飞蛾效应）：GitHub 开发流程</h1>
 <p dir="auto">版本 v0.4 · 2026-10-12 · 香港时间（UTC+8）</p>
 <p dir="auto">仓库：<a href="https://github.com/YYchainsAw/MothEffect">YYchainsAw/MothEffect</a>；看板：<a href="https://github.com/users/YYchainsAw/projects/1" gh:project-mention="{&quot;owner&quot;:&quot;YYchainsAw&quot;,&quot;number&quot;:&quot;1&quot;,&quot;view&quot;:null,&quot;status_update_id&quot;:null}">MothEffect · 首版开发</a>（Private，需要项目权限）。阶段截止和任务进度见 <a href="#doc-plan">开发任务与排期</a>，游戏实测标准见 <a href="#doc-test">测试计划</a>。</p>
 <h2 id="doc-github-1-从任务到验收">1. 从任务到验收</h2>
@@ -5553,12 +6219,20 @@ Event On Crosshair Page Changed(Page)
 <h2 id="doc-workflow-5-issueproject-与-docs-同步">5. Issue、Project 与 Docs 同步</h2>
 <p dir="auto">GitHub 的当前用法见 <a href="#doc-github">GitHub 开发流程</a>。排期与任务编号仍在 <a href="#doc-plan">开发计划</a> 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。</p>
 <p dir="auto">同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。</p>
-<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="a69a75183ec6aed75668a441c36441e1c5a33a1cd7d1da88a36640fcbc347507"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
-<p dir="auto">版本 v0.54 · 2026-10-14 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="ecf7f101a93e1c564e19fc1ff01ed18e76b97dae37beb5815c9058dda35eab62"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
+<p dir="auto">版本 v0.62 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">CHG066（2026-10-16）：按用户选择将三类敌人统一为 Drongo，保留既有敌人类、AI、生命与固定掉落；新增项目版原 ABP，删除演示玩家/连击/出生摆姿依赖，移动判定改读实际速度并防止初始化转身计算除零。父蓝图接原开火 Montage 与完整死亡动画，四件敌人蓝图配置配套模型并隐藏灰盒。隔离 UE 5.8 编译、两次保存实例重载、三类实际移动/UpperBody 射击与 P01/完整死亡/固定掉落专项，以及 D3D12 预览通过，进程退出码均 0。用户关闭文件锁编辑器后按 SHA 写回五件包；118 个其他保护文件与 1,913 个 Drongo 原文件保持。初次旋转断言失败保留，修正后重测；具体证据和未验收范围见 <a href="#doc-drongo-enemy">Drongo 接入</a>。未修改 C++、用户 HUD 或供应商资产，未提交/推送。</p>
+<p dir="auto">CHG065（2026-10-16）：用户补入 Niagara Examples Pack 与 Paragon Drongo，并明确暂缓 Minions。隔离 UE 5.8 注册两包、检查 <code class="notranslate">/Game</code> 硬软引用并实际加载 23 件关键对象；Drongo 主 ABP / Rigging 子 ABP 内存编译为 UpToDate，原 Character 带旧输入映射警告。注册 59 个 NiagaraSystem，其中 15 个实际加载通过；日志退出码 0、0 errors、17 warning 事件，保留旧 Rig 与预览软引用问题。两包原目录/隔离副本 2,582 件文件和 122 件保护范围内项目文件 SHA 均未变，没有保存或写回原包、修改配置或接入运行时外观。位置与证据见 <a href="#doc-asset-import">导入说明</a>，实际特效画面、AI 动画、PIE 和独立包未验证；未提交或推送。</p>
+<p dir="auto">CHG064（2026-10-16）：按用户选型和导入授权，新增 Slate / Kenney 的 3,234 张 UI Texture2D，复制 Wraith 的 1,597 件原包文件，保存原路径及来源许可。通过隔离 UE 5.8 二次磁盘读取、运行时硬引用检查、五件 Wraith 关键资产加载和写回 SHA；首轮缺 XRBase 的失败保留，随后补齐插件并以退出码 0 通过。94 件原有文件写回前后 SHA 一致，之后仅新增 uproject 的 XRBase 依赖；未改 HUD、玩家、敌人 AI 或 C++。其余 Niagara / Minions / Drongo 因本机无包，待用户 Fab 添加后核验。位置与边界见 <a href="#doc-asset-import">导入说明</a>，未提交或推送。</p>
+<p dir="auto">CHG063（2026-10-16）：根据当前进度新增 <a href="#doc-devlog-20261016">开发者日志</a>，覆盖10/14—10/16道具基础重构、SoulCity场景与正式准星接入；分别记录已实现、已有验证和待验收，保留击杀反馈未确认修复、实际操控/性能/独立包的风险，提出下一期整合与候选包计划。同步文档入口及阅读版章节；仅文档整理，未修改游戏实现、运行UE或查询远程任务状态。</p>
+<p dir="auto">CHG062（2026-10-15）：按用户要求将建筑带入战斗场地并收紧场景视野。新增七栋封闭建筑，连续外围楼群与四方向原生城市远景卡；高台掩体略南移以留出转角净空，其余地形、8出生点、6登高连接和波次规则保持。Stage_04隔离生成，v3证据另存V3，仍只提升地图和七件自有材质。建筑实体、外围遮挡射线、新增街道导航、原场景/三波与D3D12八视角的实际结果见 <a href="#doc-soulcity-report">报告</a>。不改C++、用户HUD、玩家、原图或默认入口，手动战斗和性能待验收，未提交/推送。</p>
+<p dir="auto">CHG061（2026-10-15）：按用户要求将SoulCity资产用于战斗场地内部主体。新增独立场内模块，使用原生台阶/楼板/波纹金属墙/柱/护栏，以及完整风扇接管设备和法兰管材替换方箱；保留原材质与设备等比缩放。六条连接及17组掩体位置保持，设备/管材/护栏的153组隐藏代理使用与显示相同的原生网格/变换，功能代理总数202。原生资产/材质/缩放/可见Cube限制、保存导航/碰撞、脚本三波及D3D12五视角的实际结果见 <a href="#doc-soulcity-report">报告</a>。Stage_03隔离生成，v2备份；不改C++、玩家、HUD、原图、默认入口或第三方源包，未提交/推送，手动操作和性能待验收。</p>
+<p dir="auto">CHG060（2026-10-15）：按用户要求重构完整 SoulCity 战斗街区。新图84×72m，-240/0/360/720cm四档高度、六坡道和17组掩体；71件新功能碰撞替代原19件，更新地图实例的玩家起点、8出生点、安全体积与导航。增加场内机器/货箱/管线/棚架、周边楼群、齿轮、外桥、连续地基和落日冷暖照明。最终保存重载20路径、21支持射线、双次磁盘加载及脚本三波4/6/8共18实际出生、Victory检查与五视角结果见 <a href="#doc-soulcity-report">报告</a>。不改C++/用户UI/原图/默认入口，旧版备份保留，仅提升地图和七件自有材质；手动通关、AI完整追击、机关手感、性能与独立包未验收，未提交或推送。</p>
+<p dir="auto">CHG059（2026-10-15）：用户授权用已导入 SoulCity 搭建关卡。新增独立 <code class="notranslate">L_Arena_SoulCity</code>，保留 T17 原功能几何、支持标签、八出生点、导演和原 GameMode/玩家/HUD；305 个静态外观实例中 268 个引用 SoulCity，另有冷暖灯光、天空和远景雾，六件新自有材质及地图共七包。生成/检查在隔离副本进行，只提升本轮新包，原 80 件游戏资产逐件 SHA 校验保留。保存/重载导航、真实静态碰撞、首波脚本 PIE 与 D3D12 三视角结果见 <a href="#doc-soulcity-report">本轮报告</a>。没有改 C++、默认启动地图或用户蓝图，没有将用户手动战斗、三波通关、帧率和独立包记为通过；未提交或推送。</p>
 <p dir="auto">CHG058（2026-10-14）：按用户已导入贴图并自行制作蓝图的分工，补入敌人真实命中/击杀快照、世界内原生与蓝图通知、HUD 拥有玩家筛选和重置/暂停/页面事件；普通命中与致死共用 <code class="notranslate">bKilled</code> 分支。新增独立的原生命中 X 开关，保留受伤边框及已恢复的旧 UI 默认创建（<code class="notranslate">moth.UI.LegacyEnabled=1</code>）。新增九项 Automation 测试源码，覆盖实际伤害、去重、归属、世代重入、关闭/暂停与跨世界隔离；详见 <a href="#doc-crosshair">准星接入</a>。用户选择“先完成 C++ 和说明，我稍后自行编译”，本轮未编译、未运行 UE/Automation、未保存或修改 <code class="notranslate">.uasset</code>，不以旧构建/测试记录作为本轮通过证据；未提交、推送或创建 PR。</p>
 <p dir="auto">CHG057（2026-10-14）：收尾提交 0e5370a / 4934627 修复延迟会话关闭立即取消、落地关闭模拟顺序及无碰撞道具的重叠掉落/拾取；新增六项 Foundation 并适配既有专项、保存蓝图与真实主地图时序。隔离 UE 5.8 构建通过；首轮 Foundation 5 成功/1 失败、首轮全量 111 成功/3 失败如实保留，最终 114 Editor 与 12 D3D12/音频主地图 Game 全部通过。Editor errors=0 / warnings=50（DesignerProbe），Game errors=0 / warnings=232（导航/第三方 Rig/旧输入/动画/夹具配置/Notify）。180 件源码/配置与 4934627 一致，用户并行玩家/控制器/UI/Build 改动未纳入。后续确认编辑器已关闭，原工程常规构建56.79秒Succeeded，新DLL六项Foundation复测通过，包含用户当前未提交控制器源码但未纳入本轮提交。见 <a href="#doc-device-refactor-report">验证报告</a> 与原始证据；硬件 PIE、尺寸/手感调优与独立包待验收，四项 Issue 保持 Open / In Progress，未推送/创建 PR。</p>
 <p dir="auto">CHG056（2026-10-14）：用户开始道具基础重构，使用当前 <code class="notranslate">refactor</code> 分支、逐项本地提交。新建 <a href="https://github.com/YYchainsAw/MothEffect/issues/48" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/48/hovercard">#48</a> 地面固定/尺寸配置、<a href="https://github.com/YYchainsAw/MothEffect/issues/49" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/49/hovercard">#49</a> D03 水平入射投影、<a href="https://github.com/YYchainsAw/MothEffect/issues/50" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/50/hovercard">#50</a> 三机关共用延迟及 <a href="https://github.com/YYchainsAw/MothEffect/issues/51" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/51/hovercard">#51</a> 爆炸激活；负责人 YYchainsAw、既有标签、M5 和 Project / In Progress 均已回读，四项保持 Open。落地实体根停止模拟/NoCollision，独立 ShotCollider 保留查询；显式推力/弹射可再次起飞，落地重新固定。D03 锁世界 XY 投影，竖直命中回退 +X；共用延迟后才起效果，D03 原首发延迟及工作寿命继续从效果起动计。D02 开放无遮挡 Dormant 的延迟连锁，Held/Active 保护及独立伤害/激活 HitId 保留。新增 DEC41–DEC44、参数 v0.19 与 <a href="#doc-device-refactor">重构接入</a>，同步现行规则/TDD/计划/入口；本轮 UE 编译、原生执行、当前 PIE 与独立包先记未运行，不把此前测试结果移作新规则验收。未创建 PR、推送或关闭任务，用户玩家资产与 Build/ 不纳入本轮。</p>
-<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.49，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
+<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.57，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
 <span id="doc-changelog-section"></span><h2 id="doc-changelog-1-变更记录">1. 变更记录</h2>
 <markdown-accessiblity-table><table role="table">
 <thead>

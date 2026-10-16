@@ -74,8 +74,8 @@ namespace MothTutorialRuntimeTest
 			if (FPlatformTime::Seconds()<Wait) return false;
 			if (Stage==1)
 			{
-				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("PrimaryButton")));
-				if (!T->TestNotNull(TEXT("Saved Designer primary button"),Button)) return true;
+				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("SecondaryButton")));
+				if (!T->TestNotNull(TEXT("Saved Designer teaching button"),Button)) return true;
 				Button->OnClicked.Broadcast(); UI->RefreshState(); PC->SyncUIInput();
 				T->TestTrue(TEXT("Start button enters real tutorial with gameplay input"),S->GetStep()==EMothTutorialStep::BombAndLift&&!PC->bShowMouseCursor&&!PC->IsMoveInputIgnored());
 				Capture(TEXT("02_Tutorial.png")); Wait=FPlatformTime::Seconds()+.6; Stage=2; return false;
@@ -246,8 +246,8 @@ namespace MothTutorialRuntimeTest
 			if (Stage==0)
 			{
 				if (D->GetPhase()!=EMothFlowPhase::Ready) { PC->ReturnToTitle();Previous=W;Stage=-1;return false; }
-				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("SecondaryButton")));
-				if (!T->TestNotNull(TEXT("Saved Designer secondary button"),Button)) return true;
+				auto* Button=Cast<UButton>(UI->GetWidgetFromName(TEXT("PrimaryButton")));
+				if (!T->TestNotNull(TEXT("Saved Designer battle button"),Button)) return true;
 				Button->OnClicked.Broadcast();Previous=W;Stage=1;return false;
 			}
 			if (Stage==-1) { if (Previous.Get()==W) return false;Stage=0;return false; }

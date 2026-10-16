@@ -4,6 +4,7 @@
 #include "Framework/MothEffectPlayerController.h"
 #include "Feedback/MothFeedbackSubsystem.h"
 #include "Framework/MothEffectGameMode.h"
+#include "Framework/MothMainMenuGameMode.h"
 #include "Framework/MothWaveDirector.h"
 #include "Characters/MothEffectCharacter.h"
 #include "EnhancedInputSubsystems.h"
@@ -26,6 +27,7 @@
 #include "Weapons/Rifle.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Settings/MothUserSettings.h"
+#include "Kismet/GameplayStatics.h"
 
 AMothEffectPlayerController::AMothEffectPlayerController()
 {
@@ -38,19 +40,19 @@ void AMothEffectPlayerController::InitializeGameplayUI()
 {
 	if (bTravelRequested || GameplayUI || !IsLocalPlayerController() || !GetWorld()
 		|| (GetWorld()->WorldType != EWorldType::Game && GetWorld()->WorldType != EWorldType::PIE)) return;
-	auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn());
-	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
-	auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
-	// Older isolated test maps retain their original input flow.
-	if (!ControlledCharacter || !Director || !Director->HasActorBegunPlay()) return;
-	// PlayerController may tick before the director's first Tick after OpenLevel.
-	if (!Director->GetPlayer() && !Director->SetPlayer(ControlledCharacter)) return;
-	// Commit a requested restart before exposing the new HUD. OnPossess can create
-	// the interface before our first Tick; it must never flash Title during travel.
-	if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel())
+	const bool bMainMenu = Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode()) != nullptr;
+	if (!bMainMenu)
 	{
-		if (!Mode->StartEncounter()) return;
-		Instance->ConsumeBattleAfterTravel();
+		auto* ControlledCharacter = Cast<AMothEffectCharacter>(GetPawn());
+		auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+		auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
+		// Older isolated test maps retain their original input flow.
+		if (!ControlledCharacter || !Director || !Director->HasActorBegunPlay()) return;
+		if (!Director->GetPlayer() && !Director->SetPlayer(ControlledCharacter)) return;
+		// Commit the encounter before showing its HUD, including direct arena PIE.
+		if (Director->GetPhase() == EMothFlowPhase::Ready && !Mode->StartEncounter()) return;
+		if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel())
+			Instance->ConsumeBattleAfterTravel();
 	}
 	UClass* Class = GameplayUIClass.LoadSynchronous();
 	if (!Class) return;
@@ -133,7 +135,15 @@ void AMothEffectPlayerController::StartBattle()
 		&& GameplayUI->GetHUDState().Page != EMothUIPage::TutorialComplete)) return;
 	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
 	auto* Instance = GetGameInstance<UMothGameInstance>();
-	if (!Mode || !Instance) return;
+	if (!Instance) return;
+	if (Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		Instance->QueueBattleAfterTravel();
+		bTravelRequested = true;
+		UGameplayStatics::OpenLevel(this, UMothGameInstance::GetBattleMapName());
+		return;
+	}
+	if (!Mode) return;
 	Instance->QueueBattleAfterTravel();
 	if (Mode->RestartEncounter()) bTravelRequested = true;
 	else Instance->CancelBattleAfterTravel();
@@ -142,8 +152,11 @@ void AMothEffectPlayerController::StartBattle()
 void AMothEffectPlayerController::ReturnToTitle()
 {
 	if (bTravelRequested || !GetWorld()) return;
+	if (Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode())) return;
 	if (auto* Instance = GetGameInstance<UMothGameInstance>()) Instance->CancelBattleAfterTravel();
-	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()); Mode && Mode->RestartEncounter()) bTravelRequested = true;
+	if (GetWorld()->IsPaused()) SetPause(false);
+	bTravelRequested = true;
+	UGameplayStatics::OpenLevel(this, UMothGameInstance::GetMainMenuMapName());
 }
 
 void AMothEffectPlayerController::RestartBattle()
@@ -173,7 +186,9 @@ void AMothEffectPlayerController::ResumeGame() { if (GetWorld() && GetWorld()->I
 void AMothEffectPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	// The player chooses when to start; saved map instances cannot bypass the title.
+	if (Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode()))
+		if (auto* Instance = GetGameInstance<UMothGameInstance>()) Instance->CancelBattleAfterTravel();
+	// UI initialization commits arena preparation after the director binds its player.
 	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()))
 		if (auto* Director = Mode->GetWaveDirector()) Director->SetAutoStartEnabled(false);
 	if (auto* Settings = UMothUserSettings::Get()) Settings->ApplyAudioSettings(this);

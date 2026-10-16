@@ -3,6 +3,8 @@
 #include "Components/AudioComponent.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 #include "Sound/SoundBase.h"
 #include "Sound/SoundAttenuation.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
@@ -21,6 +23,22 @@ void UMothFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	if (DefaultProfile.IsNull()) DefaultProfile=TSoftObjectPtr<UMothFeedbackProfile>(FSoftObjectPath(TEXT("/Game/MothEffect/Feedback/DA_DefaultFeedback.DA_DefaultFeedback")));
 	Profile=DefaultProfile.LoadSynchronous();
 	if (!Profile) Profile=NewObject<UMothFeedbackProfile>(this);
+	for (const auto& Entry : Profile->Styles) ResolveNiagara(Entry.Value);
+}
+
+UNiagaraSystem* UMothFeedbackSubsystem::ResolveNiagara(const FMothFeedbackStyle& Style)
+{
+	if (Style.NiagaraSystem.IsNull()) return nullptr;
+	const FSoftObjectPath Path=Style.NiagaraSystem.ToSoftObjectPath();
+	if (const auto* Cached=NiagaraSystems.Find(Path)) return Cached->Get();
+	if (FailedNiagaraSystems.Contains(Path)) return nullptr;
+	if (UNiagaraSystem* System=Style.NiagaraSystem.LoadSynchronous())
+	{
+		NiagaraSystems.Add(Path,System);
+		return System;
+	}
+	FailedNiagaraSystems.Add(Path);
+	return nullptr;
 }
 void UMothFeedbackSubsystem::Deinitialize()
 {
@@ -28,6 +46,7 @@ void UMothFeedbackSubsystem::Deinitialize()
 	OnEnemyHitConfirmedNative.Clear();
 	OnEnemyHitConfirmed.Clear();
 	ClearFeedback();
+	NiagaraSystems.Reset(); FailedNiagaraSystems.Reset();
 	Super::Deinitialize();
 }
 
@@ -49,6 +68,7 @@ void UMothFeedbackSubsystem::Tick(float)
 	{
 		bAudioPaused=bPaused;
 		for (const auto& Item : Audio) if (Item.IsValid()) Item->SetPaused(bPaused);
+		for (const auto& Item : Visuals) if (Item.IsValid()) Item->SetCuePaused(bPaused);
 	}
 	Audio.RemoveAll([this](const auto& Item){ return !Item.IsValid()||(!bAudioPaused&&!Item->IsPlaying()); });
 }
@@ -62,13 +82,18 @@ void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVect
 	const uint64 SessionGeneration=Session->GetLifecycleGeneration(), FeedbackGeneration=PresentationGeneration;
 	auto StillCurrent=[&] { return !bClosed&&!bClearing&&PresentationGeneration==FeedbackGeneration
 		&&Session->IsGenerationCurrent(SessionGeneration)&&!World->IsPaused()&&Profile->bEnabled; };
-	const auto* Style=Profile->Styles.Find(Kind); if (!Style) return;
+	const auto* StoredStyle=Profile->Styles.Find(Kind); if (!StoredStyle) return;
+	// Lazy loading a newly edited asset may invoke observers; keep a stable value snapshot.
+	const FMothFeedbackStyle StyleSnapshot=*StoredStyle;
+	const auto* Style=&StyleSnapshot;
 	++Counts.FindOrAdd(Kind);
 	const double Now=World->GetTimeSeconds();
 	if (bLocalConfirmedHit) LastHit=Now;
 	if (bLocalDamage) LastDamage=Now;
 	Tick(0);
-	if (Profile->bWorldVisuals)
+	UNiagaraSystem* System=Profile->bWorldVisuals?ResolveNiagara(*Style):nullptr;
+	if (!StillCurrent()) return;
+	if (Profile->bWorldVisuals && (System||Style->bLegacyVisual))
 	{
 		while (Visuals.Num()>=FMath::Clamp(Profile->MaxVisualCues,1,64))
 		{
@@ -83,7 +108,9 @@ void UMothFeedbackSubsystem::Emit(EMothFeedbackCue Kind, FVector Position, FVect
 			// World spawn observers may end/reset the session before this actor is tracked.
 			if (!StillCurrent()||!IsValid(Visual)||Visual->IsActorBeingDestroyed())
 			{ if (IsValid(Visual)&&!Visual->IsActorBeingDestroyed()) Visual->Destroy(); return; }
-			Visual->InitializeCue(Kind,*Style,Profile,Direction,RadiusCm); Visuals.Add(Visual);
+			Visual->InitializeCue(Kind,*Style,Profile,Direction,RadiusCm,System);
+			if (!StillCurrent()) { if (IsValid(Visual)&&!Visual->IsActorBeingDestroyed()) Visual->Destroy(); return; }
+			if (IsValid(Visual)&&!Visual->IsActorBeingDestroyed()) Visuals.Add(Visual);
 		}
 	}
 	if (!StillCurrent()) return;
@@ -135,6 +162,7 @@ void UMothFeedbackSubsystem::ReportConfirmedEnemyHit(AActor* Victim, const FHitC
 	Feedback.AppliedDamage = AppliedDamage;
 	Feedback.RemainingHealth = RemainingHealth;
 	Feedback.bKilled = bKilled;
+	Feedback.bDeviceSource = Context.bDeviceSource || Cast<ADeviceBase>(Context.SourceActor.Get()) != nullptr;
 	Feedback.ImpactPoint = Context.ImpactPoint;
 	Feedback.LifecycleGeneration = LifecycleGeneration;
 	OnEnemyHitConfirmedNative.Broadcast(Instigator, Feedback);
@@ -166,6 +194,13 @@ void UMothFeedbackSubsystem::ClearFeedback()
 		if (It->DefaultFeedback) It->DefaultFeedback->RefreshPresentation();
 }
 int32 UMothFeedbackSubsystem::GetLiveVisualCount() const { int32 Count=0; for (const auto& Item : Visuals) if (Item.IsValid()&&!Item->IsActorBeingDestroyed()) ++Count; return Count; }
+int32 UMothFeedbackSubsystem::GetLiveNiagaraCount() const
+{
+	int32 Count=0;
+	for (const auto& Item : Visuals) if (Item.IsValid()&&!Item->IsActorBeingDestroyed())
+		if (const auto* Component=Item->GetNiagaraComponent(); IsValid(Component)&&Component->IsRegistered()) ++Count;
+	return Count;
+}
 int32 UMothFeedbackSubsystem::GetLiveAudioCount() const { int32 Count=0; for (const auto& Item : Audio) if (Item.IsValid()&&(Item->IsPlaying()||bAudioPaused)) ++Count; return Count; }
 float UMothFeedbackSubsystem::GetHitMarkerAlpha() const { return Profile&&Profile->bEnabled?FMath::Clamp(1.f-float(GetWorld()->GetTimeSeconds()-LastHit)/FMath::Max(.02f,Profile->HitMarkerSeconds),0.f,1.f):0; }
 float UMothFeedbackSubsystem::GetDamageEdgeAlpha() const { return Profile&&Profile->bEnabled?FMath::Clamp(1.f-float(GetWorld()->GetTimeSeconds()-LastDamage)/FMath::Max(.02f,Profile->DamageEdgeSeconds),0.f,1.f):0; }

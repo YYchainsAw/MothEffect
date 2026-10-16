@@ -3,7 +3,9 @@
 #include "Combat/RuleProjectile.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/ExternalImpulseComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -42,9 +44,23 @@ ADeviceBase::ADeviceBase()
 	ShotCollider->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	ShotCollider->SetGenerateOverlapEvents(false);
+	ShotCollider->SetCanEverAffectNavigation(false);
+
+	DroppedCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("DroppedCollider"));
+	DroppedCollider->SetupAttachment(PhysicsBody);
+	DroppedCollider->InitCapsuleSize(MothCollision::EnemyCapsuleRadiusCm, MothCollision::EnemyCapsuleHalfHeightCm);
+	DroppedCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DroppedCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	DroppedCollider->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	DroppedCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	DroppedCollider->SetGenerateOverlapEvents(false);
+	DroppedCollider->SetCanEverAffectNavigation(false);
+
+	VisualPivot = CreateDefaultSubobject<USceneComponent>(TEXT("VisualPivot"));
+	VisualPivot->SetupAttachment(PhysicsBody);
 
 	DeviceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeviceMesh"));
-	DeviceMesh->SetupAttachment(PhysicsBody);
+	DeviceMesh->SetupAttachment(VisualPivot);
 	DeviceMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DeviceMesh->SetGenerateOverlapEvents(false);
 	DeviceMesh->SetCanEverAffectNavigation(false);
@@ -397,6 +413,11 @@ void ADeviceBase::ApplyStateCollision()
 	ShotCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotCollider->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Block);
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	DroppedCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	DroppedCollider->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Block);
+	DroppedCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	const bool bDropped = DeviceState == EDeviceState::Dormant && bGrounded;
+	DroppedCollider->SetCollisionEnabled(bDropped ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 	if (bPhysical)
 	{
 		// Stop the body before removing physics collision; Chaos must never see incompatible options.
@@ -405,7 +426,7 @@ void ADeviceBase::ApplyStateCollision()
 		PhysicsBody->SetCollisionEnabled(bGrounded ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
 		PhysicsBody->SetEnableGravity(true);
 		if (!bGrounded) PhysicsBody->SetSimulatePhysics(HasActorBegunPlay());
-		ShotCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		ShotCollider->SetCollisionEnabled(bDropped ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryOnly);
 	}
 	else
 	{
@@ -413,6 +434,7 @@ void ADeviceBase::ApplyStateCollision()
 		PhysicsBody->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		ShotCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+	UpdateDroppedPresentation(0.0f);
 }
 
 void ADeviceBase::StopActiveEffect()

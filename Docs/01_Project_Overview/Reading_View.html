@@ -1,7 +1,9 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.57</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.59</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.57<br>2026-10-16 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-devlog-20261016">10/16 开发者日志</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-drongo-enemy">Drongo 敌人模型与动画接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-asset-import">选定第三方资源导入</a><a href="#doc-asset-shortlist">敌人、UI 与特效资源选型</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-soulcity-arena">Soul City 独立工业竞技场</a><a href="#doc-soulcity-report">Soul City 竞技场搭建与验证</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-16 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="5d06fcd10e658f0ff49111b56b9d7eff673e681ad26ef17361e8e7bdf9adae3b"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p dir="auto">版本 v0.57 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.59<br>2026-10-16 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-devlog-20261016">10/16 开发者日志</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-drongo-enemy">Drongo 敌人模型与动画接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-slate-ui">Slate 界面与玩家/敌人生命条</a><a href="#doc-asset-import">选定第三方资源导入</a><a href="#doc-asset-shortlist">敌人、UI 与特效资源选型</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-niagara">Niagara 战斗特效接入与调节</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-soulcity-arena">Soul City 独立工业竞技场</a><a href="#doc-soulcity-report">Soul City 竞技场搭建与验证</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-16 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="1f44780576598bd6129ba71783bbd4cacddadc10f625f9d0e61543426b301d69"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p dir="auto">版本 v0.59 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">2026-10-16 Niagara 特效接入：八类实际开火、命中、机关与拾取事件统一连接项目 FX，暂停与结算清理沿用反馈系统。原工程构建、19 项 Editor 专项及八类实际 D3D12 模拟/暂停恢复/死亡清理通过，九件目标资产已写回；用户准星与 HUD 保持，整局、性能和独立包待验收。调节入口与证据见 <a href="#doc-niagara">Niagara_Setup</a>。</p>
+<p dir="auto">2026-10-16 Slate 界面接入：用 Colorosse Slate / Kenney 重做 Designer HUD 和菜单，左下角玩家生命、敌人头顶生命、弹药/换弹、波次与交互提示已连接真实数据。旧原生布局与绘制移除，用户准星包 SHA 及 HUD 内 15 个事件图节点/连线保持。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项和五张 D3D12 画面通过；手动整局、性能与独立包仍待验收。当前编辑入口见 <a href="#doc-slate-ui">Slate_UI_Setup</a>，下方旧 UI 记录保留历史范围。</p>
 <p dir="auto">2026-10-16 敌人外观统一为 Drongo：保留三类敌人、固定掉落及当前射击 AI，项目动画蓝图复用原包移动/跳跃/上半身开火，移除演示玩家依赖并接入死亡动画。资产、验证与重载步骤见 <a href="#doc-drongo-enemy">Drongo_Enemy_Setup</a>。</p>
 <p dir="auto">2026-10-16 选定资源导入：Slate / Kenney 的 3,234 张贴图与 Wraith 已导入；用户后补的 Niagara Examples Pack、Drongo 也已核对，Minions 按用户要求暂缓。两包 2,582 件原文件经隔离检查保持 SHA 一致，Drongo 两件动画蓝图内存编译通过，15 个 Niagara 系统加载通过。导入阶段未改 HUD、玩家或敌人外观；后续 Drongo 接入见上段。具体位置、原包警告与验证边界见 <a href="#doc-asset-import">Asset_Import_Setup</a>，选型依据见 <a href="#doc-asset-shortlist">资源清单</a>。</p>
 <p dir="auto">2026-10-16 新增 <a href="#doc-devlog-20261016">本期开发者日志</a>：整理10月14日至16日的道具重构、SoulCity战场和正式准星进展，记录击杀反馈、实际战斗、资源与性能风险，并列出下一期UI收尾、整局试玩及Windows候选包计划。日志引用已有验证，不新增玩法通过结论。</p>
@@ -198,8 +200,18 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
+<td><a href="#doc-niagara">Niagara_Setup.md</a></td>
+<td>Niagara 战斗特效与调节</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-slate-ui">Slate_UI_Setup.md</a></td>
+<td>当前 Slate / Kenney HUD、玩家与敌人生命条、菜单和用户准星保护；编辑入口及实际验证边界</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
 <td><a href="#doc-crosshair">Crosshair_Setup.md</a></td>
-<td>自定义准星、敌人命中/击杀事件、三图层 UMG 动画与暂停/重开接入；待用户编译和制作蓝图</td>
+<td>用户准星的命中/击杀事件与动画接口；原制作步骤保留历史，当前资产已制作并接入 Slate HUD</td>
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
@@ -542,7 +554,7 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <p dir="auto">设计目标：第一次试玩能理解三种道具；能够完成一次有意安排的空中激活；看到并尝试复现至少一种连锁；可以从标题进入战斗并完成胜负重开。</p>
 <p dir="auto">这些是待验证目标。目前已核对模板工程文件存在，尚未验证本作自定义玩法、试玩或性能结果。开发任务、验收方法和证据格式分别见 <a href="#doc-plan">开发任务与排期</a> 与 <a href="#doc-test">测试计划与验收</a>。</p>
 <span id="doc-game-section-9"></span><h2 id="doc-game-10-来源">10 来源</h2>
-<p dir="auto">用户确认来自本聊天的游戏创意、开发方式与资源情况。模板中的可控人物、基础移动动画和几何场景见 <a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine" rel="nofollow">Epic 第三人称模板</a>。赛事主题和截止见 <a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849" rel="nofollow">TapTap 官方主题公告</a>。其余内容为本项目的建议设计。</p></section><section class="document" id="doc-rules" data-source-sha256="4cc750673e9bd26cbd3f47a3b73250de7bacff0293f57c9d65421c453b6cb72c"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Device_Interaction_Rules.md">02_Design_Doc/GDD/Device_Interaction_Rules.md</a></div><span id="doc-rules-moth-effect"></span><h1 id="doc-rules-moth-effect飞蛾效应道具与交互规则">Moth Effect（飞蛾效应）：道具与交互规则</h1>
+<p dir="auto">用户确认来自本聊天的游戏创意、开发方式与资源情况。模板中的可控人物、基础移动动画和几何场景见 <a href="https://dev.epicgames.com/documentation/unreal-engine/third-person-template-in-unreal-engine" rel="nofollow">Epic 第三人称模板</a>。赛事主题和截止见 <a href="https://www.taptap.cn/moment/854692229854265392?group_id=792849" rel="nofollow">TapTap 官方主题公告</a>。其余内容为本项目的建议设计。</p></section><section class="document" id="doc-rules" data-source-sha256="2d0f3f3349f940493098b786cc47ece9a2bf1df0c95143f6bba975f0c76e0e86"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Device_Interaction_Rules.md">02_Design_Doc/GDD/Device_Interaction_Rules.md</a></div><span id="doc-rules-moth-effect"></span><h1 id="doc-rules-moth-effect飞蛾效应道具与交互规则">Moth Effect（飞蛾效应）：道具与交互规则</h1>
 <p dir="auto">版本 v0.13　日期 2026-10-14　性质 基础重构四项用户已确认、其余建议保留原状态　状态 隔离 UE 构建与 114 Editor / 12 Game 回归通过，硬件 PIE 待验收</p>
 <p dir="auto">本文件定义能直接转成代码和测试的行为契约。用户已经确认三种机关、拾取、投掷和空中射击；以下触发条件、状态和边界处理是建议基线。参数数值只在 <a href="#doc-parameters">玩法参数基线</a> 维护，自定义类与接口只在 <a href="#doc-technical">技术设计</a> 维护。规则改变必须更新 <a href="#doc-decisions">设计决策</a> 及关联验收项。</p>
 <p dir="auto">2026-10-14 用户确认基础重构：地面固定且无实体阻挡，保留显式推力/弹射后的空中物理；D03 锁入射 XY 水平方向；三机关共用可配置激活延迟；D02 可激活无遮挡 Dormant。下文为变更后的现行契约，覆盖旧接入/测试记录中的“地面持续物理、三维射向、立即效果、爆炸不触发”规则。已往通过证据仍归属当时版本，本轮验收见 <a href="#doc-device-refactor">重构接入</a>。</p>
@@ -645,8 +657,8 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 </tr>
 <tr>
 <td>R18</td>
-<td>道具球形射击判定、镜头遮挡与枪口阻挡统一处理</td>
-<td>不会穿墙拾取、穿掩体开火或靠判定打到遮挡后的道具</td>
+<td>落地待拾取道具使用敌人大小的胶囊统一受击与准星拾取判定；飞行和激活状态使用原射击球</td>
+<td>模型在掉落胶囊中心匀速旋转；镜头遮挡与枪口阻挡仍生效</td>
 </tr>
 <tr>
 <td>R19</td>
@@ -822,7 +834,7 @@ Dormant 过期 → Spent → Destroyed
 </tbody>
 </table></markdown-accessiblity-table>
 <p dir="auto">矩阵不包括发射者对自己生成弹丸的出生避让，见第 3 节。碰撞通道配置见 <a href="#doc-technical">技术设计</a>，不能只按 Pawn/WorldDynamic 一类粗略过滤全部道具。</p>
-<p dir="auto">运动状态独立于 EDeviceState：IsGrounded 不是新增生命周期。地面固定只关闭实体根，Dormant/Active D03 的 ShotCollider 继续 QueryOnly；Held、Spent 与消耗的 D01 种子关闭两球。VisualScale 仅调整显示，BodyRadiusCm 和 ShotRadiusCm 分别调整飞行/安全释放体积与射击查询，Shot 不能小于 Body；改大小后同步刷新并回归释放净空与命中遮挡。支持面消失时固定设备恢复下落，重新承托后再次固定。</p>
+<p dir="auto">运动状态独立于 EDeviceState：IsGrounded 不是新增生命周期。地面固定关闭实体根。2026-10-16 用户调整：落地 Dormant 使用与敌人相同大小的 DroppedCollider 胶囊，受击和准星拾取共用 QueryOnly 体积，底部与物理根齐平；模型实际包围盒中心位于胶囊中心，绕竖直轴匀速旋转，默认速度见 <a href="#doc-parameters">参数账本</a> 的 device.droppedRotationDegreesPerSecond。旋转只作用于显示，暂停冻结；拾取、受力/投掷离地或激活后停止并复原显示变换。空中 Dormant 和 Active D03 使用原 ShotCollider 查询球；Held、Spent 与消耗的 D01 种子关闭全部查询体积。VisualScale 仅调整模型显示，BodyRadiusCm 与 ShotRadiusCm 分别调整飞行/安全释放体积与原射击球，Shot 不能小于 Body；不改变掉落胶囊。改大小后同步刷新并回归释放净空与命中遮挡。支持面消失时固定设备恢复下落，重新承托后再次固定。</p>
 <span id="doc-rules-section-4"></span><h2 id="doc-rules-8-数量与计时边界">8 数量与计时边界</h2>
 <p dir="auto">计数范围：Dormant、Held、Active 种子或装置各算一件道具；D01 从种子到柱子的转换沿用同一名额，不重复计入。Spent 立即移出计数，残留视觉效果不再参与玩法。已经飞出的弹丸独立采用寿命及弹丸上限。</p>
 <p dir="auto">总道具满额且有新掉落时，清理最早生成的 Dormant 再生成新道具；没有 Dormant 时不生成本次掉落，并给出短提示。Held 和 Active 不被该策略抢占。直接生成新物件前检查容量，不能先超额再等待下帧清理。</p>
@@ -955,9 +967,10 @@ Dormant 过期 → Spent → Destroyed
 <li><a href="#doc-level">关卡、界面与资源规格</a>：获取或掉落方式、外观辨识、操作与方向提示。</li>
 <li><a href="#doc-parameters">玩法参数基线</a>、<a href="#doc-plan">开发计划</a> 和 <a href="#doc-test">测试计划</a>：原型数值、实际工时与可观察验收项。</li>
 </ol>
-<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="97a5fb74cec6e62d5705d64037e658211df9a541d343920e187ee66db3ebcd21"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
-<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.20｜2026-10-16。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见<a href="../../SourceArt/Levels/T17_Arena_Layout.json">JSON源</a>。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见<a href="#doc-t17-report">T17报告</a>，验收见<a href="#doc-arena">Arena_Setup</a>。</p>
-<p dir="auto">2026-10-16 资源选定为 Colorosse Slate UI、Kenney Input Prompts 与 Niagara Examples Pack；相关资源及 Wraith / Drongo 均已导入，Minions 暂缓。用户随后决定首版三类敌人统一使用 Drongo，沿用现有射击 AI 与青蓝/橙/紫固定掉落，项目动画蓝图接入移动、开火与死亡；具体变更和验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>。Slate UI 与 Niagara 尚未绑定运行时，位置、许可和原包验证见 <a href="#doc-asset-import">导入说明</a>。</p>
+<p dir="auto">本次未写入候选的数值、正式 D 编号、实现接口或已通过测试记录。现有 D01–D03、任务 T01–T28 及参数基线继续按原范围执行。</p></section><section class="document" id="doc-level" data-source-sha256="3142c2187ade8bfec1330a41b8a3394597b4c0cbfce4b32d2a6bf950cc50907d"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Level_UI_Asset_Specification.md">02_Design_Doc/GDD/Level_UI_Asset_Specification.md</a></div><span id="doc-level-moth-effect"></span><h1 id="doc-level-moth-effect飞蛾效应关卡界面与资源规格">Moth Effect（飞蛾效应）：关卡、界面与资源规格</h1>
+<p dir="auto">游戏名：Moth Effect（飞蛾效应）｜v0.22｜2026-10-16。魔法朋克风格与 v0.9 玩家动画方案已由用户确定，MothEffect 第三人称模板工程已建立。本文用于单人 UE5.8 灰盒与资源制作；未被后续实现记录覆盖的具体布局、数量、配色和展示节奏仍为<strong>建议基线，待原型验证</strong>。交互以 <a href="#doc-rules">道具与交互规则</a> 为权威，战斗与机关数值以 <a href="#doc-parameters">玩法参数基线</a> 为权威，本文不复制参数表。T17已保存主竞技场L_Arena_01及静态导航，三区/掩体/平台采用下述基线，详细厘米布局见<a href="../../SourceArt/Levels/T17_Arena_Layout.json">JSON源</a>。15条保存重载路线和主场地8项真实Game测试通过；当前图形PIE待验收，结果与失败见<a href="#doc-t17-report">T17报告</a>，验收见<a href="#doc-arena">Arena_Setup</a>。</p>
+<p dir="auto">2026-10-16 当前界面采用 Slate 深色金属/铜边与 Kenney 键鼠图标，已制作保存的 <code class="notranslate">WBP_MothHUD</code>、<code class="notranslate">WBP_EnemyHealth</code>。左下角玩家生命、右下角弹药/换弹、顶部波次、底部交互、教学与标题/暂停/结果页接真实数据；三类 Drongo 头顶显示生命与掉落类型，距离/出屏/遮挡/死亡控制可见性。旧原生布局及绘制移除，用户自制准星和命中/击杀事件图保持。构建、三项 Editor 专项、实际伤害/菜单/暂停/重载及五张 D3D12 画面已验证，手动整局与独立包待验收；具体编辑入口和边界见 <a href="#doc-slate-ui">Slate_UI_Setup</a>。</p>
+<p dir="auto">2026-10-16 资源选定为 Colorosse Slate UI、Kenney Input Prompts 与 Niagara Examples Pack；相关资源及 Wraith / Drongo 均已导入，Minions 暂缓。用户随后决定首版三类敌人统一使用 Drongo，沿用现有射击 AI 与青蓝/橙/紫固定掉落，项目动画蓝图接入移动、开火与死亡；具体变更和验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>。Slate / Kenney 的运行时接入见上段；Niagara 已接入枪口、命中、三机关与拾取，沿用真实动作时机、暂停及清理；调节和专项证据见 <a href="#doc-niagara">Niagara_Setup</a>。位置、许可和原包验证见 <a href="#doc-asset-import">导入说明</a>。</p>
 <p dir="auto">2026-10-15 独立 SoulCity 工业街区 <code class="notranslate">L_Arena_SoulCity</code> 为84×72m、-2.4/0/3.6/7.2m四层战场，六条登高连接与17组原生通风机/管材掩体。v4增加七栋场内封闭建筑形成紧凑街巷，外围连续楼群和城市远景卡收住角色与高台视野；功能碰撞共213件（原202、建筑7、外围4）。沿用现有玩家、波次和UI，原图与默认入口保留。实际检查与待验收范围见 <a href="#doc-soulcity-report">SoulCity报告</a>，打开与修改见 <a href="#doc-soulcity-arena">接入说明</a>。下文60×50m方案用于原图/历史对照，新图以 <code class="notranslate">SoulCity_Combat_Layout.json</code> 为准。</p>
 <p dir="auto">2026-10-13 T20已生成并接入三原创外壳、掩体和符文灯饰，共17件材质/配置/网格资产；主场地九块掩体保留原碰撞/导航。外观与UI均作为用户后续改造基线，调节见<a href="#doc-prototype-art">Prototype_Art_Setup</a>，来源见<a href="../../SourceArt/PrototypeArt/PrototypeArtManifest.json">制作清单</a>。自动化/图形证据见<a href="#doc-t20-report">T20报告</a>，五组当前用户验收、外部依赖恢复和独立包未完成。</p>
 <span id="doc-level-section"></span><h2 id="doc-level-0-魔法朋克表现方向">0. 魔法朋克表现方向</h2>
@@ -1188,10 +1201,10 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
 <span id="doc-level-section-6"></span><h2 id="doc-level-5-十秒展示镜头提案">5. 十秒展示镜头提案</h2>
 <p dir="auto">在 L01 先调成可重复的真实操作：0–2 秒拾取并抛出 D03；2–3 秒空中击中它，镜头看见定向火线；3–4 秒射击预置 D01，把其上方 D02 弹进火线；4–5 秒 D03 弹丸启动 D02，爆炸击败靶/敌人；5–10 秒保留全景与新掉落，显示因果链。连锁动作需发生在 D03 的有效发射窗口内。距离和射击时机必须先实测调整，不能用录像专用脚本自动触发机关来冒充系统连锁。若空气中的轨迹难以稳定命中，先演示地面连锁，再单独展示一次空中激活，不以宣传镜头倒逼复杂系统。</p>
 <h3 id="doc-level-t18-当前交付">T18 当前交付</h3>
-<p dir="auto">已接入 WBP_MothHUD 原生 UMG 布局和三种颜色加轮廓的自制矢量图标，首次 getter 与实际事件同步，标题/暂停/教学完成/胜负/重开共用面板。三步按真实爆炸来源、物理抬升、空中投出启动和 P01 间接击杀推进；进入战斗清理教学并重载，恢复正常生命/弹药。SafeZone/DPI、可见键盘焦点、短提示暗底与描边准星覆盖目标三分辨率；具体截图和原生/手动边界见 <a href="#doc-t18-report">T18报告</a>。五组当前 PIE 在 <a href="#doc-ui">UI_Setup</a>，当前不替代 TC26 外部盲玩或独立包验收。</p></section><section class="document" id="doc-parameters" data-source-sha256="425aaa05e1a99c8bfaffa8f0117f1fa78562b18b26bf3c8c3ca007bd1930ac0f"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Gameplay_Parameters.json">02_Design_Doc/GDD/Gameplay_Parameters.json</a></div><h1>玩法参数基线</h1>
+<p dir="auto">已接入 WBP_MothHUD 原生 UMG 布局和三种颜色加轮廓的自制矢量图标，首次 getter 与实际事件同步，标题/暂停/教学完成/胜负/重开共用面板。三步按真实爆炸来源、物理抬升、空中投出启动和 P01 间接击杀推进；进入战斗清理教学并重载，恢复正常生命/弹药。SafeZone/DPI、可见键盘焦点、短提示暗底与描边准星覆盖目标三分辨率；具体截图和原生/手动边界见 <a href="#doc-t18-report">T18报告</a>。五组当前 PIE 在 <a href="#doc-ui">UI_Setup</a>，当前不替代 TC26 外部盲玩或独立包验收。</p></section><section class="document" id="doc-parameters" data-source-sha256="701c1e555699bea6d8fd067dd1e666872ba6e22a693a6746b05222d2192e7cd0"><div class="source">可编辑源文件：<a href="../02_Design_Doc/GDD/Gameplay_Parameters.json">02_Design_Doc/GDD/Gameplay_Parameters.json</a></div><h1>玩法参数基线</h1>
 <pre><code>{
-  &quot;documentVersion&quot;: &quot;0.19&quot;,
-  &quot;updatedAt&quot;: &quot;2026-10-14&quot;,
+  &quot;documentVersion&quot;: &quot;0.20&quot;,
+  &quot;updatedAt&quot;: &quot;2026-10-16&quot;,
   &quot;timezone&quot;: &quot;Asia/Hong_Kong&quot;,
   &quot;engineVersion&quot;: &quot;5.8&quot;,
   &quot;status&quot;: &quot;proposed_values_native_behavior_verified&quot;,
@@ -1255,6 +1268,10 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
   },
   &quot;device&quot;: {
     &quot;activationDelaySeconds&quot;: 0.3,
+    &quot;droppedTargetCapsuleRadiusCm&quot;: 35,
+    &quot;droppedTargetCapsuleHalfHeightCm&quot;: 90,
+    &quot;droppedTargetMatchesEnemy&quot;: true,
+    &quot;droppedRotationDegreesPerSecond&quot;: 60,
     &quot;visualScale&quot;: 1,
     &quot;visualScaleMin&quot;: 0.05,
     &quot;visualScaleMax&quot;: 10,
@@ -1365,6 +1382,14 @@ P 玩家；▱ 矮掩体；■ 高掩体；▰ 可走上平台；虚界不挡路
     &quot;stopGameplayOnResult&quot;: true
   },
   &quot;tuningLog&quot;: [
+    {
+      &quot;date&quot;: &quot;2026-10-16&quot;,
+      &quot;version&quot;: &quot;0.20&quot;,
+      &quot;change&quot;: &quot;落地 Dormant 的受击与准星拾取共用敌人大小胶囊（半径35cm、半高90cm）；模型中心对齐胶囊中心，以默认60度/秒绕竖直轴匀速旋转。空中、Held与Active复原显示；保留原飞行体积和射击球。&quot;,
+      &quot;reason&quot;: &quot;用户要求掉落状态道具与敌人具有同样大的受击和瞄准拾取体积，模型在体积中心匀速旋转。胶囊尺寸与敌人共用MothCollision常量，旋转速度映射ADeviceBase可编辑属性；JSON不自动导入UE。&quot;,
+      &quot;evidence&quot;: &quot;Win64 Development Editor构建和四项DroppedPresentation原生专项通过，覆盖三类保存蓝图、双通道、遮挡、真实准星拾取、居中和状态切换；图形PIE手感待验收。&quot;,
+      &quot;validated&quot;: false
+    },
     {
       &quot;date&quot;: &quot;2026-10-14&quot;,
       &quot;version&quot;: &quot;0.19&quot;,
@@ -3974,11 +3999,12 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 </tbody>
 </table></markdown-accessiblity-table>
 <p dir="auto">可提交的原始日志摘录及构建/源码标识见 <a href="../06_Test_Doc/Evidence/T06_Verification_2026-10-07.log">T06_Verification_2026-10-07.log</a>。原 Saved/Logs 与 UBT 日志仍保留在用户本机；摘录移入 Docs 后可随提交共享。</p>
-<p dir="auto">待后续任务验收：T07 的 Held 拾取/释放实际操作、T08 的 D03 发射次数和工作寿命、T13 的完整容量/过期/计数及独立包回归。本轮结果不将完整 TC12 自动标记为通过。</p></section><section class="document" id="doc-device-refactor" data-source-sha256="fa2c45f65550268b1953afee2bb15e313982b6315d8e547df99e7d594947e0d9"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Device_Refactor_Setup.md">05_Development_Guide/Device_Refactor_Setup.md</a></div><h1 id="doc-device-refactor-moth-effect飞蛾效应道具基础重构接入">Moth Effect（飞蛾效应）：道具基础重构接入</h1>
+<p dir="auto">待后续任务验收：T07 的 Held 拾取/释放实际操作、T08 的 D03 发射次数和工作寿命、T13 的完整容量/过期/计数及独立包回归。本轮结果不将完整 TC12 自动标记为通过。</p></section><section class="document" id="doc-device-refactor" data-source-sha256="2a79655a54d862669a953fa6ed9fce987adbc57ff4eb6bc67f2ecd83f285ee38"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Device_Refactor_Setup.md">05_Development_Guide/Device_Refactor_Setup.md</a></div><h1 id="doc-device-refactor-moth-effect飞蛾效应道具基础重构接入">Moth Effect（飞蛾效应）：道具基础重构接入</h1>
 <p dir="auto">版本 v0.2 · 2026-10-14 · 状态：隔离构建、114 Editor / 12 Game 回归通过；硬件 PIE、调优与独立包待验收</p>
 <p dir="auto">当前 <code class="notranslate">refactor</code> 分支记录用户确认的四项道具改动：<a href="https://github.com/YYchainsAw/MothEffect/issues/48" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/48/hovercard">#48 地面固定与尺寸</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/49" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/49/hovercard">#49 水平发射方向</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/50" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/50/hovercard">#50 统一激活延迟</a>、<a href="https://github.com/YYchainsAw/MothEffect/issues/51" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/51/hovercard">#51 爆炸激活</a>。负责人 YYchainsAw、现有标签、M5 · 试玩与候选包验收与 Project / In Progress 均已回读；四项保持 Open，运行验收完成后再推进状态。</p>
 <p dir="auto">接口见 <a href="../../Source/MothEffect/Public/Devices/DeviceBase.h">DeviceBase.h</a>，运动见 <a href="../../Source/MothEffect/Private/Devices/DeviceMotion.cpp">DeviceMotion.cpp</a>，爆炸见 <a href="../../Source/MothEffect/Private/Devices/DeviceBomb.cpp">DeviceBomb.cpp</a>。现行行为只在 <a href="#doc-rules">交互规则</a> 维护，数值只在 <a href="#doc-parameters">参数账本</a> 维护。旧 Device/Emitter/Bomb/自然连锁接入中的历史验收保留，涉及本轮行为时以此文及现行契约为准。</p>
 <h2 id="doc-device-refactor-1-蓝图与实例配置">1. 蓝图与实例配置</h2>
+<p dir="auto">2026-10-16 补充：落地待拾取道具使用敌人大小胶囊，模型居中匀速旋转。Win64 Development Editor 构建通过，Devices、Art 与 EnemyDrops 共 50 项自动化全部通过，其中 4 项为新增掉落显示专项；实际图形 PIE 视觉与手感仍需验收。</p>
 <p dir="auto">现有 BP_DeviceLauncher、BP_DeviceBomb、BP_DeviceEmitter 继续使用 ADeviceBase，不新增道具类型或生命周期枚举。编译新源码后，在 Class Defaults 或场景实例 Details 搜索以下分类；已保存 BP/实例的覆盖值需逐项核对，不假定原生默认值覆盖已有资产。</p>
 <markdown-accessiblity-table><table role="table">
 <thead>
@@ -4012,7 +4038,12 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <tr>
 <td>Device / Size</td>
 <td>ShotRadiusCm</td>
-<td>命中扫描/P01 查询球；默认仍来自 throw.deviceShotColliderRadiusCm，实际半径不小于 Body</td>
+<td>飞行与激活状态的命中扫描/P01 查询球；默认来自 throw.deviceShotColliderRadiusCm，实际半径不小于 Body</td>
+</tr>
+<tr>
+<td>Device / Art</td>
+<td>DroppedRotationDegreesPerSecond</td>
+<td>落地待拾取模型绕竖直轴匀速旋转的角速度，默认 60°/秒；0 表示停止旋转</td>
 </tr>
 <tr>
 <td>Device / Size</td>
@@ -4033,8 +4064,8 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 </table></markdown-accessiblity-table>
 <p dir="auto">调大小时分别决定视觉、飞行体积和射击判定，不把 Actor 总体缩放当作唯一入口。先刷新，再检查持物挂点、投掷释放空间、墙边净空、P01 枪口出生和射击遮挡。Shot 球较大可以帮助命中，但不能让墙后的设备绕过实际枪口/静态遮挡规则。</p>
 <h2 id="doc-device-refactor-2-地面固定与受力起飞">2. 地面固定与受力起飞</h2>
-<p dir="auto">Dormant 与 Active D03 受到实际支持面承托时，停止物理、清速度、校正为直立显示，PhysicsBody 根使用 NoCollision；ShotCollider 继续 QueryOnly，所以角色穿行而 W01/P01/E 查询仍工作。投掷以及合法机关外力通过真实空中物理运动，飞行根忽略 Pawn，仍受场景阻挡。</p>
-<p dir="auto">柱子与爆炸须从查询球找到固定设备，用 CanReceiveExternalImpulse 过滤后经共用外力入口唤醒，再在帧末合并速度；不能仅用 IsSimulatingPhysics 或实体根重叠判断设备是否可作用。受力离地后再次承托会固定；原支持消失也会恢复下落。Held、Spent、Active D01 的已消耗种子不单独接受设备外力。EnemyDrops 接纳合法 grounded 出生，死亡幂等/容量/近邻搜索等原边界继续生效。生成/释放净空独立检查已有固定道具的实际根球体积，避免无碰撞道具重叠而挡住拾取；这不会恢复实体碰撞，也不用较大的射击球扩大出生占用。</p>
+<p dir="auto">Dormant 与 Active D03 受到实际支持面承托时，停止物理、清速度、校正为直立显示，PhysicsBody 根使用 NoCollision，所以角色可穿行。落地 Dormant 使用与敌人一致的胶囊（半径 35 cm、半高 90 cm）作为 W01/P01 受击和准星拾取的 QueryOnly 体积，胶囊底部与物理根底部齐平；原 ShotCollider 查询球暂时关闭。模型的实际包围盒中心对齐胶囊中心，由独立 VisualPivot 匀速旋转，保留模型资源原有偏移、旋转和缩放。暂停会冻结旋转，VisualScale 只调整模型大小。拾取、投掷/受力起飞或激活后复原显示变换并关闭掉落胶囊，空中 Dormant 和 Active D03 使用原 ShotCollider。投掷以及合法机关外力通过真实空中物理运动，飞行根忽略 Pawn，仍受场景阻挡。</p>
+<p dir="auto">柱子与爆炸须从查询体积找到固定设备，用 CanReceiveExternalImpulse 过滤后经共用外力入口唤醒，再在帧末合并速度；不能仅用 IsSimulatingPhysics 或实体根重叠判断设备是否可作用。受力离地后再次承托会固定；原支持消失也会恢复下落。Held、Spent、Active D01 的已消耗种子不单独接受设备外力。EnemyDrops 接纳合法 grounded 出生，死亡幂等/容量/近邻搜索等原边界继续生效。生成/释放净空独立检查已有固定道具的实际根球体积，避免无碰撞道具实体重叠；较大的瞄准胶囊不扩大出生占用，邻近道具之间仍按准星首先命中的对象选择。</p>
 <p dir="auto">运动支持只要求实际阻挡设备根、合格向上法线且不是角色/道具/查询触发体，不要求 MothColumnSurface；D01 生成柱子仍另需 WorldStatic 与 MothColumnSurface 标签及最终静态净空。</p>
 <h2 id="doc-device-refactor-3-接纳延迟与水平火线">3. 接纳、延迟与水平火线</h2>
 <p dir="auto">TryActivate 成功时先预占容量、保存首次 HitId/方向/命中点并进入 Active，随后广播状态与激活证据。IsActivationPending 为 true 时不得拾取，重复命中不刷新方向/寿命/延迟。World Timer 到时复核状态、来源弱引用与世界许可，再执行一次核心效果；暂停冻结，FinishActivation/禁用/Destroy/EndPlay/重开取消旧等待。</p>
@@ -4924,8 +4955,11 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>失败和重开</strong>：同时保留 Held、Active D03、柱子与飞行弹，让玩家死亡；结算后不能继续扣血/发射，持物和效果清掉。执行 <code class="notranslate">MothRestartEncounter</code>，生命/弹药/波次回到初始；连续操作并检查旧效果没有带入新局。换弹与 Held 是互斥动作，另测换弹中死亡/重开；暂停结果页也能重开。</li>
 <li><strong>暂停/界外/跨波</strong>：准备或预警中暂停，等待后恢复，游戏时钟不提前出怪。把敌人推出安全盒，计数只减一次且不掉落；玩家界外判负；道具/P01 界外释放额度。保留一个合法 Dormant 到下一波，闲置剩余时间继续累计而非刷新。</li>
 </ol>
-<p dir="auto">当前 Game 日志保留既有 Murdock/Paragon 加载、ABP 除零与空粒子 Notify 警告；见报告逐项记录。助手运行的是 NullRHI 原生/真实 Game 进程，没有记录当前角色图形 PIE 通过。最终场地、完整教程 UI、独立包和完整 G3 继续待对应任务验收。</p></section><section class="document" id="doc-ui" data-source-sha256="5a729c684f33bcfc376dcb6ad1f6633dab03b6c1b59c97ece189789df8d454c5"><div class="source">可编辑源文件：<a href="../05_Development_Guide/UI_Setup.md">05_Development_Guide/UI_Setup.md</a></div><h1 id="doc-ui-moth-effectt18-hud教学与菜单接入">Moth Effect：T18 HUD、教学与菜单接入</h1>
-<p dir="auto">版本 v0.6 · 2026-10-14 · 状态：旧 UI 自动创建已恢复；贴图准星 C++ 接口已写入，待用户编译和制作蓝图</p>
+<p dir="auto">当前 Game 日志保留既有 Murdock/Paragon 加载、ABP 除零与空粒子 Notify 警告；见报告逐项记录。助手运行的是 NullRHI 原生/真实 Game 进程，没有记录当前角色图形 PIE 通过。最终场地、完整教程 UI、独立包和完整 G3 继续待对应任务验收。</p></section><section class="document" id="doc-ui" data-source-sha256="135f01ae64783c05374317404ef0c93ea6dbd6993c7ce34498d0cdc6e410438e"><div class="source">可编辑源文件：<a href="../05_Development_Guide/UI_Setup.md">05_Development_Guide/UI_Setup.md</a></div><h1 id="doc-ui-moth-effectt18-hud教学与菜单接入">Moth Effect：T18 HUD、教学与菜单接入</h1>
+<p dir="auto">版本 v0.7 · 2026-10-16 · 状态：当前使用 Slate / Kenney Designer 界面；以下旧 UI 接入步骤保留历史</p>
+<h2 id="doc-ui-2026-10-16当前-slate--kenney-界面">2026-10-16：当前 Slate / Kenney 界面</h2>
+<p dir="auto">当前制作入口为 <a href="#doc-slate-ui">Slate_UI_Setup</a>。<code class="notranslate">WBP_MothHUD</code> 已替换旧生成布局，新增 <code class="notranslate">WBP_EnemyHealth</code>，玩家生命位于左下，弹药/换弹、波次、交互、教学和菜单接真实数据。用户 <code class="notranslate">WBP_MothCrosshair</code> 的包文件及 HUD 内命中/击杀/重置/暂停/页面事件图保持。界面由保存的 Designer 树负责，原生布局后备、<code class="notranslate">NativePaint</code> 旧反馈、矢量道具图标与 <code class="notranslate">moth.UI.LegacyEnabled</code> 流程已移除。</p>
+<p dir="auto">新版保留 22 个必需绑定；旧 <code class="notranslate">HeldIcon</code>、<code class="notranslate">AimText</code>、<code class="notranslate">CrosshairText</code> 已改为可选兼容字段，不再创建或绘制，不需要按下方历史表重新补回。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项及五张 D3D12 画面已通过；手动整局、所有分辨率与独立包仍待验收。下面的旧开关、54 控件、25 绑定及自动布局/字体修复说明只用于历史对照。</p>
 <h2 id="doc-ui-2026-10-14贴图准星命中与击杀接口">2026-10-14：贴图准星、命中与击杀接口</h2>
 <p dir="auto">用户已导入 <code class="notranslate">/Game/MothEffect/UI/Textures</code> 下的 <code class="notranslate">T_CH001</code>、<code class="notranslate">T_HM_002</code>、<code class="notranslate">T_KI_001</code>。C++ 在敌人实际伤害提交后提供 <code class="notranslate">OnEnemyHitConfirmed</code> 快照，以 <code class="notranslate">bKilled</code> 区分普通命中和击杀，归属本地玩家的机关与连锁伤害共用此入口；重复、无效或非敌人命中不会生成此通知。<code class="notranslate">UMothHUDWidget</code> 按实际拥有玩家转发，并提供重置、暂停和页面变化事件，蓝图负责图层、动画和显隐。</p>
 <p dir="auto">新增 <code class="notranslate">bDrawDefaultHitMarker</code> 可单独关闭原生白色命中 X，保留原有受伤边框。保留并隐藏必需绑定的 <code class="notranslate">CrosshairText</code>，在根容器中加入准星子控件；详细步骤见 <a href="#doc-crosshair">自定义准星接入</a>。按用户选择，本轮只交付 C++ 和说明，没有运行 UE、编译或保存蓝图；新增反射接口需关闭编辑器完整编译后加载。</p>
@@ -5058,9 +5092,150 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>暂停与输入</strong>：按住开火、换弹中、投掷恢复中、持物中分别 Esc 暂停，等待超过任务时长。菜单可鼠标/键盘操作，世界冻结；继续不误射，换弹保留剩余时间，投掷仍需实际松键后新按压。切出窗口再回来同样不连射。</li>
 <li><strong>胜负与重开</strong>：教学完成后开始战斗，恢复 100HP/24 弹且无教学道具；直接开始竞技场同样正确。通关三波见胜利/重新开始；战斗死亡、教学死亡或越界见失败。暂停返回入口、胜负重开各反复执行，均回到干净标题，无旧波数/持物/对象或重复响应。</li>
 </ol>
-<p dir="auto">用户确认后按实际范围更新 <a href="#doc-t18-report">T18 报告</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a>。外部盲玩 TC26 留在 T22，独立包与完整 G3 留在 T21/后续门槛；原生测试和助手渲染检查不代替用户硬件输入验收。</p></section><section class="document" id="doc-asset-import" data-source-sha256="68e3f8f9bf1cbe991eb502beeeadade42bec0f473cd438888dd07b41efece8e2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Asset_Import_Setup.md">05_Development_Guide/Asset_Import_Setup.md</a></div><h1 id="doc-asset-import-moth-effect选定第三方资源导入">Moth Effect：选定第三方资源导入</h1>
-<p dir="auto">版本 v0.3 · 2026-10-16 · 状态：选定资源已导入；三类敌人后续统一使用 Drongo；Minions 按用户要求暂缓</p>
-<p dir="auto">后续运行时接入：用户决定三类敌人统一使用 Drongo，父/子蓝图与项目动画图的实际变更见 <a href="#doc-drongo-enemy">Drongo_Enemy_Setup</a>。本页以下“未接入”描述限定资源导入阶段；Slate UI 与 Niagara 仍未绑定本作运行时界面/特效。</p>
+<p dir="auto">用户确认后按实际范围更新 <a href="#doc-t18-report">T18 报告</a> 与 <a href="https://github.com/YYchainsAw/MothEffect/issues/20" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/20/hovercard">#20</a>。外部盲玩 TC26 留在 T22，独立包与完整 G3 留在 T21/后续门槛；原生测试和助手渲染检查不代替用户硬件输入验收。</p></section><section class="document" id="doc-slate-ui" data-source-sha256="c8baef7d52593002ba3d56b57f171491772b8fe07123e90faa69cd712a4dd75d"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Slate_UI_Setup.md">05_Development_Guide/Slate_UI_Setup.md</a></div><h1 id="doc-slate-ui-moth-effectslate-界面与生命条接入">Moth Effect：Slate 界面与生命条接入</h1>
+<p dir="auto">版本 v0.1 · 2026-10-16 · 状态：Slate / Kenney Designer 界面已制作，C++ 构建及专项自动验证通过；手动整局与独立包待验收</p>
+<p dir="auto">本轮按用户要求替换此前由 AI 代码生成的界面，使用已导入的 Colorosse Slate 系列与 Kenney Input Prompts。用户自制的 <code class="notranslate">WBP_MothCrosshair</code>、普通命中/击杀动画及 HUD 内的事件接线保留。新版界面保存在 Widget Blueprint 的 Designer 中；C++ 读取玩法数据、切换页面与处理按钮，不再在运行时生成布局或绘制旧准星、道具图标。</p>
+<h2 id="doc-slate-ui-1-打开与编辑">1. 打开与编辑</h2>
+<p dir="auto">重新打开工程即可加载本轮已构建的 <code class="notranslate">MothEffectEditor</code> 模块。Content Browser 打开以下资产：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Unreal 路径</th>
+<th>用途与编辑位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/WBP_MothHUD</code></td>
+<td>玩家 HUD、教学、标题、暂停与结果页；父类保持 <code class="notranslate">MothHUDWidget</code></td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/WBP_EnemyHealth</code></td>
+<td>敌人头顶生命条；父类保持 <code class="notranslate">MothEnemyHealthWidget</code></td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/WBP_MothCrosshair</code></td>
+<td>用户制作的准星、命中与击杀反馈；本轮未重存此包</td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/DA_MothTutorial</code></td>
+<td>原有三步教学文字与目标布置</td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/Textures/Slate</code></td>
+<td>已选用的 Slate 面板、栏框、进度填充等贴图</td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/UI/Textures/InputPrompts</code></td>
+<td>已选用的 Kenney 键盘与鼠标提示贴图</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">在 <code class="notranslate">WBP_MothHUD</code> 的 Designer 中调整锚点、位置、尺寸、字体、图片 Brush、按钮样式和静态文案。<code class="notranslate">VitalPanel</code> 位于左下角，<code class="notranslate">WeaponPanel</code> 位于右下角，<code class="notranslate">WavePanel</code> 位于顶部中央；<code class="notranslate">MenuCard</code> 与 <code class="notranslate">ControlGuide</code> 是菜单的左右面板。字体来源保存在资产中，运行时不再自动替换用户字体。</p>
+<p dir="auto">Class Defaults → <strong>Moth / Designer Preview</strong> 可切换 Title、Gameplay、Tutorial、Pause、TutorialComplete、Victory、Defeat，预览持物和教学步骤；预览不启动战斗或生成道具。<strong>Moth / Menu Copy</strong> 可改菜单标题、说明及动作文案；生命、弹药、波次、持物、步骤和交互状态由 C++ 刷新。保存后 Play 查看实际尺寸与可读性。</p>
+<p dir="auto">本轮实际渲染与运行验证使用 <code class="notranslate">/Game/MothEffect/Maps/L_Arena_SoulCity</code>，没有修改工程默认地图；默认入口仍为 <code class="notranslate">L_Arena_01</code>。标题主按钮是“开始战斗”，次按钮是“操作教学”；Esc 暂停，继续恢复当前局，返回主菜单通过现有流程重载当前关卡。</p>
+<h2 id="doc-slate-ui-2-界面内容与风格">2. 界面内容与风格</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>区域</th>
+<th>当前行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>左下角生命</td>
+<td>玩家真实生命与最大生命，红色 Slate 血条，显示如 <code class="notranslate">75 / 100</code></td>
+</tr>
+<tr>
+<td>右下角武器</td>
+<td>当前弹药/弹匣容量、换弹进度及 Kenney R 键提示</td>
+</tr>
+<tr>
+<td>顶部波次</td>
+<td>当前波次/总波次、准备倒计时或剩余敌人数</td>
+</tr>
+<tr>
+<td>底部交互</td>
+<td>持物名称、左键射击/投掷、E 拾取/放下；实际瞄准 Dormant 道具时显示上下文提示</td>
+</tr>
+<tr>
+<td>教学与通知</td>
+<td>步骤说明、重置本步按钮、短时玩法通知</td>
+</tr>
+<tr>
+<td>标题/暂停/结果</td>
+<td>共用 Slate 窗口、操作指南、三类机关颜色说明和既有流程按钮</td>
+</tr>
+<tr>
+<td>敌人头顶</td>
+<td>当前/最大生命、三类固定掉落名称与青蓝/橙/紫类型色，预警时显示提示标记</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">整体沿用 Slate 的深色金属面板与铜色连接件，青蓝强调状态，保留红色生命填充，三类道具继续使用青蓝/橙/紫辨识。按键图标来自 Kenney；没有另造一套按键字形。受伤边缘由 Designer 中的 <code class="notranslate">DamageOverlay</code> 表现，不再使用原生 <code class="notranslate">NativePaint</code> 绘制。</p>
+<p dir="auto">Slate 来源为 Oğuzhan Girgin / Colorosse，许可 CC BY 4.0；Kenney Input Prompts 为 CC0。菜单保留署名，原始文件、许可与导入清单位于 <code class="notranslate">SourceArt/UI/ThirdParty/ColorosseSlate</code>、<code class="notranslate">SourceArt/UI/ThirdParty/KenneyInputPrompts</code>；不要移除 Slate 所需署名。</p>
+<h2 id="doc-slate-ui-3-保留绑定与用户准星">3. 保留绑定与用户准星</h2>
+<p dir="auto"><code class="notranslate">WBP_MothHUD</code> 当前有 86 个控件，以下 22 个必需绑定保留名称、兼容类型和 <strong>Is Variable</strong>。它们可以移动或换父容器。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>功能</th>
+<th>名称</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面/区域</td>
+<td><code class="notranslate">HUD</code>、<code class="notranslate">Menu</code>、<code class="notranslate">TeachingPanel</code>、<code class="notranslate">NoticePanel</code>、<code class="notranslate">AimPanel</code></td>
+<td>Widget 派生类型</td>
+</tr>
+<tr>
+<td>玩家生命</td>
+<td><code class="notranslate">HealthText</code> / <code class="notranslate">HealthBar</code></td>
+<td>TextBlock / ProgressBar</td>
+</tr>
+<tr>
+<td>武器</td>
+<td><code class="notranslate">AmmoText</code> / <code class="notranslate">ReloadBar</code></td>
+<td>TextBlock / ProgressBar</td>
+</tr>
+<tr>
+<td>状态</td>
+<td><code class="notranslate">WaveText</code>、<code class="notranslate">HeldText</code>、<code class="notranslate">TutorialText</code>、<code class="notranslate">NoticeText</code>、<code class="notranslate">TutorialStepText</code></td>
+<td>TextBlock</td>
+</tr>
+<tr>
+<td>菜单文字</td>
+<td><code class="notranslate">MenuTitle</code>、<code class="notranslate">MenuDescription</code>、<code class="notranslate">PrimaryLabel</code>、<code class="notranslate">SecondaryLabel</code></td>
+<td>TextBlock</td>
+</tr>
+<tr>
+<td>按钮</td>
+<td><code class="notranslate">PrimaryButton</code>、<code class="notranslate">SecondaryButton</code>、<code class="notranslate">QuitButton</code>、<code class="notranslate">RetryButton</code></td>
+<td>Button</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"><code class="notranslate">WaveDetailText</code>、<code class="notranslate">InteractionText</code> 和 <code class="notranslate">DamageOverlay</code> 是新版可选绑定。旧 <code class="notranslate">HeldIcon</code>、<code class="notranslate">AimText</code>、<code class="notranslate">CrosshairText</code> 仅留下反射兼容字段，已从新版 Designer 树移除；无需为了通过编译重新添加旧图标或文字准星。</p>
+<p dir="auto">原 HUD 的 54 个旧生成控件已替换，嵌入的 <code class="notranslate">WBP_MothCrosshair</code> 对象继续置于根 Overlay 顶层。HUD 的 15 个事件图节点、引脚和连线与制作前快照一致：<code class="notranslate">OnEnemyHitConfirmed</code>、<code class="notranslate">OnCrosshairFeedbackReset</code>、<code class="notranslate">OnCrosshairPauseChanged</code>、<code class="notranslate">OnCrosshairPageChanged</code> 继续驱动用户子控件。请不要再添加第二个准星到 Viewport。</p>
+<p dir="auto">用户准星包保留的 SHA-256 为 <code class="notranslate">2cebbaa5d532ddd1d1476bd120cec5af3458a7e88b35e5c574082d2968b9fa40</code>。旧 <code class="notranslate">MothHUDLayout</code> 文件与控制器的 <code class="notranslate">moth.UI.LegacyEnabled</code> 流程已移除，旧开关不再作为当前调试入口；缺失正式 HUD 资产时也不会自动创建旧原生布局。<code class="notranslate">MothDeviceIcon</code> 仅保留兼容类，不再绘制旧图标。</p>
+<h2 id="doc-slate-ui-4-敌人头顶生命条">4. 敌人头顶生命条</h2>
+<p dir="auto"><code class="notranslate">BP_EnemyBase</code>、<code class="notranslate">BP_EnemyLauncher</code>、<code class="notranslate">BP_EnemyBomb</code>、<code class="notranslate">BP_EnemyEmitter</code> 的 <strong>Health Widget Class</strong> 均指向 <code class="notranslate">WBP_EnemyHealth</code>。原生 <code class="notranslate">EnemyHealthWidget</code> 组件使用 Screen Space，默认偏移 Z=145cm、绘制尺寸 160×30、最大显示距离 2500cm。可以在敌人蓝图默认值中调整显示距离，在组件中调整位置；修改后确认模型头顶与远近阅读效果。</p>
+<p dir="auto">打开 <code class="notranslate">WBP_EnemyHealth</code> 调整条框和文字。必须保留 <code class="notranslate">HealthBar</code>（ProgressBar）；可选的 <code class="notranslate">HealthText</code>、<code class="notranslate">EnemyTypeText</code>（TextBlock）和 <code class="notranslate">TelegraphIndicator</code>（Widget）分别显示数值、类型和预警。组件创建后由原生类绑定当前敌人的真实 <code class="notranslate">HealthComponent</code>，受到伤害更新数值与填充；死亡或销毁解除绑定并隐藏，不需要在蓝图 Tick 中复制扣血或手动设 Percent。</p>
+<p dir="auto">血条只在战斗/教学及合法暂停状态显示；距离过远、投影出屏、被场景遮挡或敌人死亡时隐藏。遮挡检查使用当前相机到敌人的 Visibility 射线，避免 Screen Space 控件透墙。旧灰盒身体、世界文字 <code class="notranslate">TelegraphText</code> 和 <code class="notranslate">DropHintText</code> 在运行时隐藏；Drongo 动画、射击 AI 与固定掉落规则延续前轮接入。</p>
+<h2 id="doc-slate-ui-5-已验证与边界">5. 已验证与边界</h2>
+<ul dir="auto">
+<li>原工程 UE 5.8 常规 Editor 构建通过；隔离工程两件 UI 蓝图编译均为 0 errors / 0 warnings，六件目标资产保存成功。此结论不表示全项目或第三方日志没有警告。</li>
+<li><code class="notranslate">MothEffect.UI.*</code> 三项 Editor 专项为 2 项 Succeeded、1 项 SucceededWithWarnings、0 失败，覆盖 Designer 绑定/重排、预览和序列化字体。</li>
+<li>实际 PIE 专项验证标题按钮启动并重载地图、真实玩家 <code class="notranslate">100→75 / 100</code>、三类敌人 <code class="notranslate">60→40 / 60</code>、暂停时钟冻结及绑定保持、继续、死亡清理、用户击杀反馈与返回标题复位。准星包 SHA 和 HUD 图连接检查通过。</li>
+<li>D3D12 实际运行视口已记录标题、满血战斗、受伤战斗、暂停和失败五张画面。截图为可读展示在 PIE 中安排了三类敌人位置，并隐藏首波重复的第四只；伤害经过真实 <code class="notranslate">ApplyHit</code>，没有直接覆盖生命或 UI 百分比，没有保存地图或运行时调整。</li>
+</ul>
+<p dir="auto">本地过程记录在 <code class="notranslate">Saved/Automation/SlateUI</code>：<code class="notranslate">Generation.json</code>、<code class="notranslate">EditorAutomation/index.json</code>、<code class="notranslate">Verification.json</code>、<code class="notranslate">CaptureResult.json</code> 及构建/运行日志，首轮失败保留另名记录。归档证据见 <a href="../06_Test_Doc/Evidence/SlateUI/SlateUI_2026-10-16.json">SlateUI_2026-10-16.json</a>。本轮未把硬件输入、手动三波整局、所有分辨率、性能或 Windows 打包记为通过；原有 Paragon Rig、旧输入/动画及 DesignerProbe 警告仍按日志保留。</p>
+<p dir="auto">制作后手动进入战斗，重点查看移动射击时的下方布局、实际受伤/换弹与拾取提示，确认三个敌人头顶条在掩体后隐藏，检查用户命中/击杀动画与 Esc 暂停恢复；最后跑完三波和教学。不要将自动截图当作整局手感验收。</p></section><section class="document" id="doc-asset-import" data-source-sha256="bf74d3ccc24f37f3583389ad30602e90cf383ff98e52193981930ae90de9969d"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Asset_Import_Setup.md">05_Development_Guide/Asset_Import_Setup.md</a></div><h1 id="doc-asset-import-moth-effect选定第三方资源导入">Moth Effect：选定第三方资源导入</h1>
+<p dir="auto">版本 v0.5 · 2026-10-16 · 状态：选定资源已导入；Drongo 与 Slate / Kenney 已接入；Minions 按用户要求暂缓</p>
+<p dir="auto">后续运行时接入：用户决定三类敌人统一使用 Drongo，父/子蓝图与项目动画图的实际变更见 <a href="#doc-drongo-enemy">Drongo_Enemy_Setup</a>。随后使用 Slate / Kenney 制作保存的 HUD、玩家/敌人生命条和菜单，并保留用户准星；当前编辑与专项验证见 <a href="#doc-slate-ui">Slate_UI_Setup</a>。本页以下“未接入”描述限定资源导入阶段；Niagara 随后也已绑定八类实际玩法事件，调节与验证见 <a href="#doc-niagara">Niagara_Setup</a>；下文“未绑定”限定导入阶段。</p>
 <h2 id="doc-asset-import-当前-content-browser-位置">当前 Content Browser 位置</h2>
 <markdown-accessiblity-table><table role="table">
 <thead>
@@ -5386,8 +5561,10 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li>特效按用户选择使用 Niagara Examples Pack，先接枪口/命中、小爆炸与机关启动的短效果；保留现有机关方向与过期提示。</li>
 <li>在 Soul City 场地测试八敌人同屏、动画的待机/追踪/开火、准星附近可读性、暂停/重开清理及 Windows 打包。</li>
 </ol>
-<p dir="auto">现已导入 Slate / Kenney 的 3,234 张贴图、Wraith 整包及用户后补的 Drongo / Niagara Examples Pack，并保留来源、许可与 SHA；没有购买付费资源或修改现有 HUD、敌人、玩家资产。Minions 暂缓；动画与特效的运行时接入仍待进行，见 <a href="#doc-asset-import">实际导入记录</a>。</p></section><section class="document" id="doc-crosshair" data-source-sha256="6eaf73f1579e5c197407dd05ebb857c0e1e8e893c5806a066d3477b001774be0"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
-<p dir="auto">版本 v0.1 · 2026-10-14 · 状态：C++ 接口源码已写入，待用户自行编译、制作蓝图与 PIE 验收</p>
+<p dir="auto">现已导入 Slate / Kenney 的 3,234 张贴图、Wraith 整包及用户后补的 Drongo / Niagara Examples Pack，并保留来源、许可与 SHA；没有购买付费资源或修改现有 HUD、敌人、玩家资产。Minions 暂缓；动画与特效的运行时接入仍待进行，见 <a href="#doc-asset-import">实际导入记录</a>。</p></section><section class="document" id="doc-crosshair" data-source-sha256="41a70a1c5f2b1a5770ac3ef89ffa5e97722b2b4f4a5a26619f9b021d4be973a2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
+<p dir="auto">版本 v0.2 · 2026-10-16 · 状态：用户准星已制作并保留在当前 Slate HUD；以下为原始接入说明</p>
+<p dir="auto">2026-10-16 当前界面已改用 <a href="#doc-slate-ui">Slate_UI_Setup</a>。用户的 <code class="notranslate">WBP_MothCrosshair</code> 包保持 SHA 一致，HUD 内 15 个事件节点及引脚/连接保持；真实敌人死亡专项确认用户击杀反馈被触发，暂停、继续与返回标题复位已验证。准星仍只作为 HUD 的一个嵌入子控件，未重复 Add to Viewport。原生文字准星、命中 X 和旧 <code class="notranslate">NativePaint</code> 绘制已移除，下文关于关闭原生绘制开关与保留旧必需 <code class="notranslate">CrosshairText</code> 的步骤是历史记录，不适用于当前树。原工程构建已通过，无需按本页历史状态重新制作现有蓝图；手动射击手感与完整整局仍待验收。</p>
+<p dir="auto">以下各节记录 2026-10-14 接口交付时的分工、表现建议及未运行状态，不覆盖上面的当前验证结果。</p>
 <p dir="auto">本轮按用户要求先交付 C++ 和接入说明，不运行 UE、编译或修改 <code class="notranslate">.uasset</code>。<code class="notranslate">WBP_MothCrosshair</code> 由用户在编辑器制作；本文中的动画时长、尺寸和颜色是表现起点，不改战斗数值。现有 HUD、菜单、教学和按钮继续使用 <a href="#doc-ui">UI_Setup</a> 的接口。</p>
 <h2 id="doc-crosshair-1-先加载接口与保存贴图">1. 先加载接口与保存贴图</h2>
 <ol dir="auto">
@@ -5634,8 +5811,9 @@ Event On Crosshair Page Changed(Page)
 <li><strong>暂停与重开</strong>：命中/击杀显示中 Esc 暂停，等待超过 0.6 秒，继续后从剩余位置和剩余时间完成，不从头重播。教学重置、返回标题、失败/重开和反复进入 PIE 后无旧动画、Timer 或重复响应。</li>
 <li><strong>已有反馈与尺寸</strong>：仅关闭 Draw Default Hit Marker 后原生受伤边框继续工作，无双白 X；1280×720、1920×1080、2560×1440 的三图层位置正确，无焦点遮挡。</li>
 </ol>
-<p dir="auto">新增接口涉及 <a href="../../Source/MothEffect/Public/Types/EnemyHitFeedback.h">EnemyHitFeedback.h</a>、<a href="../../Source/MothEffect/Public/UI/MothHUDWidget.h">MothHUDWidget.h</a>、<a href="../../Source/MothEffect/Private/UI/MothHUDWidget.cpp">MothHUDWidget.cpp</a> 与 <a href="../../Source/MothEffect/Public/Feedback/MothFeedbackSubsystem.h">MothFeedbackSubsystem.h</a>。验收要记录用户实际编译版本、保存资产、用例与结果，不把已写源码或旧 T19 验证扩展为本轮通过。</p></section><section class="document" id="doc-feedback" data-source-sha256="7aed6f24a91df4aa7a036f054ab29919b3e305ad2a71bebf6bf00760642320e4"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Feedback_Setup.md">05_Development_Guide/Feedback_Setup.md</a></div><h1 id="doc-feedback-moth-effectt19-默认反馈与替换入口">Moth Effect：T19 默认反馈与替换入口</h1>
-<p dir="auto">版本 v0.2 · 2026-10-13 · 状态：默认反馈已接入并完成自动化；四组用户 PIE 待验收</p>
+<p dir="auto">新增接口涉及 <a href="../../Source/MothEffect/Public/Types/EnemyHitFeedback.h">EnemyHitFeedback.h</a>、<a href="../../Source/MothEffect/Public/UI/MothHUDWidget.h">MothHUDWidget.h</a>、<a href="../../Source/MothEffect/Private/UI/MothHUDWidget.cpp">MothHUDWidget.cpp</a> 与 <a href="../../Source/MothEffect/Public/Feedback/MothFeedbackSubsystem.h">MothFeedbackSubsystem.h</a>。验收要记录用户实际编译版本、保存资产、用例与结果，不把已写源码或旧 T19 验证扩展为本轮通过。</p></section><section class="document" id="doc-feedback" data-source-sha256="fd5d5bda8cfe222ab78756a253bd352e60c5cdbb16812dbd1e97f977cd653552"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Feedback_Setup.md">05_Development_Guide/Feedback_Setup.md</a></div><h1 id="doc-feedback-moth-effectt19-默认反馈与替换入口">Moth Effect：T19 默认反馈与替换入口</h1>
+<p dir="auto">版本 v0.3 · 2026-10-16 · 状态：默认反馈已扩展 Niagara；专项与实际模拟通过，手动整局待验收</p>
+<p dir="auto">2026-10-16 当前版本：八类世界效果已接 Niagara，<code class="notranslate">Styles</code> 为十三类（追加 <code class="notranslate">Pickup</code>），系统与调节步骤见 <a href="#doc-niagara">Niagara_Setup</a>。暂停、数量限制与清理共用原反馈所有权；用户准星及 Slate HUD 继续保留，旧原生 UI 绘制和开关已移除。以下十二槽、几何闪线、屏幕绘制等描述保留 T19 历史实现范围，以新指南为当前编辑入口。</p>
 <p dir="auto">打开 <code class="notranslate">/Game/MothEffect/Maps/L_Arena_01</code> 后 Play，进入教学或正式战斗即可使用默认反馈。已有 D01/D02/D03 蓝图继承原生 <code class="notranslate">DefaultFeedback</code> 组件，步枪、生命与弹丸从已提交的动作发出反馈；不需要重制玩家或机关 BP，也不需要给现有蓝图补声音事件。本轮提供可调整的原型，具体 UI 和美术由用户制作。</p>
 <h2 id="doc-feedback-默认会看到听到什么">默认会看到、听到什么</h2>
 <markdown-accessiblity-table><table role="table">
@@ -5771,7 +5949,127 @@ Event On Crosshair Page Changed(Page)
 <li><strong>TC18 过期与 Held</strong>：让 Dormant 道具进入最后警告阶段，确认黄脉动、文字与一次短声音；警告时拾取并持有超过原剩余时间，不消失也不反复鸣响。E 放下，再次警告并沿剩余时间过期；另一次用投掷恢复计时。检查过期后 Spent/回收及无残留轮廓。</li>
 <li><strong>暂停、结算与重开</strong>：开火或机关提示出现时暂停，等待超过音效/短效果时长；世界与声音不继续，恢复后正常结束。分别在失败、胜利、教学重置/结束、返回标题和重新开战后检查旧声音、闪线、方向/状态标记和屏幕 Alpha 已清理。多次重开无重复音效；必要时以 <code class="notranslate">MothFeedbackStats</code> 核对存活实例与动作计数差值。</li>
 </ol>
-<p dir="auto">四组确认后才更新 <a href="https://github.com/YYchainsAw/MothEffect/issues/21" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/21/hovercard">#21</a> 的用户验收。自动化不能代替真实四向/空中操作、听感、遮挡和当前硬件的暂停/重开体验。</p></section><section class="document" id="doc-prototype-art" data-source-sha256="cd24f9102a0d1a63b002cf93009694dfb8f0258d39d608cc4ec83005c546438b"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Prototype_Art_Setup.md">05_Development_Guide/Prototype_Art_Setup.md</a></div><h1 id="doc-prototype-art-moth-effectt20-原型外观与替换入口">Moth Effect：T20 原型外观与替换入口</h1>
+<p dir="auto">四组确认后才更新 <a href="https://github.com/YYchainsAw/MothEffect/issues/21" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/21/hovercard">#21</a> 的用户验收。自动化不能代替真实四向/空中操作、听感、遮挡和当前硬件的暂停/重开体验。</p></section><section class="document" id="doc-niagara" data-source-sha256="b5049317313b894463a0cfb2fc5c766f23436e2a46d6f9f8934c2cbc4b22a240"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Niagara_Setup.md">05_Development_Guide/Niagara_Setup.md</a></div><h1 id="doc-niagara-moth-effectniagara-战斗特效接入">Moth Effect：Niagara 战斗特效接入</h1>
+<p dir="auto">版本 v0.1 · 2026-10-16 · 状态：八类特效已接入；原工程构建、19 项专项与实际 D3D12 运行通过；整局、性能与独立包待验收</p>
+<p dir="auto">本次使用用户已添加的 Epic Niagara Examples Pack，通过原有反馈系统连接真实开火、碰撞、机关结算和成功拾取。自制准星、命中/击杀动画及 Slate HUD 沿用；特效不负责伤害、碰撞或激活时机。</p>
+<h2 id="doc-niagara-配置位置">配置位置</h2>
+<p dir="auto">打开 <code class="notranslate">/Game/MothEffect/Feedback/DA_DefaultFeedback</code>，展开 <code class="notranslate">Styles</code>。原有十二类保留，末尾新增 <code class="notranslate">Pickup</code>；八类世界效果使用 <code class="notranslate">/Game/MothEffect/FX</code> 下的项目 Niagara 副本，继续引用资源包的原材质、贴图和发射器。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Styles 类别</th>
+<th>项目资源</th>
+<th>实际触发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shot</td>
+<td><code class="notranslate">NS_MothMuzzleFlash</code></td>
+<td>玩家实际消耗一发并开火</td>
+</tr>
+<tr>
+<td>Impact</td>
+<td><code class="notranslate">NS_MothImpact</code></td>
+<td>玩家射线或 P01 的真实表面碰撞，位置沿表面法线抬高 2cm</td>
+</tr>
+<tr>
+<td>Launcher</td>
+<td><code class="notranslate">NS_MothLauncherBurst</code></td>
+<td>D01 成功创建柱体后，支撑检查失败不播放成功特效</td>
+</tr>
+<tr>
+<td>Bomb</td>
+<td><code class="notranslate">NS_MothBombExplosion</code></td>
+<td>D02 真实爆炸结算后，在已锁定的爆心播放</td>
+</tr>
+<tr>
+<td>Emitter</td>
+<td><code class="notranslate">NS_MothEmitterActivate</code></td>
+<td>D03 激活延迟结束后开始运行</td>
+</tr>
+<tr>
+<td>EmitterShot</td>
+<td><code class="notranslate">NS_MothEmitterShot</code></td>
+<td>D03 的实际 P01 弹体生成</td>
+</tr>
+<tr>
+<td>EnemyShot</td>
+<td><code class="notranslate">NS_MothEnemyShot</code></td>
+<td>敌人的实际 P01 弹体生成</td>
+</tr>
+<tr>
+<td>Pickup</td>
+<td><code class="notranslate">NS_MothPickup</code></td>
+<td>成功携带道具，并且回调后仍处于合法持有状态</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">D01/D02/D03 保留现有 <code class="notranslate">Activation Delay Seconds</code>，不会在刚进入 Active 时提前播放结算特效。敌人预警结束也不会被当成实际开枪；失去目标和禁用引起的预警取消不会误播枪口。</p>
+<h2 id="doc-niagara-调整画面">调整画面</h2>
+<p dir="auto">停止 PIE 后修改 Profile，再 Play 检查；保持资源类型为 Niagara System。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>每项配置</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Niagara System</td>
+<td>更换该动作使用的系统；有效系统替换旧几何闪光</td>
+</tr>
+<tr>
+<td>Color / Niagara Color Parameter</td>
+<td>给资源实际公开的 LinearColor 参数染色，例如 <code class="notranslate">User.Flash Base Color</code>；参数名不匹配时不添加无效覆盖</td>
+</tr>
+<tr>
+<td>Niagara Scale</td>
+<td>调整表现尺寸，不改真实伤害范围</td>
+</tr>
+<tr>
+<td>Niagara Scale Parameter</td>
+<td>可选的实际公开 Float 参数，枪口使用 <code class="notranslate">User.Global Scale</code> 调整资源内部粒子尺寸</td>
+</tr>
+<tr>
+<td>Niagara Direction Parameter</td>
+<td>可选的实际公开 Vector 参数，命中使用 <code class="notranslate">User.Hit Normal</code> 接收真实表面法线</td>
+</tr>
+<tr>
+<td>Niagara Rotation</td>
+<td>在实际射击方向或法线的局部坐标中补旋转</td>
+</tr>
+<tr>
+<td>Niagara Lifetime Seconds</td>
+<td>世界时间中的最大存活时长，默认两秒，运行时限制为 0.05–10 秒，保护意外循环系统</td>
+</tr>
+<tr>
+<td>Scale Niagara To Radius / Niagara Reference Radius Cm</td>
+<td>根据本次真实范围与参考尺寸调整效果比例；它是视觉缩放，不是碰撞或命中范围</td>
+</tr>
+<tr>
+<td>Legacy Visual</td>
+<td>没有可用 Niagara 时是否允许原几何效果回退；已映射八类关闭回退</td>
+</tr>
+<tr>
+<td>Sound / Volume / Audio Interval</td>
+<td>沿用原音效、音量及同类声音最小间隔</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">原 <code class="notranslate">Duration</code> / <code class="notranslate">Size Cm</code> 继续供几何回退使用。Niagara 有自己的寿命和缩放，改原几何时长不会意外截断 Niagara。枪口、命中、火花与拾取的颜色参数经过实际类型检查；爆炸保留资源原有火光和烟尘。参数及来源见 <a href="../../SourceArt/Feedback/NiagaraManifest.json">NiagaraManifest.json</a>。</p>
+<p dir="auto">保留原 <code class="notranslate">Hit</code> / <code class="notranslate">Damage</code> / <code class="notranslate">Expiry</code> / <code class="notranslate">Spent</code> / <code class="notranslate">Failure</code> 样式及道具方向/状态标记。UI 准星仍由用户控件处理，受伤边缘由 Designer 表现；本次不会恢复已删除的原生 UI 绘制。</p>
+<h2 id="doc-niagara-暂停回收与资源依赖">暂停、回收与资源依赖</h2>
+<p dir="auto">每次已提交的动作由一个短生命周期的反馈 Actor 持有 Niagara Component。它不阻挡射线、物理或导航；共用原 <code class="notranslate">Max Visual Cues</code> 默认 24 的数量限制，预算满时回收最早仍存活的一项。音效继续使用独立的 16 声部限制。</p>
+<p dir="auto">Esc 暂停会冻结 Niagara 和世界时间中的回收期限，继续后恢复同一组件。重试、结算、返回主菜单和 World 结束通过既有 <code class="notranslate">ClearFeedback</code> 立即销毁持有者及其组件；即使资源误设成循环，也有最大存活期限。</p>
+<p dir="auto">保留 <code class="notranslate">/Game/NiagaraExamples</code> 原路径。本轮只复制和保存项目内的系统及默认反馈 Profile，没有把原资源包改造成项目原创；其他电脑和打包环境仍需具备其依赖。来源为 <a href="https://www.fab.com/listings/0e188eca-4e54-4fb2-a9ed-d8b8a565e600" rel="nofollow">Epic Niagara Examples Pack</a>。</p>
+<h2 id="doc-niagara-制作与验证入口">制作与验证入口</h2>
+<p dir="auto">隔离准备与写回由 <a href="../../scripts/stage_niagara_feedback.py">stage_niagara_feedback.py</a> 负责，资源配置见 <a href="../../scripts/configure_niagara_feedback.py">configure_niagara_feedback.py</a>。只保存目标 Profile 和新 FX，不调用 Save All。</p>
+<p dir="auto">构建、资源检查和运行记录位于 <code class="notranslate">Saved/Automation/NiagaraFX</code>。原生专项测试覆盖映射、参数、预算、暂停、寿命和重入清理；实际 Niagara 模拟及画面需要使用 D3D12 运行，NullRHI 的组件检查不能代替画面验证。硬件输入、整局三波、性能和 Windows 打包不由本次自动专项代替。</p>
+<p dir="auto">本轮最终结果：原工程常规 Editor 构建通过；19 项 Editor 反馈与 Niagara 专项全部成功；SoulCity 实际 PIE 中，真实玩家开枪/拾取、敌人发射、三类机关均产生对应系统，八类模拟时间实际推进。真实玩家无需输入焦点夹具，仍不等于硬件操作验收。暂停时同一爆炸实例模拟时间保持 <code class="notranslate">0.116668</code>，恢复后为 <code class="notranslate">0.358322</code>；真实致死伤害进入 Defeat 后，全部已观察组件销毁、Niagara 存活数归零。</p>
+<p dir="auto">写回范围为八件项目 FX 和一件默认反馈 Profile；123 件其他项目资产/配置/工程文件及 669 件 Niagara 原包文件 SHA 保持一致，用户准星、Slate HUD 和敌人蓝图未改。保存失败与 Python 接口差异的首轮记录保留；旧命中专项的测试夹具补上本地标记及实际 PlayerState，没有改变运行时归属规则。</p>
+<p dir="auto">归档见 <a href="../06_Test_Doc/Evidence/Niagara/Niagara_2026-10-16.json">Niagara_2026-10-16.json</a>，画面为实际运行视口：<a href="../06_Test_Doc/Evidence/Niagara/Devices.png">机关效果</a>、<a href="../06_Test_Doc/Evidence/Niagara/Pause.png">暂停</a>、<a href="../06_Test_Doc/Evidence/Niagara/Pickup.png">拾取</a>。为展示效果，测试只在 PIE 中安排演员和临时支撑/靶墙；没有保存地图、直接生成 Niagara 或覆盖 UI 百分比。来源包和引擎的旧输入、动画/Notify、模板编译警告保留在完整日志，不把整段日志声称为零警告。</p></section><section class="document" id="doc-prototype-art" data-source-sha256="cd24f9102a0d1a63b002cf93009694dfb8f0258d39d608cc4ec83005c546438b"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Prototype_Art_Setup.md">05_Development_Guide/Prototype_Art_Setup.md</a></div><h1 id="doc-prototype-art-moth-effectt20-原型外观与替换入口">Moth Effect：T20 原型外观与替换入口</h1>
 <p dir="auto">版本 v0.1 · 2026-10-13 · 状态：原型资产和接口已接入；当前玩家 PIE 与独立包待验收</p>
 <p dir="auto">本轮提供三种原创机关外壳、一个金属掩体模块、一个符文灯饰和共用材质，作为你后续深度修改机制与全部替换 UI 的可运行基线。模型由可复现 Python 几何代码生成，你可以改源几何、换自己的模型或关闭这层外观。实际构建、回归、渲染与保留失败见 <a href="#doc-t20-report">T20 报告</a>。</p>
 <h2 id="doc-prototype-art-当前入口">当前入口</h2>
@@ -6219,8 +6517,10 @@ Event On Crosshair Page Changed(Page)
 <h2 id="doc-workflow-5-issueproject-与-docs-同步">5. Issue、Project 与 Docs 同步</h2>
 <p dir="auto">GitHub 的当前用法见 <a href="#doc-github">GitHub 开发流程</a>。排期与任务编号仍在 <a href="#doc-plan">开发计划</a> 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。</p>
 <p dir="auto">同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。</p>
-<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="ecf7f101a93e1c564e19fc1ff01ed18e76b97dae37beb5815c9058dda35eab62"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
-<p dir="auto">版本 v0.62 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="e358b353fdd82e787fc2719629a0e90a1bbbffb3626cba62f59bc20225409794"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
+<p dir="auto">版本 v0.64 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">CHG068（2026-10-16）：接入用户选定 Niagara Examples Pack，八件项目系统副本通过原反馈 Cue 接实际枪口、碰撞、D01/D02/D03 与成功拾取；保留音效和用户准星/UI。反馈 Profile 新增系统、颜色参数、内部缩放、法线、方向及独立最大寿命；新旧效果共用预算，暂停冻结，结算/重试/World 结束销毁持有组件。原工程 Editor 构建与 19 项反馈/Niagara 专项成功，实际 D3D12 八类模拟、暂停同实例冻结/恢复及真实死亡清理通过，九件资产 SHA 写回，123 件其他项目文件与 669 件原包保持。保存配置及脚本接口首轮失败保留；旧命中测试夹具补本地标记和 PlayerState，未改伤害归属规则。配置、截图与边界见 <a href="#doc-niagara">Niagara_Setup</a>；手动整局、性能与独立包待验收，未提交或推送。</p>
+<p dir="auto">CHG067（2026-10-16）：按用户要求移除旧 AI 原生布局与绘制，用 Colorosse Slate / Kenney 制作保存的 Designer HUD、菜单及敌人生命条。玩家生命放左下，补齐弹药/换弹、波次、交互和操作指南；敌人生命观察真实 HealthComponent，结合距离、屏幕和遮挡显示，死亡解除绑定。旧 54 个生成控件替换，用户准星子控件保留，准星包 SHA 和 HUD 15 个事件节点/引脚/连线一致；四件 Drongo 敌人蓝图指向新生命条类，玩法 AI 与掉落延续前轮。原工程常规 Editor 构建通过，两件 UI 蓝图零编译错误/警告，三项 UI Editor 专项为 2 成功/1 带警告成功；实际 PIE 伤害、菜单旅行、暂停/恢复、击杀反馈、返回标题复位及五张 D3D12 画面验证通过，首轮构建/脚本夹具失败另名保留。编辑与证据见 <a href="#doc-slate-ui">Slate_UI_Setup</a>。未将手动输入、三波整局、性能或独立包记为通过；第三方和 DesignerProbe 已有警告保留，未提交或推送。</p>
 <p dir="auto">CHG066（2026-10-16）：按用户选择将三类敌人统一为 Drongo，保留既有敌人类、AI、生命与固定掉落；新增项目版原 ABP，删除演示玩家/连击/出生摆姿依赖，移动判定改读实际速度并防止初始化转身计算除零。父蓝图接原开火 Montage 与完整死亡动画，四件敌人蓝图配置配套模型并隐藏灰盒。隔离 UE 5.8 编译、两次保存实例重载、三类实际移动/UpperBody 射击与 P01/完整死亡/固定掉落专项，以及 D3D12 预览通过，进程退出码均 0。用户关闭文件锁编辑器后按 SHA 写回五件包；118 个其他保护文件与 1,913 个 Drongo 原文件保持。初次旋转断言失败保留，修正后重测；具体证据和未验收范围见 <a href="#doc-drongo-enemy">Drongo 接入</a>。未修改 C++、用户 HUD 或供应商资产，未提交/推送。</p>
 <p dir="auto">CHG065（2026-10-16）：用户补入 Niagara Examples Pack 与 Paragon Drongo，并明确暂缓 Minions。隔离 UE 5.8 注册两包、检查 <code class="notranslate">/Game</code> 硬软引用并实际加载 23 件关键对象；Drongo 主 ABP / Rigging 子 ABP 内存编译为 UpToDate，原 Character 带旧输入映射警告。注册 59 个 NiagaraSystem，其中 15 个实际加载通过；日志退出码 0、0 errors、17 warning 事件，保留旧 Rig 与预览软引用问题。两包原目录/隔离副本 2,582 件文件和 122 件保护范围内项目文件 SHA 均未变，没有保存或写回原包、修改配置或接入运行时外观。位置与证据见 <a href="#doc-asset-import">导入说明</a>，实际特效画面、AI 动画、PIE 和独立包未验证；未提交或推送。</p>
 <p dir="auto">CHG064（2026-10-16）：按用户选型和导入授权，新增 Slate / Kenney 的 3,234 张 UI Texture2D，复制 Wraith 的 1,597 件原包文件，保存原路径及来源许可。通过隔离 UE 5.8 二次磁盘读取、运行时硬引用检查、五件 Wraith 关键资产加载和写回 SHA；首轮缺 XRBase 的失败保留，随后补齐插件并以退出码 0 通过。94 件原有文件写回前后 SHA 一致，之后仅新增 uproject 的 XRBase 依赖；未改 HUD、玩家、敌人 AI 或 C++。其余 Niagara / Minions / Drongo 因本机无包，待用户 Fab 添加后核验。位置与边界见 <a href="#doc-asset-import">导入说明</a>，未提交或推送。</p>
@@ -6232,7 +6532,7 @@ Event On Crosshair Page Changed(Page)
 <p dir="auto">CHG058（2026-10-14）：按用户已导入贴图并自行制作蓝图的分工，补入敌人真实命中/击杀快照、世界内原生与蓝图通知、HUD 拥有玩家筛选和重置/暂停/页面事件；普通命中与致死共用 <code class="notranslate">bKilled</code> 分支。新增独立的原生命中 X 开关，保留受伤边框及已恢复的旧 UI 默认创建（<code class="notranslate">moth.UI.LegacyEnabled=1</code>）。新增九项 Automation 测试源码，覆盖实际伤害、去重、归属、世代重入、关闭/暂停与跨世界隔离；详见 <a href="#doc-crosshair">准星接入</a>。用户选择“先完成 C++ 和说明，我稍后自行编译”，本轮未编译、未运行 UE/Automation、未保存或修改 <code class="notranslate">.uasset</code>，不以旧构建/测试记录作为本轮通过证据；未提交、推送或创建 PR。</p>
 <p dir="auto">CHG057（2026-10-14）：收尾提交 0e5370a / 4934627 修复延迟会话关闭立即取消、落地关闭模拟顺序及无碰撞道具的重叠掉落/拾取；新增六项 Foundation 并适配既有专项、保存蓝图与真实主地图时序。隔离 UE 5.8 构建通过；首轮 Foundation 5 成功/1 失败、首轮全量 111 成功/3 失败如实保留，最终 114 Editor 与 12 D3D12/音频主地图 Game 全部通过。Editor errors=0 / warnings=50（DesignerProbe），Game errors=0 / warnings=232（导航/第三方 Rig/旧输入/动画/夹具配置/Notify）。180 件源码/配置与 4934627 一致，用户并行玩家/控制器/UI/Build 改动未纳入。后续确认编辑器已关闭，原工程常规构建56.79秒Succeeded，新DLL六项Foundation复测通过，包含用户当前未提交控制器源码但未纳入本轮提交。见 <a href="#doc-device-refactor-report">验证报告</a> 与原始证据；硬件 PIE、尺寸/手感调优与独立包待验收，四项 Issue 保持 Open / In Progress，未推送/创建 PR。</p>
 <p dir="auto">CHG056（2026-10-14）：用户开始道具基础重构，使用当前 <code class="notranslate">refactor</code> 分支、逐项本地提交。新建 <a href="https://github.com/YYchainsAw/MothEffect/issues/48" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/48/hovercard">#48</a> 地面固定/尺寸配置、<a href="https://github.com/YYchainsAw/MothEffect/issues/49" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/49/hovercard">#49</a> D03 水平入射投影、<a href="https://github.com/YYchainsAw/MothEffect/issues/50" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/50/hovercard">#50</a> 三机关共用延迟及 <a href="https://github.com/YYchainsAw/MothEffect/issues/51" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/51/hovercard">#51</a> 爆炸激活；负责人 YYchainsAw、既有标签、M5 和 Project / In Progress 均已回读，四项保持 Open。落地实体根停止模拟/NoCollision，独立 ShotCollider 保留查询；显式推力/弹射可再次起飞，落地重新固定。D03 锁世界 XY 投影，竖直命中回退 +X；共用延迟后才起效果，D03 原首发延迟及工作寿命继续从效果起动计。D02 开放无遮挡 Dormant 的延迟连锁，Held/Active 保护及独立伤害/激活 HitId 保留。新增 DEC41–DEC44、参数 v0.19 与 <a href="#doc-device-refactor">重构接入</a>，同步现行规则/TDD/计划/入口；本轮 UE 编译、原生执行、当前 PIE 与独立包先记未运行，不把此前测试结果移作新规则验收。未创建 PR、推送或关闭任务，用户玩家资产与 Build/ 不纳入本轮。</p>
-<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.57，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
+<p dir="auto">本文件按日期追加文档与项目变更，保留每次操作当时的实际范围和验证状态。2026-10-03 的未编译/未提交记录是历史，不覆盖后续远程配置、合并和任务状态。当前文档入口为 v0.58，开发状态见 <a href="#doc-plan">开发计划</a>，修改顺序见 <a href="#doc-workflow">文档维护流程</a>。</p>
 <span id="doc-changelog-section"></span><h2 id="doc-changelog-1-变更记录">1. 变更记录</h2>
 <markdown-accessiblity-table><table role="table">
 <thead>

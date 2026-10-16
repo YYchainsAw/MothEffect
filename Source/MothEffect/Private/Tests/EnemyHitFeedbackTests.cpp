@@ -60,6 +60,9 @@ namespace MothEnemyHitFeedbackTest
 			Session = Combat.World->GetSubsystem<UDeviceLifecycleSubsystem>();
 			Player = Combat.Spawn<APawn>();
 			Controller = Combat.Spawn<APlayerController>();
+			// This world has no GameMode login flow to mark its synthetic player local.
+			if (Controller) Controller->SetAsLocalPlayerController();
+			if (Controller) Controller->SetPlayerState(Combat.Spawn<APlayerState>());
 			if (Controller && Player) Controller->Possess(Player);
 			if (!Feedback) return;
 			BlueprintObserver.Reset(NewObject<UMothEnemyHitFeedbackTestObserver>(Combat.World));

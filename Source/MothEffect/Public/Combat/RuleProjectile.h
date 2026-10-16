@@ -93,6 +93,7 @@ private:
 	FVector FlightDirection = FVector::ZeroVector;
 	TWeakObjectPtr<AActor> FiringSource;
 	TWeakObjectPtr<APawn> FiringInstigator;
+	bool bFiredByDevice = false;
 	bool bInitialized = false;
 	bool bImpactProcessed = false;
 	bool bEndingPlay = false;

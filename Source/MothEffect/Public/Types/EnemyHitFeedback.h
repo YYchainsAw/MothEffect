@@ -24,6 +24,10 @@ struct MOTHEFFECT_API FMothEnemyHitFeedback
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Feedback")
 	bool bKilled = false;
 
+	/** Source type captured at damage commitment; never retains a device or projectile actor. */
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Feedback")
+	bool bDeviceSource = false;
+
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Feedback")
 	FVector ImpactPoint = FVector::ZeroVector;
 

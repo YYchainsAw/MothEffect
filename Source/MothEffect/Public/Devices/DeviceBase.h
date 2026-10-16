@@ -11,6 +11,7 @@
 
 class AMothEffectCharacter;
 class USphereComponent;
+class UCapsuleComponent;
 class UStaticMeshComponent;
 class ADeviceBase;
 class USceneComponent;
@@ -45,6 +46,9 @@ public:
 	/** Display multiplier; the flight body and shot-query radii are configured separately. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Size", meta=(ClampMin="0.05", ClampMax="10.0"))
 	float VisualScale = 1.0f;
+	/** Constant world-up spin while grounded and waiting to be picked up or activated. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art", meta=(Units="deg/s"))
+	float DroppedRotationDegreesPerSecond = 60.0f;
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Device|Size")
 	void RefreshDeviceSize();
 	UFUNCTION(BlueprintPure, Category="Device|Motion")
@@ -165,6 +169,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USphereComponent> ShotCollider;
 
+	/** Enemy-sized shot and pickup query; never blocks character movement or device physics. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UCapsuleComponent> DroppedCollider;
+
+	/** Keeps the authored mesh transform separate from the centered drop presentation. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<USceneComponent> VisualPivot;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> DeviceMesh;
 
@@ -253,6 +265,8 @@ protected:
 
 private:
 	bool bGrounded = false;
+	float DroppedVisualYaw = 0.0f;
+	void UpdateDroppedPresentation(float DeltaSeconds);
 	double GroundingAllowedAt = 0.0;
 	/** Saved with the mesh so repeated construction and reloads cannot multiply its size again. */
 	UPROPERTY()

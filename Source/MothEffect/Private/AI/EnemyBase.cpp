@@ -31,7 +31,7 @@ AEnemyBase::AEnemyBase()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
 	BaseEyeHeight = 60.0f;
-	GetCapsuleComponent()->InitCapsuleSize(35.0f, 90.0f);
+	GetCapsuleComponent()->InitCapsuleSize(MothCollision::EnemyCapsuleRadiusCm, MothCollision::EnemyCapsuleHalfHeightCm);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(MothCollision::GroundTrace, ECR_Ignore);

@@ -72,7 +72,12 @@ UWidget* UMothUIEditorLibrary::NewDesignerWidget(UObject* WidgetAsset, TSubclass
 	if (auto* Tree=GetDesignerTree(WidgetAsset); Tree && WidgetClass && !Tree->FindWidget(Name))
 	{
 		auto* Widget=Tree->ConstructWidget<UWidget>(WidgetClass,Name);
-		if (Widget) Widget->bIsVariable=true;
+		if (Widget)
+		{
+			Widget->bIsVariable=true;
+			if (auto* BP=Cast<UWidgetBlueprint>(WidgetAsset); BP && !BP->WidgetVariableNameToGuidMap.Contains(Name))
+				BP->OnVariableAdded(Name);
+		}
 		return Widget;
 	}
 #endif
@@ -100,6 +105,8 @@ FString UMothUIEditorLibrary::ResetDesignerLayout(UObject* WidgetAsset, const TA
 	int32 Removed=0;
 	for (auto* Widget:All) if (!Keep.Contains(Widget))
 	{
+		if (auto* BP=Cast<UWidgetBlueprint>(WidgetAsset); BP && BP->WidgetVariableNameToGuidMap.Contains(Widget->GetFName()))
+			BP->OnVariableRemoved(Widget->GetFName());
 		Widget->RemoveFromParent();
 		Widget->Rename(nullptr,GetTransientPackage(),REN_DontCreateRedirectors|REN_NonTransactional);
 		++Removed;

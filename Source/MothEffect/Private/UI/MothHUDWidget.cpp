@@ -27,11 +27,11 @@ UMothHUDWidget::UMothHUDWidget(const FObjectInitializer& ObjectInitializer) : Su
 {
 	SetIsFocusable(true);
 	TutorialConfig = TSoftObjectPtr<UMothTutorialConfig>(FSoftObjectPath(TEXT("/Game/MothEffect/UI/DA_MothTutorial.DA_MothTutorial")));
-	TitleCopy = {FText::FromString(TEXT("飞蛾效应")), FText::FromString(TEXT("让机关接续，让战局转向。")), FText::FromString(TEXT("开始战斗")), FText::FromString(TEXT("操作教学"))};
-	PauseCopy = {FText::FromString(TEXT("暂停")), FText::GetEmpty(), FText::FromString(TEXT("继续游戏")), FText::FromString(TEXT("返回主菜单"))};
+	TitleCopy = {FText::FromString(TEXT("飞蛾效应")), FText::FromString(TEXT("清除三波敌人。射击机关，让连锁改变战局。")), FText::FromString(TEXT("开始战斗")), FText::FromString(TEXT("设置"))};
+	PauseCopy = {FText::FromString(TEXT("暂停")), FText::FromString(TEXT("准备好后，继续这场战斗。")), FText::FromString(TEXT("继续游戏")), FText::FromString(TEXT("设置"))};
 	TutorialCompleteCopy = {FText::FromString(TEXT("教学完成")), FText::FromString(TEXT("准备好迎战三波敌人。")), FText::FromString(TEXT("开始战斗")), FText::FromString(TEXT("返回主菜单"))};
-	VictoryCopy = {FText::FromString(TEXT("战斗胜利")), FText::FromString(TEXT("三波敌人已全部清除。")), FText::FromString(TEXT("返回主菜单")), FText::GetEmpty()};
-	DefeatCopy = {FText::FromString(TEXT("挑战结束")), FText::FromString(TEXT("重整装备，再试一次。")), FText::FromString(TEXT("返回主菜单")), FText::GetEmpty()};
+	VictoryCopy = {FText::FromString(TEXT("战斗胜利")), FText::FromString(TEXT("三波敌人已全部清除。")), FText::FromString(TEXT("再来一局")), FText::FromString(TEXT("返回主菜单"))};
+	DefeatCopy = {FText::FromString(TEXT("挑战结束")), FText::FromString(TEXT("重新布置机关，再试一次。")), FText::FromString(TEXT("重新挑战")), FText::FromString(TEXT("返回主菜单"))};
 }
 
 UMothTutorialConfig* UMothHUDWidget::GetTutorialConfig() const
@@ -60,6 +60,9 @@ void UMothHUDWidget::BindButtons(bool bBind)
 #define MOTH_BUTTON(Button, Handler) if (Button) { if (bBind) Button->OnClicked.AddUniqueDynamic(this,&UMothHUDWidget::Handler); else Button->OnClicked.RemoveDynamic(this,&UMothHUDWidget::Handler); }
 	MOTH_BUTTON(PrimaryButton,PrimaryClicked); MOTH_BUTTON(SecondaryButton,SecondaryClicked);
 	MOTH_BUTTON(QuitButton,QuitClicked); MOTH_BUTTON(RetryButton,RetryClicked);
+	MOTH_BUTTON(RestartButton,RestartClicked); MOTH_BUTTON(TitleButton,TitleClicked);
+	MOTH_BUTTON(CreditsButton,OpenCredits); MOTH_BUTTON(CreditsBackButton,CloseMenuPanel);
+	MOTH_BUTTON(ApplySettingsButton,ApplyPlayerSettings); MOTH_BUTTON(CancelSettingsButton,CloseMenuPanel);
 #undef MOTH_BUTTON
 }
 
@@ -153,9 +156,9 @@ void UMothHUDWidget::RefreshState()
 	else if (Phase==EMothFlowPhase::Defeat) State.Page=EMothUIPage::Defeat;
 	else if (GetWorld()&&GetWorld()->IsPaused()) State.Page=EMothUIPage::Pause;
 	else if (Phase==EMothFlowPhase::Preparing||Phase==EMothFlowPhase::Fighting) State.Page=EMothUIPage::Gameplay;
-	else if (State.Tutorial==EMothTutorialStep::Completed) State.Page=EMothUIPage::TutorialComplete;
-	else if (Tutorial.IsValid()&&Tutorial->IsRunning()) State.Page=EMothUIPage::Tutorial;
 	else State.Page=EMothUIPage::Title;
+	if (bSettingsOpen) State.Page=EMothUIPage::Settings;
+	else if (bCreditsOpen) State.Page=EMothUIPage::Credits;
 	RefreshInteractionState();
 	State.Notice=GetWorld()&&GetWorld()->GetTimeSeconds()<NoticeEndsAt?Notice:
 		Tutorial.IsValid()?Tutorial->GetFeedback():FText::GetEmpty();
@@ -177,7 +180,12 @@ void UMothHUDWidget::RefreshState()
 }
 
 bool UMothHUDWidget::IsMenuVisible() const { return State.Page!=EMothUIPage::Gameplay&&State.Page!=EMothUIPage::Tutorial; }
-UWidget* UMothHUDWidget::GetMenuFocusTarget() const { return PrimaryButton?static_cast<UWidget*>(PrimaryButton):const_cast<UMothHUDWidget*>(this); }
+UWidget* UMothHUDWidget::GetMenuFocusTarget() const
+{
+	if (State.Page==EMothUIPage::Settings && CancelSettingsButton) return CancelSettingsButton;
+	if (State.Page==EMothUIPage::Credits && CreditsBackButton) return CreditsBackButton;
+	return PrimaryButton?static_cast<UWidget*>(PrimaryButton):const_cast<UMothHUDWidget*>(this);
+}
 
 void UMothHUDWidget::RefreshInteractionState()
 {
@@ -258,6 +266,7 @@ void UMothHUDWidget::RenderState()
 		if (SecondaryLabel) SecondaryLabel->SetText(Copy.SecondaryAction);
 		if (SecondaryButton) SecondaryButton->SetVisibility(bTitle||bPause||bComplete?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
 	}
+	RenderReleaseMenus();
 }
 
 void UMothHUDWidget::ShowInteractionNotice(const FText& Message)
@@ -285,13 +294,17 @@ void UMothHUDWidget::PrimaryClicked()
 		if (State.Page==EMothUIPage::Title) Controller->StartBattle();
 		else if (State.Page==EMothUIPage::Pause) Controller->ResumeGame();
 		else if (State.Page==EMothUIPage::TutorialComplete) Controller->StartBattle();
-		else if (State.Page==EMothUIPage::Victory||State.Page==EMothUIPage::Defeat) Controller->ReturnToTitle();
+		else if (State.Page==EMothUIPage::Victory||State.Page==EMothUIPage::Defeat) Controller->RestartBattle();
 	}
 }
 void UMothHUDWidget::SecondaryClicked()
 {
 	if (auto* Controller=Cast<AMothEffectPlayerController>(GetOwningPlayer()))
-		if (State.Page==EMothUIPage::Title) Controller->StartTeaching(); else Controller->ReturnToTitle();
+	{
+		// TitleButton has its own route so the pause page can also offer Settings.
+		if (State.Page==EMothUIPage::Title || State.Page==EMothUIPage::Pause) OpenSettings();
+		else Controller->ReturnToTitle();
+	}
 }
 void UMothHUDWidget::RetryClicked() { if (Tutorial.IsValid()) Tutorial->RetryStep(); }
 void UMothHUDWidget::QuitClicked() { UKismetSystemLibrary::QuitGame(this,GetOwningPlayer(),EQuitPreference::Quit,false); }

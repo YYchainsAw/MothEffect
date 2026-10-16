@@ -63,6 +63,7 @@ bool ARuleProjectile::InitializeProjectile(const FVector& WorldDirection, AActor
 	FlightDirection = Direction;
 	FiringSource = SourceActor;
 	FiringInstigator = InstigatorPawn;
+	bFiredByDevice = Cast<ADeviceBase>(SourceActor) != nullptr;
 	// The activating pawn is attribution, not immunity. Ignore only the firing actor.
 	if (IsValid(SourceActor))
 	{
@@ -158,6 +159,7 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 	Context.ImpactPoint = Hit.ImpactPoint;
 	Context.ShotDirection = FlightDirection;
 	Context.Damage = FMath::Max(0.0f, Damage);
+	Context.bDeviceSource = bFiredByDevice;
 	// Commit before calling any interface/delegate: rejection still consumes the projectile.
 	bImpactProcessed = true;
 	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);

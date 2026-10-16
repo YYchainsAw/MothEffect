@@ -28,6 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ToggleMenuPause();
 	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ResumeGame();
 	UFUNCTION(BlueprintCallable, Category="Moth|UI") void ReturnToTitle();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void RestartBattle();
 	UMothHUDWidget* GetGameplayUI() const { return GameplayUI; }
 	void SyncUIInput();
 

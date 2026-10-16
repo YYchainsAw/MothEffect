@@ -10,6 +10,7 @@
 #include "Devices/LaunchColumn.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MothEffect.h"
@@ -60,6 +61,7 @@ void AMothWaveDirector::BeginPlay()
 	for (auto Circle : WarningCircles)
 		if (SpawnWarningMaterial) Circle->SetMaterial(0, SpawnWarningMaterial);
 	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->SetSafetyBounds(SafetyCenter, SafetyHalfExtent);
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->OnEnemyHitConfirmedNative.AddUObject(this, &AMothWaveDirector::HandleConfirmedEnemyHit);
 }
 
 bool AMothWaveDirector::SetPlayer(AMothEffectCharacter* Player)
@@ -94,10 +96,13 @@ bool AMothWaveDirector::StartEncounter()
 	TGuardValue<bool> Guard(bChangingFlow, true);
 	const uint64 Generation = ++RunGeneration;
 	Phase = EMothFlowPhase::Preparing; // Commit before destruction callbacks.
+	RunStartedAt = GetWorld()->GetTimeSeconds(); FinishedElapsedSeconds = 0;
+	KillCount = DeviceKillCount = CurrentChain = BestChain = 0;
+	LastDeviceKillAt = -1; RewardEndsAt = 0; LastRewardText = FText::GetEmpty(); CountedVictimIds.Reset();
 	auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	Lifecycle->SetGameplayEnabled(false);
 	CombatPlayer->SetGameplayEnabled(false);
-	Lifecycle->ResetManagedObjects(); // Includes tutorial Held and active effects.
+	Lifecycle->ResetManagedObjects(); // Includes previously held devices and active effects.
 	TArray<TWeakObjectPtr<AEnemyBase>> OldEnemies;
 	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It) OldEnemies.Add(*It);
 	for (auto E : OldEnemies) if (E.IsValid()) E->Destroy(); // Administrative removal has no drops.
@@ -130,9 +135,33 @@ float AMothWaveDirector::GetPreparationRemaining() const
 		? FMath::Max(0.0, PreparationEndsAt - GetWorld()->GetTimeSeconds()) : 0.0f;
 }
 
+float AMothWaveDirector::GetRunElapsedSeconds() const
+{
+	return IsEncounterRunning() && RunStartedAt >= 0 && GetWorld()
+		? static_cast<float>(FMath::Max(0.0, GetWorld()->GetTimeSeconds() - RunStartedAt)) : FinishedElapsedSeconds;
+}
+
+FText AMothWaveDirector::GetWaveObjective() const
+{
+	switch (WaveIndex)
+	{
+	case 0: return NSLOCTEXT("MothEncounter", "WaveOneObjective", "击败敌人，射击掉落的机关来启动它");
+	case 1: return NSLOCTEXT("MothEncounter", "WaveTwoObjective", "拾取并投出机关，重新布置战场");
+	case 2: return NSLOCTEXT("MothEncounter", "WaveThreeObjective", "引敌人靠近机关，用连锁效果清场");
+	default: return NSLOCTEXT("MothEncounter", "EncounterObjective", "清除三波敌人");
+	}
+}
+
+float AMothWaveDirector::GetRewardRemainingSeconds() const
+{
+	return IsEncounterRunning() && GetWorld()
+		? static_cast<float>(FMath::Max(0.0, RewardEndsAt - GetWorld()->GetTimeSeconds())) : 0.0f;
+}
+
 void AMothWaveDirector::PrepareWave(int32 Index)
 {
 	WaveIndex = Index; Phase = EMothFlowPhase::Preparing;
+	CurrentChain = 0; LastDeviceKillAt = -1;
 	PendingBirths.Reset(); HideWarnings();
 	PreparationEndsAt = GetWorld()->GetTimeSeconds() + FMath::Max(0.0f, PreparationSeconds);
 	for (const auto& Spec : Waves[Index].Spawns)
@@ -205,9 +234,7 @@ void AMothWaveDirector::ProcessBirths(double Now)
 		if (!Enemy) { PendingBirths[I].WarningAt = -1; PendingBirths[I].RetryAt = Now + FMath::Max(.01f, SpawnRetrySeconds); continue; }
 		// Reserve count and bind before construction/BeginPlay can die, destroy, or restart the encounter.
 		PendingBirths[I].bComplete = true;
-		AliveEnemies.Add(Enemy);
-		Enemy->OnEnemyDiedNative.AddUObject(this, &AMothWaveDirector::HandleEnemyDied);
-		Enemy->OnEndPlay.AddUniqueDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
+		RegisterEnemy(Enemy);
 		WarningCircles[Spec.Point]->SetVisibility(false); WarningLabels[Spec.Point]->SetVisibility(false);
 		Enemy->FinishSpawning(Transform);
 		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->Destroy(); return; }
@@ -264,6 +291,14 @@ void AMothWaveDirector::Tick(float DeltaSeconds)
 	}
 }
 
+void AMothWaveDirector::RegisterEnemy(AEnemyBase* Enemy)
+{
+	if (!Enemy || AliveEnemies.Contains(Enemy)) return;
+	AliveEnemies.Add(Enemy);
+	Enemy->OnEnemyDiedNative.AddUObject(this, &AMothWaveDirector::HandleEnemyDied);
+	Enemy->OnEndPlay.AddUniqueDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
+}
+
 void AMothWaveDirector::UnregisterEnemy(AEnemyBase* Enemy)
 {
 	if (!Enemy || !AliveEnemies.Remove(Enemy)) return;
@@ -271,8 +306,40 @@ void AMothWaveDirector::UnregisterEnemy(AEnemyBase* Enemy)
 	Enemy->OnEndPlay.RemoveDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
 }
 
+void AMothWaveDirector::HandleConfirmedEnemyHit(APawn* HitInstigator, const FMothEnemyHitFeedback& Feedback)
+{
+	if (bEndingPlay || bChangingFlow || !IsEncounterRunning() || !Feedback.bKilled
+		|| !CombatPlayer.IsValid() || HitInstigator != CombatPlayer.Get()
+		|| CountedVictimIds.Contains(Feedback.VictimId) || GetWorld()->IsPaused()) return;
+	const auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!Lifecycle || !Lifecycle->IsGenerationCurrent(Feedback.LifecycleGeneration)) return;
+	bool bEncounterVictim = false;
+	for (const auto& Enemy : AliveEnemies)
+		if (Enemy.IsValid() && static_cast<int32>(Enemy->GetUniqueID()) == Feedback.VictimId) { bEncounterVictim = true; break; }
+	if (!bEncounterVictim) return;
+	CountedVictimIds.Add(Feedback.VictimId);
+	++KillCount;
+	if (!Feedback.bDeviceSource)
+	{
+		CurrentChain = 0; LastDeviceKillAt = -1;
+		return;
+	}
+	++DeviceKillCount;
+	const double Now = GetWorld()->GetTimeSeconds();
+	CurrentChain = LastDeviceKillAt >= 0 && Now - LastDeviceKillAt <= 2.0 ? CurrentChain + 1 : 1;
+	LastDeviceKillAt = Now;
+	BestChain = FMath::Max(BestChain, CurrentChain);
+	LastRewardText = CurrentChain > 1
+		? FText::Format(NSLOCTEXT("MothEncounter", "ConsecutiveDeviceKills", "连续机关击杀 ×{0}"), FText::AsNumber(CurrentChain))
+		: NSLOCTEXT("MothEncounter", "DeviceKill", "机关击杀");
+	RewardEndsAt = Now + 2.0;
+}
+
 void AMothWaveDirector::HandleEnemyDied(AEnemyBase* Enemy, AActor* Source)
 {
+	// An environmental or enemy-caused death interrupts the streak, but does not award a player kill.
+	if (Enemy && IsEncounterRunning() && !CountedVictimIds.Contains(static_cast<int32>(Enemy->GetUniqueID())))
+	{ CurrentChain = 0; LastDeviceKillAt = -1; }
 	UnregisterEnemy(Enemy);
 	if (IsEncounterRunning() && !bChangingFlow) PublishState();
 }
@@ -313,6 +380,7 @@ void AMothWaveDirector::FinishEncounter(EMothFlowPhase Result)
 	if (bEndingPlay || (Result != EMothFlowPhase::Victory && Result != EMothFlowPhase::Defeat)
 		|| Phase == EMothFlowPhase::Victory || Phase == EMothFlowPhase::Defeat || Phase == EMothFlowPhase::Restarting) return;
 	TGuardValue<bool> Guard(bChangingFlow, true);
+	FinishedElapsedSeconds = GetRunElapsedSeconds();
 	Phase = Result;
 	CloseAndClean(false);
 	PublishState();
@@ -348,8 +416,9 @@ void AMothWaveDirector::ShowWarning(int32 Point, const FVector& Position, bool b
 	WarningLabels[Point]->SetWorldLocation(Position + FVector(0,0,160));
 	WarningLabels[Point]->SetWorldRotation(FRotator(0, (CombatPlayer->GetActorLocation() - Position).Rotation().Yaw, 0));
 	WarningLabels[Point]->SetTextRenderColor(bBlocked ? FColor::Red : FColor::Yellow);
-	WarningLabels[Point]->SetText(FText::FromString(FString::Printf(TEXT("S%d / D0%d\n%s"), Point+1, static_cast<int32>(Kind)+1,
-		bBlocked ? TEXT("BLOCKED - MOVE AWAY") : TEXT("INCOMING"))));
+	WarningLabels[Point]->SetText(bBlocked
+		? NSLOCTEXT("MothEncounter", "SpawnBlocked", "请远离此区域")
+		: NSLOCTEXT("MothEncounter", "SpawnIncoming", "敌人即将出现"));
 	WarningLabels[Point]->SetVisibility(true);
 }
 
@@ -370,6 +439,8 @@ void AMothWaveDirector::PublishState()
 
 void AMothWaveDirector::EndPlay(const EEndPlayReason::Type Reason)
 {
+	if (GetWorld()) if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+		Feedback->OnEnemyHitConfirmedNative.RemoveAll(this);
 	if (!bEndingPlay) { bEndingPlay = true; Phase = EMothFlowPhase::Restarting; CloseAndClean(true); }
 	OnFlowChanged.Clear(); OnEnemySpawnedNative.Clear();
 	Super::EndPlay(Reason);

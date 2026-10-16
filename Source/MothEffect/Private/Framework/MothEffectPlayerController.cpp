@@ -25,6 +25,7 @@
 #include "UI/MothHUDWidget.h"
 #include "Weapons/Rifle.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Settings/MothUserSettings.h"
 
 AMothEffectPlayerController::AMothEffectPlayerController()
 {
@@ -41,9 +42,16 @@ void AMothEffectPlayerController::InitializeGameplayUI()
 	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
 	auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
 	// Older isolated test maps retain their original input flow.
-	if (!ControlledCharacter || !ControlledCharacter->GetRifle() || !Director || !Director->HasActorBegunPlay()) return;
+	if (!ControlledCharacter || !Director || !Director->HasActorBegunPlay()) return;
 	// PlayerController may tick before the director's first Tick after OpenLevel.
 	if (!Director->GetPlayer() && !Director->SetPlayer(ControlledCharacter)) return;
+	// Commit a requested restart before exposing the new HUD. OnPossess can create
+	// the interface before our first Tick; it must never flash Title during travel.
+	if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel())
+	{
+		if (!Mode->StartEncounter()) return;
+		Instance->ConsumeBattleAfterTravel();
+	}
 	UClass* Class = GameplayUIClass.LoadSynchronous();
 	if (!Class) return;
 	GameplayUI = CreateWidget<UMothHUDWidget>(this, Class);
@@ -55,12 +63,12 @@ void AMothEffectPlayerController::InitializeGameplayUI()
 void AMothEffectPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	InitializeGameplayUI();
 	// Travel intent belongs to the encounter across the saved UMG pages.
 	if (!bTravelRequested)
 		if (auto* Instance = GetGameInstance<UMothGameInstance>(); Instance && Instance->HasBattleAfterTravel())
 			if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()); Mode && Mode->StartEncounter())
 				Instance->ConsumeBattleAfterTravel();
-	InitializeGameplayUI();
 	if (GameplayUI && !bTravelRequested) { GameplayUI->RefreshState(); SyncUIInput(); }
 }
 
@@ -90,7 +98,7 @@ void AMothEffectPlayerController::SyncUIInput()
 	{
 		ControlledCharacter->CancelCombatInput(); ControlledCharacter->ResetMovementInput();
 		// Pause freezes legal tasks such as reload/recovery; it does not cancel them.
-		if (Page != EMothUIPage::Pause)
+		if (!GetWorld()->IsPaused())
 		{
 			auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
 			auto* Director = Mode ? Mode->GetWaveDirector() : nullptr;
@@ -115,13 +123,8 @@ void AMothEffectPlayerController::SyncUIInput()
 
 void AMothEffectPlayerController::StartTeaching()
 {
-	if (bTravelRequested || !GetWorld() || GetWorld()->IsPaused()) return;
-	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
-	if (Mode && GetWorld()->GetSubsystem<UMothTutorialSubsystem>()->StartTutorial(
-		Cast<AMothEffectCharacter>(GetPawn()), Mode->GetWaveDirector(), GameplayUI ? GameplayUI->GetTutorialConfig() : nullptr))
-	{
-		if (GameplayUI) GameplayUI->RefreshState(); SyncUIInput();
-	}
+	// Retain serialized Blueprint calls; the release flow uses in-battle hints.
+	StartBattle();
 }
 
 void AMothEffectPlayerController::StartBattle()
@@ -143,11 +146,25 @@ void AMothEffectPlayerController::ReturnToTitle()
 	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()); Mode && Mode->RestartEncounter()) bTravelRequested = true;
 }
 
+void AMothEffectPlayerController::RestartBattle()
+{
+	if (bTravelRequested || !GameplayUI || !GetWorld()) return;
+	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
+	if (Page != EMothUIPage::Pause && Page != EMothUIPage::Victory && Page != EMothUIPage::Defeat) return;
+	auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode());
+	auto* Instance = GetGameInstance<UMothGameInstance>();
+	if (!Mode || !Instance) return;
+	Instance->QueueBattleAfterTravel();
+	if (Mode->RestartEncounter()) bTravelRequested = true;
+	else Instance->CancelBattleAfterTravel();
+}
+
 void AMothEffectPlayerController::ToggleMenuPause()
 {
 	if (!GameplayUI || bTravelRequested) return;
 	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
-	if (Page == EMothUIPage::Pause) ResumeGame();
+	if (Page == EMothUIPage::Settings || Page == EMothUIPage::Credits) GameplayUI->CloseMenuPanel();
+	else if (Page == EMothUIPage::Pause) ResumeGame();
 	else if (Page == EMothUIPage::Gameplay || Page == EMothUIPage::Tutorial) SetPause(true);
 }
 
@@ -156,6 +173,10 @@ void AMothEffectPlayerController::ResumeGame() { if (GetWorld() && GetWorld()->I
 void AMothEffectPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	// The player chooses when to start; saved map instances cannot bypass the title.
+	if (auto* Mode = Cast<AMothEffectGameMode>(GetWorld()->GetAuthGameMode()))
+		if (auto* Director = Mode->GetWaveDirector()) Director->SetAutoStartEnabled(false);
+	if (auto* Settings = UMothUserSettings::Get()) Settings->ApplyAudioSettings(this);
 
 	// only spawn touch controls on local player controllers
 	if (IsLocalPlayerController() && ShouldUseTouchControls())

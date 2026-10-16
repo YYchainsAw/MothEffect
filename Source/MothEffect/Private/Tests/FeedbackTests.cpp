@@ -10,6 +10,7 @@
 #include "GameFramework/PlayerState.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/AutomationTest.h"
+#include "NiagaraSystem.h"
 #include "Sound/SoundBase.h"
 #include "Sound/SoundAttenuation.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
@@ -26,7 +27,7 @@ bool FMothFeedbackAssetsTest::RunTest(const FString&)
 	const auto* Profile=F.World->GetSubsystem<UMothFeedbackSubsystem>()->GetProfile();
 	if (!TestNotNull(TEXT("Default saved feedback profile"),Profile)) return false;
 	TestTrue(TEXT("Loads saved profile rather than fallback"),Profile->GetPathName().StartsWith(TEXT("/Game/MothEffect/Feedback/DA_DefaultFeedback")));
-	TestEqual(TEXT("Twelve editable cue categories"),Profile->Styles.Num(),12);
+	TestEqual(TEXT("Thirteen editable cue categories including successful pickup"),Profile->Styles.Num(),13);
 	TestNotNull(TEXT("Shipping material loads"),Profile->Material.LoadSynchronous());
 	TestNotNull(TEXT("Spatial attenuation loads"),Profile->Attenuation.LoadSynchronous());
 	TSet<USoundBase*> Sounds;
@@ -120,6 +121,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothFeedbackCleanupTest,"MothEffect.Feedback.B
 bool FMothFeedbackCleanupTest::RunTest(const FString&)
 {
 	FMothCombatTestWorld F; auto* Feedback=F.World->GetSubsystem<UMothFeedbackSubsystem>();
+	// This test exercises the original geometric lifetime and ordered queue, independently
+	// of the separately configured Niagara lifetime covered by NiagaraFeedbackTests.
+	auto& ImpactStyle=Feedback->GetProfile()->Styles[EMothFeedbackCue::Impact];
+	TGuardValue<TSoftObjectPtr<UNiagaraSystem>> Niagara(ImpactStyle.NiagaraSystem,TSoftObjectPtr<UNiagaraSystem>());
+	TGuardValue<bool> Legacy(ImpactStyle.bLegacyVisual,true);
 	auto* Session=F.World->GetSubsystem<UDeviceLifecycleSubsystem>();
 	auto* Device=F.Spawn<ADeviceBase>(FVector(0,0,300));
 	for (int32 I=0; I<40; ++I) Feedback->Emit(EMothFeedbackCue::Impact,FVector(I*10,0,300));

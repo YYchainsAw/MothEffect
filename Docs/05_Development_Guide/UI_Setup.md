@@ -1,6 +1,12 @@
 # Moth Effect：T18 HUD、教学与菜单接入
 
-版本 v0.6 · 2026-10-14 · 状态：旧 UI 自动创建已恢复；贴图准星 C++ 接口已写入，待用户编译和制作蓝图
+版本 v0.7 · 2026-10-16 · 状态：当前使用 Slate / Kenney Designer 界面；以下旧 UI 接入步骤保留历史
+
+## 2026-10-16：当前 Slate / Kenney 界面
+
+当前制作入口为 [Slate_UI_Setup](Slate_UI_Setup.md)。`WBP_MothHUD` 已替换旧生成布局，新增 `WBP_EnemyHealth`，玩家生命位于左下，弹药/换弹、波次、交互、教学和菜单接真实数据。用户 `WBP_MothCrosshair` 的包文件及 HUD 内命中/击杀/重置/暂停/页面事件图保持。界面由保存的 Designer 树负责，原生布局后备、`NativePaint` 旧反馈、矢量道具图标与 `moth.UI.LegacyEnabled` 流程已移除。
+
+新版保留 22 个必需绑定；旧 `HeldIcon`、`AimText`、`CrosshairText` 已改为可选兼容字段，不再创建或绘制，不需要按下方历史表重新补回。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项及五张 D3D12 画面已通过；手动整局、所有分辨率与独立包仍待验收。下面的旧开关、54 控件、25 绑定及自动布局/字体修复说明只用于历史对照。
 
 ## 2026-10-14：贴图准星、命中与击杀接口
 

@@ -1,6 +1,6 @@
 {
-  "documentVersion": "0.19",
-  "updatedAt": "2026-10-14",
+  "documentVersion": "0.21",
+  "updatedAt": "2026-10-16",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
   "status": "proposed_values_native_behavior_verified",
@@ -64,6 +64,10 @@
   },
   "device": {
     "activationDelaySeconds": 0.3,
+    "droppedTargetCapsuleRadiusCm": 35,
+    "droppedTargetCapsuleHalfHeightCm": 90,
+    "droppedTargetMatchesEnemy": true,
+    "droppedRotationDegreesPerSecond": 60,
     "visualScale": 1,
     "visualScaleMin": 0.05,
     "visualScaleMax": 10,
@@ -170,10 +174,27 @@
     "baselineWaves": 3,
     "prepareBetweenWavesSeconds": 5,
     "batchSpawnDelaySeconds": 3,
-    "tutorialRequiredFirstRun": true,
+    "tutorialRequiredFirstRun": false,
+    "basicGuideSeconds": 18,
     "stopGameplayOnResult": true
   },
   "tuningLog": [
+    {
+      "date": "2026-10-16",
+      "version": "0.21",
+      "change": "首版通过主菜单开始战斗，独立三步教学入口改为首波前18秒基础提示；增加暂停设置、直接重开和胜负统计。设置保存总音量、鼠标灵敏度、画质与显示选择。保留4/6/8敌人数和现有分批节奏。",
+      "reason": "用户要求按主菜单、暂停结算、设置、基础引导、三波反馈顺序推进，明确不需要独立教学。",
+      "evidence": "实现与验证记录见Release_Flow_Setup.md和Saved/Automation/ReleaseFlow；不代表新增回血、升级或经济系统。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-16",
+      "version": "0.20",
+      "change": "落地 Dormant 的受击与准星拾取共用敌人大小胶囊（半径35cm、半高90cm）；模型中心对齐胶囊中心，以默认60度/秒绕竖直轴匀速旋转。空中、Held与Active复原显示；保留原飞行体积和射击球。",
+      "reason": "用户要求掉落状态道具与敌人具有同样大的受击和瞄准拾取体积，模型在体积中心匀速旋转。胶囊尺寸与敌人共用MothCollision常量，旋转速度映射ADeviceBase可编辑属性；JSON不自动导入UE。",
+      "evidence": "Win64 Development Editor构建和四项DroppedPresentation原生专项通过，覆盖三类保存蓝图、双通道、遮挡、真实准星拾取、居中和状态切换；图形PIE手感待验收。",
+      "validated": false
+    },
     {
       "date": "2026-10-14",
       "version": "0.19",

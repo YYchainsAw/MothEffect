@@ -6,6 +6,7 @@ void ADeviceBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	UpdateGrounding();
+	UpdateDroppedPresentation(DeltaSeconds);
 }
 
 void ADeviceBase::RefreshDeviceSize()
@@ -15,6 +16,7 @@ void ADeviceBase::RefreshDeviceSize()
 	ShotCollider->SetSphereRadius(FMath::IsFinite(ShotRadiusCm) ? FMath::Max(Radius, ShotRadiusCm) : Radius);
 	RefreshPrototypeAppearance();
 	if (HasActorBegunPlay()) UpdateGrounding();
+	UpdateDroppedPresentation(0.0f);
 }
 
 bool ADeviceBase::FindGroundSupport(FHitResult& Hit) const

@@ -21,6 +21,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InputCoreTypes.h"
+#include "Settings/MothUserSettings.h"
 #include "MothEffect.h"
 #include "Weapons/Rifle.h"
 #include "Components/SceneComponent.h"
@@ -204,7 +205,12 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		}
 		if (MouseLookAction)
 		{
-			EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AMothEffectCharacter::Look);
+			EnhancedInputComponent->BindActionValueLambda(MouseLookAction, ETriggerEvent::Triggered,
+				[this](const FInputActionValue& Value)
+				{
+					const UMothUserSettings* Settings = UMothUserSettings::Get();
+					Look(Value * (Settings ? Settings->GetMouseSensitivity() : 1.0f));
+				});
 		}
 
 		// Looking

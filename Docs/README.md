@@ -1,6 +1,12 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.57 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.60 · 2026-10-16 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-16 首版游戏内流程：主菜单、暂停设置、直接重开、胜负统计与制作人员页面接入 SoulCity；独立教学入口改为开局基础提示。音量、鼠标灵敏度、画质与显示选择可保存，三波补充目标提示和机关击杀反馈。实现、操作与验证范围见 [Release_Flow_Setup](05_Development_Guide/Release_Flow_Setup.md)。
+
+2026-10-16 Niagara 特效接入：八类实际开火、命中、机关与拾取事件统一连接项目 FX，暂停与结算清理沿用反馈系统。原工程构建、19 项 Editor 专项及八类实际 D3D12 模拟/暂停恢复/死亡清理通过，九件目标资产已写回；用户准星与 HUD 保持，整局、性能和独立包待验收。调节入口与证据见 [Niagara_Setup](05_Development_Guide/Niagara_Setup.md)。
+
+2026-10-16 Slate 界面接入：用 Colorosse Slate / Kenney 重做 Designer HUD 和菜单，左下角玩家生命、敌人头顶生命、弹药/换弹、波次与交互提示已连接真实数据。旧原生布局与绘制移除，用户准星包 SHA 及 HUD 内 15 个事件图节点/连线保持。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项和五张 D3D12 画面通过；手动整局、性能与独立包仍待验收。当前编辑入口见 [Slate_UI_Setup](05_Development_Guide/Slate_UI_Setup.md)，下方旧 UI 记录保留历史范围。
 
 2026-10-16 敌人外观统一为 Drongo：保留三类敌人、固定掉落及当前射击 AI，项目动画蓝图复用原包移动/跳跃/上半身开火，移除演示玩家依赖并接入死亡动画。资产、验证与重载步骤见 [Drongo_Enemy_Setup](05_Development_Guide/Drongo_Enemy_Setup.md)。
 
@@ -104,7 +110,9 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
 | 05_Development_Guide/ | [SoulCity_Arena_Setup.md](05_Development_Guide/SoulCity_Arena_Setup.md) | Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围 |
-| 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 自定义准星、敌人命中/击杀事件、三图层 UMG 动画与暂停/重开接入；待用户编译和制作蓝图 |
+| 05_Development_Guide/ | [Niagara_Setup.md](05_Development_Guide/Niagara_Setup.md) | Niagara 战斗特效与调节 |
+| 05_Development_Guide/ | [Slate_UI_Setup.md](05_Development_Guide/Slate_UI_Setup.md) | 当前 Slate / Kenney HUD、玩家与敌人生命条、菜单和用户准星保护；编辑入口及实际验证边界 |
+| 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 用户准星的命中/击杀事件与动画接口；原制作步骤保留历史，当前资产已制作并接入 Slate HUD |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |

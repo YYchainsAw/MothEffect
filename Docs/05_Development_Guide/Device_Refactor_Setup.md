@@ -8,6 +8,8 @@
 
 ## 1. 蓝图与实例配置
 
+2026-10-16 补充：落地待拾取道具使用敌人大小胶囊，模型居中匀速旋转。Win64 Development Editor 构建通过，Devices、Art 与 EnemyDrops 共 50 项自动化全部通过，其中 4 项为新增掉落显示专项；实际图形 PIE 视觉与手感仍需验收。
+
 现有 BP_DeviceLauncher、BP_DeviceBomb、BP_DeviceEmitter 继续使用 ADeviceBase，不新增道具类型或生命周期枚举。编译新源码后，在 Class Defaults 或场景实例 Details 搜索以下分类；已保存 BP/实例的覆盖值需逐项核对，不假定原生默认值覆盖已有资产。
 
 | 编辑入口 | 属性 / 函数 | 含义与参数来源 |
@@ -16,7 +18,8 @@
 | Device / Activation | IsActivationPending | 只读等待标记；等待已属 Active，不是 Dormant，也没有新增 Pending 生命周期 |
 | Device / Size | VisualScale | 只调整显示倍数，范围来自 device.visualScaleMin/Max；不连带改变根或射击球 |
 | Device / Size | BodyRadiusCm | 飞行碰撞、支持查询与安全释放体积；来自 device.bodyRadiusCm |
-| Device / Size | ShotRadiusCm | 命中扫描/P01 查询球；默认仍来自 throw.deviceShotColliderRadiusCm，实际半径不小于 Body |
+| Device / Size | ShotRadiusCm | 飞行与激活状态的命中扫描/P01 查询球；默认来自 throw.deviceShotColliderRadiusCm，实际半径不小于 Body |
+| Device / Art | DroppedRotationDegreesPerSecond | 落地待拾取模型绕竖直轴匀速旋转的角速度，默认 60°/秒；0 表示停止旋转 |
 | Device / Size | RefreshDeviceSize | 编辑器可调用，运行时修改尺寸后显式调用；更新球体与显示并重新检查承托 |
 | Device / Motion | GroundSnapDistanceCm / GroundUpNormalMin | 支持短 Sweep 距离与法线阈值，来自 device 参数组；独立于 D01 起柱探地/标签规则 |
 | Device / Motion | IsGrounded | 只读运动状态，独立于 Dormant/Held/Active/Spent |
@@ -25,9 +28,9 @@
 
 ## 2. 地面固定与受力起飞
 
-Dormant 与 Active D03 受到实际支持面承托时，停止物理、清速度、校正为直立显示，PhysicsBody 根使用 NoCollision；ShotCollider 继续 QueryOnly，所以角色穿行而 W01/P01/E 查询仍工作。投掷以及合法机关外力通过真实空中物理运动，飞行根忽略 Pawn，仍受场景阻挡。
+Dormant 与 Active D03 受到实际支持面承托时，停止物理、清速度、校正为直立显示，PhysicsBody 根使用 NoCollision，所以角色可穿行。落地 Dormant 使用与敌人一致的胶囊（半径 35 cm、半高 90 cm）作为 W01/P01 受击和准星拾取的 QueryOnly 体积，胶囊底部与物理根底部齐平；原 ShotCollider 查询球暂时关闭。模型的实际包围盒中心对齐胶囊中心，由独立 VisualPivot 匀速旋转，保留模型资源原有偏移、旋转和缩放。暂停会冻结旋转，VisualScale 只调整模型大小。拾取、投掷/受力起飞或激活后复原显示变换并关闭掉落胶囊，空中 Dormant 和 Active D03 使用原 ShotCollider。投掷以及合法机关外力通过真实空中物理运动，飞行根忽略 Pawn，仍受场景阻挡。
 
-柱子与爆炸须从查询球找到固定设备，用 CanReceiveExternalImpulse 过滤后经共用外力入口唤醒，再在帧末合并速度；不能仅用 IsSimulatingPhysics 或实体根重叠判断设备是否可作用。受力离地后再次承托会固定；原支持消失也会恢复下落。Held、Spent、Active D01 的已消耗种子不单独接受设备外力。EnemyDrops 接纳合法 grounded 出生，死亡幂等/容量/近邻搜索等原边界继续生效。生成/释放净空独立检查已有固定道具的实际根球体积，避免无碰撞道具重叠而挡住拾取；这不会恢复实体碰撞，也不用较大的射击球扩大出生占用。
+柱子与爆炸须从查询体积找到固定设备，用 CanReceiveExternalImpulse 过滤后经共用外力入口唤醒，再在帧末合并速度；不能仅用 IsSimulatingPhysics 或实体根重叠判断设备是否可作用。受力离地后再次承托会固定；原支持消失也会恢复下落。Held、Spent、Active D01 的已消耗种子不单独接受设备外力。EnemyDrops 接纳合法 grounded 出生，死亡幂等/容量/近邻搜索等原边界继续生效。生成/释放净空独立检查已有固定道具的实际根球体积，避免无碰撞道具实体重叠；较大的瞄准胶囊不扩大出生占用，邻近道具之间仍按准星首先命中的对象选择。
 
 运动支持只要求实际阻挡设备根、合格向上法线且不是角色/道具/查询触发体，不要求 MothColumnSurface；D01 生成柱子仍另需 WorldStatic 与 MothColumnSurface 标签及最终静态净空。
 

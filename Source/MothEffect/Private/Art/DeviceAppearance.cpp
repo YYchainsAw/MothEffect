@@ -52,6 +52,7 @@ void ADeviceBase::RefreshPrototypeAppearance()
 		else DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() / LastAppliedVisualScale);
 		DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() * Size);
 		LastAppliedVisualScale = Size;
+		UpdateDroppedPresentation(0.0f);
 		return;
 	}
 	if (!bPrototypeApplied)
@@ -69,4 +70,5 @@ void ADeviceBase::RefreshPrototypeAppearance()
 	for (int32 I=0; I<DeviceMesh->GetNumMaterials(); ++I) AppliedVisualMaterials.Add(DeviceMesh->GetMaterial(I));
 	bPrototypeApplied=true;
 	LastAppliedVisualScale = Size;
+	UpdateDroppedPresentation(0.0f);
 }

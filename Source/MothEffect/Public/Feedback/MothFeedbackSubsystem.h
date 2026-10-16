@@ -6,7 +6,7 @@
 #include "Types/EnemyHitFeedback.h"
 #include "MothFeedbackSubsystem.generated.h"
 
-class AMothFeedbackVisual; class UAudioComponent;
+class AMothFeedbackVisual; class UAudioComponent; class UNiagaraSystem;
 class AActor;
 class APawn;
 struct FHitContext;
@@ -42,6 +42,7 @@ public:
 	UFUNCTION(BlueprintPure, Category="Moth|Feedback") float GetHitMarkerAlpha() const;
 	UFUNCTION(BlueprintPure, Category="Moth|Feedback") float GetDamageEdgeAlpha() const;
 	int32 GetLiveVisualCount() const;
+	UFUNCTION(BlueprintPure, Category="Moth|Feedback") int32 GetLiveNiagaraCount() const;
 	int32 GetLiveAudioCount() const;
 	uint64 GetCueCount(EMothFeedbackCue Kind) const { return Counts.FindRef(Kind); }
 protected:
@@ -49,6 +50,9 @@ protected:
 	UPROPERTY(Config, EditDefaultsOnly, Category="Feedback") TSoftObjectPtr<UMothFeedbackProfile> DefaultProfile;
 private:
 	UPROPERTY(Transient) TObjectPtr<UMothFeedbackProfile> Profile;
+	/** Strong references avoid a load and GC churn on every committed shot. */
+	UPROPERTY(Transient) TMap<FSoftObjectPath,TObjectPtr<UNiagaraSystem>> NiagaraSystems;
+	TSet<FSoftObjectPath> FailedNiagaraSystems;
 	TArray<TWeakObjectPtr<AMothFeedbackVisual>> Visuals;
 	TArray<TWeakObjectPtr<UAudioComponent>> Audio;
 	TMap<EMothFeedbackCue,double> LastSound;
@@ -56,4 +60,5 @@ private:
 	double LastHit=-100, LastDamage=-100;
 	uint64 PresentationGeneration=0;
 	bool bClosed=false, bAudioPaused=false, bClearing=false;
+	UNiagaraSystem* ResolveNiagara(const FMothFeedbackStyle& Style);
 };

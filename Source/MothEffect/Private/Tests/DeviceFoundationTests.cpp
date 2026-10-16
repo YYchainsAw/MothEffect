@@ -76,7 +76,7 @@ namespace MothFoundationTest
 				Landed = D->GetActorTransform();
 				T->TestFalse(TEXT("Landing stops Chaos simulation"), D->GetPhysicsBody()->IsSimulatingPhysics());
 				T->TestTrue(TEXT("Ground body has no entity collision"), D->GetPhysicsBody()->GetCollisionEnabled() == ECollisionEnabled::NoCollision);
-				auto* Query = FindObject<USphereComponent>(D.Get(), TEXT("ShotCollider"));
+				auto* Query = FindObject<UPrimitiveComponent>(D.Get(), TEXT("DroppedCollider"));
 				if (!T->TestNotNull(TEXT("Separate ballistic query shape"), Query)) return true;
 				T->TestTrue(TEXT("Grounded ballistic shape remains query-only"), Query->GetCollisionEnabled() == ECollisionEnabled::QueryOnly);
 				for (ECollisionChannel Channel : {ECC_Visibility, MothCollision::Projectile})

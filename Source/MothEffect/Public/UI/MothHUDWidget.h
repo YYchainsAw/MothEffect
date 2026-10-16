@@ -8,12 +8,12 @@
 #include "Types/EnemyHitFeedback.h"
 #include "MothHUDWidget.generated.h"
 
-class UTextBlock; class UProgressBar; class UMothTutorialConfig;
+class UTextBlock; class UProgressBar; class UMothTutorialConfig; class USlider; class UComboBoxString;
 class UButton; class UMothDeviceIcon; class AMothEffectCharacter; class ARifle; class UHealthComponent;
 class UMothFeedbackSubsystem; class APawn;
 
 UENUM(BlueprintType)
-enum class EMothUIPage : uint8 { Title, Gameplay, Tutorial, Pause, TutorialComplete, Victory, Defeat };
+enum class EMothUIPage : uint8 { Title, Gameplay, Tutorial, Pause, TutorialComplete, Victory, Defeat, Settings, Credits };
 
 USTRUCT(BlueprintType)
 struct FMothHUDState
@@ -63,6 +63,9 @@ public:
 	UMothTutorialConfig* GetTutorialConfig() const;
 	UWidget* GetMenuFocusTarget() const;
 	bool IsMenuVisible() const;
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void OpenSettings();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void OpenCredits();
+	UFUNCTION(BlueprintCallable, Category="Moth|UI") void CloseMenuPanel();
 	void ShowInteractionNotice(const FText& Message);
 	/** One accepted enemy damage result for this HUD's player; a kill replaces a normal hit. */
 	UFUNCTION(BlueprintImplementableEvent, Category="Moth|Crosshair")
@@ -136,7 +139,36 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> QuitButton;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UButton> RetryButton;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidget)) TObjectPtr<UTextBlock> TutorialStepText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> MenuCard;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> ControlGuide;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> RestartButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> TitleButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> CreditsButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> SettingsPanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<USlider> MasterVolumeSlider;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<USlider> MouseSensitivitySlider;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> MasterVolumeValue;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> MouseSensitivityValue;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UComboBoxString> QualityCombo;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UComboBoxString> DisplayModeCombo;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UComboBoxString> ResolutionCombo;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> ApplySettingsButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> CancelSettingsButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> CreditsPanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> CreditsBackButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> GuidePanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> GuideText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> WaveObjectiveText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> RewardText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> ResultStatsText;
 private:
+	bool bSettingsOpen = false;
+	bool bCreditsOpen = false;
+	void RenderReleaseMenus();
+	void PopulateSettings();
+	UFUNCTION() void ApplyPlayerSettings();
+	UFUNCTION() void RestartClicked();
+	UFUNCTION() void TitleClicked();
 	FText Notice;
 	double NoticeEndsAt = 0;
 	EMothUIPage RenderedPage = EMothUIPage::Defeat;

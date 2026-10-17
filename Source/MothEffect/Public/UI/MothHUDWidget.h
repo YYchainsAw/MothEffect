@@ -8,7 +8,7 @@
 #include "Types/EnemyHitFeedback.h"
 #include "MothHUDWidget.generated.h"
 
-class UTextBlock; class UProgressBar; class UMothTutorialConfig; class USlider; class UComboBoxString;
+class UTextBlock; class UProgressBar; class UMothTutorialConfig; class USlider; class UComboBoxString; class UImage;
 class UButton; class UMothDeviceIcon; class AMothEffectCharacter; class ARifle; class UHealthComponent;
 class UMothFeedbackSubsystem; class APawn;
 
@@ -161,10 +161,17 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> WaveObjectiveText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> RewardText;
 	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> ResultStatsText;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UWidget> FrontEndPanel;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UImage> FrontLogo;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> FrontStartButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> FrontSettingsButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> FrontCreditsButton;
+	UPROPERTY(BlueprintReadOnly, Category="Moth|Bindings", meta=(BindWidgetOptional)) TObjectPtr<UButton> FrontQuitButton;
 private:
 	bool bSettingsOpen = false;
 	bool bCreditsOpen = false;
 	void RenderReleaseMenus();
+	void RenderFrontEnd();
 	void PopulateSettings();
 	UFUNCTION() void ApplyPlayerSettings();
 	UFUNCTION() void RestartClicked();
@@ -175,6 +182,10 @@ private:
 	bool bMenuRendered = false;
 	bool bRendering = false;
 	void BindButtons(bool bBind);
+	void ConfigureMenuAudio(bool bBind);
+	UFUNCTION() void HandleMenuHover();
+	UFUNCTION() void HandleMenuPress();
+	UFUNCTION() void HandleMenuBackPress();
 	void BindSources();
 	void UnbindSources();
 	void HandleEnemyHitConfirmed(APawn* InstigatorPawn, const FMothEnemyHitFeedback& Feedback);

@@ -62,8 +62,11 @@ void UMothHUDWidget::BindButtons(bool bBind)
 	MOTH_BUTTON(QuitButton,QuitClicked); MOTH_BUTTON(RetryButton,RetryClicked);
 	MOTH_BUTTON(RestartButton,RestartClicked); MOTH_BUTTON(TitleButton,TitleClicked);
 	MOTH_BUTTON(CreditsButton,OpenCredits); MOTH_BUTTON(CreditsBackButton,CloseMenuPanel);
+	MOTH_BUTTON(FrontStartButton,PrimaryClicked); MOTH_BUTTON(FrontSettingsButton,OpenSettings);
+	MOTH_BUTTON(FrontCreditsButton,OpenCredits); MOTH_BUTTON(FrontQuitButton,QuitClicked);
 	MOTH_BUTTON(ApplySettingsButton,ApplyPlayerSettings); MOTH_BUTTON(CancelSettingsButton,CloseMenuPanel);
 #undef MOTH_BUTTON
+	ConfigureMenuAudio(bBind);
 }
 
 void UMothHUDWidget::NativeConstruct() { Super::NativeConstruct(); BindButtons(true); RefreshState(); }
@@ -184,6 +187,7 @@ UWidget* UMothHUDWidget::GetMenuFocusTarget() const
 {
 	if (State.Page==EMothUIPage::Settings && CancelSettingsButton) return CancelSettingsButton;
 	if (State.Page==EMothUIPage::Credits && CreditsBackButton) return CreditsBackButton;
+	if (State.Page==EMothUIPage::Title && FrontStartButton && FrontEndPanel && FrontEndPanel->IsVisible()) return FrontStartButton;
 	return PrimaryButton?static_cast<UWidget*>(PrimaryButton):const_cast<UMothHUDWidget*>(this);
 }
 

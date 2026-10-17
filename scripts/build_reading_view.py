@@ -53,6 +53,8 @@ DOCS = [
     ('doc-slate-ui', 'Slate 界面与玩家/敌人生命条', 'Docs/05_Development_Guide/Slate_UI_Setup.md'),
     ('doc-asset-import', '选定第三方资源导入', 'Docs/05_Development_Guide/Asset_Import_Setup.md'),
     ('doc-asset-shortlist', '敌人、UI 与特效资源选型', 'Docs/05_Development_Guide/Asset_Shortlist_2026-10-16.md'),
+    ('doc-audio-shortlist', '音效与英文角色语音选型', 'Docs/05_Development_Guide/Audio_Shortlist_2026-10-17.md'),
+    ('doc-character-audio', '角色语音与 Kenney 界面音效接入', 'Docs/05_Development_Guide/Character_Audio_Setup.md'),
     ('doc-crosshair', '自定义准星、敌人命中与击杀反馈接入', 'Docs/05_Development_Guide/Crosshair_Setup.md'),
     ('doc-feedback', 'T19 默认反馈与替换入口', 'Docs/05_Development_Guide/Feedback_Setup.md'),
     ('doc-niagara', 'Niagara 战斗特效接入与调节', 'Docs/05_Development_Guide/Niagara_Setup.md'),

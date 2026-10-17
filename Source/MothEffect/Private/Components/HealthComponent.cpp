@@ -48,6 +48,7 @@ bool UHealthComponent::ApplyHit(const FHitContext& Context)
 	}
 
 	const uint64 LifecycleGeneration = Session ? Session->GetLifecycleGeneration() : 0;
+	LastHitLifecycleGeneration = LifecycleGeneration;
 	const float PreviousHealth = CurrentHealth;
 	AcceptedHits.Add(Context.HitId);
 	CurrentHealth = FMath::Max(0.0f, CurrentHealth - Context.Damage);

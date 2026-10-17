@@ -16,6 +16,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UHealthComponent;
+class UMothCharacterVoiceComponent;
 class UExternalImpulseComponent;
 class UChildActorComponent;
 class UAnimMontage;
@@ -49,6 +50,9 @@ class MOTHEFFECT_API AMothEffectCharacter : public ACharacter, public IBallistic
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	TObjectPtr<UHealthComponent> HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UMothCharacterVoiceComponent> CharacterVoice;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;

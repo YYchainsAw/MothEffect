@@ -366,7 +366,9 @@ void AMothWaveDirector::CloseAndClean(bool bResetWave)
 		CombatPlayer->GetCharacterMovement()->StopMovementImmediately();
 		CombatPlayer->GetCharacterMovement()->DisableMovement();
 	}
-	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->ResetManagedObjects();
+	// The terminal result already invalidated gameplay above; preserve that one closure
+	// generation until its committed player death has delivered presentation callbacks.
+	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->ResetManagedObjects(bResetWave);
 	// Also remove spent visuals/dead corpses and unregistered objects, not only capacity records.
 	TArray<TWeakObjectPtr<AActor>> Objects;
 	for (TActorIterator<AActor> It(GetWorld()); It; ++It)

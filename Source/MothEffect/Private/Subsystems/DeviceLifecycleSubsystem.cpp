@@ -1,5 +1,6 @@
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Feedback/MothFeedbackSubsystem.h"
+#include "Feedback/MothAudioSubsystem.h"
 #include "Combat/RuleProjectile.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
@@ -238,6 +239,7 @@ bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
 	bGameplayEnabled = bEnabled;
 	if (!bEnabled)
 	{
+		if (auto* Audio = GetWorld()->GetSubsystem<UMothAudioSubsystem>()) Audio->ClearGameplayAudio();
 		if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
 		// Cancel accepted waits now, so re-enabling the session cannot revive their timers or quota.
 		const auto Snapshot = Devices;
@@ -247,12 +249,13 @@ bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
 	return true;
 }
 
-void UDeviceLifecycleSubsystem::ResetManagedObjects()
+void UDeviceLifecycleSubsystem::ResetManagedObjects(bool bInvalidateGeneration)
 {
 	if (bResetting) return;
 	TGuardValue<bool> Guard(bResetting, true);
+	if (auto* Audio = GetWorld()->GetSubsystem<UMothAudioSubsystem>()) Audio->ClearGameplayAudio();
 	if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
-	++LifecycleGeneration;
+	if (bInvalidateGeneration || bGameplayEnabled) ++LifecycleGeneration;
 	const auto DeviceSnapshot = Devices;
 	const auto ProjectileSnapshot = Projectiles;
 	const auto SpawnSnapshot = ReservedSpawns;

@@ -1,5 +1,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "UI/MothHUDWidget.h"
+#include "UI/MothLoadingSubsystem.h"
+#include "Art/MothMenuCharacter.h"
 #include "Framework/MothEffectPlayerController.h"
 #include "Framework/MothWaveDirector.h"
 #include "Framework/MothGameInstance.h"
@@ -48,8 +50,15 @@ namespace MothMenuRuntimeTest
 	}
 	bool Click(FAutomationTestBase* T,UMothHUDWidget* UI,const TCHAR* Name)
 	{
+		if (UI->GetHUDState().Page==EMothUIPage::Title)
+		{
+			if (FCString::Strcmp(Name,TEXT("PrimaryButton"))==0) Name=TEXT("FrontStartButton");
+			else if (FCString::Strcmp(Name,TEXT("SecondaryButton"))==0) Name=TEXT("FrontSettingsButton");
+			else if (FCString::Strcmp(Name,TEXT("CreditsButton"))==0) Name=TEXT("FrontCreditsButton");
+		}
 		auto* Button=Cast<UButton>(UI->GetWidgetFromName(Name));
 		if (!T->TestNotNull(*FString::Printf(TEXT("Saved bound button %s"),Name),Button)) return false;
+		if (!T->TestTrue(TEXT("Only a visible enabled action is clicked"),Button->IsVisible()&&Button->GetIsEnabled())) return false;
 		Button->OnClicked.Broadcast(); return true;
 	}
 	bool Visible(UMothHUDWidget* UI,const TCHAR* Name)
@@ -74,6 +83,10 @@ namespace MothMenuRuntimeTest
 		T->TestEqual(TEXT("Menu has no enemies"),ActorCount<AEnemyBase>(W),0);
 		T->TestEqual(TEXT("Menu has no gameplay devices"),ActorCount<ADeviceBase>(W),0);
 		T->TestEqual(TEXT("Menu has no wave director"),ActorCount<AMothWaveDirector>(W),0);
+		T->TestEqual(TEXT("One animated player likeness belongs to the menu"),ActorCount<AMothMenuCharacter>(W),1);
+		T->TestTrue(TEXT("Title exposes the supplied logo and right-side actions"),Visible(UI,TEXT("FrontLogo"))&&Visible(UI,TEXT("FrontEndPanel"))&&Visible(UI,TEXT("FrontStartButton")));
+		T->TestFalse(TEXT("Title removes the old fullscreen shade"),Visible(UI,TEXT("MenuShade")));
+		T->TestFalse(TEXT("Title removes the old menu card"),Visible(UI,TEXT("MenuCard")));
 		auto* Camera=Cast<ACameraActor>(PC->GetViewTarget());
 		T->TestTrue(TEXT("Menu uses its marked fixed camera"),Camera&&Camera->ActorHasTag(TEXT("MothMenuCamera")));
 		T->TestTrue(TEXT("Title owns cursor and blocks movement and look"),PC->bShowMouseCursor&&PC->IsMoveInputIgnored()&&PC->IsLookInputIgnored());
@@ -91,6 +104,9 @@ namespace MothMenuRuntimeTest
 		T->TestTrue(TEXT("Battle owns player input"),!PC->bShowMouseCursor&&!PC->IsMoveInputIgnored()&&!PC->IsLookInputIgnored());
 		T->TestFalse(TEXT("Battle travel intent is consumed once"),PC->GetGameInstance<UMothGameInstance>()->HasBattleAfterTravel());
 		T->TestTrue(TEXT("Battle starts with full player health and ammunition"),UI->GetHUDState().Health==100&&UI->GetHUDState().Ammo==24&&!UI->GetHUDState().bHeld);
+		const auto* Loading=PC->GetGameInstance()->GetSubsystem<UMothLoadingSubsystem>();
+		T->TestTrue(TEXT("Start has displayed and dismissed a readable loading page"),Loading&&!Loading->IsLoading()&&Loading->GetLastDisplaySeconds()>=.79f);
+		T->TestTrue(TEXT("A real Game map load starts MoviePlayer presentation"),Loading&&Loading->WasMoviePlayerUsed());
 		CheckSingleHUD(T,W,PC);
 	}
 
@@ -103,6 +119,11 @@ namespace MothMenuRuntimeTest
 			if (!Started) Started=FPlatformTime::Seconds();
 			if (FPlatformTime::Seconds()-Started>90) { T->AddError(FString::Printf(TEXT("Independent menu/settings flow timeout stage=%d"),Stage)); return true; }
 			UWorld* W=World(); if (!W) return false;
+			if (auto* Loading=W->GetGameInstance()->GetSubsystem<UMothLoadingSubsystem>(); Loading&&Loading->IsLoading())
+			{
+				if (!bCapturedLoading) { Capture(TEXT("12_Loading.png")); bCapturedLoading=true; }
+				return false;
+			}
 			auto* PC=Cast<AMothEffectPlayerController>(UGameplayStatics::GetPlayerController(W,0));
 			auto* UI=PC?PC->GetGameplayUI():nullptr; if (!PC||!UI) return false;
 			if (Stage==-1) { if (W==Previous.Get()) return false; Stage=0; }
@@ -177,7 +198,7 @@ namespace MothMenuRuntimeTest
 			return false;
 		}
 	private:
-		FAutomationTestBase* T; int32 Stage=0; double Started=0,Wait=0,PauseTime=0; float RunTime=0; TWeakObjectPtr<UWorld> Previous;
+		FAutomationTestBase* T; int32 Stage=0; double Started=0,Wait=0,PauseTime=0; float RunTime=0; bool bCapturedLoading=false; TWeakObjectPtr<UWorld> Previous;
 	};
 
 	class FMenuTravel final:public IAutomationLatentCommand
@@ -189,6 +210,7 @@ namespace MothMenuRuntimeTest
 			if (!Started) Started=FPlatformTime::Seconds();
 			if (FPlatformTime::Seconds()-Started>90) { T->AddError(FString::Printf(TEXT("Independent menu battle/results travel timeout stage=%d"),Stage)); return true; }
 			UWorld* W=World(); if (!W) return false;
+			if (auto* Loading=W->GetGameInstance()->GetSubsystem<UMothLoadingSubsystem>(); Loading&&Loading->IsLoading()) return false;
 			auto* PC=Cast<AMothEffectPlayerController>(UGameplayStatics::GetPlayerController(W,0));
 			auto* UI=PC?PC->GetGameplayUI():nullptr; if (!PC||!UI) return false;
 			auto* D=Director(W); if (FPlatformTime::Seconds()<Wait) return false;

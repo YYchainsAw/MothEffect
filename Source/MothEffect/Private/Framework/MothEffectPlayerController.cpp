@@ -24,6 +24,7 @@
 #include "Framework/MothGameInstance.h"
 #include "Tutorial/MothTutorialSubsystem.h"
 #include "UI/MothHUDWidget.h"
+#include "UI/MothLoadingSubsystem.h"
 #include "Weapons/Rifle.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Settings/MothUserSettings.h"
@@ -60,6 +61,8 @@ void AMothEffectPlayerController::InitializeGameplayUI()
 	if (!GameplayUI) return;
 	GameplayUI->AddToPlayerScreen(10);
 	GameplayUI->RefreshState(); SyncUIInput();
+	if (auto* Instance = GetGameInstance())
+		if (auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>()) Loading->MarkWorldReady(GetWorld());
 }
 
 void AMothEffectPlayerController::Tick(float DeltaSeconds)
@@ -84,6 +87,8 @@ void AMothEffectPlayerController::OnPossess(APawn* InPawn)
 void AMothEffectPlayerController::EndPlay(const EEndPlayReason::Type Reason)
 {
 	bTravelRequested = true;
+	if (auto* Instance = GetGameInstance())
+		if (auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>()) Loading->OnLoadingFinished.RemoveAll(this);
 	if (GameplayUI) GameplayUI->RemoveFromParent();
 	GameplayUI = nullptr;
 	Super::EndPlay(Reason);
@@ -92,6 +97,8 @@ void AMothEffectPlayerController::EndPlay(const EEndPlayReason::Type Reason)
 void AMothEffectPlayerController::SyncUIInput()
 {
 	if (!GameplayUI || bTravelRequested) return;
+	if (auto* Instance = GetGameInstance())
+		if (auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>(); Loading && Loading->IsLoading()) return;
 	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
 	if (AppliedUIPage == static_cast<int32>(Page)) return;
 	AppliedUIPage = static_cast<int32>(Page);
@@ -139,8 +146,9 @@ void AMothEffectPlayerController::StartBattle()
 	if (Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode()))
 	{
 		Instance->QueueBattleAfterTravel();
-		bTravelRequested = true;
-		UGameplayStatics::OpenLevel(this, UMothGameInstance::GetBattleMapName());
+		auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>();
+		if (Loading && Loading->BeginBattleTravel(this, UMothGameInstance::GetBattleMapName())) bTravelRequested = true;
+		else Instance->CancelBattleAfterTravel();
 		return;
 	}
 	if (!Mode) return;
@@ -175,6 +183,8 @@ void AMothEffectPlayerController::RestartBattle()
 void AMothEffectPlayerController::ToggleMenuPause()
 {
 	if (!GameplayUI || bTravelRequested) return;
+	if (auto* Instance = GetGameInstance())
+		if (auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>(); Loading && Loading->IsLoading()) return;
 	const EMothUIPage Page = GameplayUI->GetHUDState().Page;
 	if (Page == EMothUIPage::Settings || Page == EMothUIPage::Credits) GameplayUI->CloseMenuPanel();
 	else if (Page == EMothUIPage::Pause) ResumeGame();
@@ -186,6 +196,9 @@ void AMothEffectPlayerController::ResumeGame() { if (GetWorld() && GetWorld()->I
 void AMothEffectPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	if (auto* Instance = GetGameInstance())
+		if (auto* Loading = Instance->GetSubsystem<UMothLoadingSubsystem>())
+			Loading->OnLoadingFinished.AddUObject(this, &AMothEffectPlayerController::HandleLoadingFinished);
 	if (Cast<AMothMainMenuGameMode>(GetWorld()->GetAuthGameMode()))
 		if (auto* Instance = GetGameInstance<UMothGameInstance>()) Instance->CancelBattleAfterTravel();
 	// UI initialization commits arena preparation after the director binds its player.
@@ -211,6 +224,18 @@ void AMothEffectPlayerController::BeginPlay()
 		}
 
 	}
+}
+
+void AMothEffectPlayerController::HandleLoadingFinished(bool bSucceeded)
+{
+	if (!bSucceeded)
+	{
+		bTravelRequested = false;
+		if (auto* Instance = GetGameInstance<UMothGameInstance>()) Instance->CancelBattleAfterTravel();
+		if (GameplayUI) GameplayUI->ShowInteractionNotice(FText::FromString(TEXT("暂时无法进入战场，请重试。")));
+	}
+	AppliedUIPage = -1;
+	SyncUIInput();
 }
 
 void AMothEffectPlayerController::SetupInputComponent()

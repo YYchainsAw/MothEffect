@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/ExternalImpulseComponent.h"
 #include "Components/HealthComponent.h"
+#include "Feedback/MothCharacterVoiceComponent.h"
+#include "Feedback/MothAudioSubsystem.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -27,6 +29,8 @@
 AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	CharacterVoice = CreateDefaultSubobject<UMothCharacterVoiceComponent>(TEXT("CharacterVoice"));
+	CharacterVoice->ConfigureDrongoDefaults();
 	AIControllerClass = AAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
@@ -253,6 +257,8 @@ void AEnemyBase::SetGameplayEnabled(bool bEnabled)
 	if (bGameplayEnabled == bEnabled || bDeathProcessed || bEndingPlay) return;
 	++CombatGeneration;
 	bGameplayEnabled = bEnabled;
+	if (!bEnabled)
+		if (auto* Audio = GetWorld() ? GetWorld()->GetSubsystem<UMothAudioSubsystem>() : nullptr) Audio->StopSpeaker(this);
 	ExternalImpulseComponent->SetGameplayEnabled(bEnabled);
 	StopNavigation();
 	GetCharacterMovement()->StopMovementImmediately();

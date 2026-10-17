@@ -17,6 +17,7 @@ class AEnemyBase;
 class ADeviceBase;
 class UWidgetComponent;
 class UMothEnemyHealthWidget;
+class UMothCharacterVoiceComponent;
 
 UENUM(BlueprintType)
 enum class EEnemyCombatPhase : uint8 { Idle, Pursuing, Telegraphing, Cooldown, Disabled, Dead };
@@ -78,6 +79,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UHealthComponent> HealthComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UMothCharacterVoiceComponent> CharacterVoice;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UExternalImpulseComponent> ExternalImpulseComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")

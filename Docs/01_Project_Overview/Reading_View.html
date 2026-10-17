@@ -1,7 +1,11 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.61</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Moth Effect（飞蛾效应） 开发文档 v0.65</title><style>
 :root{color-scheme:light;--ink:#222a32;--muted:#69717b;--paper:#fff;--line:#d9dfe5;--link:#17527d}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f2f3f5;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}a{color:var(--link);text-underline-offset:3px}aside{position:fixed;inset:0 auto 0 0;width:246px;background:#eef0f3;padding:30px 20px;overflow:auto;border-right:1px solid var(--line)}aside strong{display:block;font-size:20px;margin-bottom:4px}aside .meta{font-size:13px;color:var(--muted);margin-bottom:24px}nav a{display:block;text-decoration:none;color:#34414d;font-size:14px;padding:10px 8px;border-radius:4px;margin:2px 0}nav a:hover,nav a:focus-visible{background:#dfe6ec;color:#122b40;outline:2px solid #8ba5ba;outline-offset:0}main{margin-left:246px;padding:42px 34px 80px;max-width:1370px}header{padding:0 8px 32px}header .meta{font-size:13px;color:var(--muted);letter-spacing:.04em}header h1{font-size:36px;line-height:1.35;margin:14px 0;color:#000}header p{max-width:780px;margin:8px 0;color:#46515b}.document{background:var(--paper);padding:36px 38px;margin-bottom:24px;border:1px solid #e5e8eb;scroll-margin-top:24px}.source{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.02em}h1,h2,h3{color:#000;line-height:1.45;font-weight:650}h1{font-size:27px;margin:0 0 18px}h2{font-size:21px;margin:32px 0 12px}h3{font-size:17px;margin:24px 0 10px}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}table{border-collapse:collapse;width:100%;margin:18px 0 24px;display:block;overflow-x:auto;font-size:14px;line-height:1.65}th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;min-width:68px;overflow-wrap:anywhere}th{text-align:left;background:#edf2f6;color:#000;font-weight:650}tr:nth-child(even) td{background:#fafbfc}code{font:13px/1.65 Consolas,"Microsoft YaHei",monospace;background:#f1f3f5;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{font:13px/1.75 Consolas,"Microsoft YaHei",monospace;background:#f5f6f8;padding:20px;overflow-x:auto;white-space:pre}pre code{padding:0;background:transparent}blockquote{margin:18px 0;padding-left:18px;border-left:3px solid #ccd6df;color:#46515b}.note{font-size:13px;color:var(--muted);margin-top:24px}::selection{background:#d1e1ed}@media(max-width:880px){aside{position:static;width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;gap:2px}nav a{font-size:13px;padding:8px}main{margin:0;padding:24px 14px}.document{padding:24px 18px}header h1{font-size:28px}}@media print{body{background:#fff;font-size:10.5pt}aside,header .note{display:none}main{margin:0;padding:0;max-width:none}.document{border:0;padding:0;margin:0;break-before:page}header{padding:0}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:#000;text-decoration:none}pre{white-space:pre-wrap;overflow-wrap:anywhere}h1,h2,h3{break-after:avoid}}
-nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.61<br>2026-10-17 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-devlog-20261016">10/16 开发者日志</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-drongo-enemy">Drongo 敌人模型与动画接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-slate-ui">Slate 界面与玩家/敌人生命条</a><a href="#doc-asset-import">选定第三方资源导入</a><a href="#doc-asset-shortlist">敌人、UI 与特效资源选型</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-niagara">Niagara 战斗特效接入与调节</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-soulcity-arena">Soul City 独立工业竞技场</a><a href="#doc-soulcity-report">Soul City 竞技场搭建与验证</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-17 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="fc176013b38b26524098d4bfd7729df54d037feb02d8fe118808919e801e452e"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
-<p dir="auto">版本 v0.61 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}main{max-width:1450px}</style></head><body><aside><strong>Moth Effect（飞蛾效应）</strong><div class="meta">开发文档 v0.65<br>2026-10-17 · 香港时间</div><nav><a href="#doc-readme">文档入口</a><a href="#doc-overview">项目概览</a><a href="#doc-game">游戏策划案</a><a href="#doc-rules">道具与交互规则</a><a href="#doc-candidates">候选机关道具（待选）</a><a href="#doc-level">关卡、界面与资源规格</a><a href="#doc-parameters">玩法参数基线</a><a href="#doc-technical">技术设计</a><a href="#doc-decisions">设计决策</a><a href="#doc-coding">代码与资产命名规范</a><a href="#doc-version">版本管理规范</a><a href="#doc-engine">UE 工程配置</a><a href="#doc-plan">开发任务与排期</a><a href="#doc-devlog-20261016">10/16 开发者日志</a><a href="#doc-audit-20261007">10/7 进度核查</a><a href="#doc-player-setup">玩家输入与动画接入</a><a href="#doc-murdock-setup">Murdock 与一体枪械接入</a><a href="#doc-weapon-setup">步枪、换弹与生命接入</a><a href="#doc-device-setup">机关状态与命中接入</a><a href="#doc-device-refactor">道具基础重构与调参入口</a><a href="#doc-device-interaction">拾取、放下与安全投掷接入</a><a href="#doc-emitter-setup">D03 发射器与 P01 接入</a><a href="#doc-bomb-setup">D02 爆炸与推力接入</a><a href="#doc-launcher-setup">D01 探地与升柱接入</a><a href="#doc-natural-chain-setup">统一弹丸与自然连锁接入</a><a href="#doc-lifecycle-setup">容量与生命周期接入</a><a href="#doc-enemy-drops">T15 三外观与固定掉落接入</a><a href="#doc-enemy-setup">T14 射击 AI 与导航接入</a><a href="#doc-drongo-enemy">Drongo 敌人模型与动画接入</a><a href="#doc-wave-flow">T16 三波、胜负与重开接入</a><a href="#doc-ui">T18 HUD、教学与共用菜单接入</a><a href="#doc-slate-ui">Slate 界面与玩家/敌人生命条</a><a href="#doc-asset-import">选定第三方资源导入</a><a href="#doc-asset-shortlist">敌人、UI 与特效资源选型</a><a href="#doc-audio-shortlist">音效与英文角色语音选型</a><a href="#doc-character-audio">角色语音与 Kenney 界面音效接入</a><a href="#doc-crosshair">自定义准星、敌人命中与击杀反馈接入</a><a href="#doc-feedback">T19 默认反馈与替换入口</a><a href="#doc-niagara">Niagara 战斗特效接入与调节</a><a href="#doc-prototype-art">T20 原型外观与替换入口</a><a href="#doc-arena">T17 主竞技场灰盒接入</a><a href="#doc-soulcity-arena">Soul City 独立工业竞技场</a><a href="#doc-soulcity-report">Soul City 竞技场搭建与验证</a><a href="#doc-github">GitHub 开发流程</a><a href="#doc-workflow">文档维护与变更流程</a><a href="#doc-changelog">变更日志</a><a href="#doc-test">测试计划与验收</a><a href="#doc-device-refactor-report">道具基础重构验证报告</a><a href="#doc-t09-report">T09 收尾与验证报告</a><a href="#doc-t10-report">T10 交付与验证报告</a><a href="#doc-t11-report">T11 交付与验证报告</a><a href="#doc-t12-report">T12 交付与验证报告</a><a href="#doc-t13-report">T13 交付与验证报告</a><a href="#doc-t15-report">T15 固定掉落交付报告</a><a href="#doc-t14-report">T14 交付与验证报告</a><a href="#doc-t16-report">T16 三波导演交付报告</a><a href="#doc-t18-report">T18 HUD、教学与菜单交付报告</a><a href="#doc-t19-report">T19 默认反馈交付报告</a><a href="#doc-t20-report">T20 原型外观交付报告</a><a href="#doc-t17-report">T17 主竞技场交付报告</a><a href="#doc-release">发布检查清单</a></nav><p class="note">魔法朋克 · UE 5.8<br>按开发阶段归档<br>Markdown/JSON 为维护源文件</p></aside><main><header><div class="meta">2026 TapTap GameJam · 单人开发</div><h1>Moth Effect（飞蛾效应） 开发文档</h1><p>第三人称越肩射击，投掷并启动机关，用连锁改变战场。</p><p class="note">此页汇总 2026-10-17 的文档源文件；任务状态和验收证据见开发计划与测试计划。</p></header><section class="document" id="doc-readme" data-source-sha256="288fa43a6abce148824ea68f5d78e1c9ae9f4eaf33649caf07c393ba079c37ff"><div class="source">可编辑源文件：<a href="../README.md">README.md</a></div><span id="doc-readme-moth-effect"></span><h1 id="doc-readme-moth-effect飞蛾效应开发文档入口">Moth Effect（飞蛾效应）：开发文档入口</h1>
+<p dir="auto">版本 v0.65 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">2026-10-17 敌人外观对应掉落：D01 升柱使用 Drongo Scavenger，D02 炸弹使用 Drongo 原版，D03 发射器使用 Drongo Alien Invader；各用原配材质与共用动画。三个敌人蓝图已写回，保存实例重载及实际移动、开火、死亡、单次对应掉落通过。对应表、编辑入口和预览见 <a href="#doc-drongo-enemy">Drongo 接入</a>。</p>
+<p dir="auto">2026-10-17 角色与按钮声音接入：Murdock 玩家与 Drongo 敌人复用 26 条原配录音，Kenney 提供悬停、点击、返回和错误四条短音效；实际开火、确认击杀、受伤、预警与死亡驱动语音，补齐冷却、暂停及结算清理。原工程 Editor 构建、41 项专项回归及实际 D3D12／音频运行检查通过；音量平衡与完整战斗混音待主观试听。配置和证据见 <a href="#doc-character-audio">角色与界面音效接入</a>。</p>
+<p dir="auto">2026-10-17 夜景角色主菜单：<code class="notranslate">L_MainMenu</code> 重排为左侧 Murdock 展示角色、上方用户 Logo、右侧无框文字选项；城市夜空和远景保留完整可见。角色在待机与两个指定动作之间平滑循环，“开始游戏”衔接实际地图加载页面。编辑入口与验证见 <a href="../05_Development_Guide/Night_Menu_Setup.md">Night_Menu_Setup</a>。下方机械庭院开场记录保留历史范围。</p>
+<p dir="auto">2026-10-17 音效选型：按英文短句与战斗喊声需求，盘点本地 Paragon 1085 条独立角色录音、SoulCity 脚步与环境音，并核对免费 UI、科幻开火、装填、机械与爆炸候选的作者页面、试听入口和许可。具体路径与动作覆盖见 <a href="#doc-audio-shortlist">音效与英文语音清单</a>；当前为选型，听感与接入待验证。</p>
 <p dir="auto">2026-10-17 首版游戏内流程：独立 <code class="notranslate">L_MainMenu</code> 城市机械庭院使用固定镜头和淡入，点击开始才进入 SoulCity，暂停／结算可返回独立入口或直接重开。菜单内无玩家、观战角色和敌人波次。设置、胜负统计与制作人员页面接入，独立教学入口改为开局基础提示；音量、鼠标灵敏度、画质与显示选择可保存，三波补充目标提示和机关击杀反馈。实现、操作与验证范围见 <a href="../05_Development_Guide/Release_Flow_Setup.md">Release_Flow_Setup</a>。</p>
 <p dir="auto">2026-10-16 Niagara 特效接入：八类实际开火、命中、机关与拾取事件统一连接项目 FX，暂停与结算清理沿用反馈系统。原工程构建、19 项 Editor 专项及八类实际 D3D12 模拟/暂停恢复/死亡清理通过，九件目标资产已写回；用户准星与 HUD 保持，整局、性能和独立包待验收。调节入口与证据见 <a href="#doc-niagara">Niagara_Setup</a>。</p>
 <p dir="auto">2026-10-16 Slate 界面接入：用 Colorosse Slate / Kenney 重做 Designer HUD 和菜单，左下角玩家生命、敌人头顶生命、弹药/换弹、波次与交互提示已连接真实数据。旧原生布局与绘制移除，用户准星包 SHA 及 HUD 内 15 个事件图节点/连线保持。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项和五张 D3D12 画面通过；手动整局、性能与独立包仍待验收。当前编辑入口见 <a href="#doc-slate-ui">Slate_UI_Setup</a>，下方旧 UI 记录保留历史范围。</p>
@@ -203,6 +207,16 @@ nav a{padding:7px 8px}aside .meta{margin-bottom:15px}.source a{font-size:12px}ma
 <td>05_Development_Guide/</td>
 <td><a href="#doc-niagara">Niagara_Setup.md</a></td>
 <td>Niagara 战斗特效与调节</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-audio-shortlist">Audio_Shortlist_2026-10-17.md</a></td>
+<td>按钮、枪声、装填、机关、英文角色语音与环境音选型及本地资产路径</td>
+</tr>
+<tr>
+<td>05_Development_Guide/</td>
+<td><a href="#doc-character-audio">Character_Audio_Setup.md</a></td>
+<td>Murdock／Drongo 录音与 Kenney 按钮声音、调参和验证</td>
 </tr>
 <tr>
 <td>05_Development_Guide/</td>
@@ -4846,8 +4860,9 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>弹丸与清理</strong>：观察 P01 结束后数量下降；检查已 Spent 的短效果不占道具/Active 名额。飞行 64 发的饱和和恢复分支由原生测试覆盖，不为测试修改游戏射速或寿命。</li>
 <li><strong>重复清理</strong>：携带一件、启动发射器/柱子并让 P01 飞行，调用 MothResetDevices，计数应全部归零，持物引用和柱子实体清除；重复调用仍为零，再生成正常登记。重新 PIE 后恢复地图初始布局，不携带上一轮计数。显式安全盒已有原生测试；默认世界 KillZ/边界 fallback 已实现但未单列场景，最终竞技场的安全盒/玩家判负/敌人注销随 T14/T16/T17 接入后补验收。</li>
 </ol>
-<p dir="auto">保留操作、参数覆盖、LogMothEffect 计数、状态/警告日志及构建版本。容量拒绝会广播 <code class="notranslate">OnCapacityRejected</code>，Development 提供短屏幕提示与日志；正式 HUD 接入属于 T18。原生结果与失败历史见 <a href="#doc-t13-report">T13 报告</a>。完整 TC19 的敌人数量、TC23 整局重开和 TC32 跨波分支不由本清单自动通过。</p></section><section class="document" id="doc-enemy-drops" data-source-sha256="5bfc24cebbd1f63e4b39e2606f633e173366151916f1a940e1056e5328c357c2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Drops_Setup.md">05_Development_Guide/Enemy_Drops_Setup.md</a></div><h1 id="doc-enemy-drops-moth-effect飞蛾效应t15-三外观与固定掉落接入">Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入</h1>
-<p dir="auto">版本 v0.5 · 2026-10-16 · 状态：原固定掉落实现与历史验证保留，当前外观见 Drongo 接入</p>
+<p dir="auto">保留操作、参数覆盖、LogMothEffect 计数、状态/警告日志及构建版本。容量拒绝会广播 <code class="notranslate">OnCapacityRejected</code>，Development 提供短屏幕提示与日志；正式 HUD 接入属于 T18。原生结果与失败历史见 <a href="#doc-t13-report">T13 报告</a>。完整 TC19 的敌人数量、TC23 整局重开和 TC32 跨波分支不由本清单自动通过。</p></section><section class="document" id="doc-enemy-drops" data-source-sha256="66f25b61f9838af798f60472a25f66b02712bb79f3323d731388537fb82cd211"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Enemy_Drops_Setup.md">05_Development_Guide/Enemy_Drops_Setup.md</a></div><h1 id="doc-enemy-drops-moth-effect飞蛾效应t15-三外观与固定掉落接入">Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入</h1>
+<p dir="auto">版本 v0.6 · 2026-10-17 · 状态：三种 Drongo 模型固定对应掉落，历史验证保留</p>
+<p dir="auto">2026-10-17：D01 升柱使用 Drongo Scavenger、D02 炸弹使用 Drongo 原版、D03 发射器使用 Drongo Alien Invader；背包与固定掉落绑定继续沿用。三个模型的材质、共用动画与实际死亡掉落检查见 <a href="#doc-drongo-enemy">Drongo 接入</a>。下方同模型版本与旧灰盒记录保留历史范围。</p>
 <p dir="auto">2026-10-16：用户将三类敌人统一为 Drongo；青蓝 D01、橙 D02、紫 D03 背包、三件固定掉落类及原生结算保持。模型、配套动画与本次专项验证见 <a href="#doc-drongo-enemy">Drongo 接入</a>，下文原三外观的历史实现不代表当前角色模型。</p>
 <p dir="auto">Refs <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5728805126" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/17" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/17/hovercard" href="https://github.com/YYchainsAw/MothEffect/issues/17">#17</a>，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用<a href="#doc-enemy-setup">T14射击AI</a>和<a href="#doc-lifecycle-setup">T13生命周期</a>，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；2026-10-12按用户要求创建<a href="https://github.com/YYchainsAw/MothEffect/pull/43" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/43/hovercard">T15 PR #43</a>（codex/t15-enemy-drops → codex/t14-shooting-ai），当前Open；待T14合并后再改为main。用户要求保持待验收，#17保持Open / In Progress，当前四项PIE不记通过。</p>
 <h2 id="doc-enemy-drops-1-预告与固定映射">1. 预告与固定映射</h2>
@@ -4968,25 +4983,69 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li><strong>击杀</strong>：正常W01三次有效命中应击杀60HP敌人，立即停止移动/预警/新发射，DEAD短反馈后消失。当前不掉落机关，T15接入固定掉落；生前已飞的P01按原寿命/首次阻挡结束。</li>
 <li><strong>暂停与重复进入</strong>：预警期用PIE工具栏暂停/恢复，暂停期间不发射、恢复继续剩余预警；结束PIE后重新进入，敌人回到初始位置和60HP，没有上一轮延迟射击或控制器残留。再次生成/删除敌人应正常，无崩溃。</li>
 </ol>
-<p dir="auto">保留<code class="notranslate">LogMothEffect</code>中Enemy event/phase/health/shots/spawned/paths/stalls/time及P01 HitId记录。原生覆盖、首轮失败和导航构建边界见<a href="#doc-t14-report">T14报告</a>。本清单通过后才补齐#16当前PIE验收；完整TC21、正式场地、独立包与G3仍按后续证据验证。</p></section><section class="document" id="doc-drongo-enemy" data-source-sha256="0ecbfbe740bb851ee49b696c38db0f23ee63f873f08ac5ab73438e8bbb883bf2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Drongo_Enemy_Setup.md">05_Development_Guide/Drongo_Enemy_Setup.md</a></div><h1 id="doc-drongo-enemy-moth-effectdrongo-敌人接入">Moth Effect：Drongo 敌人接入</h1>
-<p dir="auto">版本 v0.1 · 2026-10-16 · 状态：五件资产已写回；隔离 PIE 移动/射击/死亡/掉落与 D3D12 外观预览通过</p>
-<p dir="auto">用户选择首版三类敌人统一使用 Drongo。<code class="notranslate">BP_EnemyBase</code>、<code class="notranslate">BP_EnemyLauncher</code>、<code class="notranslate">BP_EnemyBomb</code>、<code class="notranslate">BP_EnemyEmitter</code> 的 Character Mesh 改为 <code class="notranslate">/Game/ParagonDrongo/Characters/Heroes/Drongo/Meshes/Drongo_GDC</code>，使用项目动画蓝图 <code class="notranslate">/Game/MothEffect/Enemies/Animations/ABP_EnemyDrongo</code>。沿用 <code class="notranslate">AEnemyBase</code>，地图和波次继续引用原有敌人类。</p>
+<p dir="auto">保留<code class="notranslate">LogMothEffect</code>中Enemy event/phase/health/shots/spawned/paths/stalls/time及P01 HitId记录。原生覆盖、首轮失败和导航构建边界见<a href="#doc-t14-report">T14报告</a>。本清单通过后才补齐#16当前PIE验收；完整TC21、正式场地、独立包与G3仍按后续证据验证。</p></section><section class="document" id="doc-drongo-enemy" data-source-sha256="cbdbacbae11ecc9c9eaaf4ea1d339f8c2385ebdba957245a09db00415bdc6cb3"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Drongo_Enemy_Setup.md">05_Development_Guide/Drongo_Enemy_Setup.md</a></div><h1 id="doc-drongo-enemy-moth-effectdrongo-敌人接入">Moth Effect：Drongo 敌人接入</h1>
+<p dir="auto">版本 v0.2 · 2026-10-17 · 状态：三类模型已写回；保存实例重载、实际动画与对应掉落通过</p>
+<p dir="auto">三类敌人使用本地 Paragon Drongo 包的不同完整角色 Mesh，外观固定对应各自掉落。沿用 <code class="notranslate">AEnemyBase</code> 和现有敌人类，地图放置实例与波次生成共用同一配置。</p>
+<h2 id="doc-drongo-enemy-当前模型与掉落对应">当前模型与掉落对应</h2>
+<p dir="auto">以下 Mesh 路径均以 <code class="notranslate">/Game/ParagonDrongo/Characters/Heroes/Drongo/</code> 为前缀：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>敌人蓝图</th>
+<th>角色外观</th>
+<th>Skeletal Mesh</th>
+<th>固定掉落蓝图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/Enemies/BP_EnemyLauncher</code></td>
+<td>Scavenger（拾荒者）</td>
+<td><code class="notranslate">Skins/Scavenger/Meshes/Drongo_Scavenger</code></td>
+<td><code class="notranslate">/Game/MothEffect/Devices/Drops/BP_DropLauncher</code>（D01）</td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/Enemies/BP_EnemyBomb</code></td>
+<td>Drongo 原版</td>
+<td><code class="notranslate">Meshes/Drongo_GDC</code></td>
+<td><code class="notranslate">/Game/MothEffect/Devices/Drops/BP_DropBomb</code>（D02）</td>
+</tr>
+<tr>
+<td><code class="notranslate">/Game/MothEffect/Enemies/BP_EnemyEmitter</code></td>
+<td>Alien Invader（外星入侵者）</td>
+<td><code class="notranslate">Skins/AlienInvader/Meshes/Drongo_AlienInvader</code></td>
+<td><code class="notranslate">/Game/MothEffect/Devices/Drops/BP_DropEmitter</code>（D03）</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"><code class="notranslate">BP_EnemyBase</code> 保留原版 <code class="notranslate">Drongo_GDC</code>；三种子类的 <code class="notranslate">DropKind</code> 与 <code class="notranslate">DropDeviceClass</code> 仍决定对应的一次死亡掉落。青蓝 D01、橙 D02、紫 D03 背包继续提示掉落类型。模型选择为蓝图默认配置，不在运行时随机换装。</p>
+<p dir="auto">三个角色 Mesh 共用 <code class="notranslate">/Game/ParagonDrongo/Characters/Heroes/Drongo/Meshes/Drongo_Skeleton</code>，沿用 <code class="notranslate">/Game/MothEffect/Enemies/Animations/ABP_EnemyDrongo</code>、原开火 Montage 和死亡动画。每个模型使用自身 Skeletal Mesh 上配置的原配材质；切换 Mesh 时清空角色组件的材质覆写，避免原版材质槽覆盖 Scavenger 的面罩、布料或 Alien Invader 的玻璃与附件。供应商原包保持原路径，按既有 Git 忽略规则另行恢复。</p>
+<p dir="auto">在内容浏览器打开对应 <code class="notranslate">BP_EnemyLauncher</code>、<code class="notranslate">BP_EnemyBomb</code> 或 <code class="notranslate">BP_EnemyEmitter</code>，选中 Character 的 <code class="notranslate">Mesh</code> 组件，查看或调整 <strong>Skeletal Mesh Asset</strong>。<code class="notranslate">BodyMesh</code> 是已隐藏的灰盒组件，<code class="notranslate">BackpackMesh</code> 是掉落提示；角色外观应在 <code class="notranslate">Mesh</code> 上编辑。更换后检查 Materials 无旧模型覆写，Animation Mode 保持 Animation Blueprint、Anim Class 保持 <code class="notranslate">ABP_EnemyDrongo</code>。固定掉落仍在 Class Defaults 的 <code class="notranslate">DropKind</code>／<code class="notranslate">DropDeviceClass</code> 查看；共享 AI、角色语音和动画事件沿用现有配置。语音编辑入口见<a href="#doc-character-audio">角色与界面音效接入</a>。</p>
 <h2 id="doc-drongo-enemy-模型与动画">模型与动画</h2>
-<p dir="auto">Mesh 相对位置 <code class="notranslate">(0,0,-90)</code> cm、Yaw <code class="notranslate">-90°</code>、缩放 1；隐藏并清空灰盒 <code class="notranslate">BodyMesh</code>。Capsule 保留半径 35 / 半高 90 cm；模型无碰撞，不参与导航。青蓝 D01、橙 D02、紫 D03 背包与固定掉落保持，头顶类型标记移至角色中心上方 145 cm。</p>
+<p dir="auto">Mesh 相对位置 <code class="notranslate">(0,0,-90)</code> cm、Yaw <code class="notranslate">-90°</code>、缩放 1；隐藏并清空灰盒 <code class="notranslate">BodyMesh</code>。Capsule 保留半径 35 / 半高 90 cm；模型无碰撞，不参与导航。当前头顶敌人 UI 使用屏幕空间 <code class="notranslate">EnemyHealthWidget</code>，旧类型文字组件继续保留以兼容既有蓝图引用。</p>
 <p dir="auto"><code class="notranslate">ABP_EnemyDrongo</code> 复制自官方 <code class="notranslate">Drongo_AnimBlueprint</code>，保留 AnimGraph、待机/移动/跳跃、UpperBody Slot 和原 <code class="notranslate">AnimBP_Drongo_Rigging</code>。移除 18 个演示玩家 Cast、攻击/连击委托和出生摆姿节点，以及未使用的演示角色变量。速度、方向、腾空仍读取实际 Pawn/Character；原 <code class="notranslate">IsAccelerating</code> 转换条件改为实际 Speed &gt; 3 cm/s，兼容 AI 导航没有玩家输入加速度的情况；转身速率计算对 DeltaTime 使用最小 0.0001 秒，避免编辑器初始化时除零。使用 Drongo 原骨架，无跨骨架重定向。</p>
 <p dir="auto">父蓝图 BeginPlay 只绑定一次表现回调：</p>
 <ul dir="auto">
 <li><code class="notranslate">OnTelegraphChanged</code> 发生且 CombatPhase 为 Cooldown 时，播放原 <code class="notranslate">Primary_Fire_Montage</code> 的 UpperBody 动画。这表示完成完整预警后的射击尝试；弹丸容量或枪口阻挡仍可能拒绝实际生成。</li>
 <li><code class="notranslate">OnEnemyDied</code> 播放一次原 <code class="notranslate">Animations/Death</code>，隐藏调试死亡文字，将该尸体寿命设为动画时长 1.5 秒 + 0.15 秒。敌人死亡计数、碰撞关闭和固定掉落仍在原 C++ 流程结算，不等待动画。</li>
 </ul>
-<p dir="auto">表现蓝图不产生弹丸、伤害或掉落。弹丸继续使用原视点及前偏移的净空检测起点；本次没有改成武器 Socket 发射，也没有接入 Niagara 枪口特效。</p>
-<h2 id="doc-drongo-enemy-验证与恢复">验证与恢复</h2>
+<p dir="auto">表现蓝图不产生弹丸、伤害或掉落。弹丸继续使用原视点及前偏移的净空检测起点。后续接入的 Niagara 与角色语音沿用当前配置，见 <a href="#doc-niagara">Niagara 配置</a>和<a href="#doc-character-audio">音频配置</a>。</p>
+<h2 id="doc-drongo-enemy-2026-10-17-变体配置与验证">2026-10-17 变体配置与验证</h2>
+<p dir="auto">本轮使用 <a href="../../scripts/stage_drongo_variants.py">stage_drongo_variants.py</a> 建立隔离副本及备份，通过 <a href="../../scripts/configure_drongo_variants.py">configure_drongo_variants.py</a> 配置并保存三类敌人蓝图。写回前核对原工程与隔离副本文件 SHA，限定修改对应敌人包；恢复时使用本轮 <code class="notranslate">Saved/Automation/DrongoVariants/Backup</code>，不要用下方 2026-10-16 的旧包覆盖当前语音等后续配置。</p>
+<p dir="auto">三个子类保存并在新进程编译通过；真实 <code class="notranslate">L_T15Drops</code> 保存实例两次重载后，分别使用对应模型、原配材质、共同骨架与现有动画类，Drongo 语音组件白名单保持。三种实际 CharacterMovement 均驱动腿部动画及 Speed，完成完整预警后 UpperBody 开火动画推进且产生 P01；60 点真实伤害后原死亡动画播完、尸体清理，各留下一件类型正确的 Dormant 道具，重复致死命中不增加掉落。测试未写 ABP Speed、未强播动画、未延长尸体寿命。</p>
+<p dir="auto">另在新进程仅读取正式 <code class="notranslate">L_Arena_SoulCity</code>，确认保存的 <code class="notranslate">BP_WaveDirector</code> 实例与类默认 <code class="notranslate">EnemyClasses</code> 都按 Launcher／Bomb／Emitter 顺序引用当前三类；逐项验证它们的模型、原配材质、掉落类、动画与语音。前后 139 件文件 SHA 一致，报告见 <a href="../06_Test_Doc/Evidence/DrongoVariants/WaveClasses.json">WaveClasses</a>。</p>
+<p dir="auto">仅三个敌人包写回；其余 136 件项目／配置文件及 1,913 件 Drongo 供应商文件 SHA 保持。无需 C++ 重编译；如果编辑器此前已加载旧敌人蓝图，请重开工程读取新包。备份位于 <code class="notranslate">Saved/Automation/DrongoVariants/Backup</code>。结果、失败夹具记录与边界见 <a href="../06_Test_Doc/Evidence/DrongoVariants/README.md">DrongoVariants 验证记录</a>。当前检查不代替手动三波整局、导航追击手感、性能或独立包验收。</p>
+<p dir="auto">复验时设置环境变量 <code class="notranslate">MOTH_DRONGO_VARIANTS=1</code> 与 <code class="notranslate">MOTH_DRONGO_VERIFY_PIE=1</code>，在此隔离项目以 <code class="notranslate">-ExecutePythonScript=&lt;repo&gt;/scripts/verify_drongo_enemies.py</code> 运行真实动画与掉落检查；截图使用 <code class="notranslate">capture_drongo_enemies.py</code>，正式场地图配置使用 <code class="notranslate">verify_drongo_variant_wave_classes.py</code>。这些脚本不保存被检查资产。不要在原工程直接执行配置脚本，脚本也会检查精确隔离目录。</p>
+<p dir="auto">下图从左到右为 D01／D02／D03，是使用实际保存蓝图生成的无保存编辑器预览，已检查三种外观和材质；不是战斗截图。</p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="../06_Test_Doc/Evidence/DrongoVariants/DrongoEnemies.png"><img src="../06_Test_Doc/Evidence/DrongoVariants/DrongoEnemies.png" alt="D01 Scavenger、D02 Drongo 原版、D03 Alien Invader" style="max-width: 100%;"></a></p>
+<h2 id="doc-drongo-enemy-2026-10-16-首次接入记录历史">2026-10-16 首次接入记录（历史）</h2>
+<p dir="auto">当时 <code class="notranslate">BP_EnemyBase</code>、<code class="notranslate">BP_EnemyLauncher</code>、<code class="notranslate">BP_EnemyBomb</code>、<code class="notranslate">BP_EnemyEmitter</code> 统一使用原版 <code class="notranslate">Drongo_GDC</code>。以下验证与截图针对该同模型版本，保留其原始验收范围。</p>
 <p dir="auto">生成脚本：<a href="../../scripts/replace_enemies_with_drongo.py">replace_enemies_with_drongo.py</a>。仅在独立 stage 编辑、编译及保存上述五件包，不保存供应商资产、地图或用户 UI。写回前检查原文件 SHA，旧四件敌人蓝图备份保留在 <code class="notranslate">Saved/Automation/Drongo/Backup/Content/MothEffect/Enemies</code>。</p>
 <p dir="auto">隔离生成、验证与截图进程退出码均为 0，五件蓝图均为 UpToDate。两次重载真实 <code class="notranslate">L_T15Drops</code> 的三个保存实例，模型、动画类与固定掉落配置一致。实际 ticking PIE 中，三个敌人分别通过：真实 CharacterMovement 位移约 245 cm、Speed 与实际速度同步且腿/脚骨骼变化；完整预警后 UpperBody Montage 推进并实际生成一发 P01；60 伤害死亡后原 Death 动画播放至末帧、约 1.65 秒清理尸体；三类固定 Dormant 掉落各一件，重复致死命中不再生成掉落。测试不写 Speed、不强播动画、不延长测试实例寿命。</p>
 <p dir="auto">D3D12 无保存临时场景预览已人工查看，三类 Drongo 直立、材质和类型标记可见；这张图是编辑器动画预览，不是实际战斗截图。验证期间 123 个 stage 文件不变，写回仅五件包，118 个其他保护文件和 1,913 个 Drongo 原包文件 SHA 一致。初次旋转断言失败与除零修正前结果保留在本地日志；最终敌人 ABP 的零 DeltaTime 警告已修复，现有玩家/原包旧输入与 Rig 等警告仍保留。</p>
 <p dir="auto">汇总证据：<a href="../06_Test_Doc/Evidence/Drongo/Drongo_2026-10-16.json">Drongo_2026-10-16.json</a>；详细日志在 <code class="notranslate">Saved/Automation/Drongo</code>。手动战斗、导航追击、跳跃分支观感、三波整局、性能及 Windows 包仍需验收，未把本次受控动画检查扩展为这些项目已通过。</p>
-<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png"><img src="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png" alt="三类 Drongo 外观预览" style="max-width: 100%;"></a></p>
-<p dir="auto">写回时原编辑器锁住敌人蓝图；用户保存并关闭编辑器后，五件包已原子替换并核对 SHA。重新打开项目即可读取，无需编译 C++。第三方 <code class="notranslate">/Game/ParagonDrongo</code> 目录沿用原包路径，按既有 Git 忽略规则另行恢复。</p></section><section class="document" id="doc-wave-flow" data-source-sha256="482d591fb22114a5099b42818d50bb5fc882718538435b69ac26519ce27271ec"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Wave_Flow_Setup.md">05_Development_Guide/Wave_Flow_Setup.md</a></div><h1 id="doc-wave-flow-moth-effect飞蛾效应三波胜负与重开接入">Moth Effect（飞蛾效应）：三波、胜负与重开接入</h1>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png"><img src="../06_Test_Doc/Evidence/Drongo/DrongoEnemies.png" alt="2026-10-16 历史预览：三类敌人统一使用原版 Drongo" style="max-width: 100%;"></a></p>
+<p dir="auto">当次写回时原编辑器锁住敌人蓝图；用户保存并关闭编辑器后，五件包已原子替换并核对 SHA。该次接入无需编译 C++。</p></section><section class="document" id="doc-wave-flow" data-source-sha256="482d591fb22114a5099b42818d50bb5fc882718538435b69ac26519ce27271ec"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Wave_Flow_Setup.md">05_Development_Guide/Wave_Flow_Setup.md</a></div><h1 id="doc-wave-flow-moth-effect飞蛾效应三波胜负与重开接入">Moth Effect（飞蛾效应）：三波、胜负与重开接入</h1>
 <p dir="auto">版本 v0.2 · 2026-10-12 · 状态：T16 原生/真实 Game 验证通过，当前图形 PIE 待验收</p>
 <p dir="auto">已创建<a href="https://github.com/YYchainsAw/MothEffect/pull/45" data-hovercard-type="pull_request" data-hovercard-url="/YYchainsAw/MothEffect/pull/45/hovercard">T16/T17 PR #45</a>，codex/t16-t17-wave-arena → main。用户要求保持待校验；当前图形PIE清单未记通过，<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="5728806006" data-permission-text="Title is private" data-url="https://github.com/YYchainsAw/MothEffect/issues/18" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/18/hovercard" href="https://github.com/YYchainsAw/MothEffect/issues/18">#18</a>/#19继续Open，未自动关闭。</p>
 <p dir="auto">对应 <a href="https://github.com/YYchainsAw/MothEffect/issues/18" data-hovercard-type="issue" data-hovercard-url="/YYchainsAw/MothEffect/issues/18/hovercard">T16 #18</a>。源码与资产已在本地 develop 提交；T14/T15 的图形验收保持待验收。完整证据见 <a href="#doc-t16-report">T16 报告</a>。</p>
@@ -5612,7 +5671,355 @@ Layered Blend per Bone → 原有 FootIK / Control Rig → Output Pose
 <li>特效按用户选择使用 Niagara Examples Pack，先接枪口/命中、小爆炸与机关启动的短效果；保留现有机关方向与过期提示。</li>
 <li>在 Soul City 场地测试八敌人同屏、动画的待机/追踪/开火、准星附近可读性、暂停/重开清理及 Windows 打包。</li>
 </ol>
-<p dir="auto">现已导入 Slate / Kenney 的 3,234 张贴图、Wraith 整包及用户后补的 Drongo / Niagara Examples Pack，并保留来源、许可与 SHA；没有购买付费资源或修改现有 HUD、敌人、玩家资产。Minions 暂缓；动画与特效的运行时接入仍待进行，见 <a href="#doc-asset-import">实际导入记录</a>。</p></section><section class="document" id="doc-crosshair" data-source-sha256="41a70a1c5f2b1a5770ac3ef89ffa5e97722b2b4f4a5a26619f9b021d4be973a2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
+<p dir="auto">现已导入 Slate / Kenney 的 3,234 张贴图、Wraith 整包及用户后补的 Drongo / Niagara Examples Pack，并保留来源、许可与 SHA；没有购买付费资源或修改现有 HUD、敌人、玩家资产。Minions 暂缓；动画与特效的运行时接入仍待进行，见 <a href="#doc-asset-import">实际导入记录</a>。</p></section><section class="document" id="doc-audio-shortlist" data-source-sha256="b19bfdbe1b3d5d05d1ede939913639b9a680aa36fdfcaf14a2af0067e0fb837a"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Audio_Shortlist_2026-10-17.md">05_Development_Guide/Audio_Shortlist_2026-10-17.md</a></div><h1 id="doc-audio-shortlist-moth-effect音效与英文角色语音选型">Moth Effect：音效与英文角色语音选型</h1>
+<p dir="auto">版本 v0.2 · 核对日期 2026-10-17（香港时间）· 状态：选型已完成，Murdock／Drongo 与 Kenney 界面声音已接入</p>
+<p dir="auto">后续实施：按用户选择，26 条本地原配角色录音和 4 条 Kenney 界面声音已接入并完成编译、41 项专项回归及实际音频播放检查，详见 <a href="#doc-character-audio">角色与界面音效接入</a>。下文保留最初选型的核对范围；其余候选未因本次接入而自动导入，主观听感仍待试听。</p>
+<p dir="auto">用户选择英文短句与战斗喊声，沿用免费优先、少量付费备选。适配当前 Murdock 玩家、Drongo 敌人、SoulCity 工业街区和金属/能量机关。以下“适合”是依据资源内容与游戏动作作出的选型建议；本轮没有实际试听或保存 UE 资产。</p>
+<h2 id="doc-audio-shortlist-1-推荐组合与覆盖范围">1. 推荐组合与覆盖范围</h2>
+<p dir="auto">角色先复用本地 Paragon 原配录音，脚步与环境先复用 SoulCity。新增下载集中在 UI、科幻枪声、装填、机械机关与爆炸；首轮可以使用免费组合。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>游戏声音</th>
+<th>推荐来源</th>
+<th>具体分配建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>按钮悬停、点击、确认、返回、不可用</td>
+<td>Kenney Interface Sounds</td>
+<td>短点击配金属面板，确认/失败用不同音型；先挑少量统一风格变体</td>
+</tr>
+<tr>
+<td>玩家步枪开火</td>
+<td>Lentikula Sci-Fi Weapon Shots</td>
+<td>从 5 条 Laser Rifle 中选主枪；保留短机械起音与能量尾音的辨识度</td>
+</tr>
+<tr>
+<td>敌人射击、D03 脉冲</td>
+<td>Lentikula + Kenney Sci-fi Sounds</td>
+<td>分别选择不同音高/音色的短射击样本，避免与玩家枪声混淆</td>
+</tr>
+<tr>
+<td>换弹、枪栓、空弹匣</td>
+<td>Gun reload sounds；Signature Sounds 备选</td>
+<td>步枪装填配现有动画；空扣/干火从备用包补齐</td>
+</tr>
+<tr>
+<td>金属碰撞、道具落地、投掷碰撞</td>
+<td>Kenney Impact Sounds + SoulCity 金属异响</td>
+<td>从碰撞库挑短金属声；实际材质、大小与遮挡听感待试听</td>
+</tr>
+<tr>
+<td>命中确认、击杀确认、拾取、操作失败</td>
+<td>Kenney Interface Sounds / Sci-fi Sounds</td>
+<td>使用短提示，与世界撞击声分开，不用长语音替代每次命中提示</td>
+</tr>
+<tr>
+<td>D01 柱子启动、伸出、回收</td>
+<td>rawAmbience Free Mechanical + Kenney 引擎声</td>
+<td>齿轮/机械纹理配能量起动；先试听确认有可剪成短动作的片段</td>
+</tr>
+<tr>
+<td>D02 爆炸</td>
+<td>Kenney Sci-fi Sounds</td>
+<td>作者明确列出爆炸；优先紧凑单次爆破，保留与枪声的低频差异</td>
+</tr>
+<tr>
+<td>D03 启动、持续射击、结束</td>
+<td>Kenney Sci-fi Sounds + Lentikula</td>
+<td>启动与每发脉冲分开选，结束提示保持简短</td>
+</tr>
+<tr>
+<td>玩家英文短句、受伤、死亡</td>
+<td>本地 Murdock VO</td>
+<td>优先原配角色声线；低血、击杀与少量交互短句按实际事件选取</td>
+</tr>
+<tr>
+<td>敌人英文喊话、受伤、死亡</td>
+<td>本地 Drongo VO</td>
+<td>近战斗距离少量喊话，受击/死亡使用 Effort 系列变体</td>
+</tr>
+<tr>
+<td>波次/胜败播报</td>
+<td>Kenney Voiceover Pack；Paragon Male Announcer 备选</td>
+<td>Kenney 已核实含任务成功/失败等通用短句；Announcer 具体句子领取后确认</td>
+</tr>
+<tr>
+<td>金属/泥土脚步、环境风声、电火花</td>
+<td>本地 SoulCity</td>
+<td>已有随机脚步 Cue 和环境循环，直接作为当前场景首选</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h2 id="doc-audio-shortlist-2-外部资源获取与试听">2. 外部资源：获取与试听</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>资源与作者页面</th>
+<th>已核实内容 / 格式</th>
+<th>费用与许可</th>
+<th>试听 / 本作优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://kenney.nl/assets/interface-sounds" rel="nofollow">Interface Sounds — Kenney</a></td>
+<td>100 个界面音效文件；按钮/点击类别</td>
+<td>免费，CC0</td>
+<td>官网播放器；<strong>UI 首选</strong></td>
+</tr>
+<tr>
+<td><a href="https://lentikula.itch.io/sci-fi-weapon-shots-sfx-freecc0" rel="nofollow">Sci-Fi Weapon Shots — Lentikula</a></td>
+<td>15 条：步枪/手枪/激光束各 5；48kHz、24-bit WAV；13MB；作者声明未使用生成式 AI</td>
+<td>自定价，可免费取得；CC0、免署名</td>
+<td><a href="https://www.youtube.com/watch?v=gsOjT-mJCBI" rel="nofollow">作者视频</a>；<strong>枪声首选</strong></td>
+</tr>
+<tr>
+<td><a href="https://kenney.nl/assets/sci-fi-sounds" rel="nofollow">Sci-fi Sounds — Kenney</a></td>
+<td>70 条独立 OGG；引擎、爆炸、激光；<a href="https://opengameart.org/content/sci-fi-sounds" rel="nofollow">作者发布页</a>明确内容与规格</td>
+<td>免费，CC0</td>
+<td>官网及作者发布页有试听；<strong>D02/D03 首选</strong></td>
+</tr>
+<tr>
+<td><a href="https://kenney.nl/assets/impact-sounds" rel="nofollow">Impact Sounds — Kenney</a></td>
+<td>130 个碰撞/拟音文件</td>
+<td>免费，CC0</td>
+<td>官网播放器；补碰撞、落地和道具触地</td>
+</tr>
+<tr>
+<td><a href="https://opengameart.org/content/gun-reload-sounds" rel="nofollow">Gun reload sounds — SpringySpringo</a></td>
+<td>airsoft 实录，3 条 WAV：手枪装填、步枪装填、霰弹枪上膛；约 637KB</td>
+<td>免费，CC0，署名可选</td>
+<td>作者页 3 段试听；<a href="https://opengameart.org/sites/default/files/assaultriflereload1pres_0.mp3" rel="nofollow">步枪试听</a>；<strong>装填首选</strong></td>
+</tr>
+<tr>
+<td><a href="https://rawambience.com/product/free-mechanical-sound-effects/" rel="nofollow">Free Mechanical Sound Effects — rawAmbience</a></td>
+<td>18 条齿轮/机械声；48kHz、24-bit 立体声 WAV；90MB</td>
+<td>免费，自有 royalty-free 许可；<a href="https://rawambience.com/terms-conditions/" rel="nofollow">条款</a>允许游戏用途并限制原样再分发；不是 CC0</td>
+<td>未确认本包专属试听；页面相关产品播放器不等于本包内容。D01 机械质感候选</td>
+</tr>
+<tr>
+<td><a href="https://kenney.nl/assets/voiceover-pack" rel="nofollow">Voiceover Pack — Kenney</a></td>
+<td>官网列 90 文件，英文男女声；<a href="https://opengameart.org/content/voiceover-pack-40-lines" rel="nofollow">作者台词表</a>确认含 Reloading、Mission completed、Mission failed 等；旧发布页列 92 OGG，不等同 90 条独立文本</td>
+<td>免费，CC0</td>
+<td>官网播放器；<strong>系统播报/通用换弹喊话首选</strong></td>
+</tr>
+<tr>
+<td><a href="https://www.fab.com/listings/09fefd2b-c019-4901-ae8a-b0d626caa18c?lang=en" rel="nofollow">Paragon: Male Announcer — Epic</a></td>
+<td>250+ 条播报录音，Unreal Engine 格式；具体胜败/波次短句尚未逐条核对</td>
+<td>免费，页面明确用于 UE 项目</td>
+<td>未确认网页试听，入库后在 UE 试听；与 Paragon 角色统一风格的备选</td>
+</tr>
+<tr>
+<td><a href="https://signaturesounds.org/store/p/bullet-gun-sound-effects-cc0-free-download-wav-sample-pack-" rel="nofollow">Bullet/Gun SFX CC0 — Signature Sounds</a></td>
+<td>WAV；枪栓、空扣/干火、弹匣插入、弹壳落地/滚动；不含枪响。数量及采样规格未公开</td>
+<td>£0，作者明确 CC0；商店领取</td>
+<td>未确认包专属试听；<strong>空膛与机械细节备用</strong></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Kenney 与 Lentikula 的 CC0 标注已核对；<a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="nofollow">CC0 官方说明</a>允许复制、修改、分发和商业使用。rawAmbience 与 Paragon 使用各自许可，不能统一记成 CC0。Epic <a href="https://www.unrealengine.com/paragon?lang=en-US" rel="nofollow">Paragon 官方介绍</a>明确系列包含角色对白和 SoundCue；<a href="https://forums.unrealengine.com/t/12-million-worth-of-paragon-assets-released-updated/108140" rel="nofollow">官方发布 FAQ</a>说明 UE 项目用途。当前 Fab Paragon 商品说明禁止使用 PARAGON 商标命名或宣传游戏，完整许可以领取时条款为准。</p>
+<p dir="auto">付费声线备用：<a href="https://gregdunn416.itch.io/pro-soldier-character-voice-pack" rel="nofollow">Soldier Character PRO Voice Pack — Greg Dunn</a> 当前 US$19.99，英文男声、1100+ 录音，包含四种表演力度；不是 1100 条独立文本。<a href="https://soundcloud.com/gregory-dunn-257274948/pro-soldier-character-voice-pack-sample" rel="nofollow">作者试听</a>。作者页的受伤/跳跃/喘气仍写计划添加，不能据此承诺已含战斗喊声；购买前核对所选许可。当前已有原配 VO，因此优先级低。</p>
+<h2 id="doc-audio-shortlist-3-本地可复用录音与具体位置">3. 本地可复用录音与具体位置</h2>
+<p dir="auto">对 <code class="notranslate">.uasset</code> 的类型、DialogueWave <code class="notranslate">SpokenText</code> 与 Cue 引用作静态核对，未启动 UE 或试听。三个 Paragon 包共 <strong>1085 个独立 SoundWave</strong>：Murdock 298、Drongo 425、Wraith 362；DialogueWave 与聚合 Cue 是引用关系，不能叠加计成更多独立录音。它们主要是 VO，名字含 Ability/LMB 也可能只是喊话，不能当作真实枪响。</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>角色/用途</th>
+<th>Unreal Content Browser 路径</th>
+<th>实际文本或内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Murdock 开战</td>
+<td><code class="notranslate">/Game/ParagonMurdock/Characters/Heroes/Murdock/Sounds/SoundCues/Murdock_Ability_LMB_Engage</code></td>
+<td>DialogueWave 中已确认 Target engaged!、Shots fired!；聚合 Cue 会选择变体</td>
+</tr>
+<tr>
+<td>Murdock 击杀</td>
+<td><code class="notranslate">/Game/ParagonMurdock/Characters/Heroes/Murdock/Sounds/SoundCues/Murdock_Kill_Enemy</code></td>
+<td>010 Dialogue 为 Tango down.</td>
+</tr>
+<tr>
+<td>Murdock 低血</td>
+<td><code class="notranslate">/Game/ParagonMurdock/Characters/Heroes/Murdock/Sounds/SoundCues/Murdock_Health_Low</code></td>
+<td>020 Dialogue 为 I'm hurting.</td>
+</tr>
+<tr>
+<td>Murdock 受伤/死亡</td>
+<td>上述 SoundCues 目录的 <code class="notranslate">Murdock_Effort_Pain</code>、<code class="notranslate">Murdock_Effort_PainHeavy</code>、<code class="notranslate">Murdock_Effort_Death</code></td>
+<td>现成痛呼/死亡聚合 Cue；Pain 静态引用 6 个 Dialogue</td>
+</tr>
+<tr>
+<td>Drongo 开战</td>
+<td><code class="notranslate">/Game/ParagonDrongo/Audio/Cues/Drongo_Ability_LMB_Engage</code></td>
+<td>010 Dialogue 为 I shoot, you die!</td>
+</tr>
+<tr>
+<td>Drongo 低血/投掷</td>
+<td><code class="notranslate">/Game/ParagonDrongo/Audio/Cues/Drongo_Health_Low</code>、同目录 <code class="notranslate">Drongo_Ability_RMB_Engage</code></td>
+<td>分别确认 Need healing!、Hoho, catch!；低血求治疗不一定适合本作无治疗场景</td>
+</tr>
+<tr>
+<td>Drongo 受伤/死亡</td>
+<td><code class="notranslate">/Game/ParagonDrongo/Audio/Cues/Drongo_Effort_Pain</code>、同目录 <code class="notranslate">Drongo_Effort_Death</code></td>
+<td>对应单条 Wav 位于 <code class="notranslate">/Game/ParagonDrongo/Audio/Wavs/</code>，例如 <code class="notranslate">Drongo_Effort_Pain_010</code>、<code class="notranslate">Drongo_Effort_Death_010</code></td>
+</tr>
+<tr>
+<td>Wraith 备用声线</td>
+<td><code class="notranslate">/Game/ParagonWraith/Audio/Cues/Wraith_Ability_LMB_Engage</code>、同目录 <code class="notranslate">Wraith_Kill_Enemy</code></td>
+<td>已确认 Engaging target.、Target down. 等；当前敌人统一为 Drongo，先保留备用</td>
+</tr>
+<tr>
+<td>金属/泥土脚步</td>
+<td><code class="notranslate">/Game/SoulCity/Sound/Cue/Footstep_Metal_Cue</code>、同目录 <code class="notranslate">Footstep_Dirt_Cue</code></td>
+<td>各随机引用 8 条脚步录音</td>
+</tr>
+<tr>
+<td>街区风声</td>
+<td><code class="notranslate">/Game/SoulCity/Sound/Cue/AmbientLooping/Slum_Outer_Cue</code></td>
+<td>静态引用 WindExterior01/02</td>
+</tr>
+<tr>
+<td>火花/工业底噪</td>
+<td><code class="notranslate">/Game/SoulCity/Sound/Wav/AmbientLooping/SparkLoop01</code>、同目录 <code class="notranslate">SteamVent03</code></td>
+<td>环境层候选；SparkLoop01 静态标记循环，约 2.87s</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Murdock 的逐句 Dialogue 位于 <code class="notranslate">/Game/ParagonMurdock/Characters/Heroes/Murdock/Sounds/DialogueWaves/</code>，Drongo 位于 <code class="notranslate">/Game/ParagonDrongo/Audio/DialogueWaves/</code>。要固定某一句，先核对该 Dialogue 对应录音；不要把聚合 Cue 里的所有变体都当成上述例句。首选先试听实际 Cue，筛掉英雄名、MOBA 专有词、治疗请求等与本作流程不符的台词。</p>
+<p dir="auto">SoulCity 共 49 个独立 SoundWave 与 7 个 Cue：16 条脚步、20 条环境循环、12 条金属异响、1 条音乐。数量和文件存在已核实，不代表每条都已用于当前关卡。</p>
+<h2 id="doc-audio-shortlist-4-后续接入位置与试听顺序">4. 后续接入位置与试听顺序</h2>
+<p dir="auto">现有反馈系统的 <code class="notranslate">DA_DefaultFeedback.Styles[*].Sound</code> 接受 SoundBase，已有 Shot、Impact、Hit、Damage、Launcher、Bomb、Emitter、EmitterShot、EnemyShot、Expiry、Spent、Failure、Pickup 槽；这是首批替换枪声、命中、机关与拾取音效的入口。按钮、装填、脚步、语音与系统播报还需各自接入，资源在磁盘存在不等于已经播放。现有八条项目自有音为合成短音，来源见 <a href="../../SourceArt/Feedback/AudioManifest.json">AudioManifest.json</a>。</p>
+<p dir="auto">建议先试听 UI、玩家枪声、D02 爆炸、Murdock/Drongo 受伤与死亡，再补换弹/脚步/环境和低频率短句。角色短句用于关键事件；痛呼做少量随机变体，避免每次伤害重复长句。按钮使用无空间化的界面声音，世界枪声/机关/脚步保留距离与位置层次。以上是接入建议，本轮没有修改音频代码、蓝图或声音资产。</p></section><section class="document" id="doc-character-audio" data-source-sha256="aa0597e4bbff6734148816e034b7f1f1319b8f25ed18cd5755fc973237719269"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Character_Audio_Setup.md">05_Development_Guide/Character_Audio_Setup.md</a></div><h1 id="doc-character-audio-murdockdrongo-角色语音与-kenney-界面音效接入">Murdock／Drongo 角色语音与 Kenney 界面音效接入</h1>
+<p dir="auto">版本 v0.1 · 2026-10-17。当前配置使用 <strong>26 条项目已有角色录音与 4 条新增界面音效</strong>。角色组件接收已发生的战斗事件，世界音频子系统管理播放、暂停和会话清理；无需在角色蓝图中另接播放节点。</p>
+<h2 id="doc-character-audio-1-已配置的声音与事件">1. 已配置的声音与事件</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>对象</th>
+<th align="right">录音数量</th>
+<th>触发事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Murdock 开战短句</td>
+<td align="right">2</td>
+<td>玩家步枪实际成功发射后；仅按下开火、空弹匣不触发</td>
+</tr>
+<tr>
+<td>Murdock 击杀短句</td>
+<td align="right">3</td>
+<td>反馈系统确认由该玩家造成的敌人死亡</td>
+</tr>
+<tr>
+<td>Murdock 痛呼／死亡</td>
+<td align="right">6／4</td>
+<td>实际扣血／致命伤害；致命伤害仅请求死亡录音</td>
+</tr>
+<tr>
+<td>Drongo 开战短句</td>
+<td align="right">1</td>
+<td>敌人真正进入攻击预警，预警可见时</td>
+</tr>
+<tr>
+<td>Drongo 痛呼／死亡</td>
+<td align="right">5／5</td>
+<td>实际扣血／致命伤害</td>
+</tr>
+<tr>
+<td>Kenney 悬停／点击／返回／错误</td>
+<td align="right">4</td>
+<td>HUD 按钮悬停、按下、返回按下；错误音通过 <code class="notranslate">PlayUI(Error)</code> 提供</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">Murdock 短句为 “Target engaged!”、“Shots fired!”、“Tango down.”、“Job well done.”、“And stay down!”；Drongo 为 “I shoot, you die!”。组件直接选择单条 SoundWave，未使用包含金币、治疗或其他英雄技能台词的聚合 Cue。同类有多个变体时避免连续选中同一条。</p>
+<p dir="auto">录音位置：</p>
+<ul dir="auto">
+<li>Murdock：<code class="notranslate">/Game/ParagonMurdock/Characters/Heroes/Murdock/Sounds/SoundWaves/</code>。</li>
+<li>Drongo：<code class="notranslate">/Game/ParagonDrongo/Audio/Wavs/</code>。</li>
+<li>界面：<code class="notranslate">/Game/MothEffect/Audio/UI/S_UI_Hover</code>、<code class="notranslate">S_UI_Click</code>、<code class="notranslate">S_UI_Back</code>、<code class="notranslate">S_UI_Error</code>。</li>
+</ul>
+<p dir="auto">HUD 会遍历自身 WidgetTree 中的按钮绑定音效，重复绑定会先移除旧委托。<code class="notranslate">CancelSettingsButton</code>、<code class="notranslate">CreditsBackButton</code>、<code class="notranslate">TitleButton</code> 使用返回音，其余按钮使用点击音。错误音已导入并可调用，尚未自动绑定所有操作失败分支。</p>
+<h2 id="doc-character-audio-2-播放规则与调节入口">2. 播放规则与调节入口</h2>
+<p dir="auto">玩家与敌人原生类都包含 <code class="notranslate">CharacterVoice</code> 组件，相关蓝图在继承组件的 <code class="notranslate">Voice</code> 分类调整音量、冷却与启用状态，在 <code class="notranslate">Voice|Sounds</code> 调整白名单。默认值如下：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>参数</th>
+<th align="right">默认值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>角色 <code class="notranslate">Volume</code></td>
+<td align="right">0.8</td>
+<td>角色录音音量</td>
+</tr>
+<tr>
+<td><code class="notranslate">PainIntervalSeconds</code></td>
+<td align="right">0.8 秒</td>
+<td>同角色痛呼间隔</td>
+</tr>
+<tr>
+<td><code class="notranslate">BarkIntervalSeconds</code></td>
+<td align="right">10 秒</td>
+<td>同角色开战与击杀短句共享间隔</td>
+</tr>
+<tr>
+<td>子系统 <code class="notranslate">UIVolume</code></td>
+<td align="right">0.55</td>
+<td>界面音量；悬停再乘 0.55</td>
+</tr>
+<tr>
+<td><code class="notranslate">MaxCharacterVoices</code></td>
+<td align="right">4</td>
+<td>世界内角色声音并发上限，满额停止最早的一条</td>
+</tr>
+<tr>
+<td><code class="notranslate">EnemyBarkInterval</code></td>
+<td align="right">3 秒</td>
+<td>所有敌人开战喊话共享间隔</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">同一角色新语音会停止其旧语音。玩家语音居中播放，仍属于游戏声音；敌人语音随位置播放，内半径 250 cm、衰减距离 2250 cm。UI 为 2D 声音，最多保留 4 条，悬停／其余事件分别按真实时间去抖 45／25 ms。</p>
+<p dir="auto">暂停时角色语音暂停，菜单仍可发声。普通语音需要角色存活且会话有效；死亡语音只请求一次，由世界持有，可在敌人尸体销毁后播完。终局允许当次有效死亡播放，重开、重置和切换世界会清理旧会话的游戏语音。关闭组件会阻止新请求；需要立即停止某角色时调用 <code class="notranslate">StopSpeaker</code>，其 <code class="notranslate">bIncludeDeath</code> 参数决定是否同时停止死亡音。</p>
+<p dir="auto"><code class="notranslate">Config/DefaultGame.ini</code> 可覆盖子系统配置；角色音量与冷却也支持 <code class="notranslate">MothCharacterVoiceComponent</code> 配置，蓝图已有覆盖值优先检查蓝图。示例：</p>
+<div class="highlight highlight-source-ini" dir="auto"><pre class="notranslate"><span class="pl-en">[/Script/MothEffect.MothAudioSubsystem]</span>
+<span class="pl-k">UIVolume</span>=0.55
+<span class="pl-k">MaxCharacterVoices</span>=4
+<span class="pl-k">EnemyBarkInterval</span>=3.0
+
+<span class="pl-en">[/Script/MothEffect.MothCharacterVoiceComponent]</span>
+<span class="pl-k">Volume</span>=0.8
+<span class="pl-k">PainIntervalSeconds</span>=0.8
+<span class="pl-k">BarkIntervalSeconds</span>=10.0</pre></div>
+<p dir="auto">实现入口：<a href="../../Source/MothEffect/Private/Feedback/MothCharacterVoiceComponent.cpp">角色组件</a>、<a href="../../Source/MothEffect/Private/Feedback/MothAudioSubsystem.cpp">音频子系统</a>、<a href="../../Source/MothEffect/Private/UI/MothHUDAudio.cpp">HUD 音效绑定</a>。</p>
+<h2 id="doc-character-audio-3-资产来源与-cook">3. 资产、来源与 Cook</h2>
+<p dir="auto">新增内容仅为 4 个 Kenney SoundWave 和 <code class="notranslate">/Game/MothEffect/Audio/PAL_CharacterVoices</code>。后者是运行时 PrimaryAssetLabel，显式引用 26 条既有录音并设置 <code class="notranslate">AlwaysCook</code>，不把整个 Paragon 声音目录加入白名单。<code class="notranslate">DefaultGame.ini</code> 对项目音频目录设置始终 Cook，并扫描该目录中的运行时标签，确保代码中的声音软路径有明确打包引用。更改角色白名单后应同步检查标签；配置脚本遇到现有标签与新名单不符会报错，不会静默覆盖。</p>
+<p dir="auto">Kenney 来自<a href="https://kenney.nl/assets/interface-sounds" rel="nofollow">官方 Interface Sounds 页面</a>，许可为 <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="nofollow">CC0 1.0</a>。本地保留原始压缩包、100 条 OGG、许可全文、4 条所选 WAV 和 SHA-256 清单，见 <a href="../../SourceArt/Audio/ThirdParty/KenneyInterface/README.md">资源说明</a> 与 <a href="../../SourceArt/Audio/ThirdParty/KenneyInterface/Manifest.json">Manifest.json</a>。所选声音为 <code class="notranslate">tick_004</code>、<code class="notranslate">click_001</code>、<code class="notranslate">back_001</code>、<code class="notranslate">error_004</code>，转换为单声道 48 kHz、16-bit PCM；未改变增益或裁剪，UE SoundWave 音量为 1、非循环、PCM、Force Inline。</p>
+<p dir="auto">Murdock／Drongo 录音继续使用项目已有 Paragon 资产及其原有许可。本次复用不改变其权利归属、许可范围或再分发条件，不将其标为 CC0。原资源选型背景见<a href="#doc-audio-shortlist">音效与英文角色语音选型</a>。</p>
+<h2 id="doc-character-audio-4-隔离导入与复验">4. 隔离导入与复验</h2>
+<p dir="auto">先编译本轮 Editor C++。使用 <code class="notranslate">Saved/Automation/CharacterAudio</code> 下的隔离项目，保留原工程 Content 的基线哈希；隔离项目需要启用 PythonScriptPlugin 与 EditorScriptingUtilities，并使用最新编译模块。不要对正在运行的编辑器替换模块。以下以本轮已准备的隔离目录为例，每条命令执行完退出后再运行下一条：</p>
+<div class="highlight highlight-source-powershell" dir="auto"><pre class="notranslate"><span class="pl-smi">$projectRoot</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>D:/YYchainsaw/Unreal-Projects/MothEffect<span class="pl-pds">'</span></span>
+<span class="pl-smi">$<span class="pl-c1">env:</span>MOTH_AUDIO_PROJECT</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$projectRoot</span>/Saved/Automation/CharacterAudio/Stage_20261017_01<span class="pl-pds">"</span></span>
+<span class="pl-smi">$ueCmd</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>D:/Program Files/Epic/UE_5.8/Engine/Binaries/Win64/UnrealEditor-Cmd.exe<span class="pl-pds">'</span></span>
+<span class="pl-smi">$stageProject</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$<span class="pl-c1">env:</span>MOTH_AUDIO_PROJECT</span>/MothEffect.uproject<span class="pl-pds">"</span></span>
+
+<span class="pl-k">&amp;</span> <span class="pl-smi">$ueCmd</span> <span class="pl-smi">$stageProject</span> <span class="pl-k">/</span>Engine<span class="pl-k">/</span>Maps<span class="pl-k">/</span>Entry <span class="pl-k">-</span>unattended <span class="pl-k">-</span>nop4 <span class="pl-s"><span class="pl-pds">"</span>-ExecutePythonScript=<span class="pl-smi">$projectRoot</span>/scripts/import_kenney_interface_audio.py<span class="pl-pds">"</span></span>
+<span class="pl-k">&amp;</span> <span class="pl-smi">$ueCmd</span> <span class="pl-smi">$stageProject</span> <span class="pl-k">/</span>Engine<span class="pl-k">/</span>Maps<span class="pl-k">/</span>Entry <span class="pl-k">-</span>unattended <span class="pl-k">-</span>nop4 <span class="pl-s"><span class="pl-pds">"</span>-ExecutePythonScript=<span class="pl-smi">$projectRoot</span>/scripts/configure_character_voice_cook.py<span class="pl-pds">"</span></span>
+<span class="pl-k">&amp;</span> <span class="pl-smi">$ueCmd</span> <span class="pl-smi">$stageProject</span> <span class="pl-k">/</span>Engine<span class="pl-k">/</span>Maps<span class="pl-k">/</span>Entry <span class="pl-k">-</span>unattended <span class="pl-k">-</span>nop4 <span class="pl-k">-</span>nosplash <span class="pl-k">-</span>windowed <span class="pl-k">-</span>ResX<span class="pl-k">=</span><span class="pl-c1">960</span> <span class="pl-k">-</span>ResY<span class="pl-k">=</span><span class="pl-c1">540</span> <span class="pl-s"><span class="pl-pds">"</span>-ExecutePythonScript=<span class="pl-smi">$projectRoot</span>/scripts/verify_character_ui_audio.py<span class="pl-pds">"</span></span></pre></div>
+<p dir="auto">导入脚本检查清单、文件哈希、格式、目标路径与已有包，保存时仅创建允许的新资产；现有冲突会报错。Cook 配置脚本读取原生角色白名单，校验 26 条有效录音，再创建或核验显式标签。两者报告在隔离项目的 <code class="notranslate">Saved/Automation/CharacterAudio/Import.json</code> 与 <code class="notranslate">VoiceCook.json</code>。</p>
+<p dir="auto">运行时复验使用未保存地图、真实 GameMode／Controller／HUD、原生开火入口、伤害、预警、死亡、暂停及重置事件，并检查实际 AudioComponent 状态；不要添加 <code class="notranslate">-nosound</code> 或 <code class="notranslate">-NullRHI</code>。它导出所选录音检查非零 PCM，比较前后 Content 哈希，不保存现有地图或蓝图。报告写入原仓库 <code class="notranslate">Saved/Automation/CharacterAudio/Verification.json</code>。</p>
+<p dir="auto">验证证据统一见 <a href="../06_Test_Doc/Evidence/CharacterAudio">Evidence/CharacterAudio</a>。原工程常规 Editor 构建通过；最终 41 项音频、生命周期、波次和反馈自动化为 34 成功、7 带警告成功、0 失败。警告涉及原有 Paragon／Designer 资源及原生测试夹具未配置输入资产。实际 D3D12／音频 PIE 验证 19 个动作记录，覆盖四条 UI 声音、成功开火、冷却、受伤、敌人攻击预警、死亡、暂停恢复与生命周期重置；角色死亡音在尸体销毁后仍播放，结算后玩家死亡音未被吞掉。30 条录音均可导出非零 PCM，前后 138 件受保护项目文件 SHA 一致。最初一项原生死亡代次失败及四次 Python API／夹具失败均保留，修正后复验通过；汇总见 <a href="../06_Test_Doc/Evidence/CharacterAudio/README.md">验证记录</a>。</p>
+<p dir="auto">本轮覆盖角色语音与 HUD 界面音。步枪／敌人枪响、机关、脚步、换弹、环境与播报仍沿用现有配置或选型计划；开战喊话并非枪响。复验不替代主观试听、完整战斗混音、性能测量及打包版本验收。</p></section><section class="document" id="doc-crosshair" data-source-sha256="41a70a1c5f2b1a5770ac3ef89ffa5e97722b2b4f4a5a26619f9b021d4be973a2"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Crosshair_Setup.md">05_Development_Guide/Crosshair_Setup.md</a></div><h1 id="doc-crosshair-moth-effect自定义准星敌人命中与击杀反馈接入">Moth Effect：自定义准星、敌人命中与击杀反馈接入</h1>
 <p dir="auto">版本 v0.2 · 2026-10-16 · 状态：用户准星已制作并保留在当前 Slate HUD；以下为原始接入说明</p>
 <p dir="auto">2026-10-16 当前界面已改用 <a href="#doc-slate-ui">Slate_UI_Setup</a>。用户的 <code class="notranslate">WBP_MothCrosshair</code> 包保持 SHA 一致，HUD 内 15 个事件节点及引脚/连接保持；真实敌人死亡专项确认用户击杀反馈被触发，暂停、继续与返回标题复位已验证。准星仍只作为 HUD 的一个嵌入子控件，未重复 Add to Viewport。原生文字准星、命中 X 和旧 <code class="notranslate">NativePaint</code> 绘制已移除，下文关于关闭原生绘制开关与保留旧必需 <code class="notranslate">CrosshairText</code> 的步骤是历史记录，不适用于当前树。原工程构建已通过，无需按本页历史状态重新制作现有蓝图；手动射击手感与完整整局仍待验收。</p>
 <p dir="auto">以下各节记录 2026-10-14 接口交付时的分工、表现建议及未运行状态，不覆盖上面的当前验证结果。</p>
@@ -6568,8 +6975,11 @@ Event On Crosshair Page Changed(Page)
 <h2 id="doc-workflow-5-issueproject-与-docs-同步">5. Issue、Project 与 Docs 同步</h2>
 <p dir="auto">GitHub 的当前用法见 <a href="#doc-github">GitHub 开发流程</a>。排期与任务编号仍在 <a href="#doc-plan">开发计划</a> 维护，Issue 承载实施/缺陷/验收记录，Project Status 承载日常工作状态；测试结果记录在测试计划及实际证据中。</p>
 <p dir="auto">同步时先核对 Issue 开关状态、Project Status、勾选项和对应证据，分别记录。关闭 Issue 或合并 PR 不能补出不存在的环境、构建或测试结果；完整案例仍缺分支时保留其未完成状态。文档快照注明核对日期，后续改动同步当前值。</p>
-<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="6b9b64c92787ba66b8b12954c9ffab1570cf08c334e480c68e3d39819d168432"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
-<p dir="auto">版本 v0.65 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">PR 用 Refs 关联原 Issue，写清更新了哪些权威文档、实际检查和待验收项。静态检查通过后合并；涉及游戏验收的任务仍按实际 UE 结果推进 Pending Acceptance → Done。同步 Docs 时更新变更日志及 HTML 阅读快照，不重复创建既有任务。</p></section><section class="document" id="doc-changelog" data-source-sha256="f315a444898e32644beb89cad87a5cbef0d78e51805b4f622a5ec16bf901cd5b"><div class="source">可编辑源文件：<a href="../05_Development_Guide/Changelog.md">05_Development_Guide/Changelog.md</a></div><span id="doc-changelog-moth-effect"></span><h1 id="doc-changelog-moth-effect飞蛾效应变更日志">Moth Effect（飞蛾效应）：变更日志</h1>
+<p dir="auto">版本 v0.68 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发</p>
+<p dir="auto">CHG072（2026-10-17）：按用户要求以 Drongo 不同 Mesh 区分固定掉落：Launcher／D01 使用 Scavenger，Bomb／D02 使用原版 Drongo_GDC，Emitter／D03 使用 AlienInvader。三个子类清除旧材质覆写，使用模型自身原配材质与同一 Drongo 骨架、ABP、开火／死亡动画和现有语音；固定掉落、AI、碰撞和波次规则沿用。隔离保存及重载、三类真实移动／完整预警开火／死亡动画／各一件对应 Dormant 掉落通过，D3D12 外观预览已检查；验证脚本重入与测试位置重复占用的问题修正并留档。仅三个敌人蓝图写回，其他 136 件项目／配置文件与 1,913 件 Drongo 原包文件 SHA 保持；无 C++ 改动，无需重新编译。对应关系与证据见 <a href="#doc-drongo-enemy">Drongo 接入</a>；手动整局、性能和独立包未记为通过，未提交或推送。</p>
+<p dir="auto">CHG071（2026-10-17）：按用户选择接入本地 Murdock／Drongo 原配录音和 Kenney Interface Sounds。角色白名单为 15／11 条独立录音，接成功开火、确认击杀、真实扣血、敌人攻击预警和单次死亡；新增四个 UI SoundWave、显式 26 条 VO Cook 标签及按钮绑定。世界音频管理并发、冷却、暂停与旧会话清理，死亡声音可超过敌人尸体寿命；修正终局重复代次失效和受击回调重置后的旧声音问题。原工程常规 Editor 构建通过，41 项音频／生命周期／波次／反馈回归为 34 成功、7 带现有资源或测试夹具警告成功、0 失败；实际 D3D12 音频运行验证按钮、开火、受伤、预警、死亡、暂停恢复及重置，30 个源 WAV 均有非零 PCM。失败测试与脚本 API／夹具修正保留证据，未将主观听感、整局混音或独立包记为通过。配置及证据见 <a href="#doc-character-audio">角色与界面音效接入</a>；未提交或推送。</p>
+<p dir="auto">CHG070（2026-10-17）：按用户英文短句与战斗喊声偏好完成音效选型，核对 Paragon 角色 1085 个独立 SoundWave、SoulCity 49 个 SoundWave 与 7 个 Cue，提取实际 Dialogue 文本和可复用 Cue。外部候选覆盖按钮、科幻枪声、换弹/空膛、碰撞、爆炸、机械与播报，记录作者页、当前费用、许可与试听入口；本地原配 VO 优先。新增 <a href="#doc-audio-shortlist">音效清单</a>，同步入口和阅读版。本轮仅静态盘点与网页核对，未试听、导入或接线，未修改声音资产或玩法代码。</p>
 <p dir="auto">CHG069（2026-10-17）：按用户要求为三类道具增加 BeginPlay 起的游戏时间出生保护，期间拒绝弹道/爆炸激活，拾取与显式推力可用，放下/投掷不重置；D03 触发时按三维距离选择范围内最近有效存活 AEnemyBase，锁定指向 Actor 中心的三维方向，无目标沿用入射 XY/竖直 +X 后备。保留统一效果延迟、首发延迟和原工作期。参数账本 v0.22 新增 device.spawnActivationProtectionSeconds 与 emitter.targetRangeCm，DEC45/46、交互规则、技术设计与 TC43–TC45 同步；旧报告和已通过证据保留对应历史范围。本轮隔离 UE 5.8 Editor 完整构建与 142 项 Editor Automation 全部通过（139 无警告、3 项带 Paragon/Designer 警告），5 项新增专项全部通过；证据见基础重构接入末节。当前打开的原工程仍加载旧 DLL，需要关闭编辑器后完整编译并重开；硬件 PIE 与手感待验收，未提交或推送。</p>
 <p dir="auto">CHG068（2026-10-16）：接入用户选定 Niagara Examples Pack，八件项目系统副本通过原反馈 Cue 接实际枪口、碰撞、D01/D02/D03 与成功拾取；保留音效和用户准星/UI。反馈 Profile 新增系统、颜色参数、内部缩放、法线、方向及独立最大寿命；新旧效果共用预算，暂停冻结，结算/重试/World 结束销毁持有组件。原工程 Editor 构建与 19 项反馈/Niagara 专项成功，实际 D3D12 八类模拟、暂停同实例冻结/恢复及真实死亡清理通过，九件资产 SHA 写回，123 件其他项目文件与 669 件原包保持。保存配置及脚本接口首轮失败保留；旧命中测试夹具补本地标记和 PlayerState，未改伤害归属规则。配置、截图与边界见 <a href="#doc-niagara">Niagara_Setup</a>；手动整局、性能与独立包待验收，未提交或推送。</p>
 <p dir="auto">CHG067（2026-10-16）：按用户要求移除旧 AI 原生布局与绘制，用 Colorosse Slate / Kenney 制作保存的 Designer HUD、菜单及敌人生命条。玩家生命放左下，补齐弹药/换弹、波次、交互和操作指南；敌人生命观察真实 HealthComponent，结合距离、屏幕和遮挡显示，死亡解除绑定。旧 54 个生成控件替换，用户准星子控件保留，准星包 SHA 和 HUD 15 个事件节点/引脚/连线一致；四件 Drongo 敌人蓝图指向新生命条类，玩法 AI 与掉落延续前轮。原工程常规 Editor 构建通过，两件 UI 蓝图零编译错误/警告，三项 UI Editor 专项为 2 成功/1 带警告成功；实际 PIE 伤害、菜单旅行、暂停/恢复、击杀反馈、返回标题复位及五张 D3D12 画面验证通过，首轮构建/脚本夹具失败另名保留。编辑与证据见 <a href="#doc-slate-ui">Slate_UI_Setup</a>。未将手动输入、三波整局、性能或独立包记为通过；第三方和 DesignerProbe 已有警告保留，未提交或推送。</p>

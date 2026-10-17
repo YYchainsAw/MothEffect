@@ -1,6 +1,14 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.61 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.65 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-17 敌人外观对应掉落：D01 升柱使用 Drongo Scavenger，D02 炸弹使用 Drongo 原版，D03 发射器使用 Drongo Alien Invader；各用原配材质与共用动画。三个敌人蓝图已写回，保存实例重载及实际移动、开火、死亡、单次对应掉落通过。对应表、编辑入口和预览见 [Drongo 接入](05_Development_Guide/Drongo_Enemy_Setup.md)。
+
+2026-10-17 角色与按钮声音接入：Murdock 玩家与 Drongo 敌人复用 26 条原配录音，Kenney 提供悬停、点击、返回和错误四条短音效；实际开火、确认击杀、受伤、预警与死亡驱动语音，补齐冷却、暂停及结算清理。原工程 Editor 构建、41 项专项回归及实际 D3D12／音频运行检查通过；音量平衡与完整战斗混音待主观试听。配置和证据见 [角色与界面音效接入](05_Development_Guide/Character_Audio_Setup.md)。
+
+2026-10-17 夜景角色主菜单：`L_MainMenu` 重排为左侧 Murdock 展示角色、上方用户 Logo、右侧无框文字选项；城市夜空和远景保留完整可见。角色在待机与两个指定动作之间平滑循环，“开始游戏”衔接实际地图加载页面。编辑入口与验证见 [Night_Menu_Setup](05_Development_Guide/Night_Menu_Setup.md)。下方机械庭院开场记录保留历史范围。
+
+2026-10-17 音效选型：按英文短句与战斗喊声需求，盘点本地 Paragon 1085 条独立角色录音、SoulCity 脚步与环境音，并核对免费 UI、科幻开火、装填、机械与爆炸候选的作者页面、试听入口和许可。具体路径与动作覆盖见 [音效与英文语音清单](05_Development_Guide/Audio_Shortlist_2026-10-17.md)；当前为选型，听感与接入待验证。
 
 2026-10-17 首版游戏内流程：独立 `L_MainMenu` 城市机械庭院使用固定镜头和淡入，点击开始才进入 SoulCity，暂停／结算可返回独立入口或直接重开。菜单内无玩家、观战角色和敌人波次。设置、胜负统计与制作人员页面接入，独立教学入口改为开局基础提示；音量、鼠标灵敏度、画质与显示选择可保存，三波补充目标提示和机关击杀反馈。实现、操作与验证范围见 [Release_Flow_Setup](05_Development_Guide/Release_Flow_Setup.md)。
 
@@ -111,6 +119,8 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
 | 05_Development_Guide/ | [SoulCity_Arena_Setup.md](05_Development_Guide/SoulCity_Arena_Setup.md) | Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围 |
 | 05_Development_Guide/ | [Niagara_Setup.md](05_Development_Guide/Niagara_Setup.md) | Niagara 战斗特效与调节 |
+| 05_Development_Guide/ | [Audio_Shortlist_2026-10-17.md](05_Development_Guide/Audio_Shortlist_2026-10-17.md) | 按钮、枪声、装填、机关、英文角色语音与环境音选型及本地资产路径 |
+| 05_Development_Guide/ | [Character_Audio_Setup.md](05_Development_Guide/Character_Audio_Setup.md) | Murdock／Drongo 录音与 Kenney 按钮声音、调参和验证 |
 | 05_Development_Guide/ | [Slate_UI_Setup.md](05_Development_Guide/Slate_UI_Setup.md) | 当前 Slate / Kenney HUD、玩家与敌人生命条、菜单和用户准星保护；编辑入口及实际验证边界 |
 | 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 用户准星的命中/击杀事件与动画接口；原制作步骤保留历史，当前资产已制作并接入 Slate HUD |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |

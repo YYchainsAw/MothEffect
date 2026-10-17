@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="Health")
 	float GetMaxHealth() const { return MaxHealth; }
 
+	/** Accepted-hit snapshot, captured before native result observers can close/reset the session. */
+	uint64 GetLastHitLifecycleGeneration() const { return LastHitLifecycleGeneration; }
+
 	UFUNCTION(BlueprintPure, Category="Health")
 	bool IsAlive() const { return !bHasDied && CurrentHealth > 0.0f; }
 
@@ -52,6 +55,7 @@ protected:
 
 private:
 	TSet<FGuid> AcceptedHits;
+	uint64 LastHitLifecycleGeneration = 0;
 	bool bHasDied = false;
 	bool bEndingPlay = false;
 };

@@ -95,5 +95,6 @@ private:
 	bool bTravelRequested = false;
 	int32 AppliedUIPage = -1;
 	void InitializeGameplayUI();
+	void HandleLoadingFinished(bool bSucceeded);
 
 };

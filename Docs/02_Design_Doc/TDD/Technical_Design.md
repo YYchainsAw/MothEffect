@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.48 · 2026-10-14 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.49 · 2026-10-17 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-17 道具触发更新：`ADeviceBase` 从 BeginPlay 起使用世界游戏时间计算出生保护，`TryActivate` 在保护结束前拒绝弹道和爆炸请求；保护不影响拾取/推力，放下/投掷不重置起点。D03 接纳时以当前装置位置按三维距离选择范围内最近有效存活 `AEnemyBase`，一次锁定指向 Actor 中心的三维射向；无目标沿用入射 XY 投影。具体参数、规则和新增验收见 [重构接入](../../05_Development_Guide/Device_Refactor_Setup.md)；以下历史验证段落仍只代表当时版本。
 
 2026-10-14 贴图准星接口：`UHealthComponent` 在真实伤害与致死状态提交后，经 `UMothFeedbackSubsystem` 发出 `FMothEnemyHitFeedback`，快照包含命中 ID、目标 ID、实际伤害、剩余生命、致死标志和世界命中位置，不持有敌人引用。仅本地玩家归属的敌人伤害有效，原生死亡提交仍先于表现通知；回调返回复核生命周期世代，防止旧命中进入重置后的新会话。`UMothHUDWidget` 按拥有玩家筛选并向蓝图提供命中、重置、暂停和页面事件；单独关闭原生命中 X 时仍可保留受伤边框。表现由用户制作，详见 [自定义准星接入](../../05_Development_Guide/Crosshair_Setup.md)。本轮源码及九项专项测试已写入，按用户选择未编译、未运行 UE/Automation、未修改资产。
 
@@ -100,7 +102,8 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 |---|---|
 | `UBallisticReactive / IBallisticReactive`：`bool ReceiveBallisticHit(const FHitContext& Context)` | 角色转交 Health，机关转交 TryActivate；返回 true 只代表规则被接受 |
 | `UImpulseReceiver / IImpulseReceiver`：`void ReceiveImpulse(FVector Velocity, bool bOverrideZ, FGuid EventId)` | 当帧缓存，EventId 去重；帧末先合并爆炸增量、再用柱子目标替换 Z、最后统一限速 |
-| `ADeviceBase::bool TryActivate(const FHitContext& Context)` | 仅 Dormant 且容量许可可成功；先预占、保存首次上下文并提交 Active，再通知、按 ActivationDelaySeconds 延迟一次效果；弹丸与爆炸请求共用入口 |
+| `ADeviceBase::bool TryActivate(const FHitContext& Context)` | 仅出生保护结束、Dormant 且容量许可可成功；先预占、保存首次上下文及一次发射方向并提交 Active，再通知、按 ActivationDelaySeconds 延迟一次效果；弹丸与爆炸请求共用入口 |
+| `ADeviceBase::float SpawnActivationProtectionSeconds` / `float EmitterTargetRangeCm` | 可编辑非负出生保护时间和索敌半径；BeginPlay 游戏时刻只记录一次，暂停冻结，拾取/释放不重置；D03 接纳时按三维距离找最近存活 AEnemyBase 并锁定指向 Actor 中心的三维方向 |
 | `ADeviceBase::bool IsActivationPending() const` / `float ActivationDelaySeconds` | 等待期属于 Active，不增加枚举；可编辑非负延迟，World Timer 暂停冻结，Finish/Destroy/禁用取消；零延迟为明确的同步专项覆盖 |
 | `ADeviceBase::bool IsGrounded() const` / `bool WakeForExternalImpulse()` | Grounded 独立于生命周期；CanReceiveExternalImpulse 只允许 Dormant/Active D03，QueueImpulse 去重后先唤醒空中物理，再由帧末速度结算 |
 | `ADeviceBase::void RefreshDeviceSize()` | BlueprintCallable/CallInEditor；更新 BodyRadiusCm/ShotRadiusCm 与独立 VisualScale，Shot 有效半径不小于 Body；运行时改属性后调用刷新 |
@@ -222,15 +225,15 @@ G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生�
 
 T08 当前碰撞接入：`Config/DefaultEngine.ini` 新增 `JamProjectile` 对象通道（`ECC_GameTraceChannel1`，默认 Block），映射统一维护在 `MothCollisionChannels.h`。P01 QueryOnly 球忽略同类弹丸、Visibility、Camera，并通过 MoveIgnoreActors 忽略自己的生成者；装置物理根忽略 P01，由较大的 ShotCollider 阻挡 P01。Held/Spent/Destroyed 仍关闭两球。步枪继续使用既有 Visibility；完整 JamDevice/JamWeaponTrace/JamGroundTrace 矩阵后续任务逐步接入，不能只改一端通道。蓝图若覆盖响应，接入时应按当前矩阵核对。
 
-当前激活调度：TryActivate 接纳后立即 Active/预占容量、保存标量/向量证据与 Source/Instigator 弱引用；世界 Timer 延迟 `BeginActivationEffect`，到时再次复核状态/World-local许可，取当前有效弱引用并只开始一次效果。暂停冻结，FinishActivation/禁用/Destroy/EndPlay 清 Timer 与弱引用。D01 原点、D02 爆心在接纳时保存；D03 `EmitterStartedAt` 在延迟结束时设定。
+当前激活调度：BeginPlay 保存世界游戏时刻，TryActivate 在出生保护内先拒绝请求，不提交 Active 或预占激活容量，结束后需新的一次有效触发；游戏暂停冻结保护，拾取/放下/投掷不刷新。接纳后立即 Active/预占容量、保存标量/向量证据与 Source/Instigator 弱引用；世界 Timer 延迟 `BeginActivationEffect`，到时再次复核状态/World-local许可，取当前有效弱引用并只开始一次效果。暂停冻结，FinishActivation/禁用/Destroy/EndPlay 清 Timer 与弱引用。D01 原点、D02 爆心和 D03 射向在接纳时保存；D03 `EmitterStartedAt` 在延迟结束时设定。
 
-D03 从效果起动时间计算 `firstShotDelay + n * shotInterval`，只允许严格早于 `duration`；统一等待与既有首发延迟相加，默认首发距命中时间见参数账本调参记录，工作期仍最多 12 发。迟到当前帧最多一发，错过时刻不补发、不续期；出生静态 Sweep/端点重叠仍使用配置后的 P01 球半径。方向提示跟随位置、绝对世界水平旋转。结束清发射/到期 Timer，已飞 P01 独立寿命，T13/T16 WorldSubsystem 管统一容量与整局清理。
+D03 从效果起动时间计算 `firstShotDelay + n * shotInterval`，只允许严格早于 `duration`；统一等待与既有首发延迟相加，默认首发距有效接纳命中时间见参数账本调参记录，工作期仍最多 12 发。迟到当前帧最多一发，错过时刻不补发、不续期；出生静态 Sweep/端点重叠仍使用配置后的 P01 球半径。方向提示跟随位置、绝对世界旋转与锁定三维射向一致。结束清发射/到期 Timer，已飞 P01 独立寿命，T13/T16 WorldSubsystem 管统一容量与整局清理。
 
 角色保持 CharacterMovement，不给胶囊开启物理。`ReceiveImpulse` 对合法设备先 `WakeForExternalImpulse`，再缓存 EventId 去重事件；地面根不再用当前 IsSimulatingPhysics 作为唯一资格。帧末仍统一处理：当前速度加全部爆炸增量 → 柱子目标替换 Z → 统一限速；同帧多柱不叠加，回调次序不改变结果。角色只一次 LaunchCharacter，空中物理设备只一次 AddImpulse；Held/Spent/Active D01 种子不接收设备独立外力。
 
 - **D01**：从激活位置沿世界 -Z 做 `JamGroundTrace`，只允许 WorldStatic，并校验关卡可承托标签与向上法线阈值，忽略 Pawn、道具和生成柱子。再检查**整个最终柱体体积**的静态空间，底部承托接触不算障碍；遇天花板、墙体或无合格表面都消耗种子并反馈失效。成功后种子关物理/碰撞/可见，保留逻辑 Active 到柱子结束，共用一个计数名额。柱子固定在落点，拆成视觉、上升查询、实体 Collider 三个组件：伸出时实体碰撞关闭，按上升路径检测 Pawn/JamDevice，`AffectedActors` 按 Actor 去重，每个对象弹一次。完全伸出后，在停留阶段检查完整实体体积，无角色/可移动道具占据才开启 WorldDynamic 的支撑/阻挡；有占据则等待净空，不强行开启挤压对象。停留结束前未净空则本次不启用实体。收回或被容量策略提前结束时先关实体碰撞、停弹射，再缓降网格。支撑尚未就绪时用较淡外观提示；启用后变实色，避免玩家误判可站立时机。
 - **D02**：接纳时冻结世界爆心，统一延迟后按 Actor 去重收集角色与合法设备，根中心判半径，先快照代表点、静态遮挡及径向再执行可能重入的回调。角色伤害/合法推力使用本炸弹 ActivationHitId；Dormant 下游使用新 Guid、炸弹 SourceActor 与爆心到目标方向请求 TryActivate。Held/Active 不重启，死亡回调新增的掉落不自动加入本次查询快照；每次处理后复核世界/来源/目标状态。
-- **D03**：接纳时保存 `Context.ShotDirection.GetSafeNormal2D()`，Z=0；合法竖直方向回退固定世界 +X。定时器在统一延迟后使用当前装置位置与锁定水平方向生成 P01，机身旋转、地面固定、掉落、推力均不改射向。首发延迟、间隔和总工作时长来自参数账本；到期清 Timer、置 Spent。弹丸只避让生成者，出口静态受阻消耗该发，方向箭头读取同一水平向量。
+- **D03**：接纳时以装置当前位置为原点，遍历当前世界有效存活 AEnemyBase，按 Actor 中心的三维距离选择 `EmitterTargetRangeCm` 内最近者（包含边界），锁定目标中心减装置位置的三维单位向量，不附加视线筛选。不持续追踪或在目标移动/死亡后重选；无目标采用 `Context.ShotDirection.GetSafeNormal2D()`，合法竖直方向回退固定世界 +X。定时器在统一延迟后使用当前装置位置与锁定方向生成 P01，机身旋转、地面固定、掉落、推力均不改射向。首发延迟、间隔和总工作时长来自参数账本；到期清 Timer、置 Spent。弹丸只避让生成者，出口静态受阻消耗该发，方向箭头读取同一世界向量。
 
 ## 5. Collision 基线
 

@@ -116,6 +116,10 @@ namespace MothFeedbackRuntime
 				FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 				Emitter=W->SpawnActor<ADeviceBase>(Class,FVector(-2200,-1300,160),FRotator::ZeroRotator,Params);
 				if (!T->TestNotNull(TEXT("Saved D03 inherits native feedback"),Emitter.Get())) return true;
+				WaitWorld=W->GetTimeSeconds()+Emitter->SpawnActivationProtectionSeconds+.01; Stage=51; return false;
+			}
+			if (Stage==51)
+			{
 				Emitter->TryActivate(Hit(Emitter.Get(),FVector(1,0,.25))); Capture(TEXT("05_Emitter.png"));
 				WaitWorld=W->GetTimeSeconds()+Emitter->ActivationDelaySeconds+.12; Stage=6; return false;
 			}

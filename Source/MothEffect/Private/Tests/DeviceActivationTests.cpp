@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/WorldSettings.h"
 #include "Misc/AutomationTest.h"
+#include "UObject/UnrealType.h"
 #include <limits>
 
 namespace
@@ -83,6 +84,7 @@ bool FMothDeviceActivationTest::RunTest(const FString& Parameters)
 	const FHitContext FirstHit = MakeDeviceHit();
 	TestFalse(TEXT("No activation before BeginPlay"), Device->TryActivate(FirstHit));
 	Device->DispatchBeginPlay();
+	Fixture.World->TimeSeconds += Device->SpawnActivationProtectionSeconds;
 	TestTrue(TEXT("Dormant exposes device-side pickup eligibility"), Device->CanBePickedUp());
 	int32 ActiveTransitions = 0;
 	int32 SpentTransitions = 0;
@@ -150,6 +152,7 @@ bool FMothDeviceInvalidHitTest::RunTest(const FString& Parameters)
 		return false;
 	}
 	Device->DispatchBeginPlay();
+	Fixture.World->TimeSeconds += Device->SpawnActivationProtectionSeconds;
 	FHitContext InvalidHit = MakeDeviceHit();
 	InvalidHit.HitId.Invalidate();
 	TestFalse(TEXT("Invalid hit ID cannot activate"), Device->TryActivate(InvalidHit));
@@ -203,6 +206,7 @@ bool FMothDeviceCancelledActivationTest::RunTest(const FString& Parameters)
 		return false;
 	}
 	Device->DispatchBeginPlay();
+	Fixture.World->TimeSeconds += Device->SpawnActivationProtectionSeconds;
 	const FDelegateHandle StateObserver = Device->OnDeviceStateChangedNative.AddLambda(
 		[](ADeviceBase* ChangedDevice, EDeviceState OldState, EDeviceState NewState)
 		{
@@ -221,6 +225,44 @@ bool FMothDeviceCancelledActivationTest::RunTest(const FString& Parameters)
 	Device->SetGameplayEnabled(true);
 	TestFalse(TEXT("Callback cancellation cannot restore activation eligibility"), Device->TryActivate(Hit));
 	Device->OnDeviceStateChangedNative.Remove(StateObserver);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothDeviceSpawnProtectionTest,
+	"MothEffect.Devices.SpawnProtectionBoundary",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FMothDeviceSpawnProtectionTest::RunTest(const FString& Parameters)
+{
+	FDeviceTestWorld Fixture;
+	if (!TestNotNull(TEXT("Create isolated world"), Fixture.World)) return false;
+	auto* KindProperty = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
+	if (!TestNotNull(TEXT("Device kind property"), KindProperty)) return false;
+	for (EDeviceKind Kind : { EDeviceKind::Launcher, EDeviceKind::Bomb, EDeviceKind::Emitter })
+	{
+		// Each new drop gets its own protection window, even in an older world.
+		Fixture.World->TimeSeconds += 10.0f;
+		auto* Device = Fixture.World->SpawnActor<ADeviceBase>();
+		if (!TestNotNull(TEXT("Spawn device"), Device)) return false;
+		KindProperty->GetUnderlyingProperty()->SetIntPropertyValue(
+			KindProperty->ContainerPtrToValuePtr<void>(Device), static_cast<int64>(Kind));
+		Device->DispatchBeginPlay();
+		const double SpawnTime = Fixture.World->GetTimeSeconds();
+		const FHitContext Hit = MakeDeviceHit();
+		TestEqual(TEXT("New devices default to half a second of protection"), Device->SpawnActivationProtectionSeconds, 0.5f);
+		TestFalse(TEXT("Ballistic interface rejects a hit at birth"),
+			IBallisticReactive::Execute_ReceiveBallisticHit(Device, Hit));
+		TestTrue(TEXT("New device can still be picked up"), Device->CanBePickedUp());
+		Fixture.World->TimeSeconds = SpawnTime + 0.499;
+		TestFalse(TEXT("Direct and blast activation entry rejects a hit before 0.5 seconds"), Device->TryActivate(Hit));
+		TestTrue(TEXT("Early hits leave the device dormant"), Device->GetDeviceState() == EDeviceState::Dormant);
+		TestFalse(TEXT("Early hits do not record an activation ID"), Device->GetActivationHitId().IsValid());
+		TestFalse(TEXT("Early hits do not queue a delayed activation"), Device->IsActivationPending());
+		Fixture.World->TimeSeconds = SpawnTime + 0.5;
+		TestTrue(TEXT("The same unconsumed hit activates at exactly 0.5 seconds"), Device->TryActivate(Hit));
+		TestTrue(TEXT("The normal effect delay still applies after protection"), Device->IsActivationPending());
+		Device->DestroyDevice();
+	}
 	return true;
 }
 

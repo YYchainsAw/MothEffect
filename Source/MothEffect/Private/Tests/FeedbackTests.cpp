@@ -50,6 +50,7 @@ bool FMothFeedbackCommitTest::RunTest(const FString&)
 	Device->ActivationDelaySeconds=0.0f; // This case isolates committed effect feedback and geometry.
 	FHitContext Hit; Hit.HitId=FGuid::NewGuid(); Hit.ShotDirection=FVector(0,2,1); Hit.ImpactPoint=Device->GetActorLocation();
 	const FVector Heading=Hit.ShotDirection.GetSafeNormal2D();
+	F.AgeDeviceForActivation(Device);
 	TestTrue(TEXT("Real device activation commits"),Device->TryActivate(Hit));
 	TestEqual(TEXT("One activation cue"),Feedback->GetCueCount(EMothFeedbackCue::Emitter),uint64(1));
 	TestFalse(TEXT("Same hit and subsequent hits cannot re-activate"),Device->TryActivate(Hit));

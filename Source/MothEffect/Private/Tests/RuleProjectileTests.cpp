@@ -58,6 +58,7 @@ bool FMothProjectileSingleImpactTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
+	Fixture.AgeDeviceForActivation(Target);
 	const FHitResult Hit = BlockingHit(Target, Target->GetPhysicsBody());
 	const FGuid HitId = Projectile->GetHitId();
 	int32 ImpactCount = 0;
@@ -108,6 +109,7 @@ bool FMothProjectileRejectionAndSourceTest::RunTest(const FString& Parameters)
 	FHitContext Activation;
 	Activation.HitId = FGuid::NewGuid();
 	Activation.ShotDirection = FVector::RightVector;
+	Fixture.AgeDeviceForActivation(Target);
 	TestTrue(TEXT("Prepare an already active target"), Target->TryActivate(Activation));
 	TestTrue(TEXT("An interface rejection still consumes P01"),
 		Projectile->ProcessBlockingHit(BlockingHit(Target, Target->GetPhysicsBody())));

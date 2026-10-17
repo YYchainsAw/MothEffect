@@ -38,6 +38,7 @@ namespace
 		Property->GetUnderlyingProperty()->SetIntPropertyValue(Property->ContainerPtrToValuePtr<void>(Device),
 			static_cast<int64>(Kind));
 		Device->FinishSpawning(Transform);
+		Fixture.AgeDeviceForActivation(Device);
 		Device->GetPhysicsBody()->SetEnableGravity(false);
 		Device->GetPhysicsBody()->SetLinearDamping(0.0f);
 		return Device;
@@ -113,6 +114,27 @@ bool FMothBombSingleUseTest::RunTest(const FString& Parameters)
 		TestTrue(TEXT("Spent has finite visual cleanup"), Bomb->GetLifeSpan() > 0.0f);
 		Bomb->OnDeviceStateChangedNative.Clear();
 	}
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothBombSpawnProtectionTest, "MothEffect.Devices.Bomb.BlastRespectsFreshDeviceProtection",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FMothBombSpawnProtectionTest::RunTest(const FString&)
+{
+	FMothCombatTestWorld Fixture;
+	if (!TestNotNull(TEXT("Create blast protection world"), Fixture.World)) return false;
+	ADeviceBase* Bomb = SpawnDevice(Fixture, FVector(0, 0, 500), EDeviceKind::Bomb);
+	ADeviceBase* Mature = SpawnDevice(Fixture, FVector(-150, 0, 500), EDeviceKind::Emitter);
+	ADeviceBase* Fresh = Fixture.Spawn<ADeviceBase>(FVector(150, 0, 500));
+	if (!Bomb || !Mature || !Fresh) { AddError(TEXT("Spawn blast protection targets")); return false; }
+	Mature->ActivationDelaySeconds = 0.3f;
+	Fresh->GetPhysicsBody()->SetEnableGravity(false);
+	TestTrue(TEXT("Mature bomb executes the real explosion"), Bomb->TryActivate(BombHit()));
+	TestTrue(TEXT("Explosion activates the mature neighbor"), Mature->GetDeviceState() == EDeviceState::Active);
+	TestTrue(TEXT("Explosion leaves the newborn neighbor Dormant"), Fresh->GetDeviceState() == EDeviceState::Dormant);
+	TestFalse(TEXT("Protected blast cannot queue an activation"), Fresh->IsActivationPending());
+	Fixture.AgeDeviceForActivation(Fresh);
+	TestTrue(TEXT("Protection expiry keeps the rejected blast inactive"), Fresh->GetDeviceState() == EDeviceState::Dormant && !Fresh->IsActivationPending());
 	return true;
 }
 
@@ -215,6 +237,7 @@ bool FMothBombBlueprintTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Replaceable visual stays within the shot envelope"),VisualExtent.GetMin()>1&&VisualExtent.GetMax()<=25);
 	TestEqual(TEXT("Visual replacement retains the native physical radius"),Bomb->GetPhysicsBody()->GetUnscaledSphereRadius(),20.f);
 	TestEqual(TEXT("Saved asset inherits the shared .3s activation delay"), Bomb->ActivationDelaySeconds, 0.3f);
+	Fixture.AgeDeviceForActivation(Bomb);
 	TestTrue(TEXT("Saved asset uses native ballistic activation"), IBallisticReactive::Execute_ReceiveBallisticHit(Bomb, BombHit(Pawn)));
 	TestEqual(TEXT("Saved asset cannot damage before its delay"), Pawn->GetHealthComponent()->GetCurrentHealth(), 100.0f);
 	TestTrue(TEXT("Saved asset commits pending Active"), Bomb->GetDeviceState() == EDeviceState::Active && Bomb->IsActivationPending());

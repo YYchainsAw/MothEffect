@@ -213,6 +213,7 @@ bool FMothDropBomb::RunTest(const FString&)
 		auto* Bomb = MothDropTest::Manager(F)->SpawnDevice(MothDropTest::DeviceClass(1), FTransform(FVector(150, 0, 25)));
 		if (!TestNotNull(TEXT("Real configured D02"), Bomb)) return false;
 		Bomb->ActivationDelaySeconds = 0.0f; // Isolate death/drop snapshot semantics; saved default delay is covered separately.
+		F.AgeDeviceForActivation(Bomb);
 		TestTrue(TEXT("Ordinary D02 activated"), Bomb->TryActivate(MothDropTest::Hit(0)));
 		TestEqual(TEXT("D02 actually kills full 60HP enemy"), E->GetHealthComponent()->GetCurrentHealth(), 0.0f);
 		if (!TestNotNull(TEXT("Bomb kill drops a normal Dormant"), E->GetDroppedDevice())) return false;

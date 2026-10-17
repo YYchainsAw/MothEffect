@@ -2,6 +2,8 @@
 
 版本 v0.5 · 2026-10-08 · 状态：十二项 Automation 与 PIE 方向显示通过；完整 TC03–TC05 与 G1 待验收
 
+现行规则更新于 2026-10-17：道具出生保护结束后才可激活；D03 触发时锁定范围内最近存活敌人的三维射向，无目标使用入射 XY 投影；首发仍在统一效果延迟后另计原首发延迟。配置字段与本轮验收以 [道具基础重构接入](Device_Refactor_Setup.md) 和 [交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md) 为准。本文后续保留 T08 接入及当时测试历史，不代表当前玩法预期或新增行为已验收。
+
 对应 [T08 / Issue #10](https://github.com/YYchainsAw/MothEffect/issues/10)。规则依据是 [道具与交互规则](../02_Design_Doc/GDD/Device_Interaction_Rules.md)，参数依据是 [Gameplay_Parameters.json](../02_Design_Doc/GDD/Gameplay_Parameters.json) v0.10。继续使用当前 `develop`；本轮没有创建分支或 PR。用户已授权按小功能进行本地 Git 提交，助手未编译或运行 UE。
 
 ## 1. 当前行为与范围

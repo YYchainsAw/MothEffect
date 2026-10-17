@@ -38,6 +38,9 @@ class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, pub
 
 public:
 	ADeviceBase();
+	/** Time after spawning during which ballistic and blast hits cannot activate this device. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Activation", meta=(ClampMin="0.0", Units="s"))
+	float SpawnActivationProtectionSeconds = 0.5f;
 	/** Time between accepting an activation and starting its effect. World pause freezes it. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Activation", meta=(ClampMin="0.0", Units="s"))
 	float ActivationDelaySeconds = 0.3f;
@@ -227,6 +230,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter")
 	TSubclassOf<ARuleProjectile> EmitterProjectileClass;
 
+	/** At activation, aim once at the closest combat-enabled enemy within this world-space radius. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.0", Units="cm"))
+	float EmitterTargetRangeCm = 2000.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
 	float EmitterDurationSeconds = 3.0f;
 
@@ -310,6 +317,7 @@ private:
 	bool bEndingPlay = false;
 	bool bEffectRunning = false;
 	bool bActivationPending = false;
+	double SpawnActivationAllowedAt = 0.0;
 	FTimerHandle ActivationDelayTimer;
 	TWeakObjectPtr<AActor> PendingActivationSource;
 	TWeakObjectPtr<APawn> PendingActivationInstigator;
@@ -334,6 +342,7 @@ private:
 
 	void ExplodeBomb(const FHitContext& Context);
 
+	FVector ResolveEmitterActivationDirection(const FVector& FallbackDirection) const;
 	void ScheduleEmitterShot();
 	void FireEmitterShot();
 	void ExpireEmitter();

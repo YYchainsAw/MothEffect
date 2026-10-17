@@ -43,6 +43,23 @@ struct FMothCombatTestWorld
 		}
 	}
 
+	/** Age only the fixture clock, without running physics or consuming effect timers. */
+	void AgeDeviceForActivation(AActor* Device)
+	{
+		if (!World || !Device) return;
+		const double Advance = FMath::Max(0.0, 0.5001 - Device->GetGameTimeSinceCreation());
+		World->TimeSeconds += Advance;
+		SpawnProtectionTimeAdvanced += Advance;
+	}
+
+	/** Existing timelines remain relative to simulated ticks, excluding fixture preparation. */
+	double GetElapsedTimeSeconds() const
+	{
+		return World ? World->GetTimeSeconds() - SpawnProtectionTimeAdvanced : 0.0;
+	}
+
+	double SpawnProtectionTimeAdvanced = 0.0;
+
 	template<class T>
 	T* Spawn(const FVector& Location = FVector::ZeroVector)
 	{

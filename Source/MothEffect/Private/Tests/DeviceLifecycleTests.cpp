@@ -36,6 +36,7 @@ namespace
 		FEnumProperty* P = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		P->GetUnderlyingProperty()->SetIntPropertyValue(P->ContainerPtrToValuePtr<void>(D), static_cast<int64>(Kind));
 		D->FinishSpawning(Transform);
+		F.AgeDeviceForActivation(D);
 		D->GetPhysicsBody()->SetEnableGravity(false); // Isolate clocks/admission from unrelated free fall.
 		return D;
 	}
@@ -254,7 +255,7 @@ namespace
 			if (!F) return Setup();
 			if (F->World->GetTimerManager().HasBeenTickedThisFrame()) return false;
 			F->World->Tick(LEVELTICK_All, Case == ECase::Idle || Case == ECase::Disabled ? 0.1f : 0.01f);
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Case == ECase::Idle) return Idle(Now);
 			if (Case == ECase::Disabled)
 			{

@@ -445,9 +445,15 @@ namespace MothFlowRuntimeTest
 				// Reload owns the action: cancel it briefly for pickup, then arm it after held cleanup on result.
 				P->GetRifle()->CancelReload();
 				T->TestTrue(TEXT("Actual held device before result"), P->TryPickupDevice(Held));
-				auto* Emitter = Device(W, 2, FVector(0,0,100)); Emitter->TryActivate(Hit());
-				auto* Column = Device(W, 0, FVector(1000,0,30)); Column->TryActivate(Hit());
-				RestartColumn = Column;
+				RestartEmitter = Device(W, 2, FVector(0,0,100));
+				RestartColumn = Device(W, 0, FVector(1000,0,30));
+				WaitUntil = W->GetTimeSeconds()+FMath::Max(RestartEmitter->SpawnActivationProtectionSeconds, RestartColumn->SpawnActivationProtectionSeconds)+.01;
+				Stage = 10; return false;
+			}
+			if (Stage == 10 && W->GetTimeSeconds() >= WaitUntil)
+			{
+				auto* Emitter = RestartEmitter.Get(); auto* Column = RestartColumn.Get();
+				Emitter->TryActivate(Hit()); Column->TryActivate(Hit());
 				T->TestTrue(TEXT("Saved cleanup hazards retain their default pending delay"), Emitter->IsActivationPending() && Column->IsActivationPending());
 				WaitUntil = W->GetTimeSeconds()+FMath::Max(Emitter->ActivationDelaySeconds, Column->ActivationDelaySeconds)+.05;
 				Stage = 11; return false;
@@ -484,6 +490,7 @@ namespace MothFlowRuntimeTest
 		TWeakObjectPtr<AMothPlayerAutomationCharacter> P;
 		TWeakObjectPtr<AMothWaveDirector> CurrentDirector;
 		TWeakObjectPtr<ADeviceBase> RestartColumn;
+		TWeakObjectPtr<ADeviceBase> RestartEmitter;
 	};
 }
 

@@ -9,6 +9,7 @@ bool FMothActivationObserverShutdown::RunTest(const FString&)
 {
 	FMothCombatTestWorld Fixture;
 	auto* Device=Fixture.Spawn<ADeviceBase>();if (!TestNotNull(TEXT("Native device fixture"),Device)) return false;
+	Fixture.AgeDeviceForActivation(Device);
 	Device->OnActivatedNative.AddLambda([&](ADeviceBase* D,const FHitContext& H)
 	{
 		TestEqual(TEXT("Observer sees already committed Active state"),D->GetDeviceState(),EDeviceState::Active);

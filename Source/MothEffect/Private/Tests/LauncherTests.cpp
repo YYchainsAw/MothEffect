@@ -34,6 +34,7 @@ namespace
 		FEnumProperty* KindProperty = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		KindProperty->GetUnderlyingProperty()->SetIntPropertyValue(KindProperty->ContainerPtrToValuePtr<void>(Result), static_cast<int64>(Kind));
 		Result->FinishSpawning(Transform);
+		F.AgeDeviceForActivation(Result);
 		Result->GetPhysicsBody()->SetEnableGravity(false);
 		Result->GetPhysicsBody()->SetLinearDamping(0.0f);
 		return Result;
@@ -444,6 +445,7 @@ bool FMothLauncherBlueprintTest::RunTest(const FString& Parameters)
 	if (!TestNotNull(TEXT("Saved seed"), S)) return false;
 	TestTrue(TEXT("Seed retains Launcher kind"), S->GetDeviceKind() == EDeviceKind::Launcher);
 	TestEqual(TEXT("Saved seed inherits the shared .3s activation delay"), S->ActivationDelaySeconds, 0.3f);
+	F.AgeDeviceForActivation(S);
 	TestTrue(TEXT("Saved seed commits its accepted hit"), S->TryActivate(LauncherHit()));
 	TestNull(TEXT("No column exists before the default delay"), S->GetLaunchColumn());
 	ADD_LATENT_AUTOMATION_COMMAND(FMothTickWorldUntil(SharedFixture, 0.35f, [this, S]()

@@ -67,6 +67,7 @@ namespace
 		}
 		FindFProperty<FBoolProperty>(ADeviceBase::StaticClass(), TEXT("bLogDeviceEvents"))->SetPropertyValue_InContainer(Device, true);
 		Device->FinishSpawning(Transform);
+		F.AgeDeviceForActivation(Device);
 		return Device;
 	}
 
@@ -88,13 +89,13 @@ namespace
 			F->World->Tick(LEVELTICK_All, 0.01f);
 			if (bPaused)
 			{
-				Test->TestEqual(TEXT("Actual paused World Tick freezes gameplay time"), F->World->GetTimeSeconds(), PausedTime);
+				Test->TestEqual(TEXT("Actual paused World Tick freezes gameplay time"), F->GetElapsedTimeSeconds(), PausedTime);
 				Test->TestTrue(TEXT("Pause freezes flight and independent lifetime"), Projectile.IsValid()
 					&& Projectile->GetActorLocation().Equals(PausedPosition));
 				if (--PauseFrames == 0) F->World->GetWorldSettings()->SetPauserPlayerState(nullptr);
 				return false;
 			}
-			const double Elapsed = F->World->GetTimeSeconds();
+			const double Elapsed = F->GetElapsedTimeSeconds();
 			if (Target.IsValid()) MaxTargetZ = FMath::Max(MaxTargetZ, Target->GetActorLocation().Z);
 			if (Case == EChainCase::IndependentLifetime)
 			{
@@ -224,6 +225,13 @@ namespace
 			ObserveTarget();
 			if (bColumn) StaticBox(*F, FVector(-190.0, 0.0, 370.0), FVector(60.0, 60.0, 10.0), true);
 			if (Case == EChainCase::ThinWall) StaticBox(*F, FVector(100.0, 0.0, 150.0), FVector(1.0, 100.0, 150.0));
+			ADeviceBase* Mover = nullptr;
+			if (Case == EChainCase::BombCrossing || bColumn)
+			{
+				Mover = ChainDevice(*F, bColumn ? FVector(250.0, 0.0, 800.0) : FVector(250.0, 500.0, 20.0),
+					bColumn ? EDeviceKind::Launcher : EDeviceKind::Bomb);
+				if (!Test->TestNotNull(TEXT("Spawn ordinary impulse source"), Mover)) return true;
+			}
 			Test->TestTrue(TEXT("Ballistic starter activates only the source"), Source->TryActivate(StarterHit()));
 			Source->OnDeviceStateChangedNative.AddLambda([this](ADeviceBase* Device, EDeviceState Old, EDeviceState New)
 			{
@@ -231,9 +239,6 @@ namespace
 			});
 			if (Case == EChainCase::BombCrossing || bColumn)
 			{
-				ADeviceBase* Mover = ChainDevice(*F, bColumn ? FVector(250.0, 0.0, 800.0) : FVector(250.0, 500.0, 20.0),
-					bColumn ? EDeviceKind::Launcher : EDeviceKind::Bomb);
-				if (!Test->TestNotNull(TEXT("Spawn ordinary impulse source"), Mover)) return true;
 				const FHitContext MoverHit = StarterHit(); MoverId = MoverHit.HitId;
 				Test->TestTrue(TEXT("Ballistic starter activates the effect source"), Mover->TryActivate(MoverHit));
 				if (bColumn) Test->TestTrue(TEXT("Column only applies external motion before a projectile arrives"), Target->GetDeviceState() == EDeviceState::Dormant);

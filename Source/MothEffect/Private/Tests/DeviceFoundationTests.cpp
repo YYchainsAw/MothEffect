@@ -34,6 +34,7 @@ namespace MothFoundationTest
 		auto* P = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		P->GetUnderlyingProperty()->SetIntPropertyValue(P->ContainerPtrToValuePtr<void>(D), static_cast<int64>(Kind));
 		D->FinishSpawning(Transform);
+		F.AgeDeviceForActivation(D);
 		return D;
 	}
 	void Floor(FMothCombatTestWorld& F)
@@ -67,7 +68,7 @@ namespace MothFoundationTest
 				return !T->TestNotNull(TEXT("Native falling device"), D.Get());
 			}
 			if (!Tick(*F)) return false;
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Now > 8) { T->AddError(TEXT("Ground/flight/landing exceeded the bounded real-world timeline")); return true; }
 			if (!D.IsValid()) { T->AddError(TEXT("Grounded device vanished before its idle lifetime")); return true; }
 			if (Stage == 0)
@@ -154,7 +155,7 @@ namespace MothFoundationTest
 				return false;
 			}
 			if (!Tick(*F)) return false;
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Stage == 0 && Now >= .2)
 			{
 				T->TestEqual(TEXT("Bomb does no pre-delay damage"), Target->GetHealthComponent()->GetCurrentHealth(), 100.f);
@@ -223,14 +224,14 @@ namespace MothFoundationTest
 			if (PausedFrames > 0)
 			{
 				if (!Tick(*F)) return false;
-				T->TestEqual(TEXT("Real pause freezes the delayed gameplay clock"), F->World->GetTimeSeconds(), PausedAt);
+				T->TestEqual(TEXT("Real pause freezes the delayed gameplay clock"), F->GetElapsedTimeSeconds(), PausedAt);
 				for (const auto& D : Devices) T->TestTrue(TEXT("Pause retains each pending effect"), D->IsActivationPending());
 				T->TestEqual(TEXT("No delayed damage leaks during pause"), Target->GetHealthComponent()->GetCurrentHealth(), 100.f);
 				if (--PausedFrames == 0) F->World->GetWorldSettings()->SetPauserPlayerState(nullptr);
 				return false;
 			}
 			if (!Tick(*F)) return false;
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Stage == 0 && Now >= .1)
 			{
 				PausedAt = Now;
@@ -319,7 +320,7 @@ namespace MothFoundationTest
 				return false;
 			}
 			if (!Tick(*F)) return false;
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Stage == 0 && Now >= .2)
 			{
 				T->TestTrue(TEXT("Neighbor stays Dormant until the first actual explosion"), Bombs[1]->GetDeviceState() == EDeviceState::Dormant);

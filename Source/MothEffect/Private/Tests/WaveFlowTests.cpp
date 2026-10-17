@@ -42,6 +42,7 @@ namespace MothFlowTest
 		const TCHAR* Names[] { TEXT("Launcher"), TEXT("Bomb"), TEXT("Emitter") };
 		auto* Class = LoadClass<ADeviceBase>(nullptr, *FString::Printf(TEXT("/Game/MothEffect/Devices/Drops/BP_Drop%s.BP_Drop%s_C"), Names[Kind], Names[Kind]));
 		auto* Result = F.Manager->SpawnDevice(Class, FTransform(Position));
+		F.F.AgeDeviceForActivation(Result);
 		if (Result) Result->ActivationDelaySeconds = 0.0f; // Isolate transition cleanup with an already-created effect.
 		return Result;
 	}

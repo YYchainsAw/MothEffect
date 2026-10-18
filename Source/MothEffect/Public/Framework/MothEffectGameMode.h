@@ -8,6 +8,7 @@
 
 class AMothWaveDirector;
 class AMothPrototypeSceneArt;
+class AMothArenaVisualDirector;
 
 /**
  *  Simple GameMode for a third person game
@@ -22,6 +23,7 @@ public:
 	/** Constructor */
 	AMothEffectGameMode();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Prototype") TSubclassOf<AMothPrototypeSceneArt> PrototypeSceneArtClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Art") TSubclassOf<AMothArenaVisualDirector> ArenaVisualDirectorClass;
 	UFUNCTION(BlueprintPure, Category="Moth|Flow")
 	AMothWaveDirector* GetWaveDirector() const;
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow")

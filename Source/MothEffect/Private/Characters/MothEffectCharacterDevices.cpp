@@ -8,6 +8,7 @@
 #include "Devices/DeviceBase.h"
 #include "Devices/DeviceReleaseSafety.h"
 #include "Engine/World.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "MothEffect.h"
 #include "TimerManager.h"
 #include "Weapons/Rifle.h"
@@ -162,6 +163,7 @@ bool AMothEffectCharacter::TryPickupDevice(ADeviceBase* Device)
 	}
 
 	TGuardValue<bool> InteractionGuard(bDeviceInteractionInProgress, true);
+	const FVector PickupPosition=Device->GetActorLocation();
 	if (!Device->CommitHeld(this, DeviceHoldPoint))
 	{
 		return RejectDeviceInteraction(TEXT("道具已失效，无法拾取。"));
@@ -188,6 +190,10 @@ bool AMothEffectCharacter::TryPickupDevice(ADeviceBase* Device)
 	{
 		OnPlayerActionStateChanged.Broadcast(OldState, ActionState);
 	}
+	// Observers can release/destroy the device or end the session during either callback.
+	if (IsGameplayEnabled() && ActionState==EPlayerActionState::Carrying && IsCarryingDevice())
+		if (auto* Feedback=GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+			Feedback->Emit(EMothFeedbackCue::Pickup,PickupPosition,FVector::UpVector);
 	return true;
 }
 

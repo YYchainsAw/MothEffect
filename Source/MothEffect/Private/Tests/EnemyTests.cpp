@@ -58,7 +58,7 @@ namespace MothEnemyTest
 			if (!F) return Setup();
 			if (F->World->GetTimerManager().HasBeenTickedThisFrame()) return false;
 			F->World->Tick(LEVELTICK_All, 0.01f);
-			const double Now = F->World->GetTimeSeconds();
+			const double Now = F->GetElapsedTimeSeconds();
 			if (Case == ECase::Friendly)
 			{
 				if (Now < 0.6) return false;
@@ -124,11 +124,11 @@ namespace MothEnemyTest
 			{
 				// A normal device enters the already-fired projectile's path. While in front
 				// of the target it also blocks sight, so it must not be present before firing.
-				if (!D && E->GetProjectilesSpawned() > 0) { D = F->Spawn<ADeviceBase>(FVector(450, 0, 151)); D->GetPhysicsBody()->SetEnableGravity(false); }
+				if (!D && E->GetProjectilesSpawned() > 0) { D = F->Spawn<ADeviceBase>(FVector(450, 0, 151)); F->AgeDeviceForActivation(D); D->GetPhysicsBody()->SetEnableGravity(false); }
 				if (Now < 1.0) return false;
 				if (!T->TestNotNull(TEXT("Normal AI shot permits a device to enter its path"), D)) return true;
 				T->TestTrue(TEXT("Real enemy P01 activates ordinary Dormant D03"), D->GetDeviceState() == EDeviceState::Active);
-				T->TestTrue(TEXT("Activation carries a real projectile hit ID and flight direction"), D->GetActivationHitId().IsValid() && D->GetActivationDirection().X > 0.99); return true;
+				T->TestTrue(TEXT("Activation keeps the real projectile hit ID and aims back at the nearby enemy"), D->GetActivationHitId().IsValid() && D->GetActivationDirection().X < -0.99); return true;
 			}
 			if (Case == ECase::Pause)
 			{
@@ -155,7 +155,8 @@ namespace MothEnemyTest
 			if (Case == ECase::Muzzle) Cover(*F, FVector(20, 6, 150), FVector(5, 3, 40));
 			if (Case == ECase::Saturation)
 			{
-				for (int32 I = 0; I < 64; ++I)
+				const int32 ProjectileLimit = F->World->GetSubsystem<UDeviceLifecycleSubsystem>()->GetProjectileLimit();
+				for (int32 I = 0; I < ProjectileLimit; ++I)
 				{
 					const FTransform Transform(FVector(I * 50, 5000, 5000));
 					auto* Shot = F->World->SpawnActorDeferred<ARuleProjectile>(ARuleProjectile::StaticClass(), Transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
@@ -232,6 +233,8 @@ bool FMothEnemyDeathAndDefaults::RunTest(const FString&)
 	auto* Kind = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 	Kind->GetUnderlyingProperty()->SetIntPropertyValue(Kind->ContainerPtrToValuePtr<void>(Bomb), static_cast<int64>(EDeviceKind::Bomb));
 	Bomb->FinishSpawning(Transform);
+	F.AgeDeviceForActivation(Bomb);
+	Bomb->ActivationDelaySeconds = 0.0f; // This test isolates the shared health/death contract.
 	TestTrue(TEXT("Actual D02 effect can kill the enemy through shared health"), Bomb->TryActivate(MothEnemyTest::Damage(0)));
 	TestEqual(TEXT("Bomb causes one death"), Deaths, 1);
 	E->OnEnemyDiedNative.Clear();

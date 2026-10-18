@@ -23,4 +23,8 @@
 Docs/06_Test_Doc/Evidence/T18/*.png filter=lfs diff=lfs merge=lfs -text
 Docs/06_Test_Doc/Evidence/T19/*.png filter=lfs diff=lfs merge=lfs -text
 Docs/06_Test_Doc/Evidence/T20/*.png filter=lfs diff=lfs merge=lfs -text
+Docs/06_Test_Doc/Evidence/SoulCity/**/*.png filter=lfs diff=lfs merge=lfs -text
+Docs/06_Test_Doc/Evidence/ArenaVisualPass/*.png filter=lfs diff=lfs merge=lfs -text
+# Keep raw UE evidence logs byte-for-byte, including engine-emitted whitespace.
+Docs/06_Test_Doc/Evidence/ArenaVisualPass/**/*.log -text -whitespace
 SourceArt/Feedback/*.wav filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,131 @@
+{
+  "devices": [
+    {
+      "deviceName": "YYCHAINSAW",
+      "instance": "4AAC822345A17AB97B64F2BE377584C9",
+      "instanceName": "YYCHAINSAW-11280",
+      "platform": "WindowsEditor",
+      "oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+      "model": "Default",
+      "gPU": "AMD Radeon 780M Graphics",
+      "cPUModel": "AMD Ryzen 7 8845H w/ Radeon 780M Graphics",
+      "rAMInGB": 32,
+      "renderMode": "SM6",
+      "rHI": "",
+      "appInstanceLog": ""
+    }
+  ],
+  "reportCreatedOn": "2026.10.14-13.51.59",
+  "succeeded": 5,
+  "succeededWithWarnings": 1,
+  "failed": 0,
+  "notRun": 0,
+  "inProcess": 0,
+  "totalDuration": 12.920392990112305,
+  "comparisonExported": false,
+  "comparisonExportDirectory": "",
+  "tests": [
+    {
+      "testDisplayName": "DefaultDelayForAllThreeEffects",
+      "fullTestPath": "MothEffect.Devices.Foundation.DefaultDelayForAllThreeEffects",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 5.644914627075195,
+      "dateTime": "2026.10.14-13.51.46",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.51.48"
+        }
+      ],
+      "warnings": 1,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EditableSizesKeepQueryAndVisualIndependent",
+      "fullTestPath": "MothEffect.Devices.Foundation.EditableSizesKeepQueryAndVisualIndependent",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 0.019383203238248825,
+      "dateTime": "2026.10.14-13.51.52",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ExplosionsActivateIndependentDelayedBombs",
+      "fullTestPath": "MothEffect.Devices.Foundation.ExplosionsActivateIndependentDelayedBombs",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 1.7132649421691895,
+      "dateTime": "2026.10.14-13.51.52",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "GroundQueryCharacterPassageAndForceWake",
+      "fullTestPath": "MothEffect.Devices.Foundation.GroundQueryCharacterPassageAndForceWake",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 3.77065110206604,
+      "dateTime": "2026.10.14-13.51.53",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "HorizontalProjectionAndVerticalFallback",
+      "fullTestPath": "MothEffect.Devices.Foundation.HorizontalProjectionAndVerticalFallback",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 0.01808679848909378,
+      "dateTime": "2026.10.14-13.51.57",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PendingPauseCancellationAndSessionShutdown",
+      "fullTestPath": "MothEffect.Devices.Foundation.PendingPauseCancellationAndSessionShutdown",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "4AAC822345A17AB97B64F2BE377584C9"
+      ],
+      "duration": 1.7540925741195679,
+      "dateTime": "2026.10.14-13.51.57",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    }
+  ]
+}

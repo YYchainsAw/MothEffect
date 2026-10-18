@@ -3,7 +3,9 @@
 #include "Combat/RuleProjectile.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/ExternalImpulseComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -19,7 +21,8 @@
 ADeviceBase::ADeviceBase()
 {
 	PrototypeArtProfile = TSoftObjectPtr<UMothPrototypeArtProfile>(FSoftObjectPath(UMothPrototypeArtProfile::DefaultPath()));
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
 	DefaultFeedback = CreateDefaultSubobject<UMothDeviceFeedbackComponent>(TEXT("DefaultFeedback"));
 	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	PhysicsBody = CreateDefaultSubobject<USphereComponent>(TEXT("PhysicsBody"));
@@ -29,6 +32,7 @@ ADeviceBase::ADeviceBase()
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	PhysicsBody->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Ignore);
+	PhysicsBody->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	PhysicsBody->SetGenerateOverlapEvents(false);
 	PhysicsBody->BodyInstance.bUseCCD = true;
 
@@ -40,9 +44,23 @@ ADeviceBase::ADeviceBase()
 	ShotCollider->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
 	ShotCollider->SetGenerateOverlapEvents(false);
+	ShotCollider->SetCanEverAffectNavigation(false);
+
+	DroppedCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("DroppedCollider"));
+	DroppedCollider->SetupAttachment(PhysicsBody);
+	DroppedCollider->InitCapsuleSize(MothCollision::EnemyCapsuleRadiusCm, MothCollision::EnemyCapsuleHalfHeightCm);
+	DroppedCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DroppedCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	DroppedCollider->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	DroppedCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	DroppedCollider->SetGenerateOverlapEvents(false);
+	DroppedCollider->SetCanEverAffectNavigation(false);
+
+	VisualPivot = CreateDefaultSubobject<USceneComponent>(TEXT("VisualPivot"));
+	VisualPivot->SetupAttachment(PhysicsBody);
 
 	DeviceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeviceMesh"));
-	DeviceMesh->SetupAttachment(PhysicsBody);
+	DeviceMesh->SetupAttachment(VisualPivot);
 	DeviceMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	DeviceMesh->SetGenerateOverlapEvents(false);
 	DeviceMesh->SetCanEverAffectNavigation(false);
@@ -77,16 +95,16 @@ ADeviceBase::ADeviceBase()
 void ADeviceBase::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	const float BodyRadius = FMath::Max(1.0f, BodyRadiusCm);
-	PhysicsBody->SetSphereRadius(BodyRadius);
-	ShotCollider->SetSphereRadius(FMath::Max(BodyRadius, ShotRadiusCm));
 	EmitterDirectionMarker->SetAbsolute(false, true, false);
+	RefreshDeviceSize();
 	ApplyStateCollision();
-	RefreshPrototypeAppearance();
 }
 
 void ADeviceBase::BeginPlay()
 {
+	const float ProtectionSeconds = FMath::IsFinite(SpawnActivationProtectionSeconds)
+		? FMath::Max(0.0f, SpawnActivationProtectionSeconds) : 0.5f;
+	SpawnActivationAllowedAt = GetWorld()->GetTimeSeconds() + static_cast<double>(ProtectionSeconds);
 	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	const bool bAdmitted = Lifecycle && Lifecycle->RegisterDevice(this);
 	if (!bAdmitted) bGameplayEnabled = false;
@@ -98,6 +116,7 @@ void ADeviceBase::BeginPlay()
 	PhysicsBody->SetMassOverrideInKg(NAME_None, FMath::Max(0.01f, PhysicsMassKg));
 	EmitterDirectionMarker->SetVisibility(false, true);
 	ApplyStateCollision();
+	UpdateGrounding();
 }
 
 void ADeviceBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -121,7 +140,9 @@ bool ADeviceBase::ReceiveBallisticHit_Implementation(const FHitContext& Context)
 
 bool ADeviceBase::CanReceiveExternalImpulse() const
 {
-	return bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed()
+	const auto* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	return HasActorBegunPlay() && bGameplayEnabled && !bEndingPlay && !IsActorBeingDestroyed()
+		&& GetWorld() && !GetWorld()->IsPaused() && Lifecycle && Lifecycle->IsGameplayEnabled()
 		&& (DeviceState == EDeviceState::Dormant
 			|| (DeviceState == EDeviceState::Active && DeviceKind == EDeviceKind::Emitter));
 }
@@ -151,6 +172,7 @@ bool ADeviceBase::CommitHeld(AMothEffectCharacter* NewHolder, USceneComponent* H
 		return false;
 	}
 	Holder = NewHolder;
+	bGrounded = false;
 	TransitionTo(EDeviceState::Held, false);
 	if (!AttachToComponent(HoldPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale))
 	{
@@ -171,10 +193,13 @@ bool ADeviceBase::CommitReleased(AMothEffectCharacter* ReleasingHolder, const FV
 		return false;
 	}
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	bGrounded = false;
+	GroundingAllowedAt = GetWorld()->GetTimeSeconds() + (Velocity.IsNearlyZero() ? 0.0 : 0.05);
 	SetActorLocation(Location, false, nullptr, ETeleportType::TeleportPhysics);
 	TransitionTo(EDeviceState::Dormant, false);
 	PhysicsBody->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 	PhysicsBody->SetPhysicsLinearVelocity(Velocity);
+	if (Velocity.IsNearlyZero()) UpdateGrounding();
 	return true;
 }
 
@@ -182,17 +207,26 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 {
 	if (bEndingPlay || !HasActorBegunPlay() || !bGameplayEnabled || !GetWorld()
 		|| GetWorld()->IsPaused() || DeviceState != EDeviceState::Dormant
+		|| GetWorld()->GetTimeSeconds() < SpawnActivationAllowedAt
 		|| IsActorBeingDestroyed() || !Context.HitId.IsValid() || Context.ImpactPoint.ContainsNaN()
-		|| Context.ShotDirection.ContainsNaN() || !FMath::IsFinite(Context.Damage) || Context.Damage < 0.0f)
+		|| Context.ShotDirection.ContainsNaN() || !FMath::IsFinite(Context.Damage) || Context.Damage < 0.0f
+		|| !FMath::IsFinite(ActivationDelaySeconds) || ActivationDelaySeconds < 0.0f)
 	{
 		LogHit(Context, false);
 		return false;
 	}
-	const FVector Direction = Context.ShotDirection.GetSafeNormal();
+	FVector Direction = Context.ShotDirection.GetSafeNormal();
 	if (Direction.ContainsNaN() || Direction.IsNearlyZero())
 	{
 		LogHit(Context, false);
 		return false;
+	}
+	if (DeviceKind == EDeviceKind::Emitter)
+	{
+		Direction = Direction.GetSafeNormal2D();
+		// A vertical hit has no horizontal heading; use a stable world direction.
+		if (Direction.IsNearlyZero()) Direction = FVector::ForwardVector;
+		Direction = ResolveEmitterActivationDirection(Direction);
 	}
 	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	if (GetRemainingIdleSeconds() <= 0.0f || !Lifecycle || !Lifecycle->ReserveActivation(this))
@@ -214,10 +248,15 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	if (DeviceKind == EDeviceKind::Launcher) LauncherOrigin = GetActorLocation();
 	FHitContext ActivationContext = Context;
 	ActivationContext.ShotDirection = Direction;
+	PendingActivationSource = Context.SourceActor.Get();
+	PendingActivationInstigator = Context.InstigatorPawn.Get();
+	PendingActivationDamage = Context.Damage;
+	bActivationPending = true;
 
 	// Commit before delegates or effects can re-enter the ballistic interface.
 	if (!TransitionTo(EDeviceState::Active))
 	{
+		StopActiveEffect();
 		Lifecycle->CommitDeviceState(this);
 		LogHit(ActivationContext, false);
 		return false;
@@ -225,13 +264,22 @@ bool ADeviceBase::TryActivate(const FHitContext& Context)
 	LogHit(ActivationContext, true);
 	if (!bEndingPlay && bGameplayEnabled && DeviceState == EDeviceState::Active)
 	{
+		if (DeviceKind == EDeviceKind::Emitter)
+		{
+			EmitterDirectionMarker->SetWorldRotation(ActivationDirection.Rotation());
+			EmitterDirectionMarker->SetVisibility(true, true);
+		}
 		OnActivatedNative.Broadcast(this, ActivationContext);
 		if (!bEndingPlay && !IsActorBeingDestroyed() && bGameplayEnabled && DeviceState == EDeviceState::Active)
 		{
 			GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, ActivationImpactPoint, ActivationDirection,
 				IsValid(Context.InstigatorPawn) && Context.InstigatorPawn->IsPlayerControlled() && Context.InstigatorPawn->IsLocallyControlled());
-			bEffectRunning = true;
-			ActivateEffect(ActivationContext);
+			if (ActivationDelaySeconds > 0.0f)
+			{
+				GetWorldTimerManager().SetTimer(ActivationDelayTimer, this,
+					&ADeviceBase::BeginActivationEffect, ActivationDelaySeconds, false);
+			}
+			else BeginActivationEffect();
 		}
 	}
 	return true;
@@ -370,12 +418,20 @@ void ADeviceBase::ApplyStateCollision()
 	ShotCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotCollider->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Block);
 	ShotCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	DroppedCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	DroppedCollider->SetCollisionResponseToChannel(WeaponTraceChannel, ECR_Block);
+	DroppedCollider->SetCollisionResponseToChannel(MothCollision::Projectile, ECR_Block);
+	const bool bDropped = DeviceState == EDeviceState::Dormant && bGrounded;
+	DroppedCollider->SetCollisionEnabled(bDropped ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 	if (bPhysical)
 	{
-		PhysicsBody->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		// Stop the body before removing physics collision; Chaos must never see incompatible options.
+		if (bGrounded) PhysicsBody->SetSimulatePhysics(false);
+		PhysicsBody->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		PhysicsBody->SetCollisionEnabled(bGrounded ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
 		PhysicsBody->SetEnableGravity(true);
-		PhysicsBody->SetSimulatePhysics(HasActorBegunPlay());
-		ShotCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		if (!bGrounded) PhysicsBody->SetSimulatePhysics(HasActorBegunPlay());
+		ShotCollider->SetCollisionEnabled(bDropped ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryOnly);
 	}
 	else
 	{
@@ -383,15 +439,45 @@ void ADeviceBase::ApplyStateCollision()
 		PhysicsBody->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		ShotCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+	UpdateDroppedPresentation(0.0f);
 }
 
 void ADeviceBase::StopActiveEffect()
 {
+	GetWorldTimerManager().ClearTimer(ActivationDelayTimer);
+	bActivationPending = false;
+	PendingActivationSource.Reset();
+	PendingActivationInstigator.Reset();
+	EmitterDirectionMarker->SetVisibility(false, true);
 	if (bEffectRunning)
 	{
 		bEffectRunning = false;
 		StopEffect();
 	}
+}
+
+void ADeviceBase::BeginActivationEffect()
+{
+	GetWorldTimerManager().ClearTimer(ActivationDelayTimer);
+	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!bActivationPending || bEndingPlay || IsActorBeingDestroyed() || !bGameplayEnabled
+		|| DeviceState != EDeviceState::Active || !Lifecycle || !Lifecycle->IsGameplayEnabled())
+	{
+		StopActiveEffect();
+		return;
+	}
+	FHitContext Context;
+	Context.HitId = ActivationHitId;
+	Context.SourceActor = PendingActivationSource.Get();
+	Context.InstigatorPawn = PendingActivationInstigator.Get();
+	Context.ImpactPoint = ActivationImpactPoint;
+	Context.ShotDirection = ActivationDirection;
+	Context.Damage = PendingActivationDamage;
+	bActivationPending = false;
+	PendingActivationSource.Reset();
+	PendingActivationInstigator.Reset();
+	bEffectRunning = true;
+	ActivateEffect(Context);
 }
 
 void ADeviceBase::ActivateEffect(const FHitContext& Context)
@@ -431,139 +517,6 @@ void ADeviceBase::StopEffect()
 	GetWorldTimerManager().ClearTimer(EmitterExpiryTimer);
 	EmitterInstigator.Reset();
 	EmitterDirectionMarker->SetVisibility(false, true);
-}
-
-void ADeviceBase::ScheduleEmitterShot()
-{
-	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active)
-	{
-		return;
-	}
-	const double DueAt = EmitterStartedAt + FMath::Max(0.0f, EmitterFirstShotDelaySeconds)
-		+ EmitterNextShotIndex * static_cast<double>(FMath::Max(0.01f, EmitterShotIntervalSeconds));
-	// A shot scheduled exactly at expiry is excluded, regardless of timer callback order.
-	if (DueAt >= EmitterExpiresAt)
-	{
-		return;
-	}
-	const double Delay = DueAt - GetWorld()->GetTimeSeconds();
-	if (Delay <= 0.0)
-	{
-		EmitterShotTimer = GetWorldTimerManager().SetTimerForNextTick(this, &ADeviceBase::FireEmitterShot);
-	}
-	else
-	{
-		GetWorldTimerManager().SetTimer(EmitterShotTimer, this, &ADeviceBase::FireEmitterShot,
-			static_cast<float>(Delay), false);
-	}
-}
-
-void ADeviceBase::FireEmitterShot()
-{
-	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active || GetWorld()->IsPaused())
-	{
-		return;
-	}
-	const double Now = GetWorld()->GetTimeSeconds();
-	if (Now >= EmitterExpiresAt)
-	{
-		FinishActivation();
-		return;
-	}
-	++EmitterShotAttempts;
-	++EmitterNextShotIndex;
-	SpawnEmitterProjectile();
-	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active)
-	{
-		return;
-	}
-	// Skip missed slots after a slow frame rather than firing a catch-up burst.
-	const double Interval = FMath::Max(0.01f, EmitterShotIntervalSeconds);
-	const double FirstDueAt = EmitterStartedAt + FMath::Max(0.0f, EmitterFirstShotDelaySeconds);
-	EmitterNextShotIndex = FMath::Max(EmitterNextShotIndex,
-		FMath::FloorToInt((Now - FirstDueAt) / Interval) + 1);
-	ScheduleEmitterShot();
-}
-
-void ADeviceBase::ExpireEmitter()
-{
-	FinishActivation();
-}
-
-void ADeviceBase::SpawnEmitterProjectile()
-{
-	if (!EmitterProjectileClass || EmitterProjectileClass->HasAnyClassFlags(CLASS_Abstract))
-	{
-		return;
-	}
-	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
-	if (!Lifecycle || !Lifecycle->CanSpawnProjectile()) return;
-	const ARuleProjectile* Defaults = EmitterProjectileClass.GetDefaultObject();
-	const float Radius = Defaults->GetCollisionRadiusCm();
-	const FVector Origin = PhysicsBody->GetComponentLocation();
-	const FVector Muzzle = Origin + ActivationDirection
-		* (PhysicsBody->GetScaledSphereRadius() + Radius + FMath::Max(0.0f, EmitterMuzzleClearanceCm));
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(MothEmitterBirth), false, this);
-	const FCollisionShape Shape = FCollisionShape::MakeSphere(Radius);
-	// Source-to-muzzle static sweep plus endpoint overlap prevent spawning across/inside a wall.
-	FCollisionObjectQueryParams StaticObjects;
-	StaticObjects.AddObjectTypesToQuery(ECC_WorldStatic);
-	FHitResult StaticHit;
-	const bool bStaticBlocked = GetWorld()->SweepSingleByObjectType(StaticHit, Origin, Muzzle,
-		FQuat::Identity, StaticObjects, Shape, Params)
-		|| GetWorld()->OverlapAnyTestByObjectType(Muzzle, FQuat::Identity, StaticObjects, Shape, Params);
-	if (bStaticBlocked)
-	{
-#if !UE_BUILD_SHIPPING
-		if (bLogDeviceEvents)
-		{
-			UE_LOG(LogMothEffect, Log, TEXT("Emitter %s shot=%d consumed: static muzzle obstruction"),
-				*GetName(), EmitterShotAttempts);
-		}
-#endif
-		return;
-	}
-	FHitResult BirthHit;
-	const bool bBirthHit = GetWorld()->SweepSingleByChannel(BirthHit, Origin, Muzzle,
-		FQuat::Identity, MothCollision::Projectile, Shape, Params);
-	const FTransform Transform(ActivationDirection.Rotation(), Muzzle);
-	ARuleProjectile* Projectile = GetWorld()->SpawnActorDeferred<ARuleProjectile>(
-		EmitterProjectileClass, Transform, this, EmitterInstigator.Get(),
-		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	if (!Projectile)
-	{
-		return;
-	}
-	if (!Projectile->InitializeProjectile(ActivationDirection, this, EmitterInstigator.Get()))
-	{
-		Projectile->Destroy();
-		return;
-	}
-	Projectile->SetEventLoggingEnabled(bLogDeviceEvents);
-	Projectile->FinishSpawning(Transform);
-	if (!IsValid(Projectile) || !Projectile->HasActorBegunPlay())
-	{
-		Projectile->Destroy();
-		return;
-	}
-	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active)
-	{
-		Projectile->Destroy();
-		return;
-	}
-	++EmitterProjectilesSpawned;
-	if (bBirthHit)
-	{
-		Projectile->ProcessBlockingHit(BirthHit);
-	}
-#if !UE_BUILD_SHIPPING
-	if (bLogDeviceEvents)
-	{
-		UE_LOG(LogMothEffect, Log, TEXT("Emitter %s shot=%d spawned=%d direction=%s origin=%s muzzle=%s birthHit=%d"),
-			*GetName(), EmitterShotAttempts, EmitterProjectilesSpawned, *ActivationDirection.ToString(),
-			*Origin.ToString(), *Muzzle.ToString(), bBirthHit);
-	}
-#endif
 }
 
 float ADeviceBase::GetDormantIdleSeconds() const

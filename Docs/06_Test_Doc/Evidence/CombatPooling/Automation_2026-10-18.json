@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Hong_Kong",
+  "engine": "UE 5.8.0",
+  "sourceCommit": "d5dad2f56515cf5dcc8a2eaa066e202d31c0c8a3",
+  "build": {
+    "target": "MothEffectEditor Win64 Development",
+    "result": "Succeeded",
+    "log": "Saved/Automation/CombatPooling/BuildVerified.log"
+  },
+  "editor": {
+    "succeeded": 151,
+    "succeededWithWarnings": 8,
+    "failed": 0,
+    "notRun": 0,
+    "totalDuration": 186.70941162109375
+  },
+  "poolTests": [
+    {
+      "name": "MothEffect.Pooling.BlockedBirthNeverActivatesFreshOrReusedEnemy",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.ConfigurableWaveScalingAndRuntimeLock",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.EnemyDeathObserversCannotReuseTheirDispatchingActor",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.EnemyHealthHitIdentityDropAndAIReset",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.IdleRetentionBoundsMemoryWithoutLimitingActiveDemand",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.InFlightProjectileCannotGrantImmunityToReusedSource",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.ProjectileCannotBeReusedDuringImpactCallbacks",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.ProjectileImpactReuseHitIdentitySourceAndMovement",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.RealExpiryKillZAndNoStaleEnemyDeathTimer",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.Pooling.WorldIsolationResetBoundsAndDuplicateRecycle",
+      "state": "Success"
+    }
+  ],
+  "runtime": {
+    "map": "/Game/MothEffect/Maps/L_Arena_SoulCity",
+    "test": "MothEffect.PoolingRuntime.HighDensityEncounter",
+    "result": "Success",
+    "births": [
+      12,
+      18,
+      24
+    ],
+    "kills": 54,
+    "peakAlive": 24,
+    "createdActors": 24,
+    "reusedLives": 30,
+    "messages": [
+      "High-density wave=1 births=12 kinds=6/3/3 kills=12 peakAlive=12 uniqueActors=12 reusedLives=0",
+      "High-density wave=2 births=18 kinds=3/6/9 kills=30 peakAlive=18 uniqueActors=21 reusedLives=9",
+      "High-density wave=3 births=24 kinds=6/9/9 kills=54 peakAlive=24 uniqueActors=24 reusedLives=30",
+      "High-density SoulCity victory: births=12/18/24 kills=54 peak=24 created=24 poolReuses=30 uniqueActors=24 reusedLives=30 elapsedGame=48.393s"
+    ]
+  },
+  "reports": {
+    "editor": "Saved/Automation/CombatPooling/EditorVerified/index.json",
+    "runtime": "Saved/Automation/CombatPooling/RuntimeVerified/index.json"
+  },
+  "iterations": [
+    {
+      "report": "Saved/Automation/CombatPooling/Editor/index.json",
+      "performed": 156,
+      "failed": 5,
+      "resolved": "Three fixtures hardcoded 64 rather than configured quota; cancelled-drop state and initial pooled tick restoration fixed."
+    },
+    {
+      "report": "Saved/Automation/CombatPooling/EditorFinal/index.json",
+      "performed": 158,
+      "failed": 3,
+      "resolved": "Pool fixtures placed capsule centers exactly 90cm above ground; raised to 92cm to retain the real collision clearance check."
+    },
+    {
+      "report": "Saved/Automation/CombatPooling/Runtime/index.json",
+      "performed": 1,
+      "failed": 1,
+      "resolved": "Automation attached during first spawn warning rather than Preparing; fixture now accepts either running phase only before all first-wave births."
+    }
+  ],
+  "limitations": [
+    "NullRHI/nosound automation does not validate rendered animation appearance, sound, frame rate, human combat difficulty or packaged builds.",
+    "Runtime disables AI and enemy occupancy only on admitted test actors to accumulate each wave and verify the 24-alive peak; saved geometry, navigation, birthplace validation and real health/death/drop paths remain enabled.",
+    "Enemy animation mode/class restoration is checked; this is not a graphical animation playback acceptance."
+  ]
+}

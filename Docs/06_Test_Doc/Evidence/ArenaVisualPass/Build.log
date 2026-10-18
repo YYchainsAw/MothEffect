@@ -1,0 +1,118 @@
+Using bundled DotNet SDK version: 10.0 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" MothEffectEditor Win64 Development -Project=D:\YYchainsaw\Unreal-Projects\MothEffect\MothEffect.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: C:\Users\YYchainsaw\AppData\Local\UnrealBuildTool\Log.txt
+Determining max actions to execute in parallel (8 physical cores, 16 logical cores)
+  Executing up to 8 processes, one per physical core
+  Requested 1.5 GB memory per action, 7.19 GB available: limiting max parallel actions to 4
+Using 'git status' to determine working set for adaptive non-unity build (D:\YYchainsaw\Unreal-Projects\MothEffect).
+UbaServer - Listening on 0.0.0.0:1345
+Invalidating makefile for MothEffectEditor (source file added)
+Available x64 toolchains (1):
+ * E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231
+    (Family=14.51.36231, FamilyRank=2, Version=14.51.36260, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64)
+Visual Studio compiler version 14.51.36260 is newer than latest preferred version 14.50.35717. Please use caution as this compiler has not been heavily tested
+UHT compiled-in object format Default
+UHT processed MothEffectEditor in 9.6748259 seconds (5 generated files written)
+Building MothEffectEditor...
+===== Toolchain Information =====
+Using ISPC compiler (D:\Program Files\Epic\UE_5.8\Engine\Source\ThirdParty\Intel\ISPC\bin\Windows\ispc.exe)
+  Intel(r) Implicit SPMD Program Compiler (Intel(r) ISPC), 1.24.0 (build commit  @ 20250404, LLVM 18.1.2) 
+Using Visual Studio 14.51.36260 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Warning: Visual Studio compiler 14.51.36260 is not a preferred version
+[Adaptive Build] Excluded from MothEffect unity file: MothArenaVisualDirector.cpp, MothMenuCharacter.cpp, DeviceDropPresentation.cpp, MothAudioSubsystem.cpp, MothFeedbackEditorLibrary.cpp, MothEffectGameMode.cpp, MothMainMenuGameMode.cpp, MothUserSettings.cpp, ArenaVisualTests.cpp, CharacterVoiceTests.cpp, DeviceDropPresentationTests.cpp, EncounterPresentationTests.cpp, MenuAudioTests.cpp, MenuLoadingTests.cpp, NiagaraFeedbackTests.cpp, PlayerSettingsTests.cpp, PoolingRuntimeTests.cpp, MothEnemyHealthWidget.cpp, MothGameViewportClient.cpp, MothHUDAudio.cpp, MothHUDFrontEnd.cpp, MothHUDMenus.cpp, MothLoadingSubsystem.cpp
+=================================
+Using Unreal Build Accelerator local executor to run 11 action(s)
+  CPU 8 physical cores, 16 logical cores
+  Memory 31.26 GB physical, 39.41 GB/67.26 GB committed
+  UBA Storage capacity 40 GB
+[1/11] Compile [x64] ArenaVisualTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[2/11] Compile [x64] Module.MothEffect.1.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[3/11] Compile [x64] Module.MothEffect.4.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[4/11] Compile [x64] Module.MothEffect.2.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Devices\DeviceReleaseSafety.cpp(34,44): warning C4996: 'FCollisionQueryParams::GetIgnoredActors': Use GetIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+			|| Device == Body->GetOwner() || Params.GetIgnoredActors().Contains(Device->GetUniqueID())
+			                                        ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Particles\ParticleSystem.h(433,15): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	             ^
+D:\Program Files\Epic\UE_5.8\Engine\Plugins\FX\Niagara\Source\Niagara\Classes\NiagaraSystem.h(421,27): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	NIAGARA_API virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	                         ^
+D:\Program Files\Epic\UE_5.8\Engine\Plugins\FX\Niagara\Source\Niagara\Classes\NiagaraScript.h(1094,15): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	             ^
+D:\Program Files\Epic\UE_5.8\Engine\Plugins\FX\Niagara\Source\Niagara\Classes\NiagaraEmitter.h(688,15): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	             ^
+D:\YYchainsaw\Unreal-Projects\MothEffect\Source\MothEffect\Private\Tests\DeviceReleaseSafetyTests.cpp(129,9): warning C4996: 'FCollisionQueryParams::ClearIgnoredActors': Use ClearIgnoredSourceObjects instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	Params.ClearIgnoredActors();
+	       ^
+[5/11] Compile [x64] MothArenaVisualDirector.cpp
+[6/11] Compile [x64] Module.MothEffect.3.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\Particles\ParticleSystem.h(433,15): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	             ^
+D:\Program Files\Epic\UE_5.8\Engine\Plugins\FX\Niagara\Source\Niagara\Classes\NiagaraSystem.h(421,27): warning C4996: 'UObject::GetAssetRegistryTags': Implement the version that takes FAssetRegistryTagsContext instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	NIAGARA_API virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag>& OutTags) const override;
+	                         ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Sphere.h(74,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		virtual FReal GetRadius() const override
+		              ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Sphere.h(74,17): note: 模板实例化上下文(最早的实例化上下文)为
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Sphere.h(27,8): note: 在编译类模板“Chaos::TSphere”时
+	class TSphere final : public FImplicitObject
+	      ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Sphere.h(337,41): note: 查看对正在编译的 类 模板 实例化“Chaos::TSphere<Chaos::FReal,3>”的引用
+			return Chaos::FImplicitObjectPtr(new FSphere(Center, GetRadiusf()));
+			                                     ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(207,17): warning C4996: 'Chaos::FImplicitObject::GetMargin': Please use GetMarginf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		virtual FReal GetMargin() const override
+		              ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(212,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		virtual FReal GetRadius() const override
+		              ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Plane.h(42,16): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual FReal GetRadius() const override
+	              ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Plane.h(42,16): note: 模板实例化上下文(最早的实例化上下文)为
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(926,5): note: 查看对正在编译的 类 模板 实例化“Chaos::TPlane<Chaos::FConvex::FRealType,3>”的引用
+				Ar << TmpPlanes;
+				^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Box.h(104,17): warning C4996: 'Chaos::FImplicitObject::GetRadius': Please use GetRadiusf instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		virtual FReal GetRadius() const override
+		              ^
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Box.h(104,17): note: 模板实例化上下文(最早的实例化上下文)为
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Experimental\Chaos\Public\Chaos\Convex.h(966,23): note: 查看对正在编译的 类 模板 实例化“Chaos::TBox<Chaos::FConvex::FRealType,3>”的引用
+			TBox<FRealType,3>::SerializeAsAABB(Ar, LocalBoundingBox);
+			                   ^
+[7/11] Compile [x64] MothEffectGameMode.cpp
+[8/11] Compile [x64] PoolingRuntimeTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[9/11] Link [x64] UnrealEditor-MothEffect.lib
+  正在创建库 D:/YYchainsaw/Unreal-Projects/MothEffect/Intermediate/Build/Win64/x64/UnrealEditor/Development/MothEffect/UnrealEditor-MothEffect.lib 和对象 D:/YYchainsaw/Unreal-Projects/MothEffect/Intermediate/Build/Win64/x64/UnrealEditor/Development/MothEffect/UnrealEditor-MothEffect.exp
+[10/11] Link [x64] UnrealEditor-MothEffect.dll
+[11/11] WriteMetadata MothEffectEditor.target [NoUba]
+
+Total time in Unreal Build Accelerator local executor: 39.18 seconds
+Output binary: D:\Program Files\Epic\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe
+
+Result: Succeeded
+Total execution time: 51.06 seconds
+Trace written to file C:\Users\YYchainsaw\AppData\Local\UnrealBuildTool\Trace.uba with size 12.9kb

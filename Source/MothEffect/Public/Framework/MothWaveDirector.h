@@ -6,11 +6,13 @@
 #include "MothWaveDirector.generated.h"
 
 class AEnemyBase;
+class APawn;
 class AMothEffectCharacter;
 class UHealthComponent;
 class UMaterialInterface;
 class UStaticMeshComponent;
 class UTextRenderComponent;
+struct FMothEnemyHitFeedback;
 
 UENUM(BlueprintType)
 enum class EMothFlowPhase : uint8 { Ready, Preparing, Fighting, Victory, Defeat, Restarting };
@@ -45,8 +47,10 @@ public:
 	AMothWaveDirector();
 	virtual void Tick(float DeltaSeconds) override;
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool SetPlayer(AMothEffectCharacter* Player);
-	/** T18 calls this after tutorial completion. Cleans tutorial objects before preparing wave 1. */
+	/** Starts a clean combat run from the main menu. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool StartEncounter();
+	/** Menu controllers disable serialized map auto-start before the first director tick. */
+	UFUNCTION(BlueprintCallable, Category="Moth|Flow") void SetAutoStartEnabled(bool bEnabled) { bAutoStart = bEnabled; }
 	/** P0 restart reloads the current map, with admission and tasks closed before travel. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool RestartEncounter();
 	/** Tutorial uses Ready but still needs the same death/bounds cleanup before its result page. */
@@ -56,23 +60,36 @@ public:
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetAliveCount() const;
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetPendingCount() const;
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") float GetPreparationRemaining() const;
+	/** World game time, including preparation; freezes on pause and after the result commits. */
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") float GetRunElapsedSeconds() const;
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetKillCount() const { return KillCount; }
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetDeviceKillCount() const { return DeviceKillCount; }
+	/** Consecutive player-attributed device kills with no more than two game seconds between kills. */
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetBestChain() const { return BestChain; }
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") FText GetWaveObjective() const;
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") FText GetLastRewardText() const { return LastRewardText; }
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") float GetRewardRemainingSeconds() const;
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") AMothEffectCharacter* GetPlayer() const { return CombatPlayer.Get(); }
 	UFUNCTION(BlueprintPure, Category="Moth|Flow") bool IsEncounterRunning() const { return Phase == EMothFlowPhase::Preparing || Phase == EMothFlowPhase::Fighting; }
 	UPROPERTY(BlueprintAssignable, Category="Moth|Flow") FMothFlowChanged OnFlowChanged;
 	FMothWaveSpawnedNative OnEnemySpawnedNative;
 	const TArray<FMothWaveDefinition>& GetWaves() const { return Waves; }
 	const TArray<FVector>& GetSpawnPoints() const { return SpawnPoints; }
+	/** Repeat the authored encounter in additional scheduled batches; only editable before combat. */
+	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool SetWaveEnemyMultiplier(int32 Multiplier);
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetWaveEnemyMultiplier() const { return FMath::Clamp(WaveEnemyMultiplier, 1, 8); }
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	/** Fixed wave compositions from the level specification; edit positions/classes, not counts. */
+	/** Runtime definitions rebuilt from the authored compositions and configured multiplier. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Moth|Flow") TArray<FMothWaveDefinition> Waves;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Moth|Flow") TArray<FVector> SpawnPoints;
 	/** D01 / D02 / D03. Saved BP provides the T15 variants, keeping references cookable. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Flow") TArray<TSubclassOf<AEnemyBase>> EnemyClasses;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Moth|Flow") bool bAutoStart = false;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") int32 MaxAliveEnemies = 8;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow", meta=(ClampMin="1", ClampMax="8")) int32 WaveEnemyMultiplier = 3;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow", meta=(ClampMin="1", ClampMax="64")) int32 MaxAliveEnemies = 24;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float PreparationSeconds = 5.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float BatchSpawnDelaySeconds = 3.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float SpawnMinDistanceToPlayerCm = 600.0f;
@@ -85,6 +102,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Moth|Presentation") TArray<TObjectPtr<UTextRenderComponent>> WarningLabels;
 
 private:
+	friend struct FMothEncounterPresentationFixture;
 	struct FPendingBirth
 	{
 		FMothWaveSpawn Spec;
@@ -104,10 +122,23 @@ private:
 	uint64 RunGeneration = 0;
 	bool bChangingFlow = false;
 	bool bEndingPlay = false;
+	double RunStartedAt = -1;
+	float FinishedElapsedSeconds = 0;
+	int32 KillCount = 0;
+	int32 DeviceKillCount = 0;
+	int32 CurrentChain = 0;
+	int32 BestChain = 0;
+	double LastDeviceKillAt = -1;
+	double RewardEndsAt = 0;
+	FText LastRewardText;
+	TSet<int32> CountedVictimIds;
+	void RebuildWaves();
 	void PrepareWave(int32 Index);
 	void ProcessBirths(double Now);
 	bool FindBirthplace(const FMothWaveSpawn& Spec, FVector& Position) const;
+	void RegisterEnemy(AEnemyBase* Enemy);
 	void UnregisterEnemy(AEnemyBase* Enemy);
+	void HandleConfirmedEnemyHit(APawn* HitInstigator, const FMothEnemyHitFeedback& Feedback);
 	void HandleEnemyDied(AEnemyBase* Enemy, AActor* Source);
 	UFUNCTION() void HandleEnemyEndPlay(AActor* Enemy, EEndPlayReason::Type Reason);
 	UFUNCTION() void HandlePlayerDied(AActor* Player, AActor* Source);

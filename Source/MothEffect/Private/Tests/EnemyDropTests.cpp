@@ -1,5 +1,6 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "AI/EnemyBase.h"
+#include "Camera/CameraComponent.h"
 #include "Combat/RuleProjectile.h"
 #include "Components/BoxComponent.h"
 #include "Components/HealthComponent.h"
@@ -55,6 +56,12 @@ namespace MothDropTest
 			if (!F) return Setup();
 			if (F->World->GetTimerManager().HasBeenTickedThisFrame()) return false;
 			F->World->Tick(LEVELTICK_All, .01f);
+			// End the kill burst before later rounds can legitimately activate the enemy-sized fresh drop.
+			if (Case == ECase::Rifle && P && E->GetHealthComponent()->GetCurrentHealth() <= 0.0f)
+			{
+				P->GetRifle()->StopFire();
+				P->SetPrimaryDown(false);
+			}
 			if (F->World->GetTimeSeconds() < (Case == ECase::Terrain ? .55f : .65f)) return false;
 			if (Case != ECase::Terrain)
 			{
@@ -67,7 +74,9 @@ namespace MothDropTest
 			if (T->TestNotNull(TEXT("Actual Dormant physical drop survives enemy feedback cleanup"), D))
 			{
 				T->TestTrue(TEXT("Drop type matches fixed variant"), D->GetDeviceKind() == static_cast<EDeviceKind>(Index % 3));
-				T->TestTrue(TEXT("Fresh drop remains Dormant and physically simulated"), D->GetDeviceState() == EDeviceState::Dormant && D->GetPhysicsBody()->IsSimulatingPhysics());
+				T->TestTrue(TEXT("Fresh drop remains Dormant"), D->GetDeviceState() == EDeviceState::Dormant);
+				if (Case != ECase::Terrain || Index != 3)
+					T->TestTrue(TEXT("Supported drop settles without physical simulation"), D->IsGrounded() && !D->GetPhysicsBody()->IsSimulatingPhysics());
 				if (Case == ECase::Terrain)
 				{
 					if (Index == 3) { T->TestTrue(TEXT("Unsupported airborne birth falls under real gravity"), D->GetActorLocation().Z < 2960 && D->GetPhysicsBody()->GetPhysicsLinearVelocity().Z < -100); }
@@ -75,6 +84,9 @@ namespace MothDropTest
 					{
 						T->TestTrue(TEXT("Near-death placement stays within 150cm horizontally"), D->GetActorLocation().Size2D() <= 150);
 						auto* Holder = Player(*F, D->GetActorLocation() + FVector(0, -120, 90));
+						// Keep the pickup view on the pawn's clear side of neighboring drop capsules.
+						const FVector PickupView = Holder->GetActorLocation();
+						Holder->GetFollowCamera()->SetWorldLocationAndRotation(PickupView, (D->GetActorLocation() - PickupView).Rotation());
 						T->TestTrue(TEXT("Actual player pickup works after physical settling on floor/wall/slope"), Holder->TryPickupDevice(D));
 						T->TestTrue(TEXT("Pickup commits real Held ownership"), D->GetDeviceState() == EDeviceState::Held && Holder->GetHeldDevice() == D);
 					}
@@ -161,7 +173,8 @@ bool FMothDropSaved::RunTest(const FString&)
 		FLinearColor Tint;
 		TestTrue(TEXT("Saved material reloads the actual cyan/orange/purple parameter"), Bag->GetMaterial(ColorSlot)
 			&& Bag->GetMaterial(ColorSlot)->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("Tint")), Tint) && Tint.Equals(Colors[I], .001f));
-		TestTrue(TEXT("Hint is visible and contains stable D01/D02/D03 code"), Hint->IsVisible() && Hint->Text.ToString().Contains(FString::Printf(TEXT("D0%d"), I+1)));
+		TestTrue(TEXT("Legacy hint retains the stable D01/D02/D03 code"), Hint->Text.ToString().Contains(FString::Printf(TEXT("D0%d"), I+1)));
+		TestTrue(TEXT("Designer enemy UI keeps the legacy world hint hidden during gameplay"), Hint->bHiddenInGame);
 		TestTrue(TEXT("Appearance cannot block shots or navigation"), Bag->GetCollisionEnabled() == ECollisionEnabled::NoCollision && !Bag->CanEverAffectNavigation());
 		Shapes.Add(Bag->GetStaticMesh()); Materials.Add(Bag->GetMaterial(ColorSlot));
 	}
@@ -199,6 +212,8 @@ bool FMothDropBomb::RunTest(const FString&)
 		auto* E = MothDropTest::Enemy(F, I); if (!TestNotNull(TEXT("Variant for actual bomb"), E)) return false;
 		auto* Bomb = MothDropTest::Manager(F)->SpawnDevice(MothDropTest::DeviceClass(1), FTransform(FVector(150, 0, 25)));
 		if (!TestNotNull(TEXT("Real configured D02"), Bomb)) return false;
+		Bomb->ActivationDelaySeconds = 0.0f; // Isolate death/drop snapshot semantics; saved default delay is covered separately.
+		F.AgeDeviceForActivation(Bomb);
 		TestTrue(TEXT("Ordinary D02 activated"), Bomb->TryActivate(MothDropTest::Hit(0)));
 		TestEqual(TEXT("D02 actually kills full 60HP enemy"), E->GetHealthComponent()->GetCurrentHealth(), 0.0f);
 		if (!TestNotNull(TEXT("Bomb kill drops a normal Dormant"), E->GetDroppedDevice())) return false;

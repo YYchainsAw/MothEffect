@@ -20,7 +20,7 @@
 
 namespace MothFlowTest
 {
-	FHitContext Hit(float Damage = 100) { FHitContext H; H.HitId = FGuid::NewGuid(); H.Damage = Damage; H.ShotDirection = FVector::UpVector; return H; }
+	FHitContext Hit(float Damage = 100) { FHitContext H; H.HitId = FGuid::NewGuid(); H.Damage = Damage; H.ShotDirection = FVector::ForwardVector; return H; }
 	struct FFixture
 	{
 		FMothCombatTestWorld F;
@@ -34,14 +34,22 @@ namespace MothFlowTest
 			Player->GetCharacterMovement()->GravityScale = 0;
 			auto* Class = LoadClass<AMothWaveDirector>(nullptr, TEXT("/Game/MothEffect/Framework/BP_WaveDirector.BP_WaveDirector_C"));
 			if (Class) Director = F.World->SpawnActor<AMothWaveDirector>(Class);
-			if (Director) Director->SetPlayer(Player);
+			if (Director)
+			{
+				// Keep this historical transition fixture at its original 4/6/8 baseline.
+				Director->SetWaveEnemyMultiplier(1);
+				Director->SetPlayer(Player);
+			}
 		}
 	};
 	ADeviceBase* Device(FFixture& F, int32 Kind, FVector Position)
 	{
 		const TCHAR* Names[] { TEXT("Launcher"), TEXT("Bomb"), TEXT("Emitter") };
 		auto* Class = LoadClass<ADeviceBase>(nullptr, *FString::Printf(TEXT("/Game/MothEffect/Devices/Drops/BP_Drop%s.BP_Drop%s_C"), Names[Kind], Names[Kind]));
-		return F.Manager->SpawnDevice(Class, FTransform(Position));
+		auto* Result = F.Manager->SpawnDevice(Class, FTransform(Position));
+		F.F.AgeDeviceForActivation(Result);
+		if (Result) Result->ActivationDelaySeconds = 0.0f; // Isolate transition cleanup with an already-created effect.
+		return Result;
 	}
 	void Floor(FFixture& F)
 	{
@@ -55,7 +63,11 @@ namespace MothFlowTest
 	{
 		int32 Count = 0;
 		for (TActorIterator<AActor> It(World); It; ++It)
+		{
+			if (const auto* Enemy = Cast<AEnemyBase>(*It); Enemy && Enemy->IsPoolInactive()) continue;
+			if (const auto* Projectile = Cast<ARuleProjectile>(*It); Projectile && Projectile->IsPoolInactive()) continue;
 			if (!It->IsActorBeingDestroyed() && (It->IsA<AEnemyBase>() || It->IsA<ADeviceBase>() || It->IsA<ARuleProjectile>() || It->IsA<ALaunchColumn>())) ++Count;
+		}
 		return Count;
 	}
 }

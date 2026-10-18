@@ -36,8 +36,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="Moth|Lifecycle")
 	bool IsGameplayEnabled() const { return bGameplayEnabled && !bResetting; }
 	bool SetGameplayEnabled(bool bEnabled);
+	/** Closed terminal cleanup can reuse the generation just invalidated by SetGameplayEnabled(false).
+	 * Active-session resets always invalidate, even when the caller passes false. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Lifecycle")
-	void ResetManagedObjects();
+	void ResetManagedObjects(bool bInvalidateGeneration = true);
 	/** Optional arena bounds. Without these, use the world's enabled KillZ/world bounds checks. */
 	UFUNCTION(BlueprintCallable, Category="Moth|Lifecycle")
 	bool SetSafetyBounds(FVector Center, FVector HalfExtent);
@@ -79,7 +81,7 @@ protected:
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="1"))
 	int32 MaxActiveColumns = 6;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="1"))
-	int32 MaxLiveProjectiles = 64;
+	int32 MaxLiveProjectiles = 128;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="0.01"))
 	float DormantIdleLifetimeSeconds = 30.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="0.0"))

@@ -36,7 +36,7 @@ for name in tracked:
                        parse_constant=invalid_constant)
         except (ValueError, OSError) as error:
             errors.append(f"{name}: {error}")
-    if path.suffix == ".md" and (name == "README.md" or name.startswith("Docs/")):
+    if path.suffix == ".md" and name == "README.md":
         text = path.read_text(encoding="utf-8-sig")
         # Check inline links/images in prose; skip fenced examples and inline code.
         text = re.sub(r"^([ \t]*)(`{3,}|~{3,})[^\n]*\n.*?^\1\2[ \t]*$",

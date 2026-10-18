@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：T14 射击 AI 与导航接入
 
-版本 v0.2 · 2026-10-12 · 状态：Editor构建、77项Editor Automation与2项Game导航测试通过；当前Murdock图形PIE待验收
+版本 v0.3 · 2026-10-16 · 状态：原 T14 AI 与导航验证保留；当前敌人外观见下述 Drongo 接入
+
+2026-10-16：按用户选择，三个机关掉落类型统一使用 Drongo 模型与配套动画，父/子蓝图保持原类路径。灰盒外观由新版替换，当前动画、死亡展示时长和验证见 [Drongo 接入](Drongo_Enemy_Setup.md)；以下 T14 历史记录中的 Cube 与 0.5 秒反馈描述不代表当前 Drongo 表现。
 
 实现e201be2，场景/测试1ad8496，导航修正f68badf，动画夹具预期警告修正与UE验证源码678dc66，Refs #16；依据DEC33、TC21及[参数v0.15](../02_Design_Doc/GDD/Gameplay_Parameters.json)。2026-10-11开发验证当次仅本地提交；2026-10-12按用户要求推送codex/t14-shooting-ai → main并创建[T14 PR #42](https://github.com/YYchainsAw/MothEffect/pull/42)，当前Open。T13 PR #41已合并，本地继续develop。用户确认“尚未完成，保留待验收”，下列当前PIE检查继续待验收。
 

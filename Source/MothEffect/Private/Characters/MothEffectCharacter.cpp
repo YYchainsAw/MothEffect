@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/ChildActorComponent.h"
 #include "Components/HealthComponent.h"
+#include "Feedback/MothCharacterVoiceComponent.h"
+#include "Feedback/MothAudioSubsystem.h"
 #include "Components/ExternalImpulseComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
@@ -21,6 +23,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InputCoreTypes.h"
+#include "Settings/MothUserSettings.h"
 #include "MothEffect.h"
 #include "Weapons/Rifle.h"
 #include "Components/SceneComponent.h"
@@ -33,6 +36,7 @@ AMothEffectCharacter::AMothEffectCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	CharacterVoice = CreateDefaultSubobject<UMothCharacterVoiceComponent>(TEXT("CharacterVoice"));
 	ExternalImpulseComponent = CreateDefaultSubobject<UExternalImpulseComponent>(TEXT("ExternalImpulseComponent"));
 	RifleComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("RifleComponent"));
 	RifleComponent->SetupAttachment(GetMesh(), RifleAttachSocket);
@@ -204,7 +208,12 @@ void AMothEffectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		}
 		if (MouseLookAction)
 		{
-			EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AMothEffectCharacter::Look);
+			EnhancedInputComponent->BindActionValueLambda(MouseLookAction, ETriggerEvent::Triggered,
+				[this](const FInputActionValue& Value)
+				{
+					const UMothUserSettings* Settings = UMothUserSettings::Get();
+					Look(Value * (Settings ? Settings->GetMouseSensitivity() : 1.0f));
+				});
 		}
 
 		// Looking
@@ -636,6 +645,7 @@ void AMothEffectCharacter::HandleShotFired(ARifle* FiredRifle)
 	{
 		return;
 	}
+	CharacterVoice->NotifyShotFired();
 	if (FireMontage)
 	{
 		if (PlayAnimMontage(FireMontage) <= 0.0f && !bFireMontageWarningLogged)
@@ -684,6 +694,7 @@ void AMothEffectCharacter::SetGameplayEnabled(bool bEnabled)
 	ExternalImpulseComponent->SetGameplayEnabled(bEnabled);
 	if (!bEnabled)
 	{
+		if (auto* Audio = GetWorld() ? GetWorld()->GetSubsystem<UMothAudioSubsystem>() : nullptr) Audio->StopSpeaker(this);
 		CancelCombatInput();
 		CancelDeviceTasks();
 		ResetMovementInput();

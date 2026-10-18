@@ -28,6 +28,22 @@ void UHealthComponent::BeginPlay()
 	bEndingPlay = false;
 }
 
+void UHealthComponent::SetPoolInactive(bool bInactive)
+{
+	if (bPoolInactive != bInactive) ++PoolLifeGeneration;
+	bPoolInactive = bInactive;
+}
+
+void UHealthComponent::ResetForPoolReuse(float Value)
+{
+	++PoolLifeGeneration;
+	MaxHealth = FMath::IsFinite(Value) ? FMath::Max(1.0f, Value) : 1.0f;
+	CurrentHealth = MaxHealth;
+	AcceptedHits.Reset();
+	LastHitLifecycleGeneration = 0;
+	bHasDied = false;
+}
+
 void UHealthComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
@@ -40,27 +56,51 @@ bool UHealthComponent::ApplyHit(const FHitContext& Context)
 {
 	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
 	if (Session && !Session->IsGameplayEnabled()) return false;
-	if (bEndingPlay || !HasBegunPlay() || !IsAlive() || !GetWorld() || GetWorld()->IsPaused()
+	if (bEndingPlay || bPoolInactive || !HasBegunPlay() || !IsAlive() || !GetWorld() || GetWorld()->IsPaused()
 		|| !Context.HitId.IsValid() || !FMath::IsFinite(Context.Damage) || Context.Damage <= 0.0f
 		|| AcceptedHits.Contains(Context.HitId))
 	{
 		return false;
 	}
 
+	const uint64 LifecycleGeneration = Session ? Session->GetLifecycleGeneration() : 0;
+	const uint64 LifeGeneration = PoolLifeGeneration;
+	TGuardValue<int32> DispatchGuard(HitDispatchDepth, HitDispatchDepth + 1);
+	LastHitLifecycleGeneration = LifecycleGeneration;
+	const float PreviousHealth = CurrentHealth;
 	AcceptedHits.Add(Context.HitId);
 	CurrentHealth = FMath::Max(0.0f, CurrentHealth - Context.Damage);
+	const float RemainingHealth = CurrentHealth;
 	const bool bFatal = CurrentHealth <= 0.0f;
 	bHasDied = bFatal;
 	if (bFatal) OnDeathCommittedNative.Broadcast(GetOwner(), Context.SourceActor.Get());
-	if (bEndingPlay) return true;
+	if (bEndingPlay || bPoolInactive || LifeGeneration != PoolLifeGeneration) return true;
+	if (UMothFeedbackSubsystem* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+	{
+		Feedback->ReportConfirmedEnemyHit(GetOwner(), Context, PreviousHealth - RemainingHealth,
+			RemainingHealth, bFatal, LifecycleGeneration);
+	}
+	if (bEndingPlay || bPoolInactive || LifeGeneration != PoolLifeGeneration) return true;
 	const auto* VictimPawn = Cast<APawn>(GetOwner());
 	const auto* InstigatorPawn = Context.InstigatorPawn.Get();
-	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Hit, Context.ImpactPoint, Context.ShotDirection,
-		IsValid(InstigatorPawn) && InstigatorPawn != VictimPawn && InstigatorPawn->IsPlayerControlled() && InstigatorPawn->IsLocallyControlled(), false);
-	if (VictimPawn && VictimPawn->IsPlayerControlled() && VictimPawn->IsLocallyControlled())
-		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Damage, Context.ImpactPoint, Context.ShotDirection, false, true);
+	// Feedback observers may reset the run without destroying this health owner.
+	// Finish the committed damage/death below, but never emit old effects in the new run.
+	if (Session && Session->IsGenerationCurrent(LifecycleGeneration))
+	{
+		UMothFeedbackSubsystem* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>();
+		const bool bLocalConfirmedHit = IsValid(InstigatorPawn) && InstigatorPawn != VictimPawn
+			&& InstigatorPawn->IsPlayerControlled() && InstigatorPawn->IsLocallyControlled();
+		Feedback->Emit(EMothFeedbackCue::Hit, Context.ImpactPoint, Context.ShotDirection,
+			bLocalConfirmedHit, false);
+		if (!bPoolInactive && LifeGeneration == PoolLifeGeneration && Session->IsGenerationCurrent(LifecycleGeneration)
+			&& VictimPawn && VictimPawn->IsPlayerControlled() && VictimPawn->IsLocallyControlled())
+		{
+			Feedback->Emit(EMothFeedbackCue::Damage, Context.ImpactPoint, Context.ShotDirection, false, true);
+		}
+	}
+	if (bEndingPlay || bPoolInactive || LifeGeneration != PoolLifeGeneration) return true;
 	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
-	if (bFatal && !bEndingPlay)
+	if (bFatal && !bEndingPlay && !bPoolInactive && LifeGeneration == PoolLifeGeneration)
 	{
 		OnDied.Broadcast(GetOwner(), Context.SourceActor.Get());
 	}

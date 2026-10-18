@@ -28,4 +28,7 @@ struct MOTHEFFECT_API FHitContext
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hit")
 	float Damage = 0.0f;
+
+	/** Native attribution captured when a projectile is fired, surviving source actor expiry. */
+	bool bDeviceSource = false;
 };

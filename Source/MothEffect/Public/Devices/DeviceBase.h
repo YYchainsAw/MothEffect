@@ -11,6 +11,7 @@
 
 class AMothEffectCharacter;
 class USphereComponent;
+class UCapsuleComponent;
 class UStaticMeshComponent;
 class ADeviceBase;
 class USceneComponent;
@@ -37,6 +38,26 @@ class MOTHEFFECT_API ADeviceBase : public AActor, public IBallisticReactive, pub
 
 public:
 	ADeviceBase();
+	/** Time after spawning during which ballistic and blast hits cannot activate this device. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Activation", meta=(ClampMin="0.0", Units="s"))
+	float SpawnActivationProtectionSeconds = 0.5f;
+	/** Time between accepting an activation and starting its effect. World pause freezes it. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Activation", meta=(ClampMin="0.0", Units="s"))
+	float ActivationDelaySeconds = 0.3f;
+	UFUNCTION(BlueprintPure, Category="Device|Activation")
+	bool IsActivationPending() const { return bActivationPending; }
+	/** Display multiplier; the flight body and shot-query radii are configured separately. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Size", meta=(ClampMin="0.05", ClampMax="10.0"))
+	float VisualScale = 1.0f;
+	/** Constant world-up spin while grounded and waiting to be picked up or activated. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art", meta=(Units="deg/s"))
+	float DroppedRotationDegreesPerSecond = 60.0f;
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Device|Size")
+	void RefreshDeviceSize();
+	UFUNCTION(BlueprintPure, Category="Device|Motion")
+	bool IsGrounded() const { return bGrounded; }
+	bool WakeForExternalImpulse();
+	virtual void Tick(float DeltaSeconds) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art") bool bUsePrototypeAppearance = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Art") TSoftObjectPtr<UMothPrototypeArtProfile> PrototypeArtProfile;
 	/** Shared by the device and its enemy's backpack, with a graybox fallback. */
@@ -122,6 +143,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Device")
 	USphereComponent* GetPhysicsBody() const { return PhysicsBody.Get(); }
+	/** Read the configured value on a BP CDO before construction has resized its component. */
+	float GetConfiguredBodyRadiusCm() const { return FMath::IsFinite(BodyRadiusCm) ? FMath::Max(1.0f, BodyRadiusCm) : 20.0f; }
 	/** The backpack copies only this visual; physical/query roots remain unchanged. */
 	UStaticMeshComponent* GetDeviceMesh() const { return DeviceMesh.Get(); }
 
@@ -148,6 +171,14 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<USphereComponent> ShotCollider;
+
+	/** Enemy-sized shot and pickup query; never blocks character movement or device physics. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<UCapsuleComponent> DroppedCollider;
+
+	/** Keeps the authored mesh transform separate from the centered drop presentation. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	TObjectPtr<USceneComponent> VisualPivot;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> DeviceMesh;
@@ -199,6 +230,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter")
 	TSubclassOf<ARuleProjectile> EmitterProjectileClass;
 
+	/** At activation, aim once at the closest combat-enabled enemy within this world-space radius. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.0", Units="cm"))
+	float EmitterTargetRangeCm = 2000.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
 	float EmitterDurationSeconds = 3.0f;
 
@@ -215,11 +250,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Emitter", meta=(ClampMin="0.01", Units="s"))
 	float EmitterSpentVisualSeconds = 0.25f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Physics", meta=(ClampMin="1.0", Units="cm"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Size", meta=(ClampMin="1.0", Units="cm"))
 	float BodyRadiusCm = 20.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Physics", meta=(ClampMin="1.0", Units="cm"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Device|Size", meta=(ClampMin="1.0", Units="cm"))
 	float ShotRadiusCm = 25.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Device|Motion", meta=(ClampMin="0.1", Units="cm"))
+	float GroundSnapDistanceCm = 5.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Device|Motion", meta=(ClampMin="0.0", ClampMax="1.0"))
+	float GroundUpNormalMin = 0.65f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Device|Physics", meta=(ClampMin="0.01", Units="kg"))
 	float PhysicsMassKg = 2.0f;
@@ -232,6 +271,16 @@ protected:
 	bool bLogDeviceEvents = false;
 
 private:
+	bool bGrounded = false;
+	float DroppedVisualYaw = 0.0f;
+	void UpdateDroppedPresentation(float DeltaSeconds);
+	double GroundingAllowedAt = 0.0;
+	/** Saved with the mesh so repeated construction and reloads cannot multiply its size again. */
+	UPROPERTY()
+	float LastAppliedVisualScale = 1.0f;
+	void UpdateGrounding();
+	bool FindGroundSupport(FHitResult& Hit) const;
+	void SetGrounded(bool bNewGrounded);
 	bool bPrototypeApplied = false;
 	UPROPERTY(Transient) TObjectPtr<UStaticMesh> OriginalVisualMesh;
 	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInterface>> OriginalVisualMaterials;
@@ -267,6 +316,13 @@ private:
 	bool bGameplayEnabled = true;
 	bool bEndingPlay = false;
 	bool bEffectRunning = false;
+	bool bActivationPending = false;
+	double SpawnActivationAllowedAt = 0.0;
+	FTimerHandle ActivationDelayTimer;
+	TWeakObjectPtr<AActor> PendingActivationSource;
+	TWeakObjectPtr<APawn> PendingActivationInstigator;
+	float PendingActivationDamage = 0.0f;
+	void BeginActivationEffect();
 	FTimerHandle EmitterShotTimer;
 	FTimerHandle EmitterExpiryTimer;
 	TWeakObjectPtr<APawn> EmitterInstigator;
@@ -286,6 +342,7 @@ private:
 
 	void ExplodeBomb(const FHitContext& Context);
 
+	FVector ResolveEmitterActivationDirection(const FVector& FallbackDirection) const;
 	void ScheduleEmitterShot();
 	void FireEmitterShot();
 	void ExpireEmitter();

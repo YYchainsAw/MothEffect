@@ -44,6 +44,8 @@ namespace MothFlowRuntimeTest
 	}
 	AMothPlayerAutomationCharacter* ReplacePlayer(UWorld* World, AMothWaveDirector* D, FVector Position)
 	{
+		// Preserve the original batch-gap / composition cases; scaled waves have a separate test.
+		if (D) D->SetWaveEnemyMultiplier(1);
 		const FTransform Transform(Position);
 		auto* P = World->SpawnActorDeferred<AMothPlayerAutomationCharacter>(AMothPlayerAutomationCharacter::StaticClass(), Transform,
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
@@ -64,7 +66,7 @@ namespace MothFlowRuntimeTest
 	{
 		TArray<TWeakObjectPtr<AEnemyBase>> Snapshot;
 		for (TActorIterator<AEnemyBase> It(World); It; ++It)
-			if (!It->IsActorBeingDestroyed() && It->GetHealthComponent()->IsAlive()) Snapshot.Add(*It);
+			if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive() && It->GetHealthComponent()->IsAlive()) Snapshot.Add(*It);
 		for (auto E : Snapshot) if (E.IsValid())
 		{
 			E->GetHealthComponent()->ApplyHit(Hit());
@@ -230,7 +232,7 @@ namespace MothFlowRuntimeTest
 			else if (Stage == 2 && W->GetTimeSeconds() >= WaitUntil)
 			{
 				T->TestEqual(TEXT("Enemy outside unregisters exactly once"), D->GetAliveCount(), 3);
-				T->TestTrue(TEXT("Bounds removal ends the actor without a death drop"), !Escaped.IsValid() || Escaped->IsActorBeingDestroyed());
+				T->TestTrue(TEXT("Bounds removal returns the enemy without a death drop"), !Escaped.IsValid() || Escaped->IsActorBeingDestroyed() || Escaped->IsPoolInactive());
 				T->TestTrue(TEXT("Administrative removal never attempts a drop"), !Escaped.IsValid() || Escaped->GetDropAttempts() == 0);
 				T->TestTrue(TEXT("Outside device removed"), !OutsideDevice.IsValid() || OutsideDevice->IsActorBeingDestroyed());
 				T->TestTrue(TEXT("Outside projectile removed"), !OutsideProjectile.IsValid() || OutsideProjectile->IsActorBeingDestroyed());
@@ -308,7 +310,7 @@ namespace MothFlowRuntimeTest
 				T->TestEqual(TEXT("Result clears queue despite suspended spawn call"), D->GetPendingCount(), 0);
 				T->TestEqual(TEXT("No deferred actor resurrects alive count"), D->GetAliveCount(), 0);
 				int32 Alive = 0;
-				for (TActorIterator<AEnemyBase> It(W); It; ++It) if (!It->IsActorBeingDestroyed()) ++Alive;
+				for (TActorIterator<AEnemyBase> It(W); It; ++It) if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive()) ++Alive;
 				T->TestEqual(TEXT("Unfinished birth ended before post-result BeginPlay"), Alive, 0);
 				T->TestFalse(TEXT("Session still closed after returning from deferred spawn"), W->GetSubsystem<UDeviceLifecycleSubsystem>()->IsGameplayEnabled());
 				T->AddInfo(TEXT("Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue."));
@@ -445,9 +447,22 @@ namespace MothFlowRuntimeTest
 				// Reload owns the action: cancel it briefly for pickup, then arm it after held cleanup on result.
 				P->GetRifle()->CancelReload();
 				T->TestTrue(TEXT("Actual held device before result"), P->TryPickupDevice(Held));
-				auto* Emitter = Device(W, 2, FVector(0,0,100)); Emitter->TryActivate(Hit());
-				auto* Column = Device(W, 0, FVector(1000,0,30)); Column->TryActivate(Hit());
-				T->TestNotNull(TEXT("Actual active column"), Column->GetLaunchColumn());
+				RestartEmitter = Device(W, 2, FVector(0,0,100));
+				RestartColumn = Device(W, 0, FVector(1000,0,30));
+				WaitUntil = W->GetTimeSeconds()+FMath::Max(RestartEmitter->SpawnActivationProtectionSeconds, RestartColumn->SpawnActivationProtectionSeconds)+.01;
+				Stage = 10; return false;
+			}
+			if (Stage == 10 && W->GetTimeSeconds() >= WaitUntil)
+			{
+				auto* Emitter = RestartEmitter.Get(); auto* Column = RestartColumn.Get();
+				Emitter->TryActivate(Hit()); Column->TryActivate(Hit());
+				T->TestTrue(TEXT("Saved cleanup hazards retain their default pending delay"), Emitter->IsActivationPending() && Column->IsActivationPending());
+				WaitUntil = W->GetTimeSeconds()+FMath::Max(Emitter->ActivationDelaySeconds, Column->ActivationDelaySeconds)+.05;
+				Stage = 11; return false;
+			}
+			if (Stage == 11 && W->GetTimeSeconds() >= WaitUntil)
+			{
+				T->TestTrue(TEXT("Actual delayed active column exists before result"), RestartColumn.IsValid() && RestartColumn->GetLaunchColumn()!=nullptr);
 				W->SpawnActor<ARuleProjectile>(FVector(2000,0,400), FRotator::ZeroRotator);
 				T->TestTrue(TEXT("Actual live projectile before result"), W->GetSubsystem<UDeviceLifecycleSubsystem>()->GetProjectileCount() > 0);
 				T->TestTrue(TEXT("Lethal hit commits result"), P->GetHealthComponent()->ApplyHit(Hit(10000)));
@@ -476,6 +491,8 @@ namespace MothFlowRuntimeTest
 		TWeakObjectPtr<AMothEffectCharacter> OldPlayer;
 		TWeakObjectPtr<AMothPlayerAutomationCharacter> P;
 		TWeakObjectPtr<AMothWaveDirector> CurrentDirector;
+		TWeakObjectPtr<ADeviceBase> RestartColumn;
+		TWeakObjectPtr<ADeviceBase> RestartEmitter;
 	};
 }
 

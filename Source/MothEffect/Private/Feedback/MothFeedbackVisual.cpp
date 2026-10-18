@@ -1,6 +1,9 @@
 #include "Feedback/MothFeedbackVisual.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraTypes.h"
 #include "UObject/ConstructorHelpers.h"
 
 AMothFeedbackVisual::AMothFeedbackVisual()
@@ -19,13 +22,57 @@ AMothFeedbackVisual::AMothFeedbackVisual()
 	}
 }
 
-void AMothFeedbackVisual::InitializeCue(EMothFeedbackCue Kind, const FMothFeedbackStyle& Style, UMothFeedbackProfile* Profile, FVector Direction, float RadiusCm)
+void AMothFeedbackVisual::InitializeCue(EMothFeedbackCue Kind, const FMothFeedbackStyle& Style, UMothFeedbackProfile* Profile, FVector Direction, float RadiusCm, UNiagaraSystem* System)
 {
 	Cue=Kind; Duration=FMath::Clamp(Style.Duration,.02f,2.f);
 	Size=FMath::Clamp(RadiusCm>0?RadiusCm:Style.SizeCm,1.f,1000.f);
 	// Bomb ring stays horizontal; directional flashes align to the committed flight direction.
 	SetActorRotation(Cue==EMothFeedbackCue::Bomb||Cue==EMothFeedbackCue::Launcher?FRotator::ZeroRotator:Direction.GetSafeNormal().Rotation());
-	if (auto* Material=Profile->Material.LoadSynchronous())
+	bDrawLegacyShape=Style.bLegacyVisual && !IsValid(System);
+	if (IsValid(System))
+	{
+		NiagaraComponent=NewObject<UNiagaraComponent>(this,TEXT("CueNiagara"));
+		AddInstanceComponent(NiagaraComponent);
+		NiagaraComponent->SetupAttachment(RootComponent);
+		NiagaraComponent->SetAutoActivate(false);
+		// This bounded actor owns cleanup, even if the selected system loops forever.
+		NiagaraComponent->SetAutoDestroy(false);
+		NiagaraComponent->SetAsset(System);
+		NiagaraComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		NiagaraComponent->SetGenerateOverlapEvents(false);
+		NiagaraComponent->SetCanEverAffectNavigation(false);
+		NiagaraComponent->SetTickableWhenPaused(false);
+		NiagaraComponent->RegisterComponent();
+		const FQuat Offset=Style.NiagaraRotation.ContainsNaN()?FQuat::Identity:Style.NiagaraRotation.Quaternion();
+		NiagaraComponent->SetWorldRotation(Direction.GetSafeNormal().Rotation().Quaternion()*Offset);
+		FVector Scale=Style.NiagaraScale.ContainsNaN()?FVector::OneVector:Style.NiagaraScale;
+		Scale=Scale.GetAbs().BoundToBox(FVector(.001f),FVector(100.f));
+		if (Style.bScaleNiagaraToRadius && FMath::IsFinite(RadiusCm) && RadiusCm>0)
+		{
+			const float Reference=FMath::IsFinite(Style.NiagaraReferenceRadiusCm)?FMath::Max(1.f,Style.NiagaraReferenceRadiusCm):100.f;
+			Scale*=FMath::Clamp(RadiusCm/Reference,.01f,100.f);
+		}
+		NiagaraComponent->SetRelativeScale3D(Scale);
+		// Do not add unused user overrides to third-party systems with fixed authored colors.
+		const auto HasColor=[System](FName Parameter)
+		{
+			return !Parameter.IsNone() && System->GetExposedParameters().IndexOf(
+				FNiagaraVariable(FNiagaraTypeDefinition::GetColorDef(),Parameter))!=INDEX_NONE;
+		};
+		FName ColorParameter=Style.NiagaraColorParameter;
+		if (ColorParameter.IsNone())
+			ColorParameter=HasColor(TEXT("User.MothColor"))?FName(TEXT("User.MothColor")):FName(TEXT("User.Color"));
+		if (HasColor(ColorParameter)) NiagaraComponent->SetVariableLinearColor(ColorParameter,Style.Color);
+		if (!Style.NiagaraScaleParameter.IsNone() && System->GetExposedParameters().IndexOf(
+			FNiagaraVariable(FNiagaraTypeDefinition::GetFloatDef(),Style.NiagaraScaleParameter))!=INDEX_NONE)
+			NiagaraComponent->SetVariableFloat(Style.NiagaraScaleParameter,Scale.GetMax());
+		if (!Style.NiagaraDirectionParameter.IsNone() && System->GetExposedParameters().IndexOf(
+			FNiagaraVariable(FNiagaraTypeDefinition::GetVec3Def(),Style.NiagaraDirectionParameter))!=INDEX_NONE)
+			NiagaraComponent->SetVariableVec3(Style.NiagaraDirectionParameter,Direction.GetSafeNormal());
+		NiagaraComponent->Activate(true);
+		Duration=FMath::IsFinite(Style.NiagaraLifetimeSeconds)?FMath::Clamp(Style.NiagaraLifetimeSeconds,.05f,10.f):2.f;
+	}
+	if (bDrawLegacyShape && Profile) if (auto* Material=Profile->Material.LoadSynchronous())
 		for (const auto& Mesh : Pieces)
 		{
 			auto* MID=UMaterialInstanceDynamic::Create(Material,this);
@@ -33,10 +80,27 @@ void AMothFeedbackVisual::InitializeCue(EMothFeedbackCue Kind, const FMothFeedba
 			MID->SetScalarParameterValue(TEXT("Intensity"),FMath::Clamp(Profile->EmissiveStrength,.1f,8.f));
 			Mesh->SetMaterial(0,MID);
 		}
+	if (!bDrawLegacyShape && !NiagaraComponent) { Destroy(); return; }
 	SetLifeSpan(Duration); UpdateShape();
 }
 
 void AMothFeedbackVisual::Tick(float DeltaSeconds) { Super::Tick(DeltaSeconds); Age+=DeltaSeconds; UpdateShape(); }
+
+void AMothFeedbackVisual::SetCuePaused(bool bPaused)
+{
+	if (IsValid(NiagaraComponent)) NiagaraComponent->SetPaused(bPaused);
+}
+
+void AMothFeedbackVisual::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (IsValid(NiagaraComponent))
+	{
+		NiagaraComponent->DeactivateImmediate();
+		NiagaraComponent->DestroyComponent();
+		NiagaraComponent=nullptr;
+	}
+	Super::EndPlay(EndPlayReason);
+}
 
 void AMothFeedbackVisual::UpdateShape()
 {
@@ -47,7 +111,8 @@ void AMothFeedbackVisual::UpdateShape()
 	const int32 Count=bRing?12:bCross?2:bLift?3:4;
 	for (int32 I=0; I<Pieces.Num(); ++I)
 	{
-		const auto& Mesh=Pieces[I]; Mesh->SetVisibility(I<Count);
+		const auto& Mesh=Pieces[I]; Mesh->SetVisibility(bDrawLegacyShape&&I<Count);
+		if (!bDrawLegacyShape) continue;
 		if (I>=Count) continue;
 		FVector Position; FRotator Rotation=FRotator::ZeroRotator; FVector Scale;
 		if (bRing)

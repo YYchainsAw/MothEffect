@@ -10,6 +10,7 @@
 #include "GameFramework/PlayerState.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/AutomationTest.h"
+#include "NiagaraSystem.h"
 #include "Sound/SoundBase.h"
 #include "Sound/SoundAttenuation.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
@@ -26,7 +27,7 @@ bool FMothFeedbackAssetsTest::RunTest(const FString&)
 	const auto* Profile=F.World->GetSubsystem<UMothFeedbackSubsystem>()->GetProfile();
 	if (!TestNotNull(TEXT("Default saved feedback profile"),Profile)) return false;
 	TestTrue(TEXT("Loads saved profile rather than fallback"),Profile->GetPathName().StartsWith(TEXT("/Game/MothEffect/Feedback/DA_DefaultFeedback")));
-	TestEqual(TEXT("Twelve editable cue categories"),Profile->Styles.Num(),12);
+	TestEqual(TEXT("Thirteen editable cue categories including successful pickup"),Profile->Styles.Num(),13);
 	TestNotNull(TEXT("Shipping material loads"),Profile->Material.LoadSynchronous());
 	TestNotNull(TEXT("Spatial attenuation loads"),Profile->Attenuation.LoadSynchronous());
 	TSet<USoundBase*> Sounds;
@@ -46,7 +47,10 @@ bool FMothFeedbackCommitTest::RunTest(const FString&)
 	FMothCombatTestWorld F;
 	auto* Feedback=F.World->GetSubsystem<UMothFeedbackSubsystem>();
 	auto* Device=F.Spawn<ADeviceBase>(FVector(0,0,300));
+	Device->ActivationDelaySeconds=0.0f; // This case isolates committed effect feedback and geometry.
 	FHitContext Hit; Hit.HitId=FGuid::NewGuid(); Hit.ShotDirection=FVector(0,2,1); Hit.ImpactPoint=Device->GetActorLocation();
+	const FVector Heading=Hit.ShotDirection.GetSafeNormal2D();
+	F.AgeDeviceForActivation(Device);
 	TestTrue(TEXT("Real device activation commits"),Device->TryActivate(Hit));
 	TestEqual(TEXT("One activation cue"),Feedback->GetCueCount(EMothFeedbackCue::Emitter),uint64(1));
 	TestFalse(TEXT("Same hit and subsequent hits cannot re-activate"),Device->TryActivate(Hit));
@@ -64,10 +68,10 @@ bool FMothFeedbackCommitTest::RunTest(const FString&)
 	TestEqual(TEXT("Seven runtime pieces with no BP edits"),MarkerCount,7);
 	if (TestNotNull(TEXT("Runtime directional shaft visible"),Shaft))
 	{
-		TestTrue(TEXT("Arrow rotation is locked to the shot, independent of body roll"),Shaft->GetForwardVector().Equals(Hit.ShotDirection.GetSafeNormal(),.001));
-		const FVector Expected=Device->GetActorLocation()+Hit.ShotDirection.GetSafeNormal()*(32+Feedback->GetProfile()->DirectionLengthCm*.5f);
+		TestTrue(TEXT("Arrow rotation is locked to the horizontal shot projection, independent of body roll"),Shaft->GetForwardVector().Equals(Heading,.001));
+		const FVector Expected=Device->GetActorLocation()+Heading*(32+Feedback->GetProfile()->DirectionLengthCm*.5f);
 		TestTrue(TEXT("Arrow follows translation"),Shaft->GetComponentLocation().Equals(Expected,.01));
-		const FVector Tip=Device->GetActorLocation()+Hit.ShotDirection.GetSafeNormal()*(32+Feedback->GetProfile()->DirectionLengthCm+1);
+		const FVector Tip=Device->GetActorLocation()+Heading*(32+Feedback->GetProfile()->DirectionLengthCm+1);
 		for (auto* Mesh:Meshes) if (Mesh->HasAnyFlags(RF_Transient)&&Mesh->IsVisible()&&FMath::IsNearlyEqual(Mesh->GetComponentScale().X,.22))
 		{
 			const FVector Front=Mesh->GetComponentLocation()+Mesh->GetForwardVector()*11;
@@ -118,6 +122,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothFeedbackCleanupTest,"MothEffect.Feedback.B
 bool FMothFeedbackCleanupTest::RunTest(const FString&)
 {
 	FMothCombatTestWorld F; auto* Feedback=F.World->GetSubsystem<UMothFeedbackSubsystem>();
+	// This test exercises the original geometric lifetime and ordered queue, independently
+	// of the separately configured Niagara lifetime covered by NiagaraFeedbackTests.
+	auto& ImpactStyle=Feedback->GetProfile()->Styles[EMothFeedbackCue::Impact];
+	TGuardValue<TSoftObjectPtr<UNiagaraSystem>> Niagara(ImpactStyle.NiagaraSystem,TSoftObjectPtr<UNiagaraSystem>());
+	TGuardValue<bool> Legacy(ImpactStyle.bLegacyVisual,true);
 	auto* Session=F.World->GetSubsystem<UDeviceLifecycleSubsystem>();
 	auto* Device=F.Spawn<ADeviceBase>(FVector(0,0,300));
 	for (int32 I=0; I<40; ++I) Feedback->Emit(EMothFeedbackCue::Impact,FVector(I*10,0,300));

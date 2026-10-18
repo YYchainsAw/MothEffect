@@ -1,0 +1,59 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "YYCHAINSAW",
+			"instance": "436079994BC628C6531ADE909EF48086",
+			"instanceName": "YYCHAINSAW-5008",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "AMD Radeon 780M Graphics",
+			"cPUModel": "AMD Ryzen 7 8845H w/ Radeon 780M Graphics",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.18-06.30.01",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.625896692276001,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "PostProcessPreservesCombatAndCollision",
+			"fullTestPath": "MothEffect.ArenaVisual.PostProcessPreservesCombatAndCollision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"436079994BC628C6531ADE909EF48086"
+			],
+			"duration": 1.6111612319946289,
+			"dateTime": "2026.10.18-06.30.00",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ScopedLightingIsIdempotentAndRestored",
+			"fullTestPath": "MothEffect.ArenaVisual.ScopedLightingIsIdempotentAndRestored",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"436079994BC628C6531ADE909EF48086"
+			],
+			"duration": 0.014735400676727295,
+			"dateTime": "2026.10.18-06.30.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

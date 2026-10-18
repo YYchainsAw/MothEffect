@@ -1,0 +1,2915 @@
+{
+  "devices": [
+    {
+      "deviceName": "YYCHAINSAW",
+      "instance": "8D197DDA445C52ECB69E8696501E9BF8",
+      "instanceName": "YYCHAINSAW-17124",
+      "platform": "WindowsEditor",
+      "oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+      "model": "Default",
+      "gPU": "AMD Radeon 780M Graphics",
+      "cPUModel": "AMD Ryzen 7 8845H w/ Radeon 780M Graphics",
+      "rAMInGB": 32,
+      "renderMode": "D3D12_SM6",
+      "rHI": "D3D12 (SM6)",
+      "appInstanceLog": ""
+    }
+  ],
+  "reportCreatedOn": "2026.10.14-13.27.39",
+  "succeeded": 3,
+  "succeededWithWarnings": 9,
+  "failed": 0,
+  "notRun": 0,
+  "inProcess": 0,
+  "totalDuration": 126.16705322265625,
+  "comparisonExported": false,
+  "comparisonExportDirectory": "",
+  "tests": [
+    {
+      "testDisplayName": "BothRampsPhysicalWalking",
+      "fullTestPath": "MothEffect.ArenaRuntime.BothRampsPhysicalWalking",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 8.012907028198242,
+      "dateTime": "2026.10.14-13.25.33",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Saved arena ramp side=0 actual=X=1657.246 Y=1200.000 Z=212.138 destination=X=1700.000 Y=1200.000 Z=120.000",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.37"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Saved arena ramp side=1 actual=X=1942.284 Y=1200.000 Z=212.150 destination=X=1900.000 Y=1200.000 Z=120.000",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.41"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PhysicalProjectilesAgainstCover",
+      "fullTestPath": "MothEffect.ArenaRuntime.PhysicalProjectilesAgainstCover",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 0.4161617159843445,
+      "dateTime": "2026.10.14-13.25.41",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "Saved arena physical P01 blocker=StaticMeshActor_9 lowFlight=X=-500.000 Y=-532.632 Z=130.000",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.41"
+        }
+      ],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SavedRoutesSupportAndCameraCollision",
+      "fullTestPath": "MothEffect.ArenaRuntime.SavedRoutesSupportAndCameraCollision",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 0.0052458010613918304,
+      "dateTime": "2026.10.14-13.25.41",
+      "entries": [],
+      "warnings": 0,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ArenaLayerAndVisualGallery",
+      "fullTestPath": "MothEffect.ArtRuntime.ArenaLayerAndVisualGallery",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 3.9572086334228516,
+      "dateTime": "2026.10.14-13.25.41",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "T20 runtime: actual saved device appearances=3 coverVisuals=9 runes=3 layers=1; main arena blocker and reversible layer verified",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.45"
+        }
+      ],
+      "warnings": 11,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ActualActionsPauseAndCleanup",
+      "fullTestPath": "MothEffect.FeedbackRuntime.ActualActionsPauseAndCleanup",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 5.616555690765381,
+      "dateTime": "2026.10.14-13.25.45",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.47"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "T19 feedback runtime: shot=2 hit=6 launcher=1 bomb=1 emitter=1 pulse=3 audioAtPause=1",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.50"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.51"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.51"
+        }
+      ],
+      "warnings": 15,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ActionDrivenTutorialAndPause",
+      "fullTestPath": "MothEffect.UIRuntime.ActionDrivenTutorialAndPause",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 14.497075080871582,
+      "dateTime": "2026.10.14-13.25.51",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign InteractAction=IA_Interact and map E in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.53"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign AimAction in the player Blueprint and map it in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.53"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: Assign PrimaryAction and ReloadAction in the player Blueprint and map them in IMC_MothGameplay.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.53"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.53"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Real blast kills character practice target; real D01 physics raises its box before step advances",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.58"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Missed-throw real refill observed after 1.088s gameplay time",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.25.59"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Actual held-to-thrown event plus above-ground W01 evidence advances airborne step",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.00"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogMothEffect: FireMontage 'AnimMontage_0' could not play on MothPlayerAutomationCharacter_0. Assign a Montage compatible with the player mesh skeleton and AnimGraph Slot.",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.00"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.04"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.04"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        }
+      ],
+      "warnings": 16,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "StartBattleDefeatAndRestart",
+      "fullTestPath": "MothEffect.UIRuntime.StartBattleDefeatAndRestart",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 4.819726943969727,
+      "dateTime": "2026.10.14-13.26.05",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.10"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.10"
+        }
+      ],
+      "warnings": 33,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "EnemyPlayerObjectBoundsAndPause",
+      "fullTestPath": "MothEffect.WaveFlowRuntime.EnemyPlayerObjectBoundsAndPause",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 6.4987921714782715,
+      "dateTime": "2026.10.14-13.26.10",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.13"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "TC32 runtime: player defeat; escaped living enemy unregisters once without drop; outside D03/P01 release capacity; actual pause freezes preparation.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        }
+      ],
+      "warnings": 1,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ResultDuringDeferredWorldSpawnCallback",
+      "fullTestPath": "MothEffect.WaveFlowRuntime.ResultDuringDeferredWorldSpawnCallback",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 6.576867580413818,
+      "dateTime": "2026.10.14-13.26.17",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.17"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.18"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.18"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.20"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.23"
+        }
+      ],
+      "warnings": 12,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SpawnWarningInterruptedByPhysicalBlocker",
+      "fullTestPath": "MothEffect.WaveFlowRuntime.SpawnWarningInterruptedByPhysicalBlocker",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 7.740846633911133,
+      "dateTime": "2026.10.14-13.26.23",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.23"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.24"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.26"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "TC22 runtime: physical WorldDynamic capsule blocker appearing during warning retains S2 pending, removal requires a fresh .8s warning and births at original S2.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        }
+      ],
+      "warnings": 12,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "TenActualMapRestartsWithHazards",
+      "fullTestPath": "MothEffect.WaveFlowRuntime.TenActualMapRestartsWithHazards",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 43.04084014892578,
+      "dateTime": "2026.10.14-13.26.31",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.31"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.32"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.32"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.34"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.35"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.35"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.36"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.38"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.39"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.40"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.42"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.44"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.45"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.47"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.48"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.49"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.49"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.51"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.52"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.53"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.53"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.55"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.56"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.56"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.57"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.26.59"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.01"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.04"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.05"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.06"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.08"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.09"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.10"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.10"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.12"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogLinker: Unable to load Paragon_Proto_Retarget with outer Package /Game/ParagonMurdock/Characters/Heroes/Murdock/Meshes/Paragon_Proto_Retarget because its class (Rig) does not exist",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] InputAction Event references unknown Action 'Jump' for  InputAction Jump",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUp' for  InputAxis LookUp",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'LookUpRate' for  InputAxis LookUpRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'TurnRate' for  InputAxis TurnRate",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'Turn' for  InputAxis Turn",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveRight' for  InputAxis MoveRight",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogBlueprint: [AssetLog] C:\\Users\\YYchainsaw\\AppData\\Local\\Temp\\MothEffect-DeviceFoundation-8850538d4da04b1982c890918e336281\\HEADSnapshot\\Content\\ParagonMurdock\\Characters\\Heroes\\Murdock\\MurdockPlayerCharacter.uasset: [Compiler] Input Axis Event references unknown Axis 'MoveForward' for  InputAxis MoveForward",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.13"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg: Divide by zero: Divide_DoubleDouble",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.14"
+        },
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogScript: Script Msg called by: ABP_MothMurdock_C /Game/MothEffect/Maps/L_Arena_01.L_Arena_01:PersistentLevel.BP_MothPlayer_C_0.CharacterMesh0.ABP_MothMurdock_C_0",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.14"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "TC23 runtime: ten fresh-world OpenLevel restarts with Held, active D03/column, live P01 and rifle tasks; fresh health/ammo/counters verified each time.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.14"
+        }
+      ],
+      "warnings": 131,
+      "errors": 0,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "ThreeWavesBatchGapBlockedBirthVictory",
+      "fullTestPath": "MothEffect.WaveFlowRuntime.ThreeWavesBatchGapBlockedBirthVictory",
+      "tags": [],
+      "state": "Success",
+      "deviceInstance": [
+        "8D197DDA445C52ECB69E8696501E9BF8"
+      ],
+      "duration": 24.984825134277344,
+      "dateTime": "2026.10.14-13.27.14",
+      "entries": [
+        {
+          "event": {
+            "type": "Warning",
+            "message": "LogParticles: Particle Notify: Particle system is null for particle notify 'PlayParticleEffect' in anim: '/Game/ParagonMurdock/Characters/Heroes/Murdock/Animations/LevelStart_Montage.LevelStart_Montage'",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.16"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "TC22 runtime: actual births=4/6/8 peak=8; blocked pending and full warning; victory at 25.454s",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.10.14-13.27.39"
+        }
+      ],
+      "warnings": 1,
+      "errors": 0,
+      "artifacts": []
+    }
+  ]
+}

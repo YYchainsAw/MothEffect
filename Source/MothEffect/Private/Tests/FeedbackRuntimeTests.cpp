@@ -91,13 +91,23 @@ namespace MothFeedbackRuntime
 			{
 				auto* Lift=S->GetPracticeDevice(EDeviceKind::Launcher); if (!T->TestNotNull(TEXT("Saved D01"),Lift)) return true;
 				Lift->TryActivate(Hit(Lift));
+				T->TestTrue(TEXT("Saved launcher commits pending before launch feedback"),Lift->IsActivationPending());
+				WaitWorld=W->GetTimeSeconds()+Lift->ActivationDelaySeconds+.01; Stage=31; return false;
+			}
+			if (Stage==31)
+			{
 				T->TestTrue(TEXT("Saved launcher publishes successful launch feedback"),F->GetCueCount(EMothFeedbackCue::Launcher)>0);
 				Capture(TEXT("03_Launcher.png")); Wait=FPlatformTime::Seconds()+.6; Stage=4; return false;
 			}
 			if (Stage==4)
 			{
 				auto* Bomb=S->GetPracticeDevice(EDeviceKind::Bomb); if (!T->TestNotNull(TEXT("Saved D02"),Bomb)) return true;
-				Bomb->TryActivate(Hit(Bomb)); T->TestTrue(TEXT("Saved immediate bomb publishes explosion ring"),F->GetCueCount(EMothFeedbackCue::Bomb)>0);
+				Bomb->TryActivate(Hit(Bomb)); T->TestTrue(TEXT("Saved bomb waits before its explosion ring"),Bomb->IsActivationPending());
+				WaitWorld=W->GetTimeSeconds()+Bomb->ActivationDelaySeconds+.01; Stage=41; return false;
+			}
+			if (Stage==41)
+			{
+				T->TestTrue(TEXT("Saved delayed bomb publishes explosion ring"),F->GetCueCount(EMothFeedbackCue::Bomb)>0);
 				Capture(TEXT("04_Bomb.png")); Wait=FPlatformTime::Seconds()+.5; Stage=5; return false;
 			}
 			if (Stage==5)
@@ -106,8 +116,12 @@ namespace MothFeedbackRuntime
 				FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 				Emitter=W->SpawnActor<ADeviceBase>(Class,FVector(-2200,-1300,160),FRotator::ZeroRotator,Params);
 				if (!T->TestNotNull(TEXT("Saved D03 inherits native feedback"),Emitter.Get())) return true;
+				WaitWorld=W->GetTimeSeconds()+Emitter->SpawnActivationProtectionSeconds+.01; Stage=51; return false;
+			}
+			if (Stage==51)
+			{
 				Emitter->TryActivate(Hit(Emitter.Get(),FVector(1,0,.25))); Capture(TEXT("05_Emitter.png"));
-				Wait=FPlatformTime::Seconds()+.3; Stage=6; return false;
+				WaitWorld=W->GetTimeSeconds()+Emitter->ActivationDelaySeconds+.12; Stage=6; return false;
 			}
 			if (Stage==6)
 			{

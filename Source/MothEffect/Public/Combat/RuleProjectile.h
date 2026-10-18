@@ -9,6 +9,7 @@ class UProjectileMovementComponent;
 class UPrimitiveComponent;
 class USphereComponent;
 class UStaticMeshComponent;
+class UProjectilePoolSubsystem;
 class ARuleProjectile;
 
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FMothProjectileImpactNative,
@@ -31,6 +32,14 @@ public:
 	/** Also handles a blocking hit on the emitter-to-muzzle segment at birth. */
 	bool ProcessBlockingHit(const FHitResult& Hit);
 
+	/** Pooled instances are dormant between shots; direct spawns retain Destroy semantics. */
+	UFUNCTION(BlueprintPure, Category="Projectile|Pool")
+	bool IsPoolInactive() const { return bPoolInactive; }
+	UFUNCTION(BlueprintCallable, Category="Projectile|Pool")
+	void ReturnToPool();
+	/** Detach a recycled firing actor's old identity without stopping an in-flight shot. */
+	void ForgetSourceActor(AActor* Actor);
+
 	UFUNCTION(BlueprintPure, Category="Projectile")
 	bool HasProcessedImpact() const { return bImpactProcessed; }
 
@@ -52,6 +61,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void LifeSpanExpired() override;
+	virtual void FellOutOfWorld(const UDamageType& DamageType) override;
+	virtual void OutsideWorldBounds() override;
 
 	/** Presentation only; collision and the one-hit guard are committed before this event. */
 	UFUNCTION(BlueprintImplementableEvent, Category="Projectile")
@@ -82,6 +93,13 @@ protected:
 	bool bLogProjectileEvents = false;
 
 private:
+	friend class UProjectilePoolSubsystem;
+	void PreparePoolActivation(const FTransform& Transform, AActor* SourceActor, APawn* InstigatorPawn, bool bLogEvents);
+	void StopFlight();
+	void DeactivateForPool();
+	bool StartFlight();
+	bool IsActivationCurrent() const;
+
 	UFUNCTION()
 	void HandleComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
@@ -93,7 +111,14 @@ private:
 	FVector FlightDirection = FVector::ZeroVector;
 	TWeakObjectPtr<AActor> FiringSource;
 	TWeakObjectPtr<APawn> FiringInstigator;
+	TWeakObjectPtr<UProjectilePoolSubsystem> OwningPool;
+	uint64 ActivationGeneration = 0;
+	bool bFiredByDevice = false;
 	bool bInitialized = false;
 	bool bImpactProcessed = false;
 	bool bEndingPlay = false;
+	bool bPoolInactive = false;
+	bool bPoolActivationInProgress = false;
+	bool bImpactDispatching = false;
+	bool bReturnPending = false;
 };

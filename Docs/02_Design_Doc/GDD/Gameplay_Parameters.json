@@ -1,10 +1,11 @@
 {
-  "documentVersion": "0.18",
-  "updatedAt": "2026-10-12",
+  "documentVersion": "0.24",
+  "updatedAt": "2026-10-18",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
-  "status": "proposed_untested",
-  "note": "2026-10-12 T18：登记教学专用 blastTargetHP=60、liftMinRiseCm=100、landingRetryGraceSeconds=0.6、noticeSeconds=3，当前均为原生源码常量；flow.tutorialRequiredFirstRun=true 仍是建议基线，当前标题允许主动直接开战，尚无首次教学持久化锁定，作为已知 UI 差异记录；没有改变既有战斗参数或 Config 数值。UI/教学/菜单已接入，当前硬件 PIE 和独立包待验收，详见 T18 报告。历史：2026-10-12 T16接入既有三波/准备5s/批次3s、8存活上限、600cm/.8s/.5s安全生成基线，Config新增导演数值副本；数值未调优。World-local终态开关和当前地图OpenLevel清理重开已实现，95项Editor、5项真实Game流程/2项导航通过；Game既有资源/动画156条告警归档，当前图形PIE、最终场地、完整UI/教程与独立包/G3待验收。出生探地上/下500/1500cm、Nav extent40/40/100cm、法线.65及净空2cm目前为源码常量，见T16报告。历史：2026-10-12 T15接入三种固定掉落敌人，仍共用T14 AI与60HP/0.5s预警/1.2s尝试间隔。v0.16补齐死亡附近搜索半径150cm、向下探地1500cm、出生净空2cm及支持面法线0.65；先验证路径/出生，再按T13额度入口生成一次Dormant。无近处支持面但死亡位置净空时采用自由物理落体，不附着或冻结；死亡回调/容量回调重置世代或结束Actor则取消，拒绝后不补发。原工程Editor构建、88项Editor全量、11项新增最终复测和2项Game导航通过；12件新资产/类型色形及静态导航保存并重载验证，当前图形PIE待用户验收；T14当前图形PIE仍按用户确认待验收。历史：2026-10-11 T14开始接入一套EnemyBase射击AI，沿用enemy.maxHealth=60、shotIntervalSeconds=1.2、telegraphSeconds=0.5及共用P01；v0.15补齐移动、视距/攻击距离、最后可见位置记忆、路径重试/停滞换点、枪口净空与死亡短反馈的建议基线。Config/DefaultGame.ini为运行时数值副本，原工程Editor构建与77项Editor Automation、2项真实Game保存NavMesh/移动/恢复验证通过；当前角色PIE待验收。T15固定掉落、T16波次和T17最终场地不在本轮自动成立。历史：2026-10-11 T13 接入 world-local 容量、累计 Dormant 闲置寿命与清理，原有 24/6/6/64、30s/5s 不变；新增 limits.dormantSpentVisualSeconds=0.25。关闭编辑器并修正Unity测试辅助函数重名后，原工程Editor正式构建/链接与新DLL全量66项Automation通过；用户在五项验收清单后确认“测试通过 创建pr”，当前角色PIE按用户报告验收；完整整局/正式敌人/完整G2继续随后续任务验证。T11/T12 当前实现已由用户确认验收，历史参数调优记录保留。2026-10-11 T11 接入 D01，原有探地距离、柱高/半宽、时长和目标竖直速度不变；v0.13 新增地面标签、底部接触容差 1cm 和 Spent 反馈残留 1s。Editor 构建、全量 43 项 Automation 与保存灰盒重新加载验证通过，当前真实角色 PIE、正式敌人和完整连锁待验收。此前 T10 已通过原生与用户当前 PIE 确认，v0.12 新增 bomb.spentVisualSeconds=0.25。顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
+  "status": "native_pooling_and_arena_visuals_verified_dynamic_performance_pending",
+  "currentBehaviorNote": "2026-10-18 v0.24：第一轮画面启用TSR、SoulCity运行时可逆灯光和固定曝光调色；静态D3D12同机位对比与两项视觉专项通过，动态拖影、战斗可读性与GPU性能待实测。玩法参数保持v0.23。 2026-10-18 v0.23：用户选择三波12/18/24、同时最多24个敌人；原4/6/8配兵模板按waveEnemyMultiplier=3展开为额外定时批次，八个出生点和安全预警保留。敌人按类回收复用，弹丸命中/到期/界外归池，活弹上限128。对象池按需增长并有闲置保留上限；性能与硬件PIE待实测。此前出生保护及D03自动索敌规则不变。 159项Editor及正式SoulCity Game专项通过：实际54次出生/54击杀、峰值24、只创建24个敌人并复用30次；NullRHI受控测试不代表图形、听感或帧率验收。",
+  "note": "2026-10-14 v0.19：用户确认地面固定/保留显式外力、可调尺寸、D03世界XY水平投影、三机关共用激活延迟和爆炸激活。device.activationDelaySeconds默认0.3s；D03既有firstShotDelaySeconds=0.1s保留，默认命中后0.4s首发，3s工作期从效果起动计。新增device组映射ADeviceBase可编辑属性，ShotRadiusCm仍对应throw.deviceShotColliderRadiusCm；JSON不自动导入UE。源码收尾4934627，隔离UE构建、114 Editor/12主地图Game回归通过；Issue #48–#51 Open/In Progress，硬件PIE、参数手感调优与独立包待验收，原始证据见Device_Refactor_Report_2026-10-14。以下为历史记录：2026-10-12 T18：登记教学专用 blastTargetHP=60、liftMinRiseCm=100、landingRetryGraceSeconds=0.6、noticeSeconds=3，当前均为原生源码常量；flow.tutorialRequiredFirstRun=true 仍是建议基线，当前标题允许主动直接开战，尚无首次教学持久化锁定，作为已知 UI 差异记录；没有改变既有战斗参数或 Config 数值。UI/教学/菜单已接入，当前硬件 PIE 和独立包待验收，详见 T18 报告。历史：2026-10-12 T16接入既有三波/准备5s/批次3s、8存活上限、600cm/.8s/.5s安全生成基线，Config新增导演数值副本；数值未调优。World-local终态开关和当前地图OpenLevel清理重开已实现，95项Editor、5项真实Game流程/2项导航通过；Game既有资源/动画156条告警归档，当前图形PIE、最终场地、完整UI/教程与独立包/G3待验收。出生探地上/下500/1500cm、Nav extent40/40/100cm、法线.65及净空2cm目前为源码常量，见T16报告。历史：2026-10-12 T15接入三种固定掉落敌人，仍共用T14 AI与60HP/0.5s预警/1.2s尝试间隔。v0.16补齐死亡附近搜索半径150cm、向下探地1500cm、出生净空2cm及支持面法线0.65；先验证路径/出生，再按T13额度入口生成一次Dormant。无近处支持面但死亡位置净空时采用自由物理落体，不附着或冻结；死亡回调/容量回调重置世代或结束Actor则取消，拒绝后不补发。原工程Editor构建、88项Editor全量、11项新增最终复测和2项Game导航通过；12件新资产/类型色形及静态导航保存并重载验证，当前图形PIE待用户验收；T14当前图形PIE仍按用户确认待验收。历史：2026-10-11 T14开始接入一套EnemyBase射击AI，沿用enemy.maxHealth=60、shotIntervalSeconds=1.2、telegraphSeconds=0.5及共用P01；v0.15补齐移动、视距/攻击距离、最后可见位置记忆、路径重试/停滞换点、枪口净空与死亡短反馈的建议基线。Config/DefaultGame.ini为运行时数值副本，原工程Editor构建与77项Editor Automation、2项真实Game保存NavMesh/移动/恢复验证通过；当前角色PIE待验收。T15固定掉落、T16波次和T17最终场地不在本轮自动成立。历史：2026-10-11 T13 接入 world-local 容量、累计 Dormant 闲置寿命与清理，原有 24/6/6/64、30s/5s 不变；新增 limits.dormantSpentVisualSeconds=0.25。关闭编辑器并修正Unity测试辅助函数重名后，原工程Editor正式构建/链接与新DLL全量66项Automation通过；用户在五项验收清单后确认“测试通过 创建pr”，当前角色PIE按用户报告验收；完整整局/正式敌人/完整G2继续随后续任务验证。T11/T12 当前实现已由用户确认验收，历史参数调优记录保留。2026-10-11 T11 接入 D01，原有探地距离、柱高/半宽、时长和目标竖直速度不变；v0.13 新增地面标签、底部接触容差 1cm 和 Spent 反馈残留 1s。Editor 构建、全量 43 项 Automation 与保存灰盒重新加载验证通过，当前真实角色 PIE、正式敌人和完整连锁待验收。此前 T10 已通过原生与用户当前 PIE 确认，v0.12 新增 bomb.spentVisualSeconds=0.25。顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
     "velocity": "cm/s",
@@ -61,6 +62,26 @@
     "physicsMassKg": 2,
     "deviceTargetDiameterCm": 40,
     "deviceShotColliderRadiusCm": 25
+  },
+  "device": {
+    "spawnActivationProtectionSeconds": 0.5,
+    "activationDelaySeconds": 0.3,
+    "droppedTargetCapsuleRadiusCm": 35,
+    "droppedTargetCapsuleHalfHeightCm": 90,
+    "droppedTargetMatchesEnemy": true,
+    "droppedRotationDegreesPerSecond": 60,
+    "visualScale": 1,
+    "visualScaleMin": 0.05,
+    "visualScaleMax": 10,
+    "bodyRadiusCm": 20,
+    "shotRadiusMustCoverBody": true,
+    "groundSnapDistanceCm": 5,
+    "groundUpNormalMin": 0.65,
+    "groundedBodyCollision": "NoCollision",
+    "groundedSimulatesPhysics": false,
+    "groundedRetainsShotQuery": true,
+    "externalImpulseWakesFlight": true,
+    "flightIgnoresPawn": true
   },
   "projectile": {
     "id": "P01",
@@ -122,27 +143,33 @@
     "characterHorizontalVelocityAddCmPerSec": 650,
     "characterUpVelocityAddCmPerSec": 450,
     "deviceRadialVelocityAddCmPerSec": 1100,
-    "activatesOtherDevices": false,
+    "activatesOtherDevices": true,
+    "activationTargets": "unoccluded_dormant_devices_only",
     "spentVisualSeconds": 0.25
   },
   "emitter": {
     "id": "D03",
+    "targetRangeCm": 2000,
     "durationSeconds": 3,
     "firstShotDelaySeconds": 0.1,
     "shotIntervalSeconds": 0.25,
     "muzzleClearanceCm": 2,
     "spentVisualSeconds": 0.25,
-    "directionPolicy": "incoming_ballistic_world_direction",
+    "directionPolicy": "nearest_alive_enemy_3d_at_activation",
+    "noTargetDirectionPolicy": "incoming_direction_xy_projection",
+    "verticalHitFallbackDirection": "world_positive_x",
     "directionLockedAfterActivation": true,
-    "physicsContinuesWhileActive": true
+    "physicsContinuesWhileActive": false,
+    "physicsWhileActivePolicy": "grounded_fixed_airborne_physics",
+    "workLifetimeStartsAfterActivationDelay": true
   },
   "limits": {
     "maxExternalVelocityCmPerSec": 1600,
-    "maxAliveEnemies": 8,
+    "maxAliveEnemies": 24,
     "maxDevicesTotal": 24,
     "maxActiveEmitters": 6,
     "maxActiveColumns": 6,
-    "maxLiveProjectiles": 64,
+    "maxLiveProjectiles": 128,
     "dormantIdleLifetimeSeconds": 30,
     "dormantExpiryWarningSeconds": 5,
     "dormantSpentVisualSeconds": 0.25
@@ -151,10 +178,65 @@
     "baselineWaves": 3,
     "prepareBetweenWavesSeconds": 5,
     "batchSpawnDelaySeconds": 3,
-    "tutorialRequiredFirstRun": true,
-    "stopGameplayOnResult": true
+    "tutorialRequiredFirstRun": false,
+    "basicGuideSeconds": 18,
+    "stopGameplayOnResult": true,
+    "waveEnemyMultiplier": 3,
+    "waveEnemyCounts": [
+      12,
+      18,
+      24
+    ]
   },
   "tuningLog": [
+    {
+      "date": "2026-10-18",
+      "version": "0.24",
+      "change": "TSR由关闭改为4；主光稍降、天空光稍补，保留补光并校准手动曝光，低强度Bloom与阴影调色统一。",
+      "reason": "用户要求先推进抗锯齿、灯光与统一后处理的第一轮。首组对比阴影偏暗，因此校准曝光并恢复补光。",
+      "evidence": "两项视觉Editor专项、正式SoulCity三波Game回归通过；固定入口/平台1600x900、sg3/100% D3D12前后原图及资产SHA见ArenaVisualPass证据。动态清晰度/战斗可读性/FPS和独立包待验收。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-18",
+      "version": "0.23",
+      "change": "三波扩大为12/18/24，同屏上限24；敌人与P01弹丸按实际类归池复用，活弹容量从64提高到128，闲置保留上限分别32/128。额外敌人复用原配兵模板、出生点与3秒批次间隔。",
+      "reason": "用户要求增加敌人数并用对象池管理敌人与子弹，已选择12/18/24及24存活上限。",
+      "evidence": "UE5.8 Editor编译通过；159项Editor全部成功（含既有资源/夹具警告），10项对象池专项通过；正式SoulCity Game实际12/18/24、54击杀、24峰值、24创建/30复用。详见Docs/06_Test_Doc/Evidence/CombatPooling/Automation_2026-10-18.json；硬件PIE/性能待验收，未重新打包。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-17",
+      "version": "0.22",
+      "change": "三类道具 BeginPlay 后首0.5秒拒绝弹道和爆炸激活，按游戏时间计时，拾取/推力不受影响，放下/投掷不重置出生保护。D03触发时搜索2000cm内最近存活AEnemyBase，锁定指向其Actor中心的三维方向；无目标沿用入射XY投影与竖直命中+X后备。",
+      "reason": "用户要求道具刚出现0.5秒内不能触发，并让发射器触发时自动瞄准范围内最近敌人。范围为本轮可调默认值；保留0.3秒统一效果延迟、0.1秒首发延迟和3秒工作期。JSON不自动导入UE。",
+      "evidence": "本轮源码与专项验证由当前交付记录更新；历史114 Editor/12 Game结果不代表本轮出生保护与自动索敌已验收，硬件PIE待验收。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-16",
+      "version": "0.21",
+      "change": "首版通过主菜单开始战斗，独立三步教学入口改为首波前18秒基础提示；增加暂停设置、直接重开和胜负统计。设置保存总音量、鼠标灵敏度、画质与显示选择。保留4/6/8敌人数和现有分批节奏。",
+      "reason": "用户要求按主菜单、暂停结算、设置、基础引导、三波反馈顺序推进，明确不需要独立教学。",
+      "evidence": "实现与验证记录见Release_Flow_Setup.md和Saved/Automation/ReleaseFlow；不代表新增回血、升级或经济系统。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-16",
+      "version": "0.20",
+      "change": "落地 Dormant 的受击与准星拾取共用敌人大小胶囊（半径35cm、半高90cm）；模型中心对齐胶囊中心，以默认60度/秒绕竖直轴匀速旋转。空中、Held与Active复原显示；保留原飞行体积和射击球。",
+      "reason": "用户要求掉落状态道具与敌人具有同样大的受击和瞄准拾取体积，模型在体积中心匀速旋转。胶囊尺寸与敌人共用MothCollision常量，旋转速度映射ADeviceBase可编辑属性；JSON不自动导入UE。",
+      "evidence": "Win64 Development Editor构建和四项DroppedPresentation原生专项通过，覆盖三类保存蓝图、双通道、遮挡、真实准星拾取、居中和状态切换；图形PIE手感待验收。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-14",
+      "version": "0.19",
+      "change": "用户确认基础重构：设备地面固定/实体根NoCollision、显式外力恢复空中物理、独立显示与体积配置；D03世界XY水平入射投影；三类型共用0.3s激活延迟；D02激活无遮挡Dormant。ShotRadius沿用throw.deviceShotColliderRadiusCm，避免重复数值来源。D03既有firstShotDelaySeconds=0.1与durationSeconds=3保留，从效果起动计，默认命中后0.4s首发。",
+      "reason": "2026-10-14用户明确开始道具重构，保留投掷/推力/弹射组合并扩展爆炸自然连锁；参数不是自动导入JSON。",
+      "evidence": "代码f6d6b2a/f91db81/0e5370a/4934627；隔离UE构建通过，114 Editor和12主地图Game全部Success，失败历史及告警见Device_Refactor_Report_2026-10-14；Issue #48–#51 Open/In Progress。默认机制与时序有原生证据，数值手感/硬件PIE/尺寸保存重载和独立包仍待用户验收。",
+      "validated": false
+    },
     {
       "date": "2026-10-12",
       "version": "0.17",
@@ -226,7 +308,7 @@
   "artStyle": "魔法朋克",
   "projectRoot": "../../..",
   "documentAuthority": "../..",
-  "implementationStatus": "template_project_exists_gameplay_unverified",
+  "implementationStatus": "native_pooling_and_scaled_waves_verified_manual_performance_pending",
   "pathBase": "this_json_file_directory",
   "tutorial": {
     "blastTargetHP": 60,
@@ -235,5 +317,29 @@
     "noticeSeconds": 3,
     "runtimeSource": "Source/MothEffect/Private/Tutorial/MothTutorialTarget.cpp + MothTutorialSubsystem.cpp; MothHUDWidget.cpp",
     "status": "native_constants_graphical_acceptance_pending"
+  },
+  "pooling": {
+    "worldLocal": true,
+    "growOnDemand": true,
+    "maxRetainedEnemies": 32,
+    "maxRetainedProjectiles": 128,
+    "enemyRecycleAfterDeathAnimation": true,
+    "projectileRecycleOnImpactExpiryOrBounds": true
+  },
+  "arenaVisuals": {
+    "targetMapName": "L_Arena_SoulCity",
+    "antiAliasingMethod": 4,
+    "sunIntensity": 2.9,
+    "skyIntensity": 1.2,
+    "fillIntensity": 0.65,
+    "exposureCompensation": 1.263,
+    "saturation": 0.96,
+    "contrast": 0.98,
+    "shadowGamma": 1.06,
+    "bloomIntensity": 0.2,
+    "postProcessPriority": -10.0,
+    "motionBlurAmount": 0.0,
+    "sceneFringeIntensity": 0.0,
+    "note": "表现参数账本；DefaultGame.ini为运行时副本，JSON不自动导入。TSR为项目默认，灯光与后处理仅SoulCity；手动曝光补偿校准旧固定曝光路径。"
   }
 }

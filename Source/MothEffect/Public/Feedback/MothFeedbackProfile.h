@@ -4,12 +4,12 @@
 #include "Engine/DataAsset.h"
 #include "MothFeedbackProfile.generated.h"
 
-class USoundBase; class USoundAttenuation; class UMaterialInterface;
+class USoundBase; class USoundAttenuation; class UMaterialInterface; class UNiagaraSystem;
 
 UENUM(BlueprintType)
 enum class EMothFeedbackCue : uint8
 {
-	Shot, Impact, Hit, Damage, Launcher, Bomb, Emitter, EmitterShot, EnemyShot, Expiry, Spent, Failure
+	Shot, Impact, Hit, Damage, Launcher, Bomb, Emitter, EmitterShot, EnemyShot, Expiry, Spent, Failure, Pickup
 };
 
 USTRUCT(BlueprintType)
@@ -21,6 +21,23 @@ struct FMothFeedbackStyle
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin="0", ClampMax="1")) float Volume = .5f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin="0.02", ClampMax="2")) float Duration = .15f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin="1", ClampMax="1000")) float SizeCm = 12;
+	/** A configured Niagara system replaces the geometric cue; gameplay timing is unchanged. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") TSoftObjectPtr<UNiagaraSystem> NiagaraSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") FVector NiagaraScale = FVector::OneVector;
+	/** Exact exposed LinearColor name; None probes User.MothColor then User.Color. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") FName NiagaraColorParameter = NAME_None;
+	/** Optional exposed float controlling authored particle size, e.g. User.Global Scale. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") FName NiagaraScaleParameter = NAME_None;
+	/** Optional exposed vector for impact normal or emission direction. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") FName NiagaraDirectionParameter = NAME_None;
+	/** Applied in the committed direction's local space. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") FRotator NiagaraRotation = FRotator::ZeroRotator;
+	/** World-time safety limit, including for accidentally looping systems. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara", meta=(ClampMin="0.05", ClampMax="10")) float NiagaraLifetimeSeconds = 2.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") bool bScaleNiagaraToRadius = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara", meta=(ClampMin="1")) float NiagaraReferenceRadiusCm = 100.f;
+	/** Retain geometry only when no usable Niagara system is configured. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Niagara") bool bLegacyVisual = true;
 	/** Limits repeated audio per category, without suppressing committed visual feedback. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin="0")) float AudioInterval = .06f;
 };

@@ -1,6 +1,18 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.45 · 2026-10-13 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.51 · 2026-10-18 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-18 第一轮画面：项目默认TSR为4；`AMothEffectGameMode`仅在SoulCity生成单个临时`AMothArenaVisualDirector`，一次应用主方向光/天空光/无阴影补光强度和低优先级无边界后处理。保留灯光方向、颜色和阴影开关；固定手动曝光，关闭物理相机曝光、运动模糊和色差，统一基础调色与Bloom。快照支持重复应用、恢复和销毁收尾；后处理优先级变更后重新排序。普通编辑器不自动改保存地图，PIE/Game运行自动应用。参数账本v0.24、DEC48和TC48同步；验证及复现见[画面接入](../../05_Development_Guide/Arena_Visual_Setup.md)。
+
+2026-10-18 敌人密度与对象池：用户选择12/18/24敌人、最多24存活，`AMothWaveDirector`按`WaveEnemyMultiplier`展开原配兵模板并增加批次；`UEnemyPoolSubsystem`分离Acquire与Finish，导演先登记再启用，死亡动画完成或行政清理后归池；`UProjectilePoolSubsystem`统一敌人和D03的P01发射，命中/寿命/界外回收。对象池World隔离、按实际类复用，闲置对象关闭碰撞/移动/组件Tick，不占活敌人或弹丸额度。每次出场重置生命和AI/动画/掉落状态，弹丸重置HitId/来源/忽略列表/ProjectileMovement；回调派发内不允许同对象重新出借，检查局与生命代次；敌人回池解除在飞弹丸的旧来源、归因与忽略，防止新生命继承旧弹免伤。池按需增长，有界保留，重开仍换图。参数账本v0.23、DEC47与TC46/47同步，验证及手动边界见[波次接入](../../05_Development_Guide/Wave_Flow_Setup.md)。
+
+2026-10-17 道具触发更新：`ADeviceBase` 从 BeginPlay 起使用世界游戏时间计算出生保护，`TryActivate` 在保护结束前拒绝弹道和爆炸请求；保护不影响拾取/推力，放下/投掷不重置起点。D03 接纳时以当前装置位置按三维距离选择范围内最近有效存活 `AEnemyBase`，一次锁定指向 Actor 中心的三维射向；无目标沿用入射 XY 投影。具体参数、规则和新增验收见 [重构接入](../../05_Development_Guide/Device_Refactor_Setup.md)；以下历史验证段落仍只代表当时版本。
+
+2026-10-14 贴图准星接口：`UHealthComponent` 在真实伤害与致死状态提交后，经 `UMothFeedbackSubsystem` 发出 `FMothEnemyHitFeedback`，快照包含命中 ID、目标 ID、实际伤害、剩余生命、致死标志和世界命中位置，不持有敌人引用。仅本地玩家归属的敌人伤害有效，原生死亡提交仍先于表现通知；回调返回复核生命周期世代，防止旧命中进入重置后的新会话。`UMothHUDWidget` 按拥有玩家筛选并向蓝图提供命中、重置、暂停和页面事件；单独关闭原生命中 X 时仍可保留受伤边框。表现由用户制作，详见 [自定义准星接入](../../05_Development_Guide/Crosshair_Setup.md)。本轮源码及九项专项测试已写入，按用户选择未编译、未运行 UE/Automation、未修改资产。
+
+2026-10-14 道具基础重构：`refactor` 本地提交 `f6d6b2a`（Refs #48/#49/#50）与 `f91db81`（Refs #51/#48）接入地面固定/独立尺寸、D03 水平入射投影、共用激活延迟及 D02 爆炸激活。现行规则见 [道具与交互规则](../GDD/Device_Interaction_Rules.md)，字段和迁移见 [重构接入](../../05_Development_Guide/Device_Refactor_Setup.md)。代码收尾至 4934627，隔离 UE 构建及 114 Editor / 12 主地图 Game 回归通过；当前硬件 PIE 和独立包仍待验收，见 [本轮报告](../../06_Test_Doc/Device_Refactor_Report_2026-10-14.md)。旧记录保持当时验证范围。
+
+原工程补充验证：确认编辑器关闭后，Editor 常规构建 56.79 秒 Succeeded，新 DLL 的六项 Foundation 全通过；重新打开项目即可加载。该构建包含当前用户未提交控制器代码，未将这些改动纳入本轮提交。
 
 2026-10-13 T20：PrototypeArtProfile独立提供显示模型/材料/局部Transform；设备与背包直接共用解析入口，材质按语义槽名适配OBJ重排。开关保留原外观与用户替换；场景层仅主竞技场生成一次，识别T17标签/材质/尺寸，排除大围墙，关闭/销毁恢复原渲染。原掩体承担碰撞/导航，新网格与灯饰无玩法查询；资产软引用目录纳入Cook。接口与改造步骤见[Prototype_Art_Setup](../../05_Development_Guide/Prototype_Art_Setup.md)，实际验证见[T20报告](../../06_Test_Doc/T20_Report_2026-10-13.md)。用户后续机制/UI改造按新规则更新权威文档、配置与测试。
 
@@ -88,13 +100,17 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 - `EPlayerActionState`：`Ready, Carrying, ThrowRecovery, Reloading, Dead`；由 Character 唯一持有。`Ready` 表示持枪可接收动作请求，实际开火还需弹药、射速、按压与局内许可检查。
 - `EPrimaryPressMode`：`None, Fire, Throw, Blocked`；记录本次左键按压归属。它是输入会话状态，不替代玩家行动状态。
 - `FHitContext`（蓝图显示名 `ST_HitContext`）：`FGuid HitId`、`AActor* SourceActor`、`APawn* InstigatorPawn`、`FVector ImpactPoint`、`FVector ShotDirection`、`float Damage`。方向为归一化世界飞行方向，不用表面法线；引用仅在命中处理期间使用并验证有效性。
-- `FDeviceConfig`（蓝图显示名 `ST_DeviceConfig`）：包含 `EDeviceKind Kind` 及对应 launcher/bomb/emitter 参数；字段与 [玩法参数基线](../GDD/Gameplay_Parameters.json) 对应，单位为 cm、秒、cm/s。伤害与容量分别来自 weapon/projectile/limits 组。
+- `FDeviceConfig`（蓝图显示名 `ST_DeviceConfig`）仍为规划数据契约；当前机关直接使用 `ADeviceBase` 可编辑属性，不把本轮重构写成该 DataAsset 接口已经落地。字段与 [玩法参数基线](../GDD/Gameplay_Parameters.json) 对应，单位为 cm、秒、cm/s。共用激活/运动/尺寸在 device 组，ShotRadiusCm 沿用 throw.deviceShotColliderRadiusCm，伤害与容量分别来自 weapon/projectile/limits 组。
 
 | 自定义入口 / 事件签名 | 调用约定 |
 |---|---|
 | `UBallisticReactive / IBallisticReactive`：`bool ReceiveBallisticHit(const FHitContext& Context)` | 角色转交 Health，机关转交 TryActivate；返回 true 只代表规则被接受 |
 | `UImpulseReceiver / IImpulseReceiver`：`void ReceiveImpulse(FVector Velocity, bool bOverrideZ, FGuid EventId)` | 当帧缓存，EventId 去重；帧末先合并爆炸增量、再用柱子目标替换 Z、最后统一限速 |
-| `ADeviceBase::bool TryActivate(const FHitContext& Context)` | 仅 Dormant 且容量许可可成功；需释放旧同类时先按 [道具与交互规则](../GDD/Device_Interaction_Rules.md) 结束，获准后置 Active，再执行效果 |
+| `ADeviceBase::bool TryActivate(const FHitContext& Context)` | 仅出生保护结束、Dormant 且容量许可可成功；先预占、保存首次上下文及一次发射方向并提交 Active，再通知、按 ActivationDelaySeconds 延迟一次效果；弹丸与爆炸请求共用入口 |
+| `ADeviceBase::float SpawnActivationProtectionSeconds` / `float EmitterTargetRangeCm` | 可编辑非负出生保护时间和索敌半径；BeginPlay 游戏时刻只记录一次，暂停冻结，拾取/释放不重置；D03 接纳时按三维距离找最近存活 AEnemyBase 并锁定指向 Actor 中心的三维方向 |
+| `ADeviceBase::bool IsActivationPending() const` / `float ActivationDelaySeconds` | 等待期属于 Active，不增加枚举；可编辑非负延迟，World Timer 暂停冻结，Finish/Destroy/禁用取消；零延迟为明确的同步专项覆盖 |
+| `ADeviceBase::bool IsGrounded() const` / `bool WakeForExternalImpulse()` | Grounded 独立于生命周期；CanReceiveExternalImpulse 只允许 Dormant/Active D03，QueueImpulse 去重后先唤醒空中物理，再由帧末速度结算 |
+| `ADeviceBase::void RefreshDeviceSize()` | BlueprintCallable/CallInEditor；更新 BodyRadiusCm/ShotRadiusCm 与独立 VisualScale，Shot 有效半径不小于 Body；运行时改属性后调用刷新 |
 | `ADeviceBase::bool TryPickup(AMothEffectCharacter* Picker)` | 距离、遮挡、状态均满足才置 Held |
 | `ADeviceBase::bool CanBePickedUp() const` | 已实现机关端资格查询；只允许未暂停、玩法许可的 Dormant，不代替 T07 的完整拾取检查 |
 | `ADeviceBase::bool CommitHeld(AMothEffectCharacter* NewHolder)` / `bool CommitReleased(AMothEffectCharacter* ReleasingHolder)` | 已实现的私有入口，仅 Character 在安全检查成功后调用；Held 必须有有效拥有者，只有该拥有者可释放；不对蓝图暴露任意状态写入 |
@@ -114,7 +130,7 @@ C++ 管状态、命中、伤害、推力、定时器和容量；蓝图管组件�
 | `OnHealthChanged(float CurrentHealth, float MaxHealth)`；`OnDied(AActor* Victim, AActor* SourceActor)` | 动态多播委托；每个角色 OnDied 最多一次 |
 | `AWaveDirector::bool TryRegisterDevice(ADeviceBase* Device)`；`void UnregisterDevice(ADeviceBase* Device)` | 登记/注销均幂等，不能在 UI 中另行计数 |
 
-**阻挡命中即消耗 P01，无论接口返回 true 或 false。** 墙体、Active D03 和已经启用实体碰撞的柱子阻挡弹丸；Held 本身关闭碰撞，弹丸可继续命中玩家。接口拒绝激活不返还弹丸，也不返还步枪弹药。爆炸和普通物理碰撞不调用 Ballistic 接口。
+**阻挡命中即消耗 P01，无论接口返回 true 或 false。** 墙体、Active D03 和已经启用实体碰撞的柱子阻挡弹丸；地面设备由 ShotCollider 查询球阻挡 P01，而实体根无碰撞。Held 关闭两球，弹丸可继续命中玩家。接口拒绝激活不返还弹丸，也不返还步枪弹药。D02 范围请求直接调用共用 TryActivate，普通物理碰撞不激活。
 
 [玩法参数基线](../GDD/Gameplay_Parameters.json) 是设计数值权威，运行时从 DataAsset/默认配置读取；本版不承诺自动导入 JSON。首次录入与每次调参都核对 [玩法参数基线](../GDD/Gameplay_Parameters.json)，禁止在 Tick、关卡脚本或特效里藏伤害数值。
 
@@ -207,17 +223,21 @@ G0 首包 → T04 基础玩家/转向/移动状态机 → T05 枪械/换弹/生�
 
 ## 4. 物理与三种机关
 
-机关使用 USphereComponent 物理根 PhysicsBody，另挂 QueryOnly 的 ShotCollider 球用于射击判定；视觉挂件不另模拟物理或接收命中。Held 关闭两球碰撞与物理；安全释放按物理根实际半径及响应检查空间，不使用较大的射击球替代。Dormant/投掷/Active 发射器由 Chaos 物理移动，重力始终开启；不同时用 ProjectileMovement 移动机关。P01 则用 Sphere 根 + ProjectileMovement，不启用根的 Simulate Physics，以 Sweep 检测命中，按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 设置 gravityScale=0，保持直线飞行。[Epic：ProjectileMovement 与物理模拟关系](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent)
+机关使用 USphereComponent 的 PhysicsBody 根，另挂 QueryOnly ShotCollider 球；视觉不参与玩法碰撞。`IsGrounded` 是独立运动状态：承托成立时清线性/角速度、停止模拟并令根 NoCollision，ShotCollider 仍供 Visibility/P01 查询。支持移除后恢复下落，显式推力/弹射由 `WakeForExternalImpulse` 先恢复空中模拟，重新落地固定。投掷/起飞由 Chaos 运动，根忽略 Pawn；不同时用 ProjectileMovement 移动机关。Held/Spent/已消耗 D01 种子关闭两球。P01 仍用 Sphere 根 + ProjectileMovement 和零重力直线 Sweep。[Epic：ProjectileMovement 与物理模拟关系](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UProjectileMovementComponent)
+
+`DeviceMotion.cpp` 以实际缩放后的根球作短距离支持 Sweep，查询阻挡 PhysicsBody 的 WorldStatic/WorldDynamic 支撑、向上法线及非初始穿透，排除角色、其他道具和纯查询体。运动承托不要求 `MothColumnSurface`；D01 起柱仍单独要求静态对象与该标签。`GroundSnapDistanceCm/GroundUpNormalMin` 对应 device 参数组。`VisualScale` 只调整外观，`BodyRadiusCm` 控制空中/安全释放体积，`ShotRadiusCm` 控制射击球；`RefreshDeviceSize` 在构造和运行时刷新并约束 Shot 不小于 Body。已有 BP 覆盖值不会因修改原生默认值自动消失。
 
 T08 当前碰撞接入：`Config/DefaultEngine.ini` 新增 `JamProjectile` 对象通道（`ECC_GameTraceChannel1`，默认 Block），映射统一维护在 `MothCollisionChannels.h`。P01 QueryOnly 球忽略同类弹丸、Visibility、Camera，并通过 MoveIgnoreActors 忽略自己的生成者；装置物理根忽略 P01，由较大的 ShotCollider 阻挡 P01。Held/Spent/Destroyed 仍关闭两球。步枪继续使用既有 Visibility；完整 JamDevice/JamWeaponTrace/JamGroundTrace 矩阵后续任务逐步接入，不能只改一端通道。蓝图若覆盖响应，接入时应按当前矩阵核对。
 
-T08 发射调度：从激活时间计算 `firstShotDelay + n * shotInterval`，只允许严格早于 `duration` 的时刻；默认无遮挡且正常帧率最多 12 发。迟到回调在当前帧最多生成一发，跳过错过的时刻，到期后不补发、不延长寿命。出生前用配置后的 P01 球半径及组件缩放检查物理根中心到枪口的静态 Sweep 与端点静态重叠，阻挡则消耗该发；其余目标的出生短段阻挡交给同一个 P01 命中入口。方向提示与机身共享位置但使用绝对旋转；`FinishActivation`、禁用玩法、Destroy/EndPlay 清理发射和到期 Timer。已飞出的 P01 继续自己的寿命；容量和本局统一结算清理仍待 T13/T16，当前不得据此宣称全局限制已实现。
+当前激活调度：BeginPlay 保存世界游戏时刻，TryActivate 在出生保护内先拒绝请求，不提交 Active 或预占激活容量，结束后需新的一次有效触发；游戏暂停冻结保护，拾取/放下/投掷不刷新。接纳后立即 Active/预占容量、保存标量/向量证据与 Source/Instigator 弱引用；世界 Timer 延迟 `BeginActivationEffect`，到时再次复核状态/World-local许可，取当前有效弱引用并只开始一次效果。暂停冻结，FinishActivation/禁用/Destroy/EndPlay 清 Timer 与弱引用。D01 原点、D02 爆心和 D03 射向在接纳时保存；D03 `EmitterStartedAt` 在延迟结束时设定。
 
-角色保持 CharacterMovement，不给胶囊开启物理。`ReceiveImpulse` 在角色/机关实现内缓存事件，按逻辑帧统一结算：当前速度加本帧全部爆炸增量 → 如有柱子事件，将 Z 替换为角色/道具的 launcher 对应目标速度 → 对角色和机关都按 [玩法参数基线](../GDD/Gameplay_Parameters.json) 统一上限 Clamp。同帧多柱目标相同，不重复叠加；回调先后不影响结果。结算得到最终速度后，角色只调用一次 `LaunchCharacter(FinalVelocity, true, true)`；物理机关只对根调用一次 `AddImpulse(FinalVelocity-CurrentVelocity, NAME_None, true)`。角色 Launch 在下一移动 Tick 生效，不能在每个命中回调里分别 Launch 覆盖待处理速度。没有柱子时保留爆炸叠加结果；没有爆炸时柱子保留原 XY 并替换 Z。[Epic：LaunchCharacter](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/ACharacter/LaunchCharacter)；[Epic：Add Impulse](https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Physics/AddImpulse)
+D03 从效果起动时间计算 `firstShotDelay + n * shotInterval`，只允许严格早于 `duration`；统一等待与既有首发延迟相加，默认首发距有效接纳命中时间见参数账本调参记录，工作期仍最多 12 发。迟到当前帧最多一发，错过时刻不补发、不续期；出生静态 Sweep/端点重叠仍使用配置后的 P01 球半径。方向提示跟随位置、绝对世界旋转与锁定三维射向一致。结束清发射/到期 Timer，已飞 P01 独立寿命，T13/T16 WorldSubsystem 管统一容量与整局清理。
+
+角色保持 CharacterMovement，不给胶囊开启物理。`ReceiveImpulse` 对合法设备先 `WakeForExternalImpulse`，再缓存 EventId 去重事件；地面根不再用当前 IsSimulatingPhysics 作为唯一资格。帧末仍统一处理：当前速度加全部爆炸增量 → 柱子目标替换 Z → 统一限速；同帧多柱不叠加，回调次序不改变结果。角色只一次 LaunchCharacter，空中物理设备只一次 AddImpulse；Held/Spent/Active D01 种子不接收设备独立外力。
 
 - **D01**：从激活位置沿世界 -Z 做 `JamGroundTrace`，只允许 WorldStatic，并校验关卡可承托标签与向上法线阈值，忽略 Pawn、道具和生成柱子。再检查**整个最终柱体体积**的静态空间，底部承托接触不算障碍；遇天花板、墙体或无合格表面都消耗种子并反馈失效。成功后种子关物理/碰撞/可见，保留逻辑 Active 到柱子结束，共用一个计数名额。柱子固定在落点，拆成视觉、上升查询、实体 Collider 三个组件：伸出时实体碰撞关闭，按上升路径检测 Pawn/JamDevice，`AffectedActors` 按 Actor 去重，每个对象弹一次。完全伸出后，在停留阶段检查完整实体体积，无角色/可移动道具占据才开启 WorldDynamic 的支撑/阻挡；有占据则等待净空，不强行开启挤压对象。停留结束前未净空则本次不启用实体。收回或被容量策略提前结束时先关实体碰撞、停弹射，再缓降网格。支撑尚未就绪时用较淡外观提示；启用后变实色，避免玩家误判可站立时机。
-- **D02**：激活时冻结世界爆心，用一次球形查询收集角色/可移动机关，按 Actor 去重；遮挡规则遵守 [道具与交互规则](../GDD/Device_Interaction_Rules.md)。伤害只给 Health，推力只给 ImpulseReceiver，两条路径不能顺便触发机关。
-- **D03**：激活保存 `LockedDirection = Context.ShotDirection`，定时器使用当前装置位置和固定世界方向生成 P01；机身旋转、掉落、推力都不改方向。首发延迟、间隔和总时长来自 [玩法参数基线](../GDD/Gameplay_Parameters.json)；到期清 Timer、置 Spent。弹丸忽略生成它的 Actor，除此不按阵营过滤；出生点到出口先检测，出口被墙挡住就消耗该发，不在墙后生成。方向箭头按锁定方向绘制。
+- **D02**：接纳时冻结世界爆心，统一延迟后按 Actor 去重收集角色与合法设备，根中心判半径，先快照代表点、静态遮挡及径向再执行可能重入的回调。角色伤害/合法推力使用本炸弹 ActivationHitId；Dormant 下游使用新 Guid、炸弹 SourceActor 与爆心到目标方向请求 TryActivate。Held/Active 不重启，死亡回调新增的掉落不自动加入本次查询快照；每次处理后复核世界/来源/目标状态。
+- **D03**：接纳时以装置当前位置为原点，遍历当前世界有效存活 AEnemyBase，按 Actor 中心的三维距离选择 `EmitterTargetRangeCm` 内最近者（包含边界），锁定目标中心减装置位置的三维单位向量，不附加视线筛选。不持续追踪或在目标移动/死亡后重选；无目标采用 `Context.ShotDirection.GetSafeNormal2D()`，合法竖直方向回退固定世界 +X。定时器在统一延迟后使用当前装置位置与锁定方向生成 P01，机身旋转、地面固定、掉落、推力均不改射向。首发延迟、间隔和总工作时长来自参数账本；到期清 Timer、置 Spent。弹丸只避让生成者，出口静态受阻消耗该发，方向箭头读取同一世界向量。
 
 ## 5. Collision 基线
 
@@ -227,13 +247,15 @@ T08 发射调度：从激活时间计算 `firstShotDelay + n * shotInterval`，�
 |---|---|---|---|---|---|---|---|
 | 静态场景 WorldStatic | B | B | B | B | B | B | B |
 | 角色 Capsule / Pawn | B | B | B | B | B | B | I |
-| Dormant / Active D03，JamDevice | B | B | B | B | B | B | I |
+| 空中设备 PhysicsBody 根 | B | B | I | B | I | I | I |
+| 地面固定设备 PhysicsBody 根 | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | I | I |
+| Dormant / Active D03 ShotCollider，WorldDynamic / QueryOnly | I | I | I | I | B | B | I |
 | P01 Sphere / JamProjectile，Query Only | B | B | B | B | I | I | I |
 | 已启用实体柱体 / WorldDynamic | B | B | B | B | B | B | I |
 | Held / Active D01 种子 / Spent | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | I | I |
 | 柱子可见网格 / 未启用实体组件 | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | 无碰撞 | I | I |
 
-柱子用独立查询体积取得 Pawn/JamDevice，不依靠实体 Collider 的 Hit 触发弹射。只允许指定静态地面承托；静态墙虽响应 GroundTrace，命中仍需表面校验。机关和临时柱子不影响导航，AI 用灰盒静态 NavMesh；AI 路径可能被柱子暂时阻挡，需做停滞超时后换位置的原型验证，先不启用动态导航重建。
+柱子查询不能仅依赖 SimulatePhysics 或设备实体根重叠：地面根无碰撞，需收集独立 ShotCollider 并按 Actor 去重/CanReceiveExternalImpulse 过滤，再显式唤醒。爆炸同样从查询球找到地面设备，以根中心和静态遮挡决定真实作用范围。D01 起柱仍只允许指定静态地面；机关和临时柱不影响导航，AI 使用静态 NavMesh。
 
 ## 6. 生命周期与验证
 

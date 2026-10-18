@@ -18,10 +18,11 @@ public class MothEffect : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate",
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem", "SlateCore", "MoviePlayer" });
 		if (Target.bBuildEditor)
 		{
 			PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "UMGEditor", "KismetCompiler", "Json" });

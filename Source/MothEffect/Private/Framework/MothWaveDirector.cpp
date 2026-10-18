@@ -10,11 +10,13 @@
 #include "Devices/LaunchColumn.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Feedback/MothFeedbackSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MothEffect.h"
 #include "NavigationSystem.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Subsystems/EnemyPoolSubsystem.h"
 #include "UObject/ConstructorHelpers.h"
 
 AMothWaveDirector::AMothWaveDirector()
@@ -24,12 +26,7 @@ AMothWaveDirector::AMothWaveDirector()
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 	SpawnPoints = { FVector(-1800,1800,0), FVector(-800,1800,0), FVector(800,1800,0), FVector(-800,-1600,0),
 		FVector(1800,1800,0), FVector(2600,200,0), FVector(1800,-1800,0), FVector(200,-1800,0) };
-	using K = EDeviceKind;
-	Waves.SetNum(3);
-	Waves[0].Spawns = { {0,K::Launcher}, {1,K::Launcher}, {2,K::Bomb}, {3,K::Emitter} };
-	Waves[1].Spawns = { {1,K::Launcher}, {2,K::Bomb}, {4,K::Emitter}, {3,K::Bomb,1}, {5,K::Emitter,1}, {6,K::Emitter,1} };
-	Waves[2].Spawns = { {0,K::Launcher}, {2,K::Bomb}, {4,K::Emitter}, {6,K::Emitter},
-		{1,K::Launcher,1}, {3,K::Bomb,1}, {5,K::Bomb,1}, {7,K::Emitter,1} };
+	RebuildWaves();
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Disc(TEXT("/Engine/BasicShapes/Cylinder"));
 	for (int32 I = 0; I < 8; ++I)
 	{
@@ -57,9 +54,40 @@ void AMothWaveDirector::BeginPlay()
 	for (TActorIterator<AMothWaveDirector> It(GetWorld()); It; ++It)
 		if (*It != this && It->HasActorBegunPlay() && !It->IsActorBeingDestroyed())
 		{ bEndingPlay = true; Destroy(); return; }
+	RebuildWaves(); // Saved Blueprint/map definitions may still contain the original 4/6/8 waves.
 	for (auto Circle : WarningCircles)
 		if (SpawnWarningMaterial) Circle->SetMaterial(0, SpawnWarningMaterial);
 	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->SetSafetyBounds(SafetyCenter, SafetyHalfExtent);
+	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->OnEnemyHitConfirmedNative.AddUObject(this, &AMothWaveDirector::HandleConfirmedEnemyHit);
+}
+
+bool AMothWaveDirector::SetWaveEnemyMultiplier(int32 Multiplier)
+{
+	if (bEndingPlay || bChangingFlow || Phase != EMothFlowPhase::Ready || Multiplier < 1 || Multiplier > 8) return false;
+	WaveEnemyMultiplier = Multiplier;
+	RebuildWaves();
+	return true;
+}
+
+void AMothWaveDirector::RebuildWaves()
+{
+	using K = EDeviceKind;
+	TArray<FMothWaveDefinition> Templates;
+	Templates.SetNum(3);
+	Templates[0].Spawns = { {0,K::Launcher}, {1,K::Launcher}, {2,K::Bomb}, {3,K::Emitter} };
+	Templates[1].Spawns = { {1,K::Launcher}, {2,K::Bomb}, {4,K::Emitter}, {3,K::Bomb,1}, {5,K::Emitter,1}, {6,K::Emitter,1} };
+	Templates[2].Spawns = { {0,K::Launcher}, {2,K::Bomb}, {4,K::Emitter}, {6,K::Emitter},
+		{1,K::Launcher,1}, {3,K::Bomb,1}, {5,K::Bomb,1}, {7,K::Emitter,1} };
+	Waves.Reset(3);
+	for (const auto& Template : Templates)
+	{
+		auto& Wave = Waves.AddDefaulted_GetRef();
+		int32 BatchCount = 0;
+		for (const auto& Spec : Template.Spawns) BatchCount = FMath::Max(BatchCount, Spec.Batch + 1);
+		for (int32 Repeat = 0; Repeat < GetWaveEnemyMultiplier(); ++Repeat)
+			for (const auto& Spec : Template.Spawns)
+				Wave.Spawns.Emplace(Spec.Point, Spec.Kind, Spec.Batch + Repeat * BatchCount);
+	}
 }
 
 bool AMothWaveDirector::SetPlayer(AMothEffectCharacter* Player)
@@ -91,16 +119,20 @@ bool AMothWaveDirector::StartEncounter()
 		if (!EnemyClasses[I] || EnemyClasses[I]->HasAnyClassFlags(CLASS_Abstract)
 			|| EnemyClasses[I]->GetDefaultObject<AEnemyBase>()->GetDropKind() != static_cast<EDeviceKind>(I)) return false;
 	if (SafetyCenter.ContainsNaN() || SafetyHalfExtent.ContainsNaN() || SafetyHalfExtent.GetMin() <= 0) return false;
+	RebuildWaves();
 	TGuardValue<bool> Guard(bChangingFlow, true);
 	const uint64 Generation = ++RunGeneration;
 	Phase = EMothFlowPhase::Preparing; // Commit before destruction callbacks.
+	RunStartedAt = GetWorld()->GetTimeSeconds(); FinishedElapsedSeconds = 0;
+	KillCount = DeviceKillCount = CurrentChain = BestChain = 0;
+	LastDeviceKillAt = -1; RewardEndsAt = 0; LastRewardText = FText::GetEmpty(); CountedVictimIds.Reset();
 	auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	Lifecycle->SetGameplayEnabled(false);
 	CombatPlayer->SetGameplayEnabled(false);
-	Lifecycle->ResetManagedObjects(); // Includes tutorial Held and active effects.
+	Lifecycle->ResetManagedObjects(); // Includes previously held devices and active effects.
 	TArray<TWeakObjectPtr<AEnemyBase>> OldEnemies;
 	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It) OldEnemies.Add(*It);
-	for (auto E : OldEnemies) if (E.IsValid()) E->Destroy(); // Administrative removal has no drops.
+	for (auto E : OldEnemies) if (E.IsValid() && !E->IsPoolInactive()) E->ReturnToPool(); // Administrative removal has no drops.
 	if (!IsCurrent(Generation) || !CombatPlayer.IsValid() || !PlayerHealth.IsValid() || !PlayerHealth->IsAlive()) return false;
 	Lifecycle->SetSafetyBounds(SafetyCenter, SafetyHalfExtent);
 	Lifecycle->SetGameplayEnabled(true);
@@ -113,7 +145,7 @@ int32 AMothWaveDirector::GetAliveCount() const
 {
 	int32 Count = 0;
 	for (auto E : AliveEnemies)
-		if (E.IsValid() && !E->IsActorBeingDestroyed() && E->GetHealthComponent()->IsAlive()) ++Count;
+		if (E.IsValid() && !E->IsActorBeingDestroyed() && !E->IsPoolInactive() && E->GetHealthComponent()->IsAlive()) ++Count;
 	return Count;
 }
 
@@ -130,9 +162,33 @@ float AMothWaveDirector::GetPreparationRemaining() const
 		? FMath::Max(0.0, PreparationEndsAt - GetWorld()->GetTimeSeconds()) : 0.0f;
 }
 
+float AMothWaveDirector::GetRunElapsedSeconds() const
+{
+	return IsEncounterRunning() && RunStartedAt >= 0 && GetWorld()
+		? static_cast<float>(FMath::Max(0.0, GetWorld()->GetTimeSeconds() - RunStartedAt)) : FinishedElapsedSeconds;
+}
+
+FText AMothWaveDirector::GetWaveObjective() const
+{
+	switch (WaveIndex)
+	{
+	case 0: return NSLOCTEXT("MothEncounter", "WaveOneObjective", "击败敌人，射击掉落的机关来启动它");
+	case 1: return NSLOCTEXT("MothEncounter", "WaveTwoObjective", "拾取并投出机关，重新布置战场");
+	case 2: return NSLOCTEXT("MothEncounter", "WaveThreeObjective", "引敌人靠近机关，用连锁效果清场");
+	default: return NSLOCTEXT("MothEncounter", "EncounterObjective", "清除三波敌人");
+	}
+}
+
+float AMothWaveDirector::GetRewardRemainingSeconds() const
+{
+	return IsEncounterRunning() && GetWorld()
+		? static_cast<float>(FMath::Max(0.0, RewardEndsAt - GetWorld()->GetTimeSeconds())) : 0.0f;
+}
+
 void AMothWaveDirector::PrepareWave(int32 Index)
 {
 	WaveIndex = Index; Phase = EMothFlowPhase::Preparing;
+	CurrentChain = 0; LastDeviceKillAt = -1;
 	PendingBirths.Reset(); HideWarnings();
 	PreparationEndsAt = GetWorld()->GetTimeSeconds() + FMath::Max(0.0f, PreparationSeconds);
 	for (const auto& Spec : Waves[Index].Spawns)
@@ -175,15 +231,21 @@ bool AMothWaveDirector::FindBirthplace(const FMothWaveSpawn& Spec, FVector& Posi
 void AMothWaveDirector::ProcessBirths(double Now)
 {
 	const uint64 Generation = RunGeneration;
+	TSet<int32> CheckedPoints;
 	for (int32 I = 0; I < PendingBirths.Num() && IsCurrent(Generation); ++I)
 	{
-		if (PendingBirths[I].bComplete || Now < PendingBirths[I].Due || Now < PendingBirths[I].RetryAt) continue;
+		if (PendingBirths[I].bComplete || Now < PendingBirths[I].Due) continue;
 		const FMothWaveSpawn Spec = PendingBirths[I].Spec;
+		// Additional batches share the eight authored points. Only the earliest queued birth
+		// owns each point's warning until it is admitted, even after a delayed/blocked batch.
+		if (CheckedPoints.Contains(Spec.Point)) continue;
+		CheckedPoints.Add(Spec.Point);
+		if (Now < PendingBirths[I].RetryAt) continue;
 		FVector Position;
 		int32 WorldAlive = 0;
 		for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It)
-			if (!It->IsActorBeingDestroyed() && It->GetHealthComponent()->IsAlive()) ++WorldAlive;
-		if (WorldAlive >= FMath::Clamp(MaxAliveEnemies, 1, 8) || !FindBirthplace(Spec, Position))
+			if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive() && It->GetHealthComponent()->IsAlive()) ++WorldAlive;
+		if (WorldAlive >= FMath::Clamp(MaxAliveEnemies, 1, 64) || !FindBirthplace(Spec, Position))
 		{
 			PendingBirths[I].WarningAt = -1;
 			PendingBirths[I].RetryAt = Now + FMath::Max(.01f, SpawnRetrySeconds);
@@ -198,20 +260,18 @@ void AMothWaveDirector::ProcessBirths(double Now)
 		}
 		if (Now - PendingBirths[I].WarningAt + UE_SMALL_NUMBER < FMath::Max(.01f, SpawnWarningSeconds)) continue;
 		const FTransform Transform(FRotator(0, (CombatPlayer->GetActorLocation() - Position).Rotation().Yaw, 0), Position);
-		auto* Enemy = GetWorld()->SpawnActorDeferred<AEnemyBase>(EnemyClasses[static_cast<int32>(Spec.Kind)], Transform,
-			this, nullptr, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+		auto* Pool = GetWorld()->GetSubsystem<UEnemyPoolSubsystem>();
+		auto* Enemy = Pool ? Pool->AcquireEnemy(EnemyClasses[static_cast<int32>(Spec.Kind)], Transform, this) : nullptr;
 		// World spawn observers run even for deferred actors and may have ended this run.
-		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->Destroy(); return; }
+		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->ReturnToPool(); return; }
 		if (!Enemy) { PendingBirths[I].WarningAt = -1; PendingBirths[I].RetryAt = Now + FMath::Max(.01f, SpawnRetrySeconds); continue; }
 		// Reserve count and bind before construction/BeginPlay can die, destroy, or restart the encounter.
 		PendingBirths[I].bComplete = true;
-		AliveEnemies.Add(Enemy);
-		Enemy->OnEnemyDiedNative.AddUObject(this, &AMothWaveDirector::HandleEnemyDied);
-		Enemy->OnEndPlay.AddUniqueDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
+		RegisterEnemy(Enemy);
 		WarningCircles[Spec.Point]->SetVisibility(false); WarningLabels[Spec.Point]->SetVisibility(false);
-		Enemy->FinishSpawning(Transform);
-		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->Destroy(); return; }
-		if (!IsValid(Enemy) || Enemy->IsActorBeingDestroyed())
+		Pool->FinishSpawningEnemy(Enemy, Transform);
+		if (!IsCurrent(Generation)) { if (IsValid(Enemy) && !Enemy->IsActorBeingDestroyed()) Enemy->ReturnToPool(); return; }
+		if (!IsValid(Enemy) || Enemy->IsActorBeingDestroyed() || Enemy->IsPoolInactive())
 		{
 			UnregisterEnemy(Enemy);
 			// A failed construction/admission remains queued; an actual lethal birth is a completed spawn.
@@ -247,7 +307,8 @@ void AMothWaveDirector::Tick(float DeltaSeconds)
 	for (auto E : Snapshot)
 	{
 		if (!E.IsValid()) AliveEnemies.Remove(E);
-		else if (IsOutside(E->GetActorLocation())) { UnregisterEnemy(E.Get()); E->Destroy(); }
+		else if (E->IsPoolInactive()) UnregisterEnemy(E.Get());
+		else if (IsOutside(E->GetActorLocation())) { UnregisterEnemy(E.Get()); E->ReturnToPool(); }
 		if (!IsCurrent(Generation)) return;
 	}
 	const double Now = GetWorld()->GetTimeSeconds();
@@ -264,6 +325,15 @@ void AMothWaveDirector::Tick(float DeltaSeconds)
 	}
 }
 
+void AMothWaveDirector::RegisterEnemy(AEnemyBase* Enemy)
+{
+	if (!Enemy || AliveEnemies.Contains(Enemy)) return;
+	CountedVictimIds.Remove(static_cast<int32>(Enemy->GetUniqueID())); // A pooled actor now represents a new life.
+	AliveEnemies.Add(Enemy);
+	Enemy->OnEnemyDiedNative.AddUObject(this, &AMothWaveDirector::HandleEnemyDied);
+	Enemy->OnEndPlay.AddUniqueDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
+}
+
 void AMothWaveDirector::UnregisterEnemy(AEnemyBase* Enemy)
 {
 	if (!Enemy || !AliveEnemies.Remove(Enemy)) return;
@@ -271,8 +341,40 @@ void AMothWaveDirector::UnregisterEnemy(AEnemyBase* Enemy)
 	Enemy->OnEndPlay.RemoveDynamic(this, &AMothWaveDirector::HandleEnemyEndPlay);
 }
 
+void AMothWaveDirector::HandleConfirmedEnemyHit(APawn* HitInstigator, const FMothEnemyHitFeedback& Feedback)
+{
+	if (bEndingPlay || bChangingFlow || !IsEncounterRunning() || !Feedback.bKilled
+		|| !CombatPlayer.IsValid() || HitInstigator != CombatPlayer.Get()
+		|| CountedVictimIds.Contains(Feedback.VictimId) || GetWorld()->IsPaused()) return;
+	const auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!Lifecycle || !Lifecycle->IsGenerationCurrent(Feedback.LifecycleGeneration)) return;
+	bool bEncounterVictim = false;
+	for (const auto& Enemy : AliveEnemies)
+		if (Enemy.IsValid() && static_cast<int32>(Enemy->GetUniqueID()) == Feedback.VictimId) { bEncounterVictim = true; break; }
+	if (!bEncounterVictim) return;
+	CountedVictimIds.Add(Feedback.VictimId);
+	++KillCount;
+	if (!Feedback.bDeviceSource)
+	{
+		CurrentChain = 0; LastDeviceKillAt = -1;
+		return;
+	}
+	++DeviceKillCount;
+	const double Now = GetWorld()->GetTimeSeconds();
+	CurrentChain = LastDeviceKillAt >= 0 && Now - LastDeviceKillAt <= 2.0 ? CurrentChain + 1 : 1;
+	LastDeviceKillAt = Now;
+	BestChain = FMath::Max(BestChain, CurrentChain);
+	LastRewardText = CurrentChain > 1
+		? FText::Format(NSLOCTEXT("MothEncounter", "ConsecutiveDeviceKills", "连续机关击杀 ×{0}"), FText::AsNumber(CurrentChain))
+		: NSLOCTEXT("MothEncounter", "DeviceKill", "机关击杀");
+	RewardEndsAt = Now + 2.0;
+}
+
 void AMothWaveDirector::HandleEnemyDied(AEnemyBase* Enemy, AActor* Source)
 {
+	// An environmental or enemy-caused death interrupts the streak, but does not award a player kill.
+	if (Enemy && IsEncounterRunning() && !CountedVictimIds.Contains(static_cast<int32>(Enemy->GetUniqueID())))
+	{ CurrentChain = 0; LastDeviceKillAt = -1; }
 	UnregisterEnemy(Enemy);
 	if (IsEncounterRunning() && !bChangingFlow) PublishState();
 }
@@ -299,12 +401,19 @@ void AMothWaveDirector::CloseAndClean(bool bResetWave)
 		CombatPlayer->GetCharacterMovement()->StopMovementImmediately();
 		CombatPlayer->GetCharacterMovement()->DisableMovement();
 	}
-	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->ResetManagedObjects();
+	// The terminal result already invalidated gameplay above; preserve that one closure
+	// generation until its committed player death has delivered presentation callbacks.
+	GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()->ResetManagedObjects(bResetWave);
 	// Also remove spent visuals/dead corpses and unregistered objects, not only capacity records.
 	TArray<TWeakObjectPtr<AActor>> Objects;
 	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
 		if (It->IsA<AEnemyBase>() || It->IsA<ADeviceBase>() || It->IsA<ARuleProjectile>() || It->IsA<ALaunchColumn>()) Objects.Add(*It);
-	for (auto Object : Objects) if (Object.IsValid() && !Object->IsActorBeingDestroyed()) Object->Destroy();
+	for (auto Object : Objects) if (Object.IsValid() && !Object->IsActorBeingDestroyed())
+	{
+		if (auto* Enemy = Cast<AEnemyBase>(Object.Get())) Enemy->ReturnToPool();
+		else if (auto* Projectile = Cast<ARuleProjectile>(Object.Get())) Projectile->ReturnToPool();
+		else Object->Destroy();
+	}
 	if (bResetWave) WaveIndex = -1;
 }
 
@@ -313,6 +422,7 @@ void AMothWaveDirector::FinishEncounter(EMothFlowPhase Result)
 	if (bEndingPlay || (Result != EMothFlowPhase::Victory && Result != EMothFlowPhase::Defeat)
 		|| Phase == EMothFlowPhase::Victory || Phase == EMothFlowPhase::Defeat || Phase == EMothFlowPhase::Restarting) return;
 	TGuardValue<bool> Guard(bChangingFlow, true);
+	FinishedElapsedSeconds = GetRunElapsedSeconds();
 	Phase = Result;
 	CloseAndClean(false);
 	PublishState();
@@ -348,8 +458,9 @@ void AMothWaveDirector::ShowWarning(int32 Point, const FVector& Position, bool b
 	WarningLabels[Point]->SetWorldLocation(Position + FVector(0,0,160));
 	WarningLabels[Point]->SetWorldRotation(FRotator(0, (CombatPlayer->GetActorLocation() - Position).Rotation().Yaw, 0));
 	WarningLabels[Point]->SetTextRenderColor(bBlocked ? FColor::Red : FColor::Yellow);
-	WarningLabels[Point]->SetText(FText::FromString(FString::Printf(TEXT("S%d / D0%d\n%s"), Point+1, static_cast<int32>(Kind)+1,
-		bBlocked ? TEXT("BLOCKED - MOVE AWAY") : TEXT("INCOMING"))));
+	WarningLabels[Point]->SetText(bBlocked
+		? NSLOCTEXT("MothEncounter", "SpawnBlocked", "请远离此区域")
+		: NSLOCTEXT("MothEncounter", "SpawnIncoming", "敌人即将出现"));
 	WarningLabels[Point]->SetVisibility(true);
 }
 
@@ -370,6 +481,8 @@ void AMothWaveDirector::PublishState()
 
 void AMothWaveDirector::EndPlay(const EEndPlayReason::Type Reason)
 {
+	if (GetWorld()) if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+		Feedback->OnEnemyHitConfirmedNative.RemoveAll(this);
 	if (!bEndingPlay) { bEndingPlay = true; Phase = EMothFlowPhase::Restarting; CloseAndClean(true); }
 	OnFlowChanged.Clear(); OnEnemySpawnedNative.Clear();
 	Super::EndPlay(Reason);

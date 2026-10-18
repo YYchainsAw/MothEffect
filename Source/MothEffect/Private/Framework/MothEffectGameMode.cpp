@@ -5,16 +5,31 @@
 #include "EngineUtils.h"
 #include "Tutorial/MothTutorialSubsystem.h"
 #include "Art/MothPrototypeSceneArt.h"
+#include "Art/MothArenaVisualDirector.h"
 #include "Kismet/GameplayStatics.h"
 
 AMothEffectGameMode::AMothEffectGameMode()
 {
 	PrototypeSceneArtClass=AMothPrototypeSceneArt::StaticClass();
+	ArenaVisualDirectorClass=AMothArenaVisualDirector::StaticClass();
 }
 
 void AMothEffectGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	if (ArenaVisualDirectorClass && UGameplayStatics::GetCurrentLevelName(this,true)==TEXT("L_Arena_SoulCity"))
+	{
+		bool bHasVisualDirector = false;
+		for (TActorIterator<AMothArenaVisualDirector> It(GetWorld()); It; ++It)
+		{
+			if (!It->IsActorBeingDestroyed()) { bHasVisualDirector = true; break; }
+		}
+		if (!bHasVisualDirector)
+		{
+			FActorSpawnParameters Params; Params.ObjectFlags|=RF_Transient;
+			GetWorld()->SpawnActor<AMothArenaVisualDirector>(ArenaVisualDirectorClass,FTransform::Identity,Params);
+		}
+	}
 	if (!PrototypeSceneArtClass || UGameplayStatics::GetCurrentLevelName(this,true)!=TEXT("L_Arena_01")) return;
 	for (TActorIterator<AMothPrototypeSceneArt> It(GetWorld()); It; ++It) if (!It->IsActorBeingDestroyed()) return;
 	FActorSpawnParameters Params; Params.ObjectFlags|=RF_Transient;

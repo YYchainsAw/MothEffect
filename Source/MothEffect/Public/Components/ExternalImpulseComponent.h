@@ -15,6 +15,8 @@ public:
 	bool QueueImpulse(const FVector& Velocity, bool bOverrideZ, const FGuid& EventId);
 	void SetGameplayEnabled(bool bEnabled);
 	void ClearPending();
+	/** Deduplication belongs to a single enemy life, while subscriptions survive reuse. */
+	void ResetForPoolReuse();
 
 protected:
 	virtual void BeginPlay() override;

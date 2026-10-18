@@ -1,6 +1,10 @@
 # Moth Effect（飞蛾效应）：T15 三外观与固定掉落接入
 
-版本 v0.4 · 2026-10-12 · 状态：原生验证通过；保存关卡实例不掉落已修复，用户确认本次掉落/拾取复测通过；其他完整PIE项目按清单核对
+版本 v0.6 · 2026-10-17 · 状态：三种 Drongo 模型固定对应掉落，历史验证保留
+
+2026-10-17：D01 升柱使用 Drongo Scavenger、D02 炸弹使用 Drongo 原版、D03 发射器使用 Drongo Alien Invader；背包与固定掉落绑定继续沿用。三个模型的材质、共用动画与实际死亡掉落检查见 [Drongo 接入](Drongo_Enemy_Setup.md)。下方同模型版本与旧灰盒记录保留历史范围。
+
+2026-10-16：用户将三类敌人统一为 Drongo；青蓝 D01、橙 D02、紫 D03 背包、三件固定掉落类及原生结算保持。模型、配套动画与本次专项验证见 [Drongo 接入](Drongo_Enemy_Setup.md)，下文原三外观的历史实现不代表当前角色模型。
 
 Refs #17，DEC34、TC20；核心f8e3216，保存资产与测试53ba114，最终测试夹具6512650。沿用[T14射击AI](Enemy_Setup.md)和[T13生命周期](Lifecycle_Setup.md)，本地develop逐功能提交。T14 PR #42仍Open、用户确认PIE尚未完成；2026-10-12按用户要求创建[T15 PR #43](https://github.com/YYchainsAw/MothEffect/pull/43)（codex/t15-enemy-drops → codex/t14-shooting-ai），当前Open；待T14合并后再改为main。用户要求保持待验收，#17保持Open / In Progress，当前四项PIE不记通过。
 

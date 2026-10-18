@@ -15,6 +15,7 @@ void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 		TWeakObjectPtr<AActor> Actor;
 		FVector Point;
 		FVector Velocity;
+		FVector ActivationHeading;
 	};
 	const float Radius = FMath::Max(1.0f, BombRadiusCm);
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(MothBomb), false, this);
@@ -67,9 +68,12 @@ void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 			if (Direction.IsNearlyZero()) Direction = Fallback;
 			Velocity = Direction * FMath::Max(0.0f, BombDeviceRadialVelocityAdd);
 		}
-		Targets.Add({Target, Point, Velocity});
+		FVector Heading = Radial.GetSafeNormal();
+		if (Heading.IsNearlyZero()) Heading = Fallback;
+		Targets.Add({Target, Point, Velocity, Heading});
 	}
 
+	int32 TriggeredDevices = 0;
 	for (const FTarget& Resolved : Targets)
 	{
 		if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active) break;
@@ -89,11 +93,24 @@ void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 				Health->ApplyHit(Damage);
 			}
 		}
-		// Never call BallisticReactive here: damage and motion cannot activate a device.
 		if (IsValid(Target) && !Target->IsActorBeingDestroyed()
 			&& Target->GetClass()->ImplementsInterface(UImpulseReceiver::StaticClass()))
 		{
 			IImpulseReceiver::Execute_ReceiveImpulse(Target, Resolved.Velocity, false, ActivationHitId);
+		}
+		// Blast activation uses the same admission/delay/cancellation path as a shot.
+		// Each downstream effect needs its own ID: health deduplication must not swallow a chain.
+		if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active) break;
+		if (ADeviceBase* Device = Cast<ADeviceBase>(Target);
+			IsValid(Device) && !Device->IsActorBeingDestroyed() && Device->GetDeviceState() == EDeviceState::Dormant)
+		{
+			FHitContext Blast;
+			Blast.HitId = FGuid::NewGuid();
+			Blast.SourceActor = this;
+			Blast.InstigatorPawn = Context.InstigatorPawn;
+			Blast.ImpactPoint = Resolved.Point;
+			Blast.ShotDirection = Resolved.ActivationHeading;
+			TriggeredDevices += Device->TryActivate(Blast) ? 1 : 0;
 		}
 	}
 	if (bEndingPlay || !bGameplayEnabled || DeviceState != EDeviceState::Active) return;
@@ -102,8 +119,8 @@ void ADeviceBase::ExplodeBomb(const FHitContext& Context)
 		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Bomb, ExplosionCenter, FVector::UpVector, false, false, Radius);
 #if !UE_BUILD_SHIPPING
 	if (bLogDeviceEvents)
-		UE_LOG(LogMothEffect, Log, TEXT("Bomb %s hit=%s center=%s radius=%.1f resolvedTargets=%d"),
-			*GetName(), *ActivationHitId.ToString(), *ExplosionCenter.ToString(), Radius, Targets.Num());
+		UE_LOG(LogMothEffect, Log, TEXT("Bomb %s hit=%s center=%s radius=%.1f resolvedTargets=%d triggeredDevices=%d"),
+			*GetName(), *ActivationHitId.ToString(), *ExplosionCenter.ToString(), Radius, Targets.Num(), TriggeredDevices);
 #endif
 	if (!bEndingPlay && !IsActorBeingDestroyed()) OnBombExploded(ExplosionCenter, Radius);
 }

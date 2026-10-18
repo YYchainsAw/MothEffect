@@ -32,11 +32,13 @@ namespace
 		ADeviceBase* Device = Fixture.World->SpawnActorDeferred<ADeviceBase>(ADeviceBase::StaticClass(),
 			Transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!Device) return nullptr;
+		Device->ActivationDelaySeconds = 0.0f; // Isolate blast/impulse rules; default delay has separate integration coverage.
 		FEnumProperty* Property = FindFProperty<FEnumProperty>(ADeviceBase::StaticClass(), TEXT("DeviceKind"));
 		check(Property);
 		Property->GetUnderlyingProperty()->SetIntPropertyValue(Property->ContainerPtrToValuePtr<void>(Device),
 			static_cast<int64>(Kind));
 		Device->FinishSpawning(Transform);
+		Fixture.AgeDeviceForActivation(Device);
 		Device->GetPhysicsBody()->SetEnableGravity(false);
 		Device->GetPhysicsBody()->SetLinearDamping(0.0f);
 		return Device;
@@ -106,12 +108,33 @@ bool FMothBombSingleUseTest::RunTest(const FString& Parameters)
 			Bomb->GetExplosionCenter().Equals(Center));
 		TestEqual(TEXT("Instigator is not immune; multiple colliders deal damage once"), Shooter->GetHealthComponent()->GetCurrentHealth(), 40.0f);
 		TestEqual(TEXT("Other pawn uses the same fixed damage"), Other->GetHealthComponent()->GetCurrentHealth(), 40.0f);
-		TestTrue(TEXT("Explosion immediately commits Spent"), Bomb->GetDeviceState() == EDeviceState::Spent);
+		TestTrue(TEXT("Zero-delay effect commits Spent once"), Bomb->GetDeviceState() == EDeviceState::Spent);
 		TestFalse(TEXT("Another hit cannot repeat the explosion"), Bomb->TryActivate(BombHit()));
 		TestEqual(TEXT("One activation transition"), Activations, 1);
 		TestTrue(TEXT("Spent has finite visual cleanup"), Bomb->GetLifeSpan() > 0.0f);
 		Bomb->OnDeviceStateChangedNative.Clear();
 	}
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothBombSpawnProtectionTest, "MothEffect.Devices.Bomb.BlastRespectsFreshDeviceProtection",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FMothBombSpawnProtectionTest::RunTest(const FString&)
+{
+	FMothCombatTestWorld Fixture;
+	if (!TestNotNull(TEXT("Create blast protection world"), Fixture.World)) return false;
+	ADeviceBase* Bomb = SpawnDevice(Fixture, FVector(0, 0, 500), EDeviceKind::Bomb);
+	ADeviceBase* Mature = SpawnDevice(Fixture, FVector(-150, 0, 500), EDeviceKind::Emitter);
+	ADeviceBase* Fresh = Fixture.Spawn<ADeviceBase>(FVector(150, 0, 500));
+	if (!Bomb || !Mature || !Fresh) { AddError(TEXT("Spawn blast protection targets")); return false; }
+	Mature->ActivationDelaySeconds = 0.3f;
+	Fresh->GetPhysicsBody()->SetEnableGravity(false);
+	TestTrue(TEXT("Mature bomb executes the real explosion"), Bomb->TryActivate(BombHit()));
+	TestTrue(TEXT("Explosion activates the mature neighbor"), Mature->GetDeviceState() == EDeviceState::Active);
+	TestTrue(TEXT("Explosion leaves the newborn neighbor Dormant"), Fresh->GetDeviceState() == EDeviceState::Dormant);
+	TestFalse(TEXT("Protected blast cannot queue an activation"), Fresh->IsActivationPending());
+	Fixture.AgeDeviceForActivation(Fresh);
+	TestTrue(TEXT("Protection expiry keeps the rejected blast inactive"), Fresh->GetDeviceState() == EDeviceState::Dormant && !Fresh->IsActivationPending());
 	return true;
 }
 
@@ -159,13 +182,15 @@ bool FMothBombStatesTest::RunTest(const FString& Parameters)
 	ADeviceBase* Launcher = SpawnDevice(Fixture, Center + FVector(0.0, -180.0, 0.0), EDeviceKind::Launcher);
 	ADeviceBase* Bomb = SpawnDevice(Fixture, Center, EDeviceKind::Bomb);
 	if (!Holder || !Held || !NeighborBomb || !Emitter || !Launcher || !Bomb) { AddError(TEXT("Spawn state targets")); return false; }
+	NeighborBomb->ActivationDelaySeconds = 0.3f; // Observe secondary activation without recursively executing it in this call.
 	TestTrue(TEXT("Pickup held target"), Holder->TryPickupDevice(Held));
 	TestTrue(TEXT("Activate emitter"), Emitter->TryActivate(BombHit()));
 	TestTrue(TEXT("Activate fixed launcher shell"), Launcher->TryActivate(BombHit()));
 	TestTrue(TEXT("Activate nearby bomb"), Bomb->TryActivate(BombHit(Holder)));
 	TestEqual(TEXT("Holding does not shield the character"), Holder->GetHealthComponent()->GetCurrentHealth(), 40.0f);
 	TestTrue(TEXT("Held remains attached and has no independent physics"), Held->GetHolder() == Holder && !Held->GetPhysicsBody()->IsSimulatingPhysics());
-	TestTrue(TEXT("Dormant neighbor bomb is not triggered"), NeighborBomb->GetDeviceState() == EDeviceState::Dormant);
+	TestTrue(TEXT("Blast activates the Dormant neighbor with its own delayed effect"), NeighborBomb->GetDeviceState() == EDeviceState::Active && NeighborBomb->IsActivationPending());
+	TestTrue(TEXT("Secondary activation receives a distinct hit ID"), NeighborBomb->GetActivationHitId().IsValid() && NeighborBomb->GetActivationHitId() != Bomb->GetActivationHitId());
 	TestTrue(TEXT("Active emitter is neither restarted nor redirected"), Emitter->GetDeviceState() == EDeviceState::Active
 		&& Emitter->GetActivationDirection().Equals(FVector::ForwardVector));
 	TestFalse(TEXT("An active launcher cannot receive external motion"), Launcher->CanReceiveExternalImpulse());
@@ -193,7 +218,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothBombBlueprintTest, "MothEffect.Devices.Bom
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FMothBombBlueprintTest::RunTest(const FString& Parameters)
 {
-	FMothCombatTestWorld Fixture;
+	auto SharedFixture = MakeShared<FMothCombatTestWorld>();
+	auto& Fixture = *SharedFixture;
 	if (!TestNotNull(TEXT("Create asset integration world"), Fixture.World)) return false;
 	UClass* BombClass = LoadClass<ADeviceBase>(nullptr,
 		TEXT("/Game/MothEffect/Devices/BP_DeviceBomb.BP_DeviceBomb_C"));
@@ -210,9 +236,17 @@ bool FMothBombBlueprintTest::RunTest(const FString& Parameters)
 	const FVector VisualExtent=Mesh->GetStaticMesh()->GetBoundingBox().GetExtent()*Mesh->GetRelativeScale3D();
 	TestTrue(TEXT("Replaceable visual stays within the shot envelope"),VisualExtent.GetMin()>1&&VisualExtent.GetMax()<=25);
 	TestEqual(TEXT("Visual replacement retains the native physical radius"),Bomb->GetPhysicsBody()->GetUnscaledSphereRadius(),20.f);
+	TestEqual(TEXT("Saved asset inherits the shared .3s activation delay"), Bomb->ActivationDelaySeconds, 0.3f);
+	Fixture.AgeDeviceForActivation(Bomb);
 	TestTrue(TEXT("Saved asset uses native ballistic activation"), IBallisticReactive::Execute_ReceiveBallisticHit(Bomb, BombHit(Pawn)));
-	TestEqual(TEXT("Saved asset applies baseline fixed damage"), Pawn->GetHealthComponent()->GetCurrentHealth(), 40.0f);
-	TestTrue(TEXT("Saved asset reaches Spent once"), Bomb->GetDeviceState() == EDeviceState::Spent);
+	TestEqual(TEXT("Saved asset cannot damage before its delay"), Pawn->GetHealthComponent()->GetCurrentHealth(), 100.0f);
+	TestTrue(TEXT("Saved asset commits pending Active"), Bomb->GetDeviceState() == EDeviceState::Active && Bomb->IsActivationPending());
+	Bomb->GetPhysicsBody()->SetEnableGravity(false);
+	ADD_LATENT_AUTOMATION_COMMAND(FMothTickWorldUntil(SharedFixture, 0.35f, [this, Bomb, Pawn]()
+	{
+		TestEqual(TEXT("Saved delayed asset applies baseline fixed damage"), Pawn->GetHealthComponent()->GetCurrentHealth(), 40.0f);
+		TestTrue(TEXT("Saved asset reaches Spent once after the delay"), Bomb->GetDeviceState() == EDeviceState::Spent);
+	}));
 	return true;
 }
 
@@ -237,8 +271,11 @@ namespace
 				Fixture->World->GetTimerManager().Tick(0.0f);
 				if (Case == EImpulseCase::BlastMovement)
 				{
+					Device->ActivationDelaySeconds = 0.3f; // Measure blast velocity before the triggered emitter changes its own gravity.
 					ADeviceBase* Bomb = SpawnDevice(*Fixture, Center, EDeviceKind::Bomb);
 					Test->TestTrue(TEXT("Blast schedules native movement"), Bomb->TryActivate(BombHit(Pawn)));
+					// Blast activation reapplies the production gravity policy; isolate velocity settlement here.
+					Device->GetPhysicsBody()->SetEnableGravity(false);
 				}
 				else if (Case == EImpulseCase::Merge)
 				{
@@ -281,7 +318,7 @@ namespace
 				Test->TestTrue(TEXT("Native CharacterMovement receives additive radial/up velocity"), Pawn->GetVelocity().Equals(FVector(650.0, 0.0, 450.0), 1.0));
 				Test->TestTrue(TEXT("Opposite pawn uses opposite horizontal direction"), Other->GetVelocity().Equals(FVector(-650.0, 0.0, 450.0), 1.0));
 				Test->TestTrue(TEXT("Physics root receives the 1100cm/s radial velocity"), Device->GetPhysicsBody()->GetPhysicsLinearVelocity().Equals(FVector(0.0, 1100.0, 0.0), 1.0));
-				Test->TestTrue(TEXT("Motion cannot activate the Dormant device"), Device->GetDeviceState() == EDeviceState::Dormant);
+				Test->TestTrue(TEXT("Blast activates the ordinary device while preserving its radial motion"), Device->GetDeviceState() == EDeviceState::Active);
 				return true;
 			}
 			if (Case == EImpulseCase::Merge)

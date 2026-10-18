@@ -79,7 +79,7 @@ bool FMothDesignerPreview::RunTest(const FString&)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothDesignerFontSource,"MothEffect.UI.MissingFontSourceRestoredWithoutChangingUserStyle",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FMothDesignerFontSource,"MothEffect.UI.DesignerFontSourcesAreSerialized",
 	EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FMothDesignerFontSource::RunTest(const FString&)
 {
@@ -87,17 +87,17 @@ bool FMothDesignerFontSource::RunTest(const FString&)
 	if (!TestNotNull(TEXT("Saved Designer class"),Class)) return false;
 	auto* UI=NewObject<UMothHUDWidget>(GetTransientPackage(),Class);
 	UI->SetDesignerFlags(EWidgetDesignFlags::Designing|EWidgetDesignFlags::ExecutePreConstruct); UI->Initialize();
-	auto* Ammo=Cast<UTextBlock>(UI->GetWidgetFromName(TEXT("AmmoText")));
+	for (const FName Name : {FName(TEXT("AmmoText")),FName(TEXT("HealthText")),FName(TEXT("MenuTitle"))})
+	{
+		const auto* Text=Cast<UTextBlock>(UI->GetWidgetFromName(Name));
+		if (!TestNotNull(TEXT("Designer text exists"),Text)) return false;
+		TestTrue(TEXT("Saved text uses a serialized font object"),Text->GetFont().FontObject!=nullptr);
+		TestTrue(TEXT("Saved font is renderable without native repair"),Text->GetFont().HasValidFont());
+	}
 	auto* Health=Cast<UTextBlock>(UI->GetWidgetFromName(TEXT("HealthText")));
-	FSlateFontInfo Missing=Ammo->GetFont(); Missing.FontObject=nullptr; Missing.CompositeFont.Reset(); Missing.Size=31; Missing.OutlineSettings.OutlineSize=2;
-	Ammo->SetFont(Missing); TestFalse(TEXT("Reproduce a missing serialized composite-font source"),Ammo->GetFont().HasValidFont());
-	const auto UserFont=MakeShared<FCompositeFont>(*FCoreStyle::GetDefaultFont());
-	FSlateFontInfo Custom(UserFont,47,TEXT("Regular")); Health->SetFont(Custom);
+	FSlateFontInfo Custom=Health->GetFont(); Custom.Size=47; Health->SetFont(Custom);
 	UI->TakeWidget(); UI->RefreshState();
-	TestTrue(TEXT("Missing font source becomes renderable"),Ammo->GetFont().HasValidFont());
-	TestEqual(TEXT("Recovery preserves user's size"),Ammo->GetFont().Size,31.f);
-	TestEqual(TEXT("Recovery preserves user's outline"),Ammo->GetFont().OutlineSettings.OutlineSize,2);
-	TestTrue(TEXT("Assigned user font source is preserved"),Health->GetFont().CompositeFont==UserFont);
+	TestTrue(TEXT("Assigned user font source is preserved"),Health->GetFont().FontObject==Custom.FontObject);
 	TestEqual(TEXT("Assigned user font size is preserved"),Health->GetFont().Size,47.f);
 	UI->ReleaseSlateResources(true); return true;
 }

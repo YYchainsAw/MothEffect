@@ -1,5 +1,6 @@
 #include "Subsystems/DeviceLifecycleSubsystem.h"
 #include "Feedback/MothFeedbackSubsystem.h"
+#include "Feedback/MothAudioSubsystem.h"
 #include "Combat/RuleProjectile.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
@@ -47,7 +48,7 @@ int32 UDeviceLifecycleSubsystem::GetProjectileCount() const
 {
 	int32 Count = 0;
 	for (const TWeakObjectPtr<ARuleProjectile>& Projectile : Projectiles)
-		if (IsLive(Projectile.Get()) && !Projectile->HasProcessedImpact()) ++Count;
+		if (IsLive(Projectile.Get()) && !Projectile->IsPoolInactive() && !Projectile->HasProcessedImpact()) ++Count;
 	return Count;
 }
 
@@ -226,9 +227,9 @@ void UDeviceLifecycleSubsystem::Tick(float DeltaTime)
 	}
 	const auto ProjectileSnapshot = Projectiles;
 	for (const auto& Projectile : ProjectileSnapshot)
-		if (IsLive(Projectile.Get()) && IsOutsideSafety(Projectile.Get())) Projectile->Destroy();
+		if (IsLive(Projectile.Get()) && !Projectile->IsPoolInactive() && IsOutsideSafety(Projectile.Get())) Projectile->ReturnToPool();
 	Devices.RemoveAllSwap([](const FDeviceRecord& R) { return !IsLive(R.Device.Get()); });
-	Projectiles.RemoveAllSwap([](const auto& P) { return !IsLive(P.Get()); });
+	Projectiles.RemoveAllSwap([](const auto& P) { return !IsLive(P.Get()) || P->IsPoolInactive(); });
 }
 
 bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
@@ -236,23 +237,32 @@ bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
 	if (bResetting) return false;
 	if (bGameplayEnabled && !bEnabled) ++LifecycleGeneration;
 	bGameplayEnabled = bEnabled;
-	if (!bEnabled) if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
+	if (!bEnabled)
+	{
+		if (auto* Audio = GetWorld()->GetSubsystem<UMothAudioSubsystem>()) Audio->ClearGameplayAudio();
+		if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
+		// Cancel accepted waits now, so re-enabling the session cannot revive their timers or quota.
+		const auto Snapshot = Devices;
+		for (const auto& Record : Snapshot)
+			if (IsLive(Record.Device.Get()) && Record.Device->IsActivationPending()) Record.Device->FinishActivation();
+	}
 	return true;
 }
 
-void UDeviceLifecycleSubsystem::ResetManagedObjects()
+void UDeviceLifecycleSubsystem::ResetManagedObjects(bool bInvalidateGeneration)
 {
 	if (bResetting) return;
 	TGuardValue<bool> Guard(bResetting, true);
+	if (auto* Audio = GetWorld()->GetSubsystem<UMothAudioSubsystem>()) Audio->ClearGameplayAudio();
 	if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()) Feedback->ClearFeedback();
-	++LifecycleGeneration;
+	if (bInvalidateGeneration || bGameplayEnabled) ++LifecycleGeneration;
 	const auto DeviceSnapshot = Devices;
 	const auto ProjectileSnapshot = Projectiles;
 	const auto SpawnSnapshot = ReservedSpawns;
 	// Clear admission first; callbacks during destruction cannot create replacements.
 	Devices.Reset(); Projectiles.Reset(); ReservedSpawns.Reset(); PendingSpawns = 0;
 	for (const auto& Record : DeviceSnapshot) if (IsLive(Record.Device.Get())) Record.Device->DestroyDevice();
-	for (const auto& Projectile : ProjectileSnapshot) if (IsLive(Projectile.Get())) Projectile->Destroy();
+	for (const auto& Projectile : ProjectileSnapshot) if (IsLive(Projectile.Get())) Projectile->ReturnToPool();
 	for (const auto& Device : SpawnSnapshot) if (IsLive(Device.Get())) Device->DestroyDevice();
 	NextOrder = 0;
 	for (double& Notice : LastCapacityNotice) Notice = -1.0;

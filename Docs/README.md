@@ -1,6 +1,40 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.46 · 2026-10-13 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.67 · 2026-10-18 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-18 第一轮画面：开启TSR、校准SoulCity固定曝光并统一可逆灯光与基础调色。两项视觉专项、正式地图三波接入和固定机位D3D12对比已验证；动态清晰度与性能待验收。配置、原图及验证范围见[画面接入](05_Development_Guide/Arena_Visual_Setup.md)。
+
+2026-10-17 当前 Windows 包：已生成 Win64 Shipping 完整目录与约 1.40 GB ZIP，Cook 0 errors／11 既有警告，37 项关键资源逐项确认入包；29 件运行文件重解压 SHA 一致，独立程序主菜单、SoulCity 场景与暂停／设置页面可见。补齐 UI 软路径资源的 AlwaysCook 配置。入口、校验值、截图及未覆盖范围见 [本次 Windows 包](07_Release/Windows_Package_2026-10-17.md)；未上传或发布。
+
+2026-10-17 敌人外观对应掉落：D01 升柱使用 Drongo Scavenger，D02 炸弹使用 Drongo 原版，D03 发射器使用 Drongo Alien Invader；各用原配材质与共用动画。三个敌人蓝图已写回，保存实例重载及实际移动、开火、死亡、单次对应掉落通过。对应表、编辑入口和预览见 [Drongo 接入](05_Development_Guide/Drongo_Enemy_Setup.md)。
+
+2026-10-17 角色与按钮声音接入：Murdock 玩家与 Drongo 敌人复用 26 条原配录音，Kenney 提供悬停、点击、返回和错误四条短音效；实际开火、确认击杀、受伤、预警与死亡驱动语音，补齐冷却、暂停及结算清理。原工程 Editor 构建、41 项专项回归及实际 D3D12／音频运行检查通过；音量平衡与完整战斗混音待主观试听。配置和证据见 [角色与界面音效接入](05_Development_Guide/Character_Audio_Setup.md)。
+
+2026-10-17 夜景角色主菜单：`L_MainMenu` 重排为左侧 Murdock 展示角色、上方用户 Logo、右侧无框文字选项；城市夜空和远景保留完整可见。角色在待机与两个指定动作之间平滑循环，“开始游戏”衔接实际地图加载页面。编辑入口与验证见 [Night_Menu_Setup](05_Development_Guide/Night_Menu_Setup.md)。下方机械庭院开场记录保留历史范围。
+
+2026-10-17 音效选型：按英文短句与战斗喊声需求，盘点本地 Paragon 1085 条独立角色录音、SoulCity 脚步与环境音，并核对免费 UI、科幻开火、装填、机械与爆炸候选的作者页面、试听入口和许可。具体路径与动作覆盖见 [音效与英文语音清单](05_Development_Guide/Audio_Shortlist_2026-10-17.md)；当前为选型，听感与接入待验证。
+
+2026-10-17 首版游戏内流程：独立 `L_MainMenu` 城市机械庭院使用固定镜头和淡入，点击开始才进入 SoulCity，暂停／结算可返回独立入口或直接重开。菜单内无玩家、观战角色和敌人波次。设置、胜负统计与制作人员页面接入，独立教学入口改为开局基础提示；音量、鼠标灵敏度、画质与显示选择可保存，三波补充目标提示和机关击杀反馈。实现、操作与验证范围见 [Release_Flow_Setup](05_Development_Guide/Release_Flow_Setup.md)。
+
+2026-10-16 Niagara 特效接入：八类实际开火、命中、机关与拾取事件统一连接项目 FX，暂停与结算清理沿用反馈系统。原工程构建、19 项 Editor 专项及八类实际 D3D12 模拟/暂停恢复/死亡清理通过，九件目标资产已写回；用户准星与 HUD 保持，整局、性能和独立包待验收。调节入口与证据见 [Niagara_Setup](05_Development_Guide/Niagara_Setup.md)。
+
+2026-10-16 Slate 界面接入：用 Colorosse Slate / Kenney 重做 Designer HUD 和菜单，左下角玩家生命、敌人头顶生命、弹药/换弹、波次与交互提示已连接真实数据。旧原生布局与绘制移除，用户准星包 SHA 及 HUD 内 15 个事件图节点/连线保持。原工程 Editor 构建、三项 UI Editor 专项（2 成功、1 带警告成功）、实际伤害/菜单/暂停/重载专项和五张 D3D12 画面通过；手动整局、性能与独立包仍待验收。当前编辑入口见 [Slate_UI_Setup](05_Development_Guide/Slate_UI_Setup.md)，下方旧 UI 记录保留历史范围。
+
+2026-10-16 敌人外观统一为 Drongo：保留三类敌人、固定掉落及当前射击 AI，项目动画蓝图复用原包移动/跳跃/上半身开火，移除演示玩家依赖并接入死亡动画。资产、验证与重载步骤见 [Drongo_Enemy_Setup](05_Development_Guide/Drongo_Enemy_Setup.md)。
+
+2026-10-16 选定资源导入：Slate / Kenney 的 3,234 张贴图与 Wraith 已导入；用户后补的 Niagara Examples Pack、Drongo 也已核对，Minions 按用户要求暂缓。两包 2,582 件原文件经隔离检查保持 SHA 一致，Drongo 两件动画蓝图内存编译通过，15 个 Niagara 系统加载通过。导入阶段未改 HUD、玩家或敌人外观；后续 Drongo 接入见上段。具体位置、原包警告与验证边界见 [Asset_Import_Setup](05_Development_Guide/Asset_Import_Setup.md)，选型依据见 [资源清单](05_Development_Guide/Asset_Shortlist_2026-10-16.md)。
+
+2026-10-16 新增 [本期开发者日志](05_Development_Guide/Developer_Log_2026-10-16.md)：整理10月14日至16日的道具重构、SoulCity战场和正式准星进展，记录击杀反馈、实际战斗、资源与性能风险，并列出下一期UI收尾、整局试玩及Windows候选包计划。日志引用已有验证，不新增玩法通过结论。
+
+2026-10-15 SoulCity紧凑街区：`L_Arena_SoulCity` 在原多层战场内增加七栋封闭建筑，形成街巷、转角和高台遮挡；四面连续外围楼群配合城市远景卡片收住视野。地图打开与编辑见 [SoulCity_Arena_Setup](05_Development_Guide/SoulCity_Arena_Setup.md)，实际碰撞、导航、三波与八视角结果见 [报告](06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md)。原HUD和玩家资产保留，手动战斗、实际AI追击与性能待验收。
+
+2026-10-15 Soul City 场内原生资产替换：`L_Arena_SoulCity` 保留84×72m、-2.4/0/3.6/7.2m四层与六条连接，场内主体改为原生通风设备、法兰管材、金属墙、完整楼板、台阶与护栏。17组掩体的位置保留，设备/管材/护栏碰撞按实际网格匹配；外观沿用原材质，独立检查主体可见方块替换。打开见 [SoulCity_Arena_Setup](05_Development_Guide/SoulCity_Arena_Setup.md)，资产/20导航/21支持/脚本三波及五视角证据见 [报告](06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md)。用户HUD和原地图保留，手动战斗与性能待验收。
+
+2026-10-14 贴图准星：用户已导入 `T_CH001`、`T_HM_002`、`T_KI_001`，C++ 已补入敌人实际命中/击杀快照和 HUD 蓝图通知，旧 HUD 与菜单继续默认创建。蓝图图层、动画及接线由用户制作，步骤见 [自定义准星接入](05_Development_Guide/Crosshair_Setup.md)。按用户选择先交付源码和说明，完整编译、九项新增专项执行及 PIE 仍待进行，未修改用户资产；此前道具重构的验证范围保持原记录。
+
+2026-10-14 当前进入道具基础重构，入口为 [Device_Refactor_Setup](05_Development_Guide/Device_Refactor_Setup.md)：地面固定且保留查询、显式推力/弹射再起飞、D03 锁入射 XY 水平方向、共用激活延迟及 D02 爆炸触发无遮挡 Dormant。规则 v0.12、参数 v0.19 与 DEC41–DEC44 已同步；当前 `refactor` 分支，代码分段本地提交 `f6d6b2a` / `f91db81`。新建 [#48](https://github.com/YYchainsAw/MothEffect/issues/48)、[#49](https://github.com/YYchainsAw/MothEffect/issues/49)、[#50](https://github.com/YYchainsAw/MothEffect/issues/50)、[#51](https://github.com/YYchainsAw/MothEffect/issues/51)，均 Open / In Progress、YYchainsAw / M5，元数据已回读。收尾提交 0e5370a / 4934627，隔离 UE 构建、114 Editor / 12 主地图 Game 回归通过，见 [验证报告](06_Test_Doc/Device_Refactor_Report_2026-10-14.md)；硬件 PIE、手感和独立包仍待验收；历史记录保留原验证范围，本轮未推送或创建 PR。
+
+原工程补充验证：确认编辑器关闭后，Editor 常规构建 56.79 秒 Succeeded，新 DLL 的六项 Foundation 全通过；重新打开项目即可加载。该构建包含当前用户未提交控制器代码，未将这些改动纳入本轮提交。
 
 2026-10-13 已按用户要求创建[PR #47](https://github.com/YYchainsAw/MothEffect/pull/47)：T18编辑入口、T19默认反馈与T20可替换原型外观，codex/t18-t20-prototype-feedback → main。base ce3a887、首个head 3a7d837，完整Git tree与已验证develop cadff96一致；126件差异，46件LFS对象11MB已上传，用户玩家资产未纳入。Assignee YYchainsAw，Labels feature/polish/area:ui/area:combat/area:art，Project MothEffect · 首版开发 / In Progress，Milestone M5 · 试玩与候选包验收，均已回读核对。首个head的Repository checks已Success（6s）；静态CI不代替游戏验收。使用Refs #20/#21/#22，关联Issue保持Open，各轮手动验收保留。本地继续develop；本轮PR沿用既有真实UE证据，随后T21独立包另行记录。 以下段落保留历史。
 
@@ -76,6 +110,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Murdock_Setup.md](05_Development_Guide/Murdock_Setup.md) | Murdock 官方 ABP 复用、单 Jog、一体枪口、开火/换弹及交互迁移与待执行验证 |
 | 05_Development_Guide/ | [Weapon_Setup.md](05_Development_Guide/Weapon_Setup.md) | T05 步枪/输入/测试靶/上半身动画配置与分支验收 |
 | 05_Development_Guide/ | [Device_Setup.md](05_Development_Guide/Device_Setup.md) | T06 原生机关状态、灰盒资产、重复命中与当前验收步骤 |
+| 05_Development_Guide/ | [Device_Refactor_Setup.md](05_Development_Guide/Device_Refactor_Setup.md) | 当前道具基础重构、可编辑尺寸/延迟、水平射向、爆炸连锁及待执行验证 |
 | 05_Development_Guide/ | [Device_Interaction_Setup.md](05_Development_Guide/Device_Interaction_Setup.md) | T07 挂点、持物表现、安全释放、输入与已通过范围 |
 | 05_Development_Guide/ | [Emitter_Setup.md](05_Development_Guide/Emitter_Setup.md) | T08 D03/P01 灰盒 BP、方向提示、Automation 和空中启动验收 |
 | 05_Development_Guide/ | [Bomb_Setup.md](05_Development_Guide/Bomb_Setup.md) | T10 爆炸灰盒、统一推力与当前 PIE 验收 |
@@ -86,6 +121,13 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Enemy_Drops_Setup.md](05_Development_Guide/Enemy_Drops_Setup.md) | T15色形预告、固定掉落与四项PIE清单 |
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
+| 05_Development_Guide/ | [SoulCity_Arena_Setup.md](05_Development_Guide/SoulCity_Arena_Setup.md) | Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围 |
+| 05_Development_Guide/ | [Arena_Visual_Setup.md](05_Development_Guide/Arena_Visual_Setup.md) | 第一轮TSR、可逆灯光与后处理、固定机位原图和验证边界 |
+| 05_Development_Guide/ | [Niagara_Setup.md](05_Development_Guide/Niagara_Setup.md) | Niagara 战斗特效与调节 |
+| 05_Development_Guide/ | [Audio_Shortlist_2026-10-17.md](05_Development_Guide/Audio_Shortlist_2026-10-17.md) | 按钮、枪声、装填、机关、英文角色语音与环境音选型及本地资产路径 |
+| 05_Development_Guide/ | [Character_Audio_Setup.md](05_Development_Guide/Character_Audio_Setup.md) | Murdock／Drongo 录音与 Kenney 按钮声音、调参和验证 |
+| 05_Development_Guide/ | [Slate_UI_Setup.md](05_Development_Guide/Slate_UI_Setup.md) | 当前 Slate / Kenney HUD、玩家与敌人生命条、菜单和用户准星保护；编辑入口及实际验证边界 |
+| 05_Development_Guide/ | [Crosshair_Setup.md](05_Development_Guide/Crosshair_Setup.md) | 用户准星的命中/击杀事件与动画接口；原制作步骤保留历史，当前资产已制作并接入 Slate HUD |
 | 05_Development_Guide/ | [GitHub_Workflow.md](05_Development_Guide/GitHub_Workflow.md) | Issue/PR 模板、Project 视图、分支与轻量 Actions 的实际用法 |
 | 05_Development_Guide/ | [Documentation_Workflow.md](05_Development_Guide/Documentation_Workflow.md) | 文档维护与变更流程 |
 | 05_Development_Guide/ | [Changelog.md](05_Development_Guide/Changelog.md) | 变更日志 |

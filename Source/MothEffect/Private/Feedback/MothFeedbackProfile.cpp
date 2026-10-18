@@ -27,4 +27,5 @@ UMothFeedbackProfile::UMothFeedbackProfile()
 	Add(EMothFeedbackCue::Expiry,WarningColor,.3f,24,TEXT("S_Warning"),.4f,.35f);
 	Add(EMothFeedbackCue::Spent,SpentColor,.2f,20,nullptr);
 	Add(EMothFeedbackCue::Failure,FLinearColor(1,.18f,.08f),.35f,24,TEXT("S_Warning"),.4f,.35f);
+	Add(EMothFeedbackCue::Pickup,Cyan,.2f,18,nullptr);
 }

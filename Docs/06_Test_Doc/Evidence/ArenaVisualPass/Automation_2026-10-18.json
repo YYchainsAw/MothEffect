@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Hong_Kong",
+  "engine": "UE 5.8",
+  "implementationCommit": "2368c0b6c1d3a9021ab1f71c1364d37870f9d116",
+  "build": {
+    "target": "MothEffectEditor Win64 Development",
+    "result": "Succeeded",
+    "initialSeconds": 51.06,
+    "finalTuningSeconds": 20.81,
+    "logs": [
+      "Build.log",
+      "BuildTuned.log"
+    ]
+  },
+  "editor": {
+    "succeeded": 2,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0,
+    "totalDuration": 1.625896692276001
+  },
+  "editorTests": [
+    {
+      "name": "MothEffect.ArenaVisual.PostProcessPreservesCombatAndCollision",
+      "state": "Success"
+    },
+    {
+      "name": "MothEffect.ArenaVisual.ScopedLightingIsIdempotentAndRestored",
+      "state": "Success"
+    }
+  ],
+  "runtime": {
+    "map": "/Game/MothEffect/Maps/L_Arena_SoulCity",
+    "result": "Success",
+    "births": [
+      12,
+      18,
+      24
+    ],
+    "kills": 54,
+    "peakAlive": 24,
+    "createdActors": 24,
+    "reusedLives": 30,
+    "visualDirectorCount": 1,
+    "visualDirectorApplied": true,
+    "antiAliasingMethod": 4,
+    "messages": [
+      "High-density wave=1 births=12 kinds=6/3/3 kills=12 peakAlive=12 uniqueActors=12 reusedLives=0",
+      "High-density wave=2 births=18 kinds=3/6/9 kills=30 peakAlive=18 uniqueActors=21 reusedLives=9",
+      "High-density wave=3 births=24 kinds=6/9/9 kills=54 peakAlive=24 uniqueActors=24 reusedLives=30",
+      "High-density SoulCity victory: births=12/18/24 kills=54 peak=24 created=24 poolReuses=30 uniqueActors=24 reusedLives=30 elapsedGame=48.367s"
+    ],
+    "note": "NullRHI/nosound controlled health/death fixture. Run before final numerical exposure/fill calibration; combat/GameMode logic unchanged since run. Final look values are independently verified by final Editor tests and D3D12 captures."
+  },
+  "captures": {
+    "result": "Four original PNGs captured successfully; static comparison reviewed",
+    "modes": [
+      "Before",
+      "After"
+    ],
+    "cameraNames": [
+      "SC_View_Entrance",
+      "SC_View_Platform"
+    ],
+    "resolution": [
+      1600,
+      900
+    ],
+    "scalability": 3,
+    "screenPercentage": 100,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU (chosen D3D12 adapter 0, renderer log)",
+    "rawMetadata": "CaptureResult.json",
+    "processExitCodes": {
+      "Before": 3,
+      "After": 3
+    },
+    "shutdownIssue": "Both captures finish and write all evidence, then UE Python interpreter finalization crashes (PyGC_Collect/Py_FinalizeEx). Deferred quit and wrapper cleanup did not resolve it. Kept distinct from capture success and from game runtime."
+  },
+  "assets": {
+    "success": true,
+    "changed_owned_assets": [],
+    "protected_files": 133,
+    "map_sha256_before": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5",
+    "map_sha256_after": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5",
+    "original_map_backup_sha256": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5"
+  },
+  "iterations": [
+    {
+      "attempt": 1,
+      "result": "Images captured; shadows too dark, Python exit crash",
+      "changes": "Preserved fill .65, raised sky 1.2, exposure calibrated to1.263 and shadowGamma1.06. Deferred exit, removed invalid CVar and realtime override ensure; Python finalization issue persists.",
+      "evidence": "Attempt1"
+    }
+  ],
+  "limitations": [
+    "Static images do not validate temporal ghosting, moving enemy/telegraph readability or GPU/FPS performance.",
+    "Game fixture disables AI and occupancy on admitted enemies to accumulate 24; not a live combat performance acceptance.",
+    "Existing third-party Murdock/Shinbi missing dependency, animation and editor warnings remain in raw logs.",
+    "No original Content packages saved; no packaged rebuild or external playtest in this pass."
+  ],
+  "fileSha256": {
+    "Before_Entrance.png": "1fd6aaca79a31ffd9d491a51c806f530dc1948d77d61d8628f6c454fdd5bcfa7",
+    "Before_Platform.png": "c59686e615ef40b3523eada3154a12f1c6466e2f2aaa62c9579e2e92202f6218",
+    "After_Entrance.png": "695f073440b7fa8308be68e5bf185eabc57010fc5bd55b4c2a981fa807581aa6",
+    "After_Platform.png": "6352bec6d8a68b9473679990b0f16a7f63a9d61b40bd55da5411cef030bbe459"
+  }
+}

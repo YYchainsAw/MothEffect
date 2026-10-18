@@ -1,0 +1,2 @@
+After exit=3
+Before exit=3

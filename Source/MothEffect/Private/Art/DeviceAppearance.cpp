@@ -5,15 +5,22 @@
 
 FMothPrototypeAppearance ADeviceBase::GetVisualAppearance() const
 {
+	const float Size = FMath::IsFinite(VisualScale) ? FMath::Clamp(VisualScale, 0.05f, 10.0f) : 1.0f;
 	if (bUsePrototypeAppearance)
 		if (const auto* Profile = PrototypeArtProfile.LoadSynchronous(); Profile && Profile->bDeviceAppearance)
 			if (const auto* Style = Profile->Devices.Find(DeviceKind); Style && Style->Mesh.LoadSynchronous()
 				&& Style->RelativeTransform.IsValid() && Style->RelativeTransform.GetScale3D().GetMin() > 0)
-				return *Style;
+			{
+				FMothPrototypeAppearance Result = *Style;
+				Result.RelativeTransform.SetScale3D(Result.RelativeTransform.GetScale3D() * Size);
+				return Result;
+			}
 	FMothPrototypeAppearance Fallback;
 	Fallback.bNamedMaterialSlots=false;
 	Fallback.Mesh = bPrototypeApplied ? OriginalVisualMesh.Get() : DeviceMesh->GetStaticMesh().Get();
 	Fallback.RelativeTransform = bPrototypeApplied ? OriginalVisualTransform : DeviceMesh->GetRelativeTransform();
+	Fallback.RelativeTransform.SetScale3D(Fallback.RelativeTransform.GetScale3D()
+		* (bPrototypeApplied ? Size : Size / LastAppliedVisualScale));
 	if (bPrototypeApplied) for (const auto& Material : OriginalVisualMaterials) Fallback.Materials.Add(Material.Get());
 	else for (int32 I=0; I<DeviceMesh->GetNumMaterials(); ++I) Fallback.Materials.Add(DeviceMesh->GetMaterial(I));
 	return Fallback;
@@ -21,6 +28,7 @@ FMothPrototypeAppearance ADeviceBase::GetVisualAppearance() const
 
 void ADeviceBase::RefreshPrototypeAppearance()
 {
+	const float Size = FMath::IsFinite(VisualScale) ? FMath::Clamp(VisualScale, 0.05f, 10.0f) : 1.0f;
 	const auto* Profile = bUsePrototypeAppearance ? PrototypeArtProfile.LoadSynchronous() : nullptr;
 	const auto* Style = Profile && Profile->bDeviceAppearance ? Profile->Devices.Find(DeviceKind) : nullptr;
 	UStaticMesh* Mesh = Style ? Style->Mesh.LoadSynchronous() : nullptr;
@@ -38,20 +46,29 @@ void ADeviceBase::RefreshPrototypeAppearance()
 				for (int32 I=0; I<OriginalVisualMaterials.Num(); ++I) DeviceMesh->SetMaterial(I,OriginalVisualMaterials[I]);
 				DeviceMesh->SetRelativeTransform(OriginalVisualTransform);
 			}
+			else DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() / LastAppliedVisualScale);
 			bPrototypeApplied=false;
 		}
+		else DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() / LastAppliedVisualScale);
+		DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() * Size);
+		LastAppliedVisualScale = Size;
+		UpdateDroppedPresentation(0.0f);
 		return;
 	}
 	if (!bPrototypeApplied)
 	{
 		OriginalVisualMesh=DeviceMesh->GetStaticMesh(); OriginalVisualTransform=DeviceMesh->GetRelativeTransform();
+		OriginalVisualTransform.SetScale3D(OriginalVisualTransform.GetScale3D() / LastAppliedVisualScale);
 		OriginalVisualMaterials.Reset();
 		for (int32 I=0; I<DeviceMesh->GetNumMaterials(); ++I) OriginalVisualMaterials.Add(DeviceMesh->GetMaterial(I));
 	}
 	DeviceMesh->SetStaticMesh(Mesh);
 	UMothPrototypeArtProfile::ApplyMaterials(DeviceMesh,*Style);
 	DeviceMesh->SetRelativeTransform(Style->RelativeTransform);
+	DeviceMesh->SetRelativeScale3D(DeviceMesh->GetRelativeScale3D() * Size);
 	AppliedVisualMesh=Mesh; AppliedVisualTransform=DeviceMesh->GetRelativeTransform(); AppliedVisualMaterials.Reset();
 	for (int32 I=0; I<DeviceMesh->GetNumMaterials(); ++I) AppliedVisualMaterials.Add(DeviceMesh->GetMaterial(I));
 	bPrototypeApplied=true;
+	LastAppliedVisualScale = Size;
+	UpdateDroppedPresentation(0.0f);
 }

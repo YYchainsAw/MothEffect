@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "changed_owned_assets": [],
+  "protected_files": 133,
+  "map_sha256_before": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5",
+  "map_sha256_after": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5",
+  "original_map_backup_sha256": "238eef053298a25aecb0d1d7248f4b6ad9d19a307702f21a6b207ceaa74016e5"
+}

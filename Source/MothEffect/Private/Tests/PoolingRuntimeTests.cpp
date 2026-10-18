@@ -1,9 +1,11 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "AI/EnemyBase.h"
+#include "Art/MothArenaVisualDirector.h"
 #include "Animation/AnimInstance.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/HealthComponent.h"
+#include "Components/PostProcessComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/Engine.h"
@@ -11,6 +13,7 @@
 #include "EngineUtils.h"
 #include "Framework/MothWaveDirector.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "HAL/IConsoleManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/AutomationTest.h"
 #include "Subsystems/EnemyPoolSubsystem.h"
@@ -88,6 +91,17 @@ namespace MothPoolingRuntimeTest
 			if (!Test->TestTrue(TEXT("High-density runtime runs on the actual saved SoulCity arena"),
 				Current->GetOutermost()->GetName().Contains(TEXT("L_Arena_SoulCity")))) return true;
 			World = Current;
+			int32 VisualDirectorCount = 0;
+			AMothArenaVisualDirector* VisualDirector = nullptr;
+			for (TActorIterator<AMothArenaVisualDirector> It(Current); It; ++It)
+				if (!It->IsActorBeingDestroyed()) { ++VisualDirectorCount; VisualDirector = *It; }
+			if (!Test->TestEqual(TEXT("Saved arena receives exactly one runtime visual director"), VisualDirectorCount, 1)
+				|| !Test->TestTrue(TEXT("Runtime arena look is applied with enabled unbound post process"),
+					VisualDirector && VisualDirector->WasLookApplied()
+					&& VisualDirector->GetPostProcessComponent()->bEnabled
+					&& VisualDirector->GetPostProcessComponent()->bUnbound)) return true;
+			const IConsoleVariable* AAMethod = IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"));
+			if (!Test->TestTrue(TEXT("Saved arena uses the configured TSR method"), AAMethod && AAMethod->GetInt() == 4)) return true;
 			for (TActorIterator<AMothWaveDirector> It(Current); It; ++It)
 				if (!It->IsActorBeingDestroyed()) { Director = *It; break; }
 			if (!Test->TestNotNull(TEXT("Saved arena wave director"), Director.Get())) return true;

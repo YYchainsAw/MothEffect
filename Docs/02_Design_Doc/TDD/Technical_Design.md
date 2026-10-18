@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.50 · 2026-10-18 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.51 · 2026-10-18 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-18 第一轮画面：项目默认TSR为4；`AMothEffectGameMode`仅在SoulCity生成单个临时`AMothArenaVisualDirector`，一次应用主方向光/天空光/无阴影补光强度和低优先级无边界后处理。保留灯光方向、颜色和阴影开关；固定手动曝光，关闭物理相机曝光、运动模糊和色差，统一基础调色与Bloom。快照支持重复应用、恢复和销毁收尾；后处理优先级变更后重新排序。普通编辑器不自动改保存地图，PIE/Game运行自动应用。参数账本v0.24、DEC48和TC48同步；验证及复现见[画面接入](../../05_Development_Guide/Arena_Visual_Setup.md)。
 
 2026-10-18 敌人密度与对象池：用户选择12/18/24敌人、最多24存活，`AMothWaveDirector`按`WaveEnemyMultiplier`展开原配兵模板并增加批次；`UEnemyPoolSubsystem`分离Acquire与Finish，导演先登记再启用，死亡动画完成或行政清理后归池；`UProjectilePoolSubsystem`统一敌人和D03的P01发射，命中/寿命/界外回收。对象池World隔离、按实际类复用，闲置对象关闭碰撞/移动/组件Tick，不占活敌人或弹丸额度。每次出场重置生命和AI/动画/掉落状态，弹丸重置HitId/来源/忽略列表/ProjectileMovement；回调派发内不允许同对象重新出借，检查局与生命代次；敌人回池解除在飞弹丸的旧来源、归因与忽略，防止新生命继承旧弹免伤。池按需增长，有界保留，重开仍换图。参数账本v0.23、DEC47与TC46/47同步，验证及手动边界见[波次接入](../../05_Development_Guide/Wave_Flow_Setup.md)。
 

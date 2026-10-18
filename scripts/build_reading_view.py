@@ -61,6 +61,7 @@ DOCS = [
     ('doc-prototype-art', 'T20 原型外观与替换入口', 'Docs/05_Development_Guide/Prototype_Art_Setup.md'),
     ('doc-arena', 'T17 主竞技场灰盒接入', 'Docs/05_Development_Guide/Arena_Setup.md'),
     ('doc-soulcity-arena', 'Soul City 独立工业竞技场', 'Docs/05_Development_Guide/SoulCity_Arena_Setup.md'),
+    ('doc-arena-visual', '竞技场第一轮画面优化', 'Docs/05_Development_Guide/Arena_Visual_Setup.md'),
     ('doc-soulcity-report', 'Soul City 竞技场搭建与验证', 'Docs/06_Test_Doc/SoulCity_Arena_Report_2026-10-15.md'),
     ('doc-github', 'GitHub 开发流程', 'Docs/05_Development_Guide/GitHub_Workflow.md'),
     ('doc-workflow', '文档维护与变更流程', 'Docs/05_Development_Guide/Documentation_Workflow.md'),

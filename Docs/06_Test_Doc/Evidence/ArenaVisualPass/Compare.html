@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Moth Effect · 第一轮画面对比</title>
+<style>
+body{margin:0;padding:24px;background:#151a20;color:#e2e6ed;font:16px/1.6 system-ui,sans-serif}
+main{max-width:1280px;margin:auto}h1{font-size:24px;margin:0 0 8px}p{color:#b3bfcd}
+select,input{font:inherit;accent-color:#e3ac69}select{padding:6px 12px;background:#252e38;color:inherit;border:1px solid #566575;border-radius:4px}
+.frame{position:relative;aspect-ratio:16/9;margin-top:16px;border:1px solid #455262;overflow:hidden}
+.frame img{display:block;position:absolute;width:100%;height:100%;object-fit:contain}
+#after{clip-path:inset(0 0 0 50%)}#divider{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#fff;pointer-events:none}
+.label{position:absolute;top:10px;padding:3px 10px;background:#111d;color:#fff;border-radius:3px}.left{left:10px}.right{right:10px}
+input{display:block;width:100%;margin:16px 0}a{color:#e3ac69}
+</style>
+<main>
+<h1>Moth Effect · 第一轮画面对比</h1>
+<p>左侧为原画面，右侧为 TSR、灯光和统一后处理。拖动滑杆比较相同机位。</p>
+<label>机位 <select id="camera"><option value="Entrance">入口</option><option value="Platform">平台</option></select></label>
+<div class="frame"><img id="before" src="Before_Entrance.png" alt="原画面"><img id="after" src="After_Entrance.png" alt="第一轮优化"><span id="divider"></span><span class="label left">Before</span><span class="label right">After</span></div>
+<input id="split" type="range" min="0" max="100" value="50" aria-label="前后画面分界位置">
+<p>原始 D3D12 截图，1600×900、Epic（sg3）、100% 渲染比例。保存相机一致，未修图。静态对比不代表动态拖影、战斗可读性或帧率验收。<a href="Automation_2026-10-18.json">验证记录</a></p>
+</main>
+<script>
+const before=document.getElementById('before'),after=document.getElementById('after'),divider=document.getElementById('divider');
+document.getElementById('split').addEventListener('input',e=>{const x=e.target.value;after.style.clipPath=`inset(0 0 0 ${x}%)`;divider.style.left=x+'%'});
+document.getElementById('camera').addEventListener('change',e=>{before.src='Before_'+e.target.value+'.png';after.src='After_'+e.target.value+'.png'});
+</script>
+</html>

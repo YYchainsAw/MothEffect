@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：开发文档入口
 
-版本 v0.65 · 2026-10-17 · 单人 UE 5.8 C++ 与蓝图混合开发
+版本 v0.67 · 2026-10-18 · 单人 UE 5.8 C++ 与蓝图混合开发
+
+2026-10-18 第一轮画面：开启TSR、校准SoulCity固定曝光并统一可逆灯光与基础调色。两项视觉专项、正式地图三波接入和固定机位D3D12对比已验证；动态清晰度与性能待验收。配置、原图及验证范围见[画面接入](05_Development_Guide/Arena_Visual_Setup.md)。
 
 2026-10-17 敌人外观对应掉落：D01 升柱使用 Drongo Scavenger，D02 炸弹使用 Drongo 原版，D03 发射器使用 Drongo Alien Invader；各用原配材质与共用动画。三个敌人蓝图已写回，保存实例重载及实际移动、开火、死亡、单次对应掉落通过。对应表、编辑入口和预览见 [Drongo 接入](05_Development_Guide/Drongo_Enemy_Setup.md)。
 
@@ -118,6 +120,7 @@ v0.20 最新复测：2026-10-08 17:06 的十二项 Automation 全部 Success，�
 | 05_Development_Guide/ | [Wave_Flow_Setup.md](05_Development_Guide/Wave_Flow_Setup.md) | T16三波、胜负/重开接口与四项PIE清单 |
 | 05_Development_Guide/ | [Arena_Setup.md](05_Development_Guide/Arena_Setup.md) | T17主竞技场、保存导航及四组图形PIE清单 |
 | 05_Development_Guide/ | [SoulCity_Arena_Setup.md](05_Development_Guide/SoulCity_Arena_Setup.md) | Soul City 独立工业竞技场、外观层编辑、依赖及实际验证范围 |
+| 05_Development_Guide/ | [Arena_Visual_Setup.md](05_Development_Guide/Arena_Visual_Setup.md) | 第一轮TSR、可逆灯光与后处理、固定机位原图和验证边界 |
 | 05_Development_Guide/ | [Niagara_Setup.md](05_Development_Guide/Niagara_Setup.md) | Niagara 战斗特效与调节 |
 | 05_Development_Guide/ | [Audio_Shortlist_2026-10-17.md](05_Development_Guide/Audio_Shortlist_2026-10-17.md) | 按钮、枪声、装填、机关、英文角色语音与环境音选型及本地资产路径 |
 | 05_Development_Guide/ | [Character_Audio_Setup.md](05_Development_Guide/Character_Audio_Setup.md) | Murdock／Drongo 录音与 Kenney 按钮声音、调参和验证 |

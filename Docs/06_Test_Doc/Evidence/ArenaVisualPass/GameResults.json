@@ -1,0 +1,93 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "YYCHAINSAW",
+			"instance": "39D1D4D74E727215FB2A9887D98BA56B",
+			"instanceName": "YYCHAINSAW-41140",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "AMD Radeon 780M Graphics",
+			"cPUModel": "AMD Ryzen 7 8845H w/ Radeon 780M Graphics",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.18-06.28.21",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 48.344696044921875,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "HighDensityEncounter",
+			"fullTestPath": "MothEffect.PoolingRuntime.HighDensityEncounter",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"39D1D4D74E727215FB2A9887D98BA56B"
+			],
+			"duration": 48.344696044921875,
+			"dateTime": "2026.10.18-06.27.32",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "High-density wave=1 births=12 kinds=6/3/3 kills=12 peakAlive=12 uniqueActors=12 reusedLives=0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.18-06.27.39"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "High-density wave=2 births=18 kinds=3/6/9 kills=30 peakAlive=18 uniqueActors=21 reusedLives=9",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.18-06.28.00"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "High-density wave=3 births=24 kinds=6/9/9 kills=54 peakAlive=24 uniqueActors=24 reusedLives=30",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.18-06.28.21"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "High-density SoulCity victory: births=12/18/24 kills=54 peak=24 created=24 poolReuses=30 uniqueActors=24 reusedLives=30 elapsedGame=48.367s",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.18-06.28.21"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

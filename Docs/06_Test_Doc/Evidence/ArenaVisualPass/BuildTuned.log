@@ -1,0 +1,51 @@
+Using bundled DotNet SDK version: 10.0 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" MothEffectEditor Win64 Development -Project=D:\YYchainsaw\Unreal-Projects\MothEffect\MothEffect.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: C:\Users\YYchainsaw\AppData\Local\UnrealBuildTool\Log.txt
+Determining max actions to execute in parallel (8 physical cores, 16 logical cores)
+  Executing up to 8 processes, one per physical core
+  Requested 1.5 GB memory per action, 10 GB available: limiting max parallel actions to 6
+Using 'git status' to determine working set for adaptive non-unity build (D:\YYchainsaw\Unreal-Projects\MothEffect).
+UbaServer - Listening on 0.0.0.0:1345
+Invalidating makefile for MothEffectEditor (DefaultGame.ini modified)
+Available x64 toolchains (1):
+ * E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231
+    (Family=14.51.36231, FamilyRank=2, Version=14.51.36260, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64)
+Visual Studio compiler version 14.51.36260 is newer than latest preferred version 14.50.35717. Please use caution as this compiler has not been heavily tested
+UHT compiled-in object format Default
+Building MothEffectEditor...
+===== Toolchain Information =====
+Using ISPC compiler (D:\Program Files\Epic\UE_5.8\Engine\Source\ThirdParty\Intel\ISPC\bin\Windows\ispc.exe)
+  Intel(r) Implicit SPMD Program Compiler (Intel(r) ISPC), 1.24.0 (build commit  @ 20250404, LLVM 18.1.2) 
+Using Visual Studio 14.51.36260 toolchain (E:\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Warning: Visual Studio compiler 14.51.36260 is not a preferred version
+[Adaptive Build] Excluded from MothEffect unity file: MothArenaVisualDirector.cpp, MothMenuCharacter.cpp, DeviceDropPresentation.cpp, MothAudioSubsystem.cpp, MothFeedbackEditorLibrary.cpp, MothEffectGameMode.cpp, MothMainMenuGameMode.cpp, MothUserSettings.cpp, ArenaVisualTests.cpp, CharacterVoiceTests.cpp, DeviceDropPresentationTests.cpp, EncounterPresentationTests.cpp, MenuAudioTests.cpp, MenuLoadingTests.cpp, NiagaraFeedbackTests.cpp, PlayerSettingsTests.cpp, PoolingRuntimeTests.cpp, MothEnemyHealthWidget.cpp, MothGameViewportClient.cpp, MothHUDAudio.cpp, MothHUDFrontEnd.cpp, MothHUDMenus.cpp, MothLoadingSubsystem.cpp
+=================================
+Using Unreal Build Accelerator local executor to run 8 action(s)
+  CPU 8 physical cores, 16 logical cores
+  Memory 31.26 GB physical, 32.01 GB/67.26 GB committed
+  UBA Storage capacity 40 GB
+[1/8] Compile [x64] MothEffectGameMode.cpp
+[2/8] Compile [x64] ArenaVisualTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[3/8] Compile [x64] MothArenaVisualDirector.cpp
+[4/8] Compile [x64] PoolingRuntimeTests.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[5/8] Compile [x64] Module.MothEffect.1.cpp
+D:\Program Files\Epic\UE_5.8\Engine\Source\Runtime\Engine\Classes\GameFramework\Character.h(798,31): warning C4996: 'APawn::GetMovementBase': GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	virtual UPrimitiveComponent* GetMovementBase() const override final { return Cast<UPrimitiveComponent>(GetMovementBaseObject()); }
+	                             ^
+[6/8] Link [x64] UnrealEditor-MothEffect.lib
+  正在创建库 D:/YYchainsaw/Unreal-Projects/MothEffect/Intermediate/Build/Win64/x64/UnrealEditor/Development/MothEffect/UnrealEditor-MothEffect.lib 和对象 D:/YYchainsaw/Unreal-Projects/MothEffect/Intermediate/Build/Win64/x64/UnrealEditor/Development/MothEffect/UnrealEditor-MothEffect.exp
+[7/8] Link [x64] UnrealEditor-MothEffect.dll
+[8/8] WriteMetadata MothEffectEditor.target [NoUba]
+
+Total time in Unreal Build Accelerator local executor: 14.43 seconds
+Output binary: D:\Program Files\Epic\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe
+
+Result: Succeeded
+Total execution time: 20.81 seconds
+Trace written to file C:\Users\YYchainsaw\AppData\Local\UnrealBuildTool\Trace.uba with size 8.4kb

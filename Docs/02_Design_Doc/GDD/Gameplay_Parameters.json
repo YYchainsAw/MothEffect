@@ -1,10 +1,10 @@
 {
-  "documentVersion": "0.23",
+  "documentVersion": "0.24",
   "updatedAt": "2026-10-18",
   "timezone": "Asia/Hong_Kong",
   "engineVersion": "5.8",
-  "status": "native_pooling_and_scaled_waves_verified_manual_performance_pending",
-  "currentBehaviorNote": "2026-10-18 v0.23：用户选择三波12/18/24、同时最多24个敌人；原4/6/8配兵模板按waveEnemyMultiplier=3展开为额外定时批次，八个出生点和安全预警保留。敌人按类回收复用，弹丸命中/到期/界外归池，活弹上限128。对象池按需增长并有闲置保留上限；性能与硬件PIE待实测。此前出生保护及D03自动索敌规则不变。 159项Editor及正式SoulCity Game专项通过：实际54次出生/54击杀、峰值24、只创建24个敌人并复用30次；NullRHI受控测试不代表图形、听感或帧率验收。",
+  "status": "native_pooling_and_arena_visuals_verified_dynamic_performance_pending",
+  "currentBehaviorNote": "2026-10-18 v0.24：第一轮画面启用TSR、SoulCity运行时可逆灯光和固定曝光调色；静态D3D12同机位对比与两项视觉专项通过，动态拖影、战斗可读性与GPU性能待实测。玩法参数保持v0.23。 2026-10-18 v0.23：用户选择三波12/18/24、同时最多24个敌人；原4/6/8配兵模板按waveEnemyMultiplier=3展开为额外定时批次，八个出生点和安全预警保留。敌人按类回收复用，弹丸命中/到期/界外归池，活弹上限128。对象池按需增长并有闲置保留上限；性能与硬件PIE待实测。此前出生保护及D03自动索敌规则不变。 159项Editor及正式SoulCity Game专项通过：实际54次出生/54击杀、峰值24、只创建24个敌人并复用30次；NullRHI受控测试不代表图形、听感或帧率验收。",
   "note": "2026-10-14 v0.19：用户确认地面固定/保留显式外力、可调尺寸、D03世界XY水平投影、三机关共用激活延迟和爆炸激活。device.activationDelaySeconds默认0.3s；D03既有firstShotDelaySeconds=0.1s保留，默认命中后0.4s首发，3s工作期从效果起动计。新增device组映射ADeviceBase可编辑属性，ShotRadiusCm仍对应throw.deviceShotColliderRadiusCm；JSON不自动导入UE。源码收尾4934627，隔离UE构建、114 Editor/12主地图Game回归通过；Issue #48–#51 Open/In Progress，硬件PIE、参数手感调优与独立包待验收，原始证据见Device_Refactor_Report_2026-10-14。以下为历史记录：2026-10-12 T18：登记教学专用 blastTargetHP=60、liftMinRiseCm=100、landingRetryGraceSeconds=0.6、noticeSeconds=3，当前均为原生源码常量；flow.tutorialRequiredFirstRun=true 仍是建议基线，当前标题允许主动直接开战，尚无首次教学持久化锁定，作为已知 UI 差异记录；没有改变既有战斗参数或 Config 数值。UI/教学/菜单已接入，当前硬件 PIE 和独立包待验收，详见 T18 报告。历史：2026-10-12 T16接入既有三波/准备5s/批次3s、8存活上限、600cm/.8s/.5s安全生成基线，Config新增导演数值副本；数值未调优。World-local终态开关和当前地图OpenLevel清理重开已实现，95项Editor、5项真实Game流程/2项导航通过；Game既有资源/动画156条告警归档，当前图形PIE、最终场地、完整UI/教程与独立包/G3待验收。出生探地上/下500/1500cm、Nav extent40/40/100cm、法线.65及净空2cm目前为源码常量，见T16报告。历史：2026-10-12 T15接入三种固定掉落敌人，仍共用T14 AI与60HP/0.5s预警/1.2s尝试间隔。v0.16补齐死亡附近搜索半径150cm、向下探地1500cm、出生净空2cm及支持面法线0.65；先验证路径/出生，再按T13额度入口生成一次Dormant。无近处支持面但死亡位置净空时采用自由物理落体，不附着或冻结；死亡回调/容量回调重置世代或结束Actor则取消，拒绝后不补发。原工程Editor构建、88项Editor全量、11项新增最终复测和2项Game导航通过；12件新资产/类型色形及静态导航保存并重载验证，当前图形PIE待用户验收；T14当前图形PIE仍按用户确认待验收。历史：2026-10-11 T14开始接入一套EnemyBase射击AI，沿用enemy.maxHealth=60、shotIntervalSeconds=1.2、telegraphSeconds=0.5及共用P01；v0.15补齐移动、视距/攻击距离、最后可见位置记忆、路径重试/停滞换点、枪口净空与死亡短反馈的建议基线。Config/DefaultGame.ini为运行时数值副本，原工程Editor构建与77项Editor Automation、2项真实Game保存NavMesh/移动/恢复验证通过；当前角色PIE待验收。T15固定掉落、T16波次和T17最终场地不在本轮自动成立。历史：2026-10-11 T13 接入 world-local 容量、累计 Dormant 闲置寿命与清理，原有 24/6/6/64、30s/5s 不变；新增 limits.dormantSpentVisualSeconds=0.25。关闭编辑器并修正Unity测试辅助函数重名后，原工程Editor正式构建/链接与新DLL全量66项Automation通过；用户在五项验收清单后确认“测试通过 创建pr”，当前角色PIE按用户报告验收；完整整局/正式敌人/完整G2继续随后续任务验证。T11/T12 当前实现已由用户确认验收，历史参数调优记录保留。2026-10-11 T11 接入 D01，原有探地距离、柱高/半宽、时长和目标竖直速度不变；v0.13 新增地面标签、底部接触容差 1cm 和 Spent 反馈残留 1s。Editor 构建、全量 43 项 Automation 与保存灰盒重新加载验证通过，当前真实角色 PIE、正式敌人和完整连锁待验收。此前 T10 已通过原生与用户当前 PIE 确认，v0.12 新增 bomb.spentVisualSeconds=0.25。顶层状态不代表全部参数通过。2026-10-08 用户确认 Murdock 一体人物/枪械、单 Jog，正常、瞄准与携带共用 jogSpeedCmPerSec；airControl 沿用本地 Character 默认值。其他数值保持各自已记录状态。本 JSON 是设计账本，不是可直接导入 Unreal DataTable 的格式。projectRoot 与 documentAuthority 均相对于本 JSON 所在目录解析。",
   "units": {
     "distance": "cm",
@@ -191,6 +191,14 @@
   "tuningLog": [
     {
       "date": "2026-10-18",
+      "version": "0.24",
+      "change": "TSR由关闭改为4；主光稍降、天空光稍补，保留补光并校准手动曝光，低强度Bloom与阴影调色统一。",
+      "reason": "用户要求先推进抗锯齿、灯光与统一后处理的第一轮。首组对比阴影偏暗，因此校准曝光并恢复补光。",
+      "evidence": "两项视觉Editor专项、正式SoulCity三波Game回归通过；固定入口/平台1600x900、sg3/100% D3D12前后原图及资产SHA见ArenaVisualPass证据。动态清晰度/战斗可读性/FPS和独立包待验收。",
+      "validated": false
+    },
+    {
+      "date": "2026-10-18",
       "version": "0.23",
       "change": "三波扩大为12/18/24，同屏上限24；敌人与P01弹丸按实际类归池复用，活弹容量从64提高到128，闲置保留上限分别32/128。额外敌人复用原配兵模板、出生点与3秒批次间隔。",
       "reason": "用户要求增加敌人数并用对象池管理敌人与子弹，已选择12/18/24及24存活上限。",
@@ -317,5 +325,21 @@
     "maxRetainedProjectiles": 128,
     "enemyRecycleAfterDeathAnimation": true,
     "projectileRecycleOnImpactExpiryOrBounds": true
+  },
+  "arenaVisuals": {
+    "targetMapName": "L_Arena_SoulCity",
+    "antiAliasingMethod": 4,
+    "sunIntensity": 2.9,
+    "skyIntensity": 1.2,
+    "fillIntensity": 0.65,
+    "exposureCompensation": 1.263,
+    "saturation": 0.96,
+    "contrast": 0.98,
+    "shadowGamma": 1.06,
+    "bloomIntensity": 0.2,
+    "postProcessPriority": -10.0,
+    "motionBlurAmount": 0.0,
+    "sceneFringeIntensity": 0.0,
+    "note": "表现参数账本；DefaultGame.ini为运行时副本，JSON不自动导入。TSR为项目默认，灯光与后处理仅SoulCity；手动曝光补偿校准旧固定曝光路径。"
   }
 }

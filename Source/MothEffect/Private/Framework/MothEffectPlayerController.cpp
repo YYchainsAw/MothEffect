@@ -6,6 +6,8 @@
 #include "Framework/MothEffectGameMode.h"
 #include "Framework/MothMainMenuGameMode.h"
 #include "Framework/MothWaveDirector.h"
+#include "Subsystems/EnemyPoolSubsystem.h"
+#include "Subsystems/ProjectilePoolSubsystem.h"
 #include "Characters/MothEffectCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
@@ -364,7 +366,7 @@ void AMothEffectPlayerController::MothResetEnemies()
 #if !UE_BUILD_SHIPPING
 	TArray<TWeakObjectPtr<AEnemyBase>> Enemies;
 	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It) Enemies.Add(*It);
-	for (const auto& Enemy : Enemies) if (Enemy.IsValid()) Enemy->Destroy();
+	for (const auto& Enemy : Enemies) if (Enemy.IsValid() && !Enemy->IsPoolInactive()) Enemy->ReturnToPool();
 	MothEnemyStats();
 #endif
 }
@@ -393,6 +395,7 @@ void AMothEffectPlayerController::MothEnemyStats()
 	int32 Alive = 0;
 	for (TActorIterator<AEnemyBase> It(GetWorld()); It; ++It)
 	{
+		if (It->IsPoolInactive()) continue;
 		if (!It->IsActorBeingDestroyed() && It->GetHealthComponent()->IsAlive()) ++Alive;
 		UE_LOG(LogMothEffect, Log, TEXT("Enemy stats %s phase=%s health=%.1f target=%s sight=%d attempts=%d spawned=%d paths=%d stalls=%d"),
 			*It->GetName(), *UEnum::GetValueAsString(It->GetCombatPhase()), It->GetHealthComponent()->GetCurrentHealth(),
@@ -413,6 +416,12 @@ void AMothEffectPlayerController::MothFlowStats()
 			UE_LOG(LogMothEffect, Log, TEXT("%s"), *Status);
 			if (GEngine) GEngine->AddOnScreenDebugMessage(7112, 8, FColor::Cyan, Status);
 		}
+	const auto* Enemies = GetWorld()->GetSubsystem<UEnemyPoolSubsystem>();
+	const auto* Projectiles = GetWorld()->GetSubsystem<UProjectilePoolSubsystem>();
+	if (Enemies && Projectiles)
+		UE_LOG(LogMothEffect, Log, TEXT("Pools enemies created=%d reused=%d idle=%d; projectiles created=%d reused=%d idle=%d"),
+			Enemies->GetCreatedCount(), Enemies->GetReuseCount(), Enemies->GetInactiveCount(),
+			Projectiles->GetCreatedCount(), Projectiles->GetReuseCount(), Projectiles->GetInactiveCount());
 #endif
 }
 

@@ -8,8 +8,11 @@
 #include "MothEffect.h"
 #include "Types/MothCollisionChannels.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Subsystems/ProjectilePoolSubsystem.h"
 #include "Feedback/MothFeedbackSubsystem.h"
 #include "Devices/DeviceBase.h"
+#include "Engine/LatentActionManager.h"
+#include "TimerManager.h"
 
 ARuleProjectile::ARuleProjectile()
 {
@@ -50,14 +53,23 @@ void ARuleProjectile::OnConstruction(const FTransform& Transform)
 bool ARuleProjectile::InitializeProjectile(const FVector& WorldDirection, AActor* SourceActor, APawn* InstigatorPawn)
 {
 	const FVector Direction = WorldDirection.GetSafeNormal();
-	if (bInitialized || bEndingPlay || bImpactProcessed || WorldDirection.ContainsNaN()
+	if (bInitialized || bEndingPlay || bImpactProcessed || bPoolInactive || bReturnPending || WorldDirection.ContainsNaN()
 		|| Direction.ContainsNaN() || Direction.IsNearlyZero()
-		|| (IsValid(SourceActor) && SourceActor->GetWorld() != GetWorld()))
+		|| (IsValid(SourceActor) && SourceActor->GetWorld() != GetWorld())
+		|| (IsValid(InstigatorPawn) && InstigatorPawn->GetWorld() != GetWorld()))
 	{
 		return false;
 	}
 	UDeviceLifecycleSubsystem* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
-	if (!Lifecycle || !Lifecycle->RegisterProjectile(this)) return false;
+	if (!Lifecycle) return false;
+	const uint64 Generation = Lifecycle->GetLifecycleGeneration();
+	if (!Lifecycle->RegisterProjectile(this)) return false;
+	if (!Lifecycle->IsGenerationCurrent(Generation))
+	{
+		Lifecycle->UnregisterProjectile(this);
+		return false;
+	}
+	ActivationGeneration = Generation;
 	bInitialized = true;
 	HitId = FGuid::NewGuid();
 	FlightDirection = Direction;
@@ -76,27 +88,132 @@ void ARuleProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	if ((!bInitialized && !InitializeProjectile(GetActorForwardVector(), GetOwner(), GetInstigator()))
-		|| bEndingPlay || bImpactProcessed || IsActorBeingDestroyed())
+		|| !StartFlight())
 	{
-		Destroy();
-		return;
+		ReturnToPool();
 	}
+}
+
+bool ARuleProjectile::IsActivationCurrent() const
+{
+	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
+	return bInitialized && !bPoolInactive && !bReturnPending && !bEndingPlay && !IsActorBeingDestroyed()
+		&& Lifecycle && Lifecycle->IsGenerationCurrent(ActivationGeneration);
+}
+
+bool ARuleProjectile::StartFlight()
+{
+	if (!IsActivationCurrent() || bImpactProcessed) return false;
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	SetActorTickEnabled(PrimaryActorTick.bStartWithTickEnabled);
 	CollisionSphere->SetSimulatePhysics(false);
+	CollisionSphere->SetSphereRadius(FMath::Max(0.1f, CollisionRadiusCm));
+	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	ProjectileMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// StopSimulating clears UpdatedComponent after a hit; Activate alone cannot restore flight.
+	ProjectileMovement->SetUpdatedComponent(CollisionSphere);
+	ProjectileMovement->ResetInterpolation();
+	ProjectileMovement->ClearPendingForce(true);
+	ProjectileMovement->bSimulationEnabled = true;
+	ProjectileMovement->PreviousHitTime = 1.0f;
+	ProjectileMovement->PreviousHitNormal = FVector::ZeroVector;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 	ProjectileMovement->InitialSpeed = FMath::Max(1.0f, SpeedCmPerSec);
 	ProjectileMovement->MaxSpeed = ProjectileMovement->InitialSpeed;
 	ProjectileMovement->Velocity = FlightDirection * ProjectileMovement->InitialSpeed;
+	ProjectileMovement->UpdateComponentVelocity();
 	ProjectileMovement->Activate(true);
 	SetLifeSpan(FMath::Max(0.01f, LifetimeSeconds));
-	GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(Cast<ADeviceBase>(FiringSource.Get()) ? EMothFeedbackCue::EmitterShot : EMothFeedbackCue::EnemyShot,
-		GetActorLocation(), FlightDirection);
+	if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+		Feedback->Emit(bFiredByDevice ? EMothFeedbackCue::EmitterShot : EMothFeedbackCue::EnemyShot,
+			GetActorLocation(), FlightDirection);
+	if (!IsActivationCurrent()) return false;
 #if !UE_BUILD_SHIPPING
 	if (bLogProjectileEvents)
 		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=spawn hit=%s source=%s instigator=%s position=%s direction=%s speed=%.1f lifetime=%.2f"),
 			*GetName(), *HitId.ToString(), *GetNameSafe(FiringSource.Get()), *GetNameSafe(FiringInstigator.Get()),
 			*GetActorLocation().ToString(), *FlightDirection.ToString(), ProjectileMovement->InitialSpeed, GetLifeSpan());
 #endif
+	return true;
+}
+
+void ARuleProjectile::PreparePoolActivation(const FTransform& Transform, AActor* SourceActor, APawn* InstigatorPawn, bool bLogEvents)
+{
+	StopFlight();
+	bPoolInactive = false;
+	bReturnPending = false;
+	bInitialized = false;
+	bImpactProcessed = false;
+	bFiredByDevice = false;
+	HitId.Invalidate();
+	FlightDirection = FVector::ZeroVector;
+	FiringSource.Reset();
+	FiringInstigator.Reset();
+	CollisionSphere->ClearMoveIgnoreActors();
+	CollisionSphere->ClearMoveIgnoreComponents();
+	ProjectileMovement->SetUpdatedComponent(CollisionSphere);
+	SetOwner(SourceActor);
+	SetInstigator(InstigatorPawn);
+	SetActorTransform(Transform, false, nullptr, ETeleportType::TeleportPhysics);
+	bLogProjectileEvents = bLogEvents;
+}
+
+void ARuleProjectile::StopFlight()
+{
+	SetLifeSpan(0.0f);
+	if (GetWorld())
+		if (auto* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);
+	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ProjectileMovement->StopMovementImmediately();
+	ProjectileMovement->ClearPendingForce(true);
+	ProjectileMovement->Deactivate();
+}
+
+void ARuleProjectile::DeactivateForPool()
+{
+	// Mark dormant before mutating components so any nested return is idempotent.
+	bPoolInactive = true;
+	StopFlight();
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+	GetWorld()->GetLatentActionManager().RemoveActionsForObject(this);
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	SetActorTickEnabled(false);
+	ProjectileMovement->SetUpdatedComponent(nullptr);
+	CollisionSphere->ClearMoveIgnoreActors();
+	CollisionSphere->ClearMoveIgnoreComponents();
+	SetOwner(nullptr);
+	SetInstigator(nullptr);
+	FiringSource.Reset();
+	FiringInstigator.Reset();
+	HitId.Invalidate();
+	FlightDirection = FVector::ZeroVector;
+	ActivationGeneration = 0;
+	bFiredByDevice = false;
+	bInitialized = false;
+	bImpactProcessed = false;
+	bReturnPending = false;
+	OnImpactNative.Clear();
+}
+
+void ARuleProjectile::ReturnToPool()
+{
+	if (bEndingPlay || IsActorBeingDestroyed()) return;
+	if (UProjectilePoolSubsystem* Pool = OwningPool.Get()) Pool->RecycleProjectile(this);
+	else Destroy();
+}
+
+void ARuleProjectile::ForgetSourceActor(AActor* Actor)
+{
+	if (!Actor) return;
+	// An actor pointer can represent another life after checkout. Its new life must
+	// neither inherit the old shot's source immunity nor receive its attribution.
+	CollisionSphere->IgnoreActorWhenMoving(Actor, false);
+	if (FiringSource.Get() == Actor) FiringSource.Reset();
+	if (FiringInstigator.Get() == Actor) FiringInstigator.Reset();
+	if (GetOwner() == Actor) SetOwner(nullptr);
+	if (GetInstigator() == Actor) SetInstigator(nullptr);
 }
 
 void ARuleProjectile::LifeSpanExpired()
@@ -106,15 +223,25 @@ void ARuleProjectile::LifeSpanExpired()
 		UE_LOG(LogMothEffect, Log, TEXT("Projectile %s event=expired hit=%s source=%s position=%s"),
 			*GetName(), *HitId.ToString(), *GetNameSafe(FiringSource.Get()), *GetActorLocation().ToString());
 #endif
-	Super::LifeSpanExpired();
+	ReturnToPool();
+}
+
+void ARuleProjectile::FellOutOfWorld(const UDamageType& DamageType)
+{
+	if (OwningPool.IsValid()) ReturnToPool();
+	else Super::FellOutOfWorld(DamageType);
+}
+
+void ARuleProjectile::OutsideWorldBounds()
+{
+	if (OwningPool.IsValid()) ReturnToPool();
+	else Super::OutsideWorldBounds();
 }
 
 void ARuleProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	bEndingPlay = true;
-	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);
-	ProjectileMovement->Deactivate();
-	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StopFlight();
 	CollisionSphere->OnComponentHit.RemoveDynamic(this, &ARuleProjectile::HandleComponentHit);
 	ProjectileMovement->OnProjectileStop.RemoveDynamic(this, &ARuleProjectile::HandleMovementStopped);
 	Super::EndPlay(EndPlayReason);
@@ -145,7 +272,7 @@ void ARuleProjectile::HandleMovementStopped(const FHitResult& Hit)
 bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 {
 	AActor* HitActor = Hit.GetActor();
-	if (bEndingPlay || bImpactProcessed || !bInitialized || !HasActorBegunPlay()
+	if (!IsActivationCurrent() || bImpactProcessed || !HasActorBegunPlay()
 		|| !GetWorld() || GetWorld()->IsPaused() || !Hit.bBlockingHit
 		|| (FiringSource.IsValid() && HitActor == FiringSource.Get()))
 	{
@@ -162,10 +289,8 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 	Context.bDeviceSource = bFiredByDevice;
 	// Commit before calling any interface/delegate: rejection still consumes the projectile.
 	bImpactProcessed = true;
-	if (UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>()) Lifecycle->UnregisterProjectile(this);
-	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	ProjectileMovement->StopMovementImmediately();
-	ProjectileMovement->Deactivate();
+	bImpactDispatching = true;
+	StopFlight();
 	const bool bAccepted = IsValid(HitActor) && HitActor->Implements<UBallisticReactive>()
 		&& IBallisticReactive::Execute_ReceiveBallisticHit(HitActor, Context);
 #if !UE_BUILD_SHIPPING
@@ -176,13 +301,15 @@ bool ARuleProjectile::ProcessBlockingHit(const FHitResult& Hit)
 #endif
 	if (!bEndingPlay && !IsActorBeingDestroyed())
 	{
-		GetWorld()->GetSubsystem<UMothFeedbackSubsystem>()->Emit(EMothFeedbackCue::Impact, Hit.ImpactPoint+Hit.ImpactNormal*2, Hit.ImpactNormal);
+		if (auto* Feedback = GetWorld()->GetSubsystem<UMothFeedbackSubsystem>())
+			Feedback->Emit(EMothFeedbackCue::Impact, Hit.ImpactPoint+Hit.ImpactNormal*2, Hit.ImpactNormal);
 		OnImpactNative.Broadcast(this, HitActor, Context);
 		if (!bEndingPlay && !IsActorBeingDestroyed())
 		{
 			OnProjectileImpact(Context, HitActor, bAccepted);
-			Destroy();
 		}
 	}
+	bImpactDispatching = false;
+	ReturnToPool();
 	return true;
 }

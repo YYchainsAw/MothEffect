@@ -1,5 +1,7 @@
 #include "AI/EnemyBase.h"
 #include "AIController.h"
+#include "BrainComponent.h"
+#include "Animation/AnimInstance.h"
 #include "Combat/RuleProjectile.h"
 #include "Characters/MothEffectCharacter.h"
 #include "Components/ArrowComponent.h"
@@ -14,6 +16,9 @@
 #include "Components/WidgetComponent.h"
 #include "Devices/DeviceBase.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
+#include "Engine/LatentActionManager.h"
+#include "TimerManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Framework/MothEffectPlayerController.h"
@@ -21,6 +26,8 @@
 #include "MothEffect.h"
 #include "NavigationSystem.h"
 #include "Subsystems/DeviceLifecycleSubsystem.h"
+#include "Subsystems/EnemyPoolSubsystem.h"
+#include "Subsystems/ProjectilePoolSubsystem.h"
 #include "Types/MothCollisionChannels.h"
 #include "UI/MothEnemyHealthWidget.h"
 #include "UI/MothHUDWidget.h"
@@ -104,6 +111,7 @@ void AEnemyBase::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	HealthComponent->ConfigureMaxHealth(MaxHealth);
 	GetCharacterMovement()->MaxWalkSpeed = FMath::Max(1.0f, WalkSpeedCmPerSec);
+	if (bPoolInactive) { SetActorHiddenInGame(true); SetActorEnableCollision(false); }
 }
 
 void AEnemyBase::BeginPlay()
@@ -112,6 +120,12 @@ void AEnemyBase::BeginPlay()
 	const auto* Session = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	if (Session && !Session->IsGameplayEnabled()) { Destroy(); return; }
 	HealthComponent->OnDied.AddDynamic(this, &AEnemyBase::HandleEnemyDied);
+	PoolAnimationMode = static_cast<uint8>(GetMesh()->GetAnimationMode());
+	PoolAnimationClass = GetMesh()->GetAnimClass();
+	PoolMeshRelativeTransform = GetMesh()->GetRelativeTransform();
+	bPoolMeshHidden = GetMesh()->bHiddenInGame;
+	bPoolAnimationPaused = GetMesh()->bPauseAnims;
+	bPoolAnimationInitialized = true;
 	ProgressLocation = GetActorLocation();
 	LastProgressAt = GetWorld()->GetTimeSeconds();
 	NextFireAt = LastProgressAt + FMath::Max(0.01f, TelegraphSeconds);
@@ -123,6 +137,7 @@ void AEnemyBase::BeginPlay()
 	InitializeEnemyHealthWidget();
 	UpdateEnemyHealthWidgetVisibility();
 	LogEvent(TEXT("begin"));
+	if (bPoolInactive) SuspendPoolTicks();
 }
 
 void AEnemyBase::InitializeEnemyHealthWidget()
@@ -191,7 +206,7 @@ void AEnemyBase::ReleaseEnemyHealthWidget()
 bool AEnemyBase::IsCombatEnabled() const
 {
 	const auto* Session = GetWorld() ? GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>() : nullptr;
-	return bGameplayEnabled && !bDeathProcessed && !bEndingPlay && !IsActorBeingDestroyed()
+	return !bPoolInactive && bGameplayEnabled && !bDeathProcessed && !bEndingPlay && !IsActorBeingDestroyed()
 		&& HasActorBegunPlay() && HealthComponent->IsAlive() && GetWorld() && !GetWorld()->IsPaused()
 		&& (!Session || Session->IsGameplayEnabled());
 }
@@ -207,6 +222,7 @@ bool AEnemyBase::IsUsableTarget(const APawn* Target) const
 
 bool AEnemyBase::SetCombatTarget(APawn* Target)
 {
+	if (bPoolInactive) return false;
 	if (Target && !IsUsableTarget(Target)) return false;
 	if (CombatTarget.Get() == Target) return true;
 	++CombatGeneration;
@@ -242,9 +258,12 @@ void AEnemyBase::SetTelegraph(bool bVisible)
 	AimArrow->SetHiddenInGame(true);
 	if (bTelegraphVisible == bVisible) return;
 	bTelegraphVisible = bVisible;
+	const uint64 LifeGeneration = PoolLifeGeneration;
+	TGuardValue<int32> DispatchGuard(PoolCallbackDepth, PoolCallbackDepth + 1);
 	LogEvent(bVisible ? TEXT("telegraph") : TEXT("telegraph_end"));
 	OnTelegraphChangedNative.Broadcast(this, bVisible);
-	if (!bEndingPlay && !IsActorBeingDestroyed() && bTelegraphVisible == bVisible) OnTelegraphChanged.Broadcast(this, bVisible);
+	if (!bEndingPlay && !IsActorBeingDestroyed() && LifeGeneration == PoolLifeGeneration && bTelegraphVisible == bVisible)
+		OnTelegraphChanged.Broadcast(this, bVisible);
 }
 
 void AEnemyBase::StopNavigation()
@@ -254,7 +273,7 @@ void AEnemyBase::StopNavigation()
 
 void AEnemyBase::SetGameplayEnabled(bool bEnabled)
 {
-	if (bGameplayEnabled == bEnabled || bDeathProcessed || bEndingPlay) return;
+	if (bPoolInactive || bGameplayEnabled == bEnabled || bDeathProcessed || bEndingPlay) return;
 	++CombatGeneration;
 	bGameplayEnabled = bEnabled;
 	if (!bEnabled)
@@ -275,7 +294,10 @@ void AEnemyBase::SetGameplayEnabled(bool bEnabled)
 
 void AEnemyBase::Tick(float DeltaSeconds)
 {
+	const uint64 LifeGeneration = PoolLifeGeneration;
+	TGuardValue<int32> DispatchGuard(PoolCallbackDepth, PoolCallbackDepth + 1);
 	Super::Tick(DeltaSeconds);
+	if (bPoolInactive || LifeGeneration != PoolLifeGeneration) return;
 	if (GetWorld() && GetWorld()->GetTimeSeconds() >= NextHealthWidgetVisibilityAt)
 	{
 		NextHealthWidgetVisibilityAt = GetWorld()->GetTimeSeconds() + 0.1;
@@ -385,13 +407,11 @@ void AEnemyBase::FireProjectile()
 	const bool bBirthHit = GetWorld()->SweepSingleByChannel(BirthHit, Origin, Muzzle, FQuat::Identity, MothCollision::Projectile, Shape, Params);
 	const uint64 Generation = CombatGeneration;
 	const FTransform Transform(Direction.Rotation(), Muzzle);
-	ARuleProjectile* Projectile = GetWorld()->SpawnActorDeferred<ARuleProjectile>(ProjectileClass, Transform, this, this, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	auto* Pool = GetWorld()->GetSubsystem<UProjectilePoolSubsystem>();
+	ARuleProjectile* Projectile = Pool ? Pool->SpawnProjectile(ProjectileClass, Transform, Direction, this, this, bLogEnemyEvents) : nullptr;
 	if (!Projectile) return;
-	if (!Projectile->InitializeProjectile(Direction, this, this)) { Projectile->Destroy(); return; }
-	Projectile->SetEventLoggingEnabled(bLogEnemyEvents);
-	Projectile->FinishSpawning(Transform);
-	if (!IsValid(Projectile) || Projectile->IsActorBeingDestroyed()) return;
-	if (Generation != CombatGeneration || !IsCombatEnabled()) { Projectile->Destroy(); return; }
+	if (!IsValid(Projectile) || Projectile->IsActorBeingDestroyed() || Projectile->IsPoolInactive()) return;
+	if (Generation != CombatGeneration || !IsCombatEnabled()) { Projectile->ReturnToPool(); return; }
 	++ProjectilesSpawned;
 	LogEvent(TEXT("projectile_spawn"));
 	if (bBirthHit) Projectile->ProcessBlockingHit(BirthHit);
@@ -409,9 +429,10 @@ void AEnemyBase::ReceiveImpulse_Implementation(FVector Velocity, bool bOverrideZ
 
 void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 {
-	if (Victim != this || bDeathProcessed || bEndingPlay) return;
+	if (Victim != this || bPoolInactive || bDeathProcessed || bEndingPlay) return;
+	const uint64 LifeGeneration = PoolLifeGeneration;
+	TGuardValue<int32> DispatchGuard(PoolCallbackDepth, PoolCallbackDepth + 1);
 	bDeathProcessed = true;
-	ReleaseEnemyHealthWidget();
 	// Snapshot before any presentation/death observer can reset the world or destroy us.
 	const auto FixedDropClass = DropDeviceClass;
 	const EDeviceKind FixedDropKind = DropKind;
@@ -419,6 +440,17 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 	const UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
 	const uint64 DropGeneration = Lifecycle ? Lifecycle->GetLifecycleGeneration() : 0;
 	bDropAttempted = FixedDropClass != nullptr;
+	const auto CanContinueDeath = [&]()
+	{
+		// A recycled/new life owns its own result. Ordinary destruction still records
+		// the committed old life's cancelled drop, as it did before pooling.
+		if (bPoolInactive || LifeGeneration != PoolLifeGeneration) return false;
+		if (!bEndingPlay && !IsActorBeingDestroyed()) return true;
+		if (FixedDropClass) DropResult = EEnemyDropResult::Cancelled;
+		return false;
+	};
+	ReleaseEnemyHealthWidget();
+	if (!CanContinueDeath()) return;
 	bGameplayEnabled = false;
 	++CombatGeneration;
 	CombatPhase = EEnemyCombatPhase::Dead;
@@ -428,13 +460,195 @@ void AEnemyBase::HandleEnemyDied(AActor* Victim, AActor* Source)
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetTelegraph(false);
+	if (!CanContinueDeath()) return;
 	TelegraphText->SetText(FText::FromString(TEXT("DEAD")));
 	TelegraphText->SetHiddenInGame(true);
 	SetLifeSpan(FMath::Max(0.01f, DeathVisualSeconds));
 	LogEvent(TEXT("death"));
 	if (!bEndingPlay && !IsActorBeingDestroyed()) OnEnemyDiedNative.Broadcast(this, Source);
-	if (!bEndingPlay && !IsActorBeingDestroyed()) OnEnemyDied.Broadcast(this, Source);
-	TryDropDevice(FixedDropClass, FixedDropKind, DeathLocation, DropGeneration);
+	if (!CanContinueDeath()) return;
+	OnEnemyDied.Broadcast(this, Source);
+	if (!CanContinueDeath()) return;
+	TryDropDevice(FixedDropClass, FixedDropKind, DeathLocation, DropGeneration, LifeGeneration);
+}
+
+void AEnemyBase::ReturnToPool()
+{
+	if (bPoolManaged)
+	{
+		if (auto* Pool = GetWorld() ? GetWorld()->GetSubsystem<UEnemyPoolSubsystem>() : nullptr)
+		{
+			Pool->RecycleEnemy(this);
+			return;
+		}
+	}
+	Destroy();
+}
+
+void AEnemyBase::LifeSpanExpired()
+{
+	if (bPoolManaged) ReturnToPool();
+	else Super::LifeSpanExpired();
+}
+
+void AEnemyBase::SuspendPoolTicks()
+{
+	if (!bPoolTicksSuspended)
+	{
+		// Deferred actors start with disabled tick functions until registration/BeginPlay.
+		// Preserve their authored startup setting rather than that temporary disabled state.
+		bPoolActorTickEnabled = HasActorBegunPlay() ? IsActorTickEnabled()
+			: PrimaryActorTick.bCanEverTick && PrimaryActorTick.bStartWithTickEnabled;
+		bPoolTicksSuspended = true;
+	}
+	const auto SuspendComponent = [this](UActorComponent* Component)
+	{
+		if (!PoolComponentTicks.Contains(Component))
+		{
+			const bool bEnabled = Component->HasBegunPlay() ? Component->IsComponentTickEnabled()
+				: Component->PrimaryComponentTick.bCanEverTick && Component->PrimaryComponentTick.bStartWithTickEnabled;
+			PoolComponentTicks.Add(Component, bEnabled);
+		}
+		Component->SetComponentTickEnabled(false);
+	};
+	SetActorTickEnabled(false);
+	TInlineComponentArray<UActorComponent*> Components(this);
+	for (UActorComponent* Component : Components) SuspendComponent(Component);
+	if (AAIController* AI = Cast<AAIController>(GetController()))
+	{
+		if (PoolController.Get() != AI)
+		{
+			PoolController = AI;
+			bPoolControllerTickEnabled = AI->HasActorBegunPlay() ? AI->IsActorTickEnabled()
+				: AI->PrimaryActorTick.bCanEverTick && AI->PrimaryActorTick.bStartWithTickEnabled;
+		}
+		AI->SetActorTickEnabled(false);
+		if (UBrainComponent* Brain = AI->GetBrainComponent()) Brain->StopLogic(TEXT("Enemy returned to pool"));
+		TInlineComponentArray<UActorComponent*> ControllerComponents(AI);
+		for (UActorComponent* Component : ControllerComponents) SuspendComponent(Component);
+	}
+}
+
+void AEnemyBase::RestorePoolTicks()
+{
+	for (const auto& Entry : PoolComponentTicks)
+		if (UActorComponent* Component = Entry.Key.Get()) Component->SetComponentTickEnabled(Entry.Value);
+	PoolComponentTicks.Reset();
+	SetActorTickEnabled(bPoolActorTickEnabled);
+	bPoolTicksSuspended = false;
+	if (AAIController* AI = Cast<AAIController>(GetController()))
+	{
+		AI->SetActorTickEnabled(bPoolControllerTickEnabled);
+		if (UBrainComponent* Brain = AI->GetBrainComponent()) Brain->RestartLogic();
+	}
+	PoolController.Reset();
+}
+
+void AEnemyBase::PrepareForPoolAcquisition()
+{
+	++PoolLifeGeneration;
+	++CombatGeneration;
+	bPoolInactive = true;
+	bGameplayEnabled = false;
+	HealthComponent->SetPoolInactive(true);
+	SetLifeSpan(0.0f);
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	ExternalImpulseComponent->SetGameplayEnabled(false);
+	StopNavigation();
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->ClearAccumulatedForces();
+	SetBase(static_cast<FMovementBaseInterfaceData*>(nullptr));
+	SuspendPoolTicks();
+}
+
+void AEnemyBase::DeactivateForPool()
+{
+	PrepareForPoolAcquisition();
+	// Old shots can outlive the corpse and must not treat a later checkout as their source.
+	if (GetWorld())
+		for (TActorIterator<ARuleProjectile> It(GetWorld()); It; ++It)
+			if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive()) It->ForgetSourceActor(this);
+	CombatTarget.Reset();
+	CombatPhase = EEnemyCombatPhase::Disabled;
+	ReleaseEnemyHealthWidget();
+	GetCharacterMovement()->DisableMovement();
+	if (GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+		GetWorld()->GetLatentActionManager().RemoveActionsForObject(this);
+	}
+	if (auto* Audio = GetWorld() ? GetWorld()->GetSubsystem<UMothAudioSubsystem>() : nullptr) Audio->StopSpeaker(this);
+	if (UAnimInstance* Animation = GetMesh()->GetAnimInstance()) Animation->StopAllMontages(0.0f);
+	SetTelegraph(false);
+}
+
+void AEnemyBase::ActivateFromPool()
+{
+	if (!bPoolManaged || !bPoolInactive || bEndingPlay || IsActorBeingDestroyed()) return;
+	const uint64 LifeGeneration = PoolLifeGeneration;
+	TGuardValue<int32> DispatchGuard(PoolCallbackDepth, PoolCallbackDepth + 1);
+	HealthComponent->ResetForPoolReuse(MaxHealth);
+	ExternalImpulseComponent->ResetForPoolReuse();
+	CharacterVoice->ResetForPoolReuse();
+	bDeathProcessed = false;
+	bDropAttempted = false;
+	DroppedDevice.Reset();
+	DropResult = DropDeviceClass ? EEnemyDropResult::Ready : EEnemyDropResult::Unconfigured;
+	CombatTarget.Reset();
+	CombatPhase = EEnemyCombatPhase::Idle;
+	LastSeenLocation = RecoveryGoal = FVector::ZeroVector;
+	ProgressLocation = GetActorLocation();
+	LastSeenAt = -1.0e9;
+	LastProgressAt = GetWorld()->GetTimeSeconds();
+	NextFireAt = LastProgressAt + FMath::Max(0.01f, TelegraphSeconds);
+	TelegraphEndsAt = NextRepathAt = RecoveryExpiresAt = NextHealthWidgetVisibilityAt = 0;
+	ShotAttempts = ProjectilesSpawned = NavigationRequests = StallRecoveries = RecoveryIndex = 0;
+	bTelegraphVisible = bRecovering = false;
+	SetLifeSpan(0.0f);
+	StopNavigation();
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->ClearAccumulatedForces();
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	GetCharacterMovement()->MaxWalkSpeed = FMath::Max(1.0f, WalkSpeedCmPerSec);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	if (bPoolAnimationInitialized)
+	{
+		GetMesh()->SetSimulatePhysics(false);
+		GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		GetMesh()->SetRelativeTransform(PoolMeshRelativeTransform);
+		GetMesh()->SetAnimationMode(static_cast<EAnimationMode::Type>(PoolAnimationMode), true);
+		if (PoolAnimationClass) GetMesh()->SetAnimInstanceClass(PoolAnimationClass);
+		if (UAnimInstance* Animation = GetMesh()->GetAnimInstance()) Animation->StopAllMontages(0.0f);
+		GetMesh()->bPauseAnims = bPoolAnimationPaused;
+		GetMesh()->SetHiddenInGame(bPoolMeshHidden);
+	}
+	RefreshDropAppearance();
+	BodyMesh->SetHiddenInGame(true);
+	TelegraphText->SetHiddenInGame(true);
+	TelegraphText->SetText(FText::FromString(TEXT("FIRING")));
+	DropHintText->SetHiddenInGame(true);
+	AimArrow->SetHiddenInGame(true);
+	InitializeEnemyHealthWidget();
+	// Widget/animation initialization can invoke game code that recycles this checkout.
+	if (bEndingPlay || IsActorBeingDestroyed() || LifeGeneration != PoolLifeGeneration) return;
+	RestorePoolTicks();
+	if (bEndingPlay || IsActorBeingDestroyed() || LifeGeneration != PoolLifeGeneration) return;
+	const auto* Session = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (!Session || !Session->IsGenerationCurrent(PoolCheckoutLifecycleGeneration) || GetWorld()->IsPaused()) return;
+	// Animation/widget/AI callbacks above may have added a blocker after FinishSpawning's probe.
+	if (const auto* Pool = GetWorld()->GetSubsystem<UEnemyPoolSubsystem>(); !Pool || !Pool->IsBirthplaceClear(this))
+	{
+		ReturnToPool();
+		return;
+	}
+	bPoolInactive = false;
+	bGameplayEnabled = true;
+	HealthComponent->SetPoolInactive(false);
+	ExternalImpulseComponent->SetGameplayEnabled(true);
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	UpdateEnemyHealthWidgetVisibility();
 }
 
 void AEnemyBase::EndPlay(const EEndPlayReason::Type Reason)

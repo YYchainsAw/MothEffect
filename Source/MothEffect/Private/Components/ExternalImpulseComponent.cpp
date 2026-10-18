@@ -71,6 +71,15 @@ void UExternalImpulseComponent::ClearPending()
 	bHasOverrideZ = false;
 }
 
+void UExternalImpulseComponent::ResetForPoolReuse()
+{
+	ClearPending();
+	AcceptedEvents.Reset();
+	bGameplayEnabled = false;
+	if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
+		Character->GetCharacterMovement()->ClearAccumulatedForces();
+}
+
 void UExternalImpulseComponent::SetGameplayEnabled(bool bEnabled)
 {
 	bGameplayEnabled = bEnabled;

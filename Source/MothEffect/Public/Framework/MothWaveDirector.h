@@ -75,17 +75,21 @@ public:
 	FMothWaveSpawnedNative OnEnemySpawnedNative;
 	const TArray<FMothWaveDefinition>& GetWaves() const { return Waves; }
 	const TArray<FVector>& GetSpawnPoints() const { return SpawnPoints; }
+	/** Repeat the authored encounter in additional scheduled batches; only editable before combat. */
+	UFUNCTION(BlueprintCallable, Category="Moth|Flow") bool SetWaveEnemyMultiplier(int32 Multiplier);
+	UFUNCTION(BlueprintPure, Category="Moth|Flow") int32 GetWaveEnemyMultiplier() const { return FMath::Clamp(WaveEnemyMultiplier, 1, 8); }
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
-	/** Fixed wave compositions from the level specification; edit positions/classes, not counts. */
+	/** Runtime definitions rebuilt from the authored compositions and configured multiplier. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Moth|Flow") TArray<FMothWaveDefinition> Waves;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Moth|Flow") TArray<FVector> SpawnPoints;
 	/** D01 / D02 / D03. Saved BP provides the T15 variants, keeping references cookable. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Moth|Flow") TArray<TSubclassOf<AEnemyBase>> EnemyClasses;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Moth|Flow") bool bAutoStart = false;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") int32 MaxAliveEnemies = 8;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow", meta=(ClampMin="1", ClampMax="8")) int32 WaveEnemyMultiplier = 3;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow", meta=(ClampMin="1", ClampMax="64")) int32 MaxAliveEnemies = 24;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float PreparationSeconds = 5.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float BatchSpawnDelaySeconds = 3.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Moth|Flow") float SpawnMinDistanceToPlayerCm = 600.0f;
@@ -128,6 +132,7 @@ private:
 	double RewardEndsAt = 0;
 	FText LastRewardText;
 	TSet<int32> CountedVictimIds;
+	void RebuildWaves();
 	void PrepareWave(int32 Index);
 	void ProcessBirths(double Now);
 	bool FindBirthplace(const FMothWaveSpawn& Spec, FVector& Position) const;

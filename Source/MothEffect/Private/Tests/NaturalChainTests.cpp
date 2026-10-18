@@ -262,6 +262,7 @@ namespace
 		{
 			for (TActorIterator<ARuleProjectile> It(F->World); It; ++It)
 			{
+				if (It->IsPoolInactive()) continue;
 				if (Seen.Contains(It->GetHitId())) continue;
 				Seen.Add(It->GetHitId());
 				It->OnImpactNative.AddLambda([this](ARuleProjectile* P, AActor* Actor, const FHitContext& Hit)
@@ -277,7 +278,7 @@ namespace
 		int32 CountProjectiles() const
 		{
 			int32 Count = 0;
-			for (TActorIterator<ARuleProjectile> It(F->World); It; ++It) ++Count;
+			for (TActorIterator<ARuleProjectile> It(F->World); It; ++It) if (!It->IsPoolInactive()) ++Count;
 			return Count;
 		}
 		FAutomationTestBase* Test;

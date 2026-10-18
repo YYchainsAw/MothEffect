@@ -155,7 +155,8 @@ namespace MothEnemyTest
 			if (Case == ECase::Muzzle) Cover(*F, FVector(20, 6, 150), FVector(5, 3, 40));
 			if (Case == ECase::Saturation)
 			{
-				for (int32 I = 0; I < 64; ++I)
+				const int32 ProjectileLimit = F->World->GetSubsystem<UDeviceLifecycleSubsystem>()->GetProjectileLimit();
+				for (int32 I = 0; I < ProjectileLimit; ++I)
 				{
 					const FTransform Transform(FVector(I * 50, 5000, 5000));
 					auto* Shot = F->World->SpawnActorDeferred<ARuleProjectile>(ARuleProjectile::StaticClass(), Transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);

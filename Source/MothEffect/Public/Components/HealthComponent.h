@@ -54,8 +54,16 @@ protected:
 	float CurrentHealth = 100.0f;
 
 private:
+	friend class AEnemyBase;
+	friend class UEnemyPoolSubsystem;
+	/** Only the enemy pool lifecycle can heal/rearm an existing health owner. */
+	void ResetForPoolReuse(float Value);
+	void SetPoolInactive(bool bInactive);
 	TSet<FGuid> AcceptedHits;
 	uint64 LastHitLifecycleGeneration = 0;
+	uint64 PoolLifeGeneration = 0;
+	int32 HitDispatchDepth = 0;
+	bool bPoolInactive = false;
 	bool bHasDied = false;
 	bool bEndingPlay = false;
 };

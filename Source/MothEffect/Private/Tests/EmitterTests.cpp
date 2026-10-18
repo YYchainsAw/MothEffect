@@ -198,6 +198,7 @@ namespace
 					int32 MovedOrigins = 0;
 					for (TActorIterator<ARuleProjectile> It(World); It; ++It)
 					{
+						if (It->IsPoolInactive()) continue;
 						++Projectiles;
 						Test->TestTrue(TEXT("Every projectile uses the activating world direction"),
 							It->GetFlightDirection().Equals(FVector::RightVector));
@@ -239,7 +240,7 @@ namespace
 				if (Elapsed >= 1.05)
 				{
 					int32 Projectiles = 0;
-					for (TActorIterator<ARuleProjectile> It(World); It; ++It) { ++Projectiles; }
+					for (TActorIterator<ARuleProjectile> It(World); It; ++It) if (!It->IsPoolInactive()) { ++Projectiles; }
 					Test->TestEqual(TEXT("Cancellation and EndPlay stop future births, preserving existing flight"), Projectiles, 2);
 					return true;
 				}
@@ -250,6 +251,7 @@ namespace
 				Test->TestTrue(TEXT("Emitter has fired after the configured delay"), Emitter->GetEmitterProjectilesSpawned() > 0);
 				for (TActorIterator<ARuleProjectile> It(World); It; ++It)
 				{
+					if (It->IsPoolInactive()) continue;
 					Test->TestTrue(TEXT("Projectile uses the aim chosen at trigger time"), It->GetFlightDirection().Equals(ExpectedDirection));
 				}
 				return true;

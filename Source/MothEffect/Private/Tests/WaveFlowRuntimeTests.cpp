@@ -44,6 +44,8 @@ namespace MothFlowRuntimeTest
 	}
 	AMothPlayerAutomationCharacter* ReplacePlayer(UWorld* World, AMothWaveDirector* D, FVector Position)
 	{
+		// Preserve the original batch-gap / composition cases; scaled waves have a separate test.
+		if (D) D->SetWaveEnemyMultiplier(1);
 		const FTransform Transform(Position);
 		auto* P = World->SpawnActorDeferred<AMothPlayerAutomationCharacter>(AMothPlayerAutomationCharacter::StaticClass(), Transform,
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
@@ -64,7 +66,7 @@ namespace MothFlowRuntimeTest
 	{
 		TArray<TWeakObjectPtr<AEnemyBase>> Snapshot;
 		for (TActorIterator<AEnemyBase> It(World); It; ++It)
-			if (!It->IsActorBeingDestroyed() && It->GetHealthComponent()->IsAlive()) Snapshot.Add(*It);
+			if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive() && It->GetHealthComponent()->IsAlive()) Snapshot.Add(*It);
 		for (auto E : Snapshot) if (E.IsValid())
 		{
 			E->GetHealthComponent()->ApplyHit(Hit());
@@ -230,7 +232,7 @@ namespace MothFlowRuntimeTest
 			else if (Stage == 2 && W->GetTimeSeconds() >= WaitUntil)
 			{
 				T->TestEqual(TEXT("Enemy outside unregisters exactly once"), D->GetAliveCount(), 3);
-				T->TestTrue(TEXT("Bounds removal ends the actor without a death drop"), !Escaped.IsValid() || Escaped->IsActorBeingDestroyed());
+				T->TestTrue(TEXT("Bounds removal returns the enemy without a death drop"), !Escaped.IsValid() || Escaped->IsActorBeingDestroyed() || Escaped->IsPoolInactive());
 				T->TestTrue(TEXT("Administrative removal never attempts a drop"), !Escaped.IsValid() || Escaped->GetDropAttempts() == 0);
 				T->TestTrue(TEXT("Outside device removed"), !OutsideDevice.IsValid() || OutsideDevice->IsActorBeingDestroyed());
 				T->TestTrue(TEXT("Outside projectile removed"), !OutsideProjectile.IsValid() || OutsideProjectile->IsActorBeingDestroyed());
@@ -308,7 +310,7 @@ namespace MothFlowRuntimeTest
 				T->TestEqual(TEXT("Result clears queue despite suspended spawn call"), D->GetPendingCount(), 0);
 				T->TestEqual(TEXT("No deferred actor resurrects alive count"), D->GetAliveCount(), 0);
 				int32 Alive = 0;
-				for (TActorIterator<AEnemyBase> It(W); It; ++It) if (!It->IsActorBeingDestroyed()) ++Alive;
+				for (TActorIterator<AEnemyBase> It(W); It; ++It) if (!It->IsActorBeingDestroyed() && !It->IsPoolInactive()) ++Alive;
 				T->TestEqual(TEXT("Unfinished birth ended before post-result BeginPlay"), Alive, 0);
 				T->TestFalse(TEXT("Session still closed after returning from deferred spawn"), W->GetSubsystem<UDeviceLifecycleSubsystem>()->IsGameplayEnabled());
 				T->AddInfo(TEXT("Result from actual World OnActorSpawned callback during deferred wave birth cancels the old generation before accessing its cleared queue."));

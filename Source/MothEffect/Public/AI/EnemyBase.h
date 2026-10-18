@@ -18,6 +18,9 @@ class ADeviceBase;
 class UWidgetComponent;
 class UMothEnemyHealthWidget;
 class UMothCharacterVoiceComponent;
+class UEnemyPoolSubsystem;
+class UAnimInstance;
+class AAIController;
 
 UENUM(BlueprintType)
 enum class EEnemyCombatPhase : uint8 { Idle, Pursuing, Telegraphing, Cooldown, Disabled, Dead };
@@ -60,6 +63,10 @@ public:
 	int32 GetProjectilesSpawned() const { return ProjectilesSpawned; }
 	int32 GetNavigationRequests() const { return NavigationRequests; }
 	int32 GetStallRecoveries() const { return StallRecoveries; }
+	UFUNCTION(BlueprintPure, Category="Enemy|Pool")
+	bool IsPoolInactive() const { return bPoolInactive; }
+	UFUNCTION(BlueprintCallable, Category="Enemy|Pool")
+	void ReturnToPool();
 	UFUNCTION(BlueprintPure, Category="Enemy|Drop")
 	EDeviceKind GetDropKind() const { return DropKind; }
 	UFUNCTION(BlueprintPure, Category="Enemy|Drop")
@@ -77,6 +84,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
+	virtual void LifeSpanExpired() override;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UHealthComponent> HealthComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
@@ -147,6 +155,12 @@ protected:
 	bool bAutoAcquirePlayer = true;
 
 private:
+	friend class UEnemyPoolSubsystem;
+	void PrepareForPoolAcquisition();
+	void ActivateFromPool();
+	void DeactivateForPool();
+	void SuspendPoolTicks();
+	void RestorePoolTicks();
 	UFUNCTION()
 	void HandleEnemyDied(AActor* Victim, AActor* Source);
 	bool IsUsableTarget(const APawn* Target) const;
@@ -160,7 +174,7 @@ private:
 	void InitializeEnemyHealthWidget();
 	void UpdateEnemyHealthWidgetVisibility();
 	void ReleaseEnemyHealthWidget();
-	void TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation);
+	void TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation, uint64 LifeGeneration);
 	bool FindDropTransform(const ADeviceBase* Defaults, const FVector& DeathLocation, FTransform& OutTransform) const;
 	TWeakObjectPtr<ADeviceBase> DroppedDevice;
 	EEnemyDropResult DropResult = EEnemyDropResult::Unconfigured;
@@ -177,6 +191,23 @@ private:
 	double LastProgressAt = 0.0;
 	double RecoveryExpiresAt = 0.0;
 	uint64 CombatGeneration = 0;
+	uint64 PoolLifeGeneration = 0;
+	uint64 PoolCheckoutLifecycleGeneration = 0;
+	int32 PoolCallbackDepth = 0;
+	UPROPERTY(Transient)
+	TObjectPtr<UClass> PoolAnimationClass;
+	FTransform PoolMeshRelativeTransform;
+	TMap<TWeakObjectPtr<UActorComponent>, bool> PoolComponentTicks;
+	TWeakObjectPtr<AAIController> PoolController;
+	bool bPoolActorTickEnabled = true;
+	bool bPoolControllerTickEnabled = true;
+	bool bPoolTicksSuspended = false;
+	bool bPoolManaged = false;
+	bool bPoolInactive = false;
+	bool bPoolMeshHidden = false;
+	bool bPoolAnimationPaused = false;
+	bool bPoolAnimationInitialized = false;
+	uint8 PoolAnimationMode = 0;
 	int32 ShotAttempts = 0;
 	int32 ProjectilesSpawned = 0;
 	int32 NavigationRequests = 0;

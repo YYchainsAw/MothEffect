@@ -143,15 +143,16 @@ bool FMothProjectileAdmission::RunTest(const FString&)
 {
 	FMothCombatTestWorld F;
 	TArray<ARuleProjectile*> P;
-	for (int32 I = 0; I < 64; ++I) P.Add(NewProjectile(F, FVector(I * 40, 0, 5000)));
-	TestEqual(TEXT("Unified Pawn/device-independent budget admits 64"), Manager(F)->GetProjectileCount(), 64);
-	TestNull(TEXT("Sixty-fifth projectile initialization rejected"), NewProjectile(F, FVector(0, 500, 5000)));
+	const int32 ProjectileLimit = Manager(F)->GetProjectileLimit();
+	for (int32 I = 0; I < ProjectileLimit; ++I) P.Add(NewProjectile(F, FVector(I * 40, 0, 5000)));
+	TestEqual(TEXT("Unified Pawn/device-independent budget admits the configured limit"), Manager(F)->GetProjectileCount(), ProjectileLimit);
+	TestNull(TEXT("The projectile beyond the configured limit is rejected"), NewProjectile(F, FVector(0, 500, 5000)));
 	AActor* Wall = F.Spawn<AActor>();
 	FHitResult Hit(Wall, nullptr, FVector::ZeroVector, FVector::UpVector); Hit.bBlockingHit = true;
 	int32 CountInImpactCallback = -1;
 	P[0]->OnImpactNative.AddLambda([&](ARuleProjectile*, AActor*, const FHitContext&) { CountInImpactCallback = Manager(F)->GetProjectileCount(); });
 	TestTrue(TEXT("Blocking consumption succeeds"), P[0]->ProcessBlockingHit(Hit));
-	TestEqual(TEXT("Quota freed before impact observer runs"), CountInImpactCallback, 63);
+	TestEqual(TEXT("Quota freed before impact observer runs"), CountInImpactCallback, ProjectileLimit - 1);
 	TestNotNull(TEXT("Freed slot can be reused immediately"), NewProjectile(F, FVector(0, 500, 5000)));
 	Manager(F)->ResetManagedObjects();
 	TestEqual(TEXT("Cleanup is idempotent"), Manager(F)->GetProjectileCount(), 0);
@@ -285,7 +286,7 @@ namespace
 			}
 			if (Case == ECase::Saturation)
 			{
-				T->TestTrue(TEXT("Every actual frame obeys projectile cap"), M->GetProjectileCount() <= 64);
+				T->TestTrue(TEXT("Every actual frame obeys projectile cap"), M->GetProjectileCount() <= M->GetProjectileLimit());
 				if (Stage == 0 && Now >= 0.4)
 				{
 					T->TestEqual(TEXT("Full cap consumes first two schedule slots"), D->GetEmitterShotAttempts(), 2);
@@ -346,7 +347,7 @@ namespace
 			}
 			else if (Case == ECase::Saturation)
 			{
-				for (int32 I = 0; I < 64; ++I) Projectiles.Add(NewProjectile(*F, FVector(-9000, I * 40, 5000)));
+				for (int32 I = 0; I < M->GetProjectileLimit(); ++I) Projectiles.Add(NewProjectile(*F, FVector(-9000, I * 40, 5000)));
 				D = NewDevice(*F, FVector(0, 0, 500)); D->TryActivate(LifecycleHit());
 			}
 			else

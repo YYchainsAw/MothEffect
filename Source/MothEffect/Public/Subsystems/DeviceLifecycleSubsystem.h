@@ -81,7 +81,7 @@ protected:
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="1"))
 	int32 MaxActiveColumns = 6;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="1"))
-	int32 MaxLiveProjectiles = 64;
+	int32 MaxLiveProjectiles = 128;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="0.01"))
 	float DormantIdleLifetimeSeconds = 30.0f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Limits", meta=(ClampMin="0.0"))

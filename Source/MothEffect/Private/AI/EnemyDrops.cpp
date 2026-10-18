@@ -79,10 +79,11 @@ bool AEnemyBase::FindDropTransform(const ADeviceBase* Defaults, const FVector& D
 	return false;
 }
 
-void AEnemyBase::TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation)
+void AEnemyBase::TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind, const FVector& DeathLocation, uint64 Generation, uint64 LifeGeneration)
 {
 	if (!Class) return;
 	UDeviceLifecycleSubsystem* Lifecycle = GetWorld()->GetSubsystem<UDeviceLifecycleSubsystem>();
+	if (bPoolInactive || LifeGeneration != PoolLifeGeneration) return;
 	if (bEndingPlay || IsActorBeingDestroyed() || !Lifecycle || !Lifecycle->IsGenerationCurrent(Generation))
 	{ DropResult = EEnemyDropResult::Cancelled; return; }
 	const ADeviceBase* Defaults = Class.GetDefaultObject();
@@ -91,13 +92,18 @@ void AEnemyBase::TryDropDevice(TSubclassOf<ADeviceBase> Class, EDeviceKind Kind,
 	FTransform Transform;
 	if (!FindDropTransform(Defaults, DeathLocation, Transform))
 	{ DropResult = EEnemyDropResult::NoSafeLocation; return; }
-	ADeviceBase* Device = Lifecycle->SpawnDeviceForGeneration(Class, Transform, Generation, [this, Defaults, DeathLocation, Transform]
+	ADeviceBase* Device = Lifecycle->SpawnDeviceForGeneration(Class, Transform, Generation, [this, Defaults, DeathLocation, Transform, LifeGeneration]
 	{
 		FCollisionQueryParams Params(SCENE_QUERY_STAT(MothEnemyDropCommit), false, this);
-		return !bEndingPlay && !IsActorBeingDestroyed()
+		return !bPoolInactive && LifeGeneration == PoolLifeGeneration && !bEndingPlay && !IsActorBeingDestroyed()
 			&& MothDeviceRelease::IsPathClear(GetWorld(), Defaults->GetPhysicsBody(), DeathLocation, Transform.GetLocation(), Params,
 				Defaults->GetConfiguredBodyRadiusCm() * Defaults->GetPhysicsBody()->GetShapeScale());
 	});
+	if (bPoolInactive || LifeGeneration != PoolLifeGeneration)
+	{
+		if (IsValid(Device)) Device->DestroyDevice();
+		return;
+	}
 	if (Device && (Device->GetDeviceKind() != Kind || Device->GetDeviceState() != EDeviceState::Dormant
 		|| (!Device->IsGrounded() && !Device->GetPhysicsBody()->IsSimulatingPhysics()))) { Device->DestroyDevice(); Device = nullptr; }
 	DroppedDevice = Device;

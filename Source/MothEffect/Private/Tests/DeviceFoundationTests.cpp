@@ -178,7 +178,7 @@ namespace MothFoundationTest
 			{
 				T->TestEqual(TEXT("Emitter emits once after .3 plus .1"), Devices[2]->GetEmitterShotAttempts(), 1);
 				for (TActorIterator<ARuleProjectile> It(F->World); It; ++It)
-					T->TestTrue(TEXT("Actual spawned P01 flies in the horizontal locked direction"), It->GetFlightDirection().Equals(FVector(1,2,0).GetSafeNormal()));
+					if (!It->IsPoolInactive()) T->TestTrue(TEXT("Actual spawned P01 flies in the horizontal locked direction"), It->GetFlightDirection().Equals(FVector(1,2,0).GetSafeNormal()));
 				Stage = 3;
 			}
 			if (Stage == 3 && Now >= 3.35)

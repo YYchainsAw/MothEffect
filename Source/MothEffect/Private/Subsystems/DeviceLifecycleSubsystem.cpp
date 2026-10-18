@@ -48,7 +48,7 @@ int32 UDeviceLifecycleSubsystem::GetProjectileCount() const
 {
 	int32 Count = 0;
 	for (const TWeakObjectPtr<ARuleProjectile>& Projectile : Projectiles)
-		if (IsLive(Projectile.Get()) && !Projectile->HasProcessedImpact()) ++Count;
+		if (IsLive(Projectile.Get()) && !Projectile->IsPoolInactive() && !Projectile->HasProcessedImpact()) ++Count;
 	return Count;
 }
 
@@ -227,9 +227,9 @@ void UDeviceLifecycleSubsystem::Tick(float DeltaTime)
 	}
 	const auto ProjectileSnapshot = Projectiles;
 	for (const auto& Projectile : ProjectileSnapshot)
-		if (IsLive(Projectile.Get()) && IsOutsideSafety(Projectile.Get())) Projectile->Destroy();
+		if (IsLive(Projectile.Get()) && !Projectile->IsPoolInactive() && IsOutsideSafety(Projectile.Get())) Projectile->ReturnToPool();
 	Devices.RemoveAllSwap([](const FDeviceRecord& R) { return !IsLive(R.Device.Get()); });
-	Projectiles.RemoveAllSwap([](const auto& P) { return !IsLive(P.Get()); });
+	Projectiles.RemoveAllSwap([](const auto& P) { return !IsLive(P.Get()) || P->IsPoolInactive(); });
 }
 
 bool UDeviceLifecycleSubsystem::SetGameplayEnabled(bool bEnabled)
@@ -262,7 +262,7 @@ void UDeviceLifecycleSubsystem::ResetManagedObjects(bool bInvalidateGeneration)
 	// Clear admission first; callbacks during destruction cannot create replacements.
 	Devices.Reset(); Projectiles.Reset(); ReservedSpawns.Reset(); PendingSpawns = 0;
 	for (const auto& Record : DeviceSnapshot) if (IsLive(Record.Device.Get())) Record.Device->DestroyDevice();
-	for (const auto& Projectile : ProjectileSnapshot) if (IsLive(Projectile.Get())) Projectile->Destroy();
+	for (const auto& Projectile : ProjectileSnapshot) if (IsLive(Projectile.Get())) Projectile->ReturnToPool();
 	for (const auto& Device : SpawnSnapshot) if (IsLive(Device.Get())) Device->DestroyDevice();
 	NextOrder = 0;
 	for (double& Notice : LastCapacityNotice) Notice = -1.0;

@@ -1,6 +1,8 @@
 # Moth Effect（飞蛾效应）：技术设计
 
-版本 v0.49 · 2026-10-17 · 游戏名：Moth Effect（飞蛾效应）
+版本 v0.50 · 2026-10-18 · 游戏名：Moth Effect（飞蛾效应）
+
+2026-10-18 敌人密度与对象池：用户选择12/18/24敌人、最多24存活，`AMothWaveDirector`按`WaveEnemyMultiplier`展开原配兵模板并增加批次；`UEnemyPoolSubsystem`分离Acquire与Finish，导演先登记再启用，死亡动画完成或行政清理后归池；`UProjectilePoolSubsystem`统一敌人和D03的P01发射，命中/寿命/界外回收。对象池World隔离、按实际类复用，闲置对象关闭碰撞/移动/组件Tick，不占活敌人或弹丸额度。每次出场重置生命和AI/动画/掉落状态，弹丸重置HitId/来源/忽略列表/ProjectileMovement；回调派发内不允许同对象重新出借，检查局与生命代次；敌人回池解除在飞弹丸的旧来源、归因与忽略，防止新生命继承旧弹免伤。池按需增长，有界保留，重开仍换图。参数账本v0.23、DEC47与TC46/47同步，验证及手动边界见[波次接入](../../05_Development_Guide/Wave_Flow_Setup.md)。
 
 2026-10-17 道具触发更新：`ADeviceBase` 从 BeginPlay 起使用世界游戏时间计算出生保护，`TryActivate` 在保护结束前拒绝弹道和爆炸请求；保护不影响拾取/推力，放下/投掷不重置起点。D03 接纳时以当前装置位置按三维距离选择范围内最近有效存活 `AEnemyBase`，一次锁定指向 Actor 中心的三维射向；无目标沿用入射 XY 投影。具体参数、规则和新增验收见 [重构接入](../../05_Development_Guide/Device_Refactor_Setup.md)；以下历史验证段落仍只代表当时版本。
 

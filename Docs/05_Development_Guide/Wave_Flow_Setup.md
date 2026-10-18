@@ -1,6 +1,14 @@
 # Moth Effect（飞蛾效应）：三波、胜负与重开接入
 
-版本 v0.2 · 2026-10-12 · 状态：T16 原生/真实 Game 验证通过，当前图形 PIE 待验收
+版本 v0.3 · 2026-10-18 · 状态：敌人增量与对象池已实现，UE5.8编译、159项Editor及SoulCity Game专项通过，硬件PIE与性能待验收
+
+2026-10-18当前实现：用户选择12/18/24、同屏最多24。`WaveEnemyMultiplier=3`将原4/6/8配兵展开为3批×4、6批×3、6批×4，批次计划间隔保持3秒；占位导致的延迟仍在原点排队。`GetWaves`返回展开后的定义，倍率只可在Ready修改。当前进入竞技场会由玩家控制器启动，不需执行控制台命令。下文T16的4/6/8和控制台入口为历史夹具基线。
+
+敌人由`UEnemyPoolSubsystem`按实际类Acquire，导演先登记再Finish启用；死亡动画的LifeSpan到期归池，界外/结算行政回收无掉落。复用重置血量/命中去重、AI/导航/外力/射击计时、掉落guard、动画/蒙太奇、头顶UI与语音状态。闲置对象隐藏、禁碰撞并停止组件/AI Tick。敌人和D03通过`UProjectilePoolSubsystem`发射P01，命中/到期/界外回收，重置HitId、来源与忽略列表、运动组件UpdatedComponent/速度、寿命与事件观察器。旧的直接Spawn测试路径保留销毁行为。两池World隔离且按需增长，闲置保留上限32/128；活弹上限128。重开仍OpenLevel，池不跨World持久化。
+
+`MothFlowStats`日志可查看两池created/reused/idle。验证中应观察多轮出生后created增速下降、reused持续增加；这不是帧率提升的实测结果。手动检查三类Drongo死亡后再次出场的动画/血条/掉落、完整54敌人三波、暂停/重开和高压帧率；下方旧验收记录不代替本次实测。
+
+本轮验证：159项Editor全部成功（包含10项对象池专项）；正式SoulCity真实Game完成12/18/24、54次击杀、峰值24，创建24个敌人Actor、复用30次，三类保存BP的动画模式/类在复用后恢复。测试仅对入场敌人关闭AI和占位以累积每波，地图地面/NavMesh/安全预警与真实Health死亡/掉落路径保留；不把受控NullRHI结果当作硬件画面、手感或帧率验收。首轮容量夹具、取消掉落、Tick快照、接地净空及自动化接入时序失败和修正均保留在Saved/Automation/CombatPooling，汇总见[自动化记录](../06_Test_Doc/Evidence/CombatPooling/Automation_2026-10-18.json)。
 
 已创建[T16/T17 PR #45](https://github.com/YYchainsAw/MothEffect/pull/45)，codex/t16-t17-wave-arena → main。用户要求保持待校验；当前图形PIE清单未记通过，#18/#19继续Open，未自动关闭。
 

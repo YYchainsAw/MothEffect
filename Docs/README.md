@@ -4,6 +4,8 @@
 
 2026-10-18 第一轮画面：开启TSR、校准SoulCity固定曝光并统一可逆灯光与基础调色。两项视觉专项、正式地图三波接入和固定机位D3D12对比已验证；动态清晰度与性能待验收。配置、原图及验证范围见[画面接入](05_Development_Guide/Arena_Visual_Setup.md)。
 
+2026-10-17 当前 Windows 包：已生成 Win64 Shipping 完整目录与约 1.40 GB ZIP，Cook 0 errors／11 既有警告，37 项关键资源逐项确认入包；29 件运行文件重解压 SHA 一致，独立程序主菜单、SoulCity 场景与暂停／设置页面可见。补齐 UI 软路径资源的 AlwaysCook 配置。入口、校验值、截图及未覆盖范围见 [本次 Windows 包](07_Release/Windows_Package_2026-10-17.md)；未上传或发布。
+
 2026-10-17 敌人外观对应掉落：D01 升柱使用 Drongo Scavenger，D02 炸弹使用 Drongo 原版，D03 发射器使用 Drongo Alien Invader；各用原配材质与共用动画。三个敌人蓝图已写回，保存实例重载及实际移动、开火、死亡、单次对应掉落通过。对应表、编辑入口和预览见 [Drongo 接入](05_Development_Guide/Drongo_Enemy_Setup.md)。
 
 2026-10-17 角色与按钮声音接入：Murdock 玩家与 Drongo 敌人复用 26 条原配录音，Kenney 提供悬停、点击、返回和错误四条短音效；实际开火、确认击杀、受伤、预警与死亡驱动语音，补齐冷却、暂停及结算清理。原工程 Editor 构建、41 项专项回归及实际 D3D12／音频运行检查通过；音量平衡与完整战斗混音待主观试听。配置和证据见 [角色与界面音效接入](05_Development_Guide/Character_Audio_Setup.md)。

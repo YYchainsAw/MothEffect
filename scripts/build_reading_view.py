@@ -81,6 +81,7 @@ DOCS = [
     ('doc-t20-report', 'T20 原型外观交付报告', 'Docs/06_Test_Doc/T20_Report_2026-10-13.md'),
     ('doc-t17-report', 'T17 主竞技场交付报告', 'Docs/06_Test_Doc/T17_Report_2026-10-12.md'),
     ('doc-release', '发布检查清单', 'Docs/07_Release/Release_Checklist.md'),
+    ('doc-windows-package-20261017', '10/17 Windows Shipping 包', 'Docs/07_Release/Windows_Package_2026-10-17.md'),
 ]
 
 
